@@ -70,18 +70,18 @@ Table of Contents
             2.2.1.  Comment about the spec ..............................  4
        2.3.  Movement detaction in KAME/MIP6 ............................  5
        2.4.  One more note about CoA selection ..........................  5
-       2.5.  Router Identifier ..........................................  6
-            2.5.1.  Comment about the spec ..............................  6
-       2.6.  The wrong source address in the ICMP error payload .........  6
-            2.6.1.  Comments ............................................  7
-       2.7.  Security mechanism is not implemented yet ..................  7
+       2.5.  Multiple homelinks .........................................  6
+       2.6.  Router Identifier Problem ..................................  6
+            2.6.1.  Comment about the spec ..............................  6
+       2.7.  The wrong source address in the ICMP error payload .........  6
+            2.7.1.  Comments ............................................  7
+       2.8.  Security mechanism is not implemented yet ..................  7
 
     3.  References ......................................................  7
 
     4.  Current status ..................................................  7
 
     5.  Author's Address ................................................  9
-
 
 
 
@@ -302,7 +302,14 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
    doesn't work with such a network described above.)
 
 
-2.5.  Router Identifier
+2.5.  Multiple homelinks
+
+   The KAME/MIP6 try to support multiple homelinks.  We can specify both
+   office and home network as a home link.  We can use the best address
+   (if we are office, office home address, and vice versa).
+
+
+2.6.  Router Identifier Problem
 
    As many folks have said already, our implementation also have a
    router identifier problem.  If different two routers have same link-
@@ -315,23 +322,16 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
    prefix information option processing).
 
 
-2.5.1.  Comment about the spec
+2.6.1.  Comment about the spec
 
-   Do we need another identifier other than the link-local address ?
+   Do we need another identifier other than the link-local address?  Or
+   this is only the operational problem?
 
 
-2.6.  The wrong source address in the ICMP error payload
+2.7.  The wrong source address in the ICMP error payload
 
    In our implementation, the home address and the CoA is exchanged in
    the destination options header processing routine.  If we encounter
-   some errors after this point, it produces the ICMP error packet with
-   a payload that include the original IPv6 packet with a wrong
-   (excnanged) source address.  To avoid this problem, we consider two
-   different mechanisms.  One is to recover a correct source address at
-   all the points the process are needed.  The other is not to exchange
-   the home address and the CoA in the destination options header
-   processing and remain the CoA in a IPv6 source address field.  We
-   implemented both mechanisms and decided to adopt the former.  In the
 
 
 
@@ -340,6 +340,14 @@ draft-keiichi-mobileip-kame-implementation-00.txt               [Page 6]
 DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
 
+   some errors after this point, it produces the ICMP error packet with
+   a payload that include the original IPv6 packet with a wrong
+   (excnanged) source address.  To avoid this problem, we consider two
+   different mechanisms.  One is to recover a correct source address at
+   all the points the process are needed.  The other is not to exchange
+   the home address and the CoA in the destination options header
+   processing and remain the CoA in a IPv6 source address field.  We
+   implemented both mechanisms and decided to adopt the former.  In the
    former mechanism, the point to recover the original source address is
    only the function which generates ICMP error packet.  Other parts of
    the code seems to have no need to restore the source address.  While,
@@ -347,7 +355,7 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
    refer the IPv6 source address field.
 
 
-2.6.1.  Comments
+2.7.1.  Comments
 
    We select the former mechanism because it require only a small fix of
    the existing code.  But we should reconsider if the former mechanism
@@ -358,7 +366,7 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
    icmp6error routine.  Is it really ad-hoc isn't it?
 
 
-2.7.  Security mechanism is not implemented yet
+2.8.  Security mechanism is not implemented yet
 
    We plan to implement some weak authentication mechanisms.  Currently
    we are investigating which one is the best.
@@ -381,20 +389,18 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
    tions (MN, HA, CN).  You can always get the latest information from
    the KAME Project (http://www.kame.net/).
 
-  - todo
-
-    - merge nd_prefix/nd_defrouter structure and mip6_prefix/mip6_ha
-      structure.  merge home address configuration and stateless auto-
-      configuration.
-
-
-
 
 
 draft-keiichi-mobileip-kame-implementation-00.txt               [Page 7]
 
 DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
+
+  - todo
+
+    - merge nd_prefix/nd_defrouter structure and mip6_prefix/mip6_ha
+      structure.  merge home address configuration and stateless auto-
+      configuration.
 
       current our implementation defines special prefix and home agent
       structures for MIP6 code.  These structures are essentially iden-
@@ -438,12 +444,6 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
     - binding update/home registration.
 
-    - dynamic home agent discovery.
-
-    - NA when returning to home.
-
-  - CN part implemented functions
-
 
 
 
@@ -451,6 +451,12 @@ draft-keiichi-mobileip-kame-implementation-00.txt               [Page 8]
 
 DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
+
+    - dynamic home agent discovery.
+
+    - NA when returning to home.
+
+  - CN part implemented functions
 
     - receiving binding update.
 
@@ -476,12 +482,6 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
     Edobori Center Bldg. 19F
     2-1-1 Edobori, Nishi-ku, Osaka 550-0002, Japan
     Email: keiichi@iij.ad.jp
-
-
-
-
-
-
 
 
 

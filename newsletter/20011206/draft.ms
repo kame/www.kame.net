@@ -190,7 +190,13 @@ in selecting a new CoA.  (Not implemented yet.)
 (Current implementation have bugs in handing this situation, so, this
 doesn't work with such a network described above.)
 .\" --------------------------------------------------------------------
-.N2 "Router Identifier"
+.N2 "Multiple homelinks"
+.LP
+The KAME/MIP6 try to support multiple homelinks.  We can specify both
+office and home network as a home link.  We can use the best address
+(if we are office, office home address, and vice versa).
+.\" --------------------------------------------------------------------
+.N2 "Router Identifier Problem"
 .LP
 As many folks have said already, our implementation also have a router
 identifier problem.  If different two routers have same link-local
@@ -204,7 +210,8 @@ information option processing).
 .\" --------------------------------------------------------------------
 .N3 "Comment about the spec"
 .LP
-Do we need another identifier other than the link-local address ?
+Do we need another identifier other than the link-local address?  Or
+this is only the operational problem?
 .\" --------------------------------------------------------------------
 .N2 "The wrong source address in the ICMP error payload"
 .LP
