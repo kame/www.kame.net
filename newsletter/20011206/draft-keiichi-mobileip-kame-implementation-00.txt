@@ -1,0 +1,451 @@
+
+
+
+
+
+
+DRAFT                                                      Keiichi Shima
+                                           Internet Initiative Japan Inc.
+                                                        December 6, 2001
+
+
+                    KAME Mobile IPv6 Implementation
+          <draft-keiichi-mobileip-kame-implementation-00.txt>
+
+
+
+Abstract
+
+   The KAME Project is now developping Mobile IPv6 stack on its IPv6
+   stack.  We will describe our implementation design and some comments
+   about the spec.
+
+Status of this Memo
+
+   This document is a supplemental reference for those implementing
+   MIP6.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+draft-keiichi-mobileip-kame-implementation-00.txt               [Page 1]
+
+DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+
+
+Table of Contents
+
+    1.  Overview ........................................................  3
+
+    2.  KAME/MIP6 implementation note ...................................  3
+       2.1.  Subnet in KAME/MIP6 ........................................  3
+       2.2.  CoA selection in KAME/MIP6 .................................  4
+            2.2.1.  Comment to the spec .................................  4
+       2.3.  Movement detaction in KAME/MIP6 ............................  5
+       2.4.  Ineffciency of our movement detection ......................  5
+       2.5.  Router Identifier ..........................................  6
+            2.5.1.  Comment to the spec .................................  6
+       2.6.  Security mechanism is not implemented yet ..................  6
+
+    3.  Current status ..................................................  6
+
+    4.  Author's Address ................................................  8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+draft-keiichi-mobileip-kame-implementation-00.txt               [Page 2]
+
+DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+
+
+1.  Overview
+
+   KAME/MIP6 is based on the three implementations (Ericsson, NEC, Keio
+   Univ.) those have been built on the KAME IPv6 protocol stack before.
+   We are trying to utilize the merits of those implementations and
+   provide one concrete MIP6 stack for the KAME IPv6 stack.
+
+   The KAME/MIP6 supports CN, HA and MN functions.  The base
+   specification is the current one.  At this point, the specification
+   is draft-ietf-mobileip-ipv6-15.txt.
+
+
+2.  KAME/MIP6 implementation note
+
+
+
+2.1.  Subnet in KAME/MIP6
+
+   MIP6 is designed for the node that is moving from one subnet to
+   another subnet without closing existing connections.  When the node
+   moves from one subnet to other subnet, we think the node has moved.
+   MIP6 spec doesn't define the notation of subnet.  KAME/MIP6 defines
+   the word subnet as 'the group of prefixes and routers those have some
+   relationships with each other'.  See the following example.
+
+
+   Router R1 announcing Prefix P1, Prefix P2
+   Router R2 announcing Prefix P3, Prefix P4
+   Router R3 announcing Prefix P1, Prefix P5
+   Router R4 announcing Prefix P4, Prefix P6
+   Router R5 announcing Prefix P7
+
+
+   In this case, we have 5 routers (R1...R5) and 7 prefixes (P1...P7).
+   By our definition of subnet, we can group them into 3 subnets.
+
+
+   Subnet S1 (Router R1, R3) (Prefix P1, P2, P4)
+   Subnet S2 (Router R2, R4) (Prefix P3, P4, P6)
+   Subnet S3 (Router R5) (Prefix P7)
+
+
+   Router R1 and R3 are in the same subnet because those routers share
+   the prefix P1.  Similarly, Router R2 and R4 are the same subnet.
+   Router R5 is only router in the subnet S3 because it doesn't share
+   any information with other router.  KAME/MIP6 treats these 3 subnet
+
+
+
+
+
+draft-keiichi-mobileip-kame-implementation-00.txt               [Page 3]
+
+DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+
+
+   as different ones, even if they are physically on the same wire.
+
+
+2.2.  CoA selection in KAME/MIP6
+
+   The KAME/MIP6 stack re-selects the CoA when the states of prefixes
+   have changed.  The KAME IPv6 stack maintain all the received
+   prefixes.  The point is that the KAME stack has one more additional
+   state information of the prefix than the specification defines.  The
+   stateless address auto-configuration specification defines some
+   states of IPv6 addresses.  In this paper, we focus two states, one is
+   PREFERRED and the other is DEPRECATED.  These states are derived from
+   the prefix states.  If the prefix has the preferred lifetime left,
+   the address derived from the prefix is also PREFERRED.  If the prefix
+   has only the valid lifetime left and the preferred lifetime expired,
+   the address is DEPRECATED.  In addition to those states, the KAME
+   IPv6 stack has a DETACHED address state.  If the prefix has the valid
+   lifetime left but the advertising router of the prefix seems
+   unreachable, the prefix is marked as detached.  The address derived
+   from the detached prefix is also marked as DETACHED.  Following are
+   the algorithm of KAME/MIP6 CoA selection.
+
+   1. find addresses those are not ANYCAST, DUPLICATED, DEPRECATED and
+   DETACHED.
+
+   2. if the previous CoA is one of addresses found during the procedure
+   1, continue using the same address as the CoA.
+
+   3. if the previous CoA is not found, select one address from
+   addresses found during the procedure 1.
+
+   Current implementation pick the last found address as a new CoA.  We
+   can introduce some policy based address selection mechanism in the
+   selection procedure.  For example, we may want to mark the Ethernet
+   interfaces as perferrable than the cellular interfaces.
+
+   This CoA selection algorithm is the key of the movement detection
+   algorithm of the KAME/MIP6.  The movement detection is described in
+   the next section.
+
+
+2.2.1.  Comment to the spec
+
+   Since we have no mechanism to invalidate the old prefix.  'Old'
+   means, it has preferred lifetime left but, no advertising router on
+   the current subnet.  This happens when we change the network.  We
+   have no way to determine if we can use the old (in KAME sense,
+
+
+
+
+draft-keiichi-mobileip-kame-implementation-00.txt               [Page 4]
+
+DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+
+
+   detached) address.  Should the autoconf spec note about this?
+
+
+2.3.  Movement detaction in KAME/MIP6
+
+   While many implementations check advertised prefixes and default
+   router change to detect the node movement, KAME/MIP6 only checks the
+   change of its CoA.  As already described, KAME/MIP6 CoA re-selection
+   is done whenever the states of prefixes change.  Therefore, the
+   change of the CoA in our implementation means the old prefix of the
+   old CoA is no longer usable.  It is not important whether the node
+   moves from one wire to another wire.  The point is the node always
+   selects its CoA based on the states of the current usable prefixes
+   and routers those are advertising prefixes. Once the CoA has changed,
+   we must update binding regardless of moving from one real wire to
+   another.
+
+   When KAME/MIP6 detects movement (this means that KAME/MIP6 detects
+   CoA change), KAME/MIP6 start movement processing.  For example,
+   sending binding updates to each destination node of binding update
+   list.
+
+
+2.4.  Ineffciency of our movement detection
+
+   Our algorithm may detect wrong location in the following case.
+
+       ----+--------                   ----+-------
+           |                               |
+         +-+--+                          +-+--+
+         | R1 |                          | R2 |
+         +-+--+ Prefix P1                +-+--+ Prefix P2
+           |                               |
+       ----+---------------+---------------+---- home wire
+                           |
+                         +----+ home prefix == P1
+                         | MN |
+                         +----+
+
+   There are two routers (R1, R2) in the home wire.  Router R1 announces
+   Prefix P1 and R2 announces P2.  By definition of our subnet, there
+   are two subnets on the wire.
+
+   Subnet S1 (Router R1) (Prefix P1)
+   Subnet S2 (Router R2) (Prefix P2)
+
+   Under this condition, if we specify only one prefix as a home prefix,
+   we can't determine that we are home.  In this network, both P1 and P2
+
+
+
+draft-keiichi-mobileip-kame-implementation-00.txt               [Page 5]
+
+DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+
+
+   are valid.  We can use both addresses derived from each prefix.
+
+   Now, assume we select P1 as a home prefix.  If we select CoA derived
+   from P2, we determine that we are on the foreign network.  But in
+   fact, we are home too.  MN will start sending a binding update to
+   make a home registration.  In this case, MN should determine that it
+   is home to avoid unneeded binding/encapsulation/routing header.
+
+   This inefficiency can be easily avoided by preferring the home
+   address in selecting a new CoA.  Not implemented yet.
+
+   (Current implementation have bugs in handing this situation, so, this
+   doesn't work with such a network described above.)
+
+
+2.5.  Router Identifier
+
+   As many folks have said already, our implementation also have a
+   router identifier problem.  If different two routers have same link-
+   local address, we think those two routers are the same router.  This
+   problem can be avoided by using router global address.  But, since
+   the global address is included in the prefix infomation option of the
+   router advertisement, we must process the prefix information option
+   twice.  First time for finding a global address, second time for
+   grouping received prefixes into subnet groups (and also, ordinally
+   prefix information option processing).
+
+
+2.5.1.  Comment to the spec
+
+   Do we need another identifier other than the link-local address ?
+
+
+2.6.  Security mechanism is not implemented yet
+
+   We plan to implement some weak authentication mechanisms like bu3way.
+
+
+3.  Current status
+
+   Followings are the todo list and the current status for each
+   functions (MN, HA, CN).  You can always get the latest information
+   from the KAME Project (http://www.kame.net/).
+
+   todo
+
+   - define the behavior of the socket API for home addresses.
+
+
+
+
+draft-keiichi-mobileip-kame-implementation-00.txt               [Page 6]
+
+DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+
+
+   - security mechanism.
+
+   - mobile prefix advertisement.
+
+   - complete dynamic home agent discovery. (implement user-land
+   daemon?)
+
+   - rate limit (many places).
+
+   - homeagent info handling.
+
+   - ICMP against tunneled packet handling.
+
+   - registration to the old AR.
+
+   - path mtu discovery when triangle routing.
+
+   - some timeout routines.
+
+   - other OSes support.
+
+   - draft-13/draft-15 (or newer) full support.
+
+   - may be others.
+
+   MN side
+
+   - movement detection by prefix announce.
+
+   - binding update/home registration.
+
+   - dynamic home agent discovery.
+
+   - NA when returning to home.
+
+   CN side
+
+   - recieving binding update.
+
+   - insertion of a routing header.
+
+   - sending binding requests.
+
+   HA side
+
+   - home registration.
+
+   - encapsulate packets destined to MNs.
+
+
+
+draft-keiichi-mobileip-kame-implementation-00.txt               [Page 7]
+
+DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+
+
+   - dynamic home agent discovery.
+
+
+4.  Author's Address
+
+    Keiichi Shima
+    Internet Initiative Japan Inc.
+    Edobori Center Bldg. 19F
+    2-1-1 Edobori, Nishi-ku, Osaka 550-0002, Japan
+    Email: keiichi@iij.ad.jp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+draft-keiichi-mobileip-kame-implementation-00.txt               [Page 8]
+

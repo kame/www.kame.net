@@ -1,0 +1,17 @@
+#!/bin/sh
+
+Input=draft.ms
+Output=draft.txt
+Macros="-ms tmac.draft"
+Fix=fix.sh
+Toc=draft.toc
+
+nroff $Macros $Input 2>$Toc.new | ./$Fix > $Output
+if [ -f $Toc ]; then
+    if diff $Toc $Toc.new > /dev/null; then
+	echo "page numbers same"
+    else
+	echo "page numbers changed **********"
+    fi
+fi
+mv $Toc.new $Toc

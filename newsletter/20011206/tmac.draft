@@ -1,0 +1,122 @@
+.	\" Nroff macros for Internet-Drafts.
+.	\" Following executed when file is read in: initialize.
+.pl 10.0i	\" page length
+.po 0		\" page offset (from left of page)
+.ll 7.2i	\" line length
+.nr LL 7.2i
+.lt 7.2i	\" length of title
+.nr LT 7.2i
+.	\" initialize -ms macros, which must be specified before this file
+.LP
+.\"-----------------------------------------------------------------
+.	\" LP - Left justified paragraph.
+.de LP
+.nr I0 5
+.sp
+.in 3
+..
+.\"-----------------------------------------------------------------
+.	\" PP - Indented paragraph.
+.de PP
+.nr I0 5
+.sp
+.in 3
+.ti 3
+..
+.\"-----------------------------------------------------------------
+.	\" SH - Unnumbered section heading.
+.de SH
+.nr I0 5
+.sp
+.in 0
+.ne 4
+..
+.\"-----------------------------------------------------------------
+.	\" N1 - start numbered section heading, first level
+.de N1
+.nr I0 5
+.nr N1 +1
+.nr N2 0
+.nr N3 0
+.ne 4
+.sp 2
+.in 0
+\\n(N1.  \\$1
+.		\" put the current page number into PN
+.nr PN \\n%
+.		\" then convert it to a 2-digit string
+.ie \\n%<10 .ds PS \\0\\n(PN
+.el .ds PS \\n(PN
+.		\" now output table-of-contents line for this heading
+.if \\n(N1>1 .tm .sp
+.ie \\n(N1<10 .tm \ \\n(N1.  \\$1 \a \\*(PS
+.el .tm \\n(N1.  \\$1 \a \\*(PS
+..
+.\"-----------------------------------------------------------------
+.	\" N2 - start numbered section heading, first level
+.de N2
+.nr I0 5
+.nr N2 +1
+.nr N3 0
+.ne 4
+.sp 2
+.in 0
+\\n(N1.\\n(N2.  \\$1
+.nr PN \\n%
+.ie \\n%<10 .ds PS \\0\\n(PN
+.el .ds PS \\n(PN
+.tm \ \ \ \ \\n(N1.\\n(N2.  \\$1 \a \\*(PS
+..
+.\"-----------------------------------------------------------------
+.	\" N3 - start numbered section heading, first level
+.de N3
+.nr I0 5
+.nr N3 +1
+.ne 4
+.sp 2
+.in 0
+\\n(N1.\\n(N2.\\n(N3.  \\$1
+.nr PN \\n%
+.ie \\n%<10 .ds PS \\0\\n(PN
+.el .ds PS \\n(PN
+.tm \ \ \ \ \ \ \ \ \ \\n(N1.\\n(N2.\\n(N3.  \\$1 \a \\*(PS
+..
+.\"-----------------------------------------------------------------
+.	\" DS - start display (no fill)
+.	\" Optional argument is interpreted as "ens".  Default is 4 ens.
+.de DS
+.KS
+.nf
+.ie \\n(.$==1 .nr DS \\$1
+.el .nr DS 4
+.in +\\n(DSn
+.sp
+..
+.\"-----------------------------------------------------------------
+.	\" DE - end display
+.de DE
+.in -\\n(DSn
+.KE
+.sp
+.fi
+..
+.\"-----------------------------------------------------------------
+.	\" IS - start display (no fill)
+.	\" Optional argument is interpreted as "ens".  Default is 4 ens.
+.de IS
+.\" KS	no keep-save for this one
+.nf
+.ie \\n(.$==1 .nr DS \\$1
+.el .nr DS 4
+.in +\\n(DSn
+.sp
+..
+.\"-----------------------------------------------------------------
+.	\" IE - end display
+.de IE
+.in -\\n(DSn
+.\" KE	no keep-save for this one
+.sp
+.fi
+..
+.\"-----------------------------------------------------------------

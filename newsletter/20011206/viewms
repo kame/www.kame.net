@@ -1,0 +1,4 @@
+#!/bin/sh
+
+make
+nroff -ms tmac.draft draft.ms | less -i
