@@ -1,0 +1,285 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link rel=stylesheet href="kame-newsletter.css" type="text/css">
+<title>
+How to use ISATAP on KAME
+</title>
+</head>
+<body>
+<h1> How to use ISATAP on KAME </h1>
+
+<p>
+<a href="http://www.kame.net/~suz/">SUZUKI, Shinsuke</a>
+at <a href="http://www.kame.net/">KAME Project</a>
+<pre>$Id: index.html,v 1.1 2004/12/01 05:11:28 suz Exp $</pre>
+</p>
+
+<ol>
+<li> <a href="#IPR">IPR status</a>
+<li> <a href="#intro">Introduction</a>
+<li> <a href="#requirements">What you need</a>
+<li> <a href="#host-config">What you have to do for ISATAP host</a>
+<li> <a href="#router-config">What you have to do for ISATAP router</a>
+<li> <a href="#confirmed-config">Confirmed configuration</a>
+<li> <a href="#xp">c.f.) how to enable ISATAP on Windows-XP</a>
+</ol>
+<HR>
+
+<ol>
+<a name="IPR">
+<h2><li>IPR status</h2>
+<p>SRI had been claimed an IPR for ISATAP, and due to that (esp. the vagueness of the license contract, and the lack of response from SRI's IPR contact person) KAME stopped the distribution of ISATAP implementation.</p>
+<!--<p>However, the contact person of this SRI's IPR responded us that no one using ISATAP no longer needs their license (IPR in IETF will be updated, but for the time being, <a href="isatap-mail.html">this mail</a> may be used as an evidense.).  Hence, KAME decided to revive ISATAP in KAME SNAP. </p>-->
+<p>However, we got a permission from SRI to distribute ISATAP.  Hence, KAME decided to revive ISATAP in KAME SNAP. </p>
+<a name="intro">
+<h2><li>Introduction</h2>
+<p>This document describes how to use ISATAP on KAME.</p>
+
+<p>ISATAP is an automatic tunneling technique especially suited for intranet.
+Its addressing architecture is a little bit different from 6to4, a well-known
+automatic tunneling technique;  In this mechanism, IPv4 address is embedded
+at the lower 32bit of IPv6 address, which enables the use of linklocal 
+unicast address like normal physical interfaces.
+</p>
+
+<pre>
+        ISATAP client---(IPv4 only internet/intranet)---ISATAP routers--(IPv6 Internet)----
+                         ==============================>
+                       1. RS to all the ISATAP routers
+                          by IPv4 unicast packet encapsulating IPv6 RS
+
+                         <==============================
+                       2. RA to the ISATAP client
+                          by an IPv4 unicast packet encapsulating IPv6 RA
+</pre>
+
+<p>KAME's ISATAP implementation is based on draft-ietf-ngtrans-isatap-08.txt,
+but can accept Router Solicitation from older draft implementations 
+(e.g. Windows-XP) using ff02::2 to solicit RA.</p>
+
+<hr>
+<a name="requirements">
+<li><h2>What you need</h2>
+<ul>
+<li> KAME-snap after Jan 13, 2003
+ <p>Due to a bug, ISATAP-ready rtsold does not work on KAME-SNAP between Apr 21, 2003 and Sep 1, 2003.  (Sorry...)</p>
+ <ul>
+ <li> kernel built with "pseudo-device stf 2" configuration (for ISATAP router/host)
+ <li> ifconfig in this package (for ISATAP router/host)
+ <li> rtadvd in this package (for ISATAP router)
+ <li> rtsold in this package (for ISATAP host)
+ </ul>
+<p>
+If you'd like to use the pure FreeBSD 4.8-RELEASE (not KAME), please apply <a href="freebsd48-isatap.diff">this patch</a> to the original FreeBSD.
+</p>
+
+<li> IPv4 address (for ISATAP router/host)
+ <ul>
+ <li> It may be a private address, if ISATAP router and host can communicate without NAT in between.
+</ul>
+
+<li> an /64 IPv6 non-linklocal prefix (only for ISATAP router)
+ <ul>
+ <li>it is distributed to ISATAP hosts by RA.
+ </ul>
+
+<li> External IPv6 connectivity (only for ISATAP router)
+ <ul>
+ <li>of course :-)
+ </ul>
+</ul>
+
+<table border=1 cellspacing=0>
+<tr>
+<th> </th>
+<th>ISATAP router </th>
+<th>ISATAP host </th>
+</tr>
+<tr>
+<td>KAME snap kernel </td>
+<td>x</td>
+<td>x</td>
+</tr>
+<td>KAME snap ifconfig</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>KAME snap rtadvd</td>
+<td>x</td>
+<td>-</td>
+</tr>
+<tr>
+<td>KAME snap rtsold</td>
+<td>-</td>
+<td>x</td>
+</tr>
+<tr>
+<td>IPv4 address</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>/64 IPv6 prefix</td>
+<td>x</td>
+<td>-</td>
+</tr>
+<tr>
+<td>External IPv6 connectivity</td>
+<td>x</td>
+<td>-</td>
+</tr>
+</table>
+
+<hr>
+<a name="host-config">
+<h2><li>What you have to do for ISATAP host</h2>
+<ol>
+<li> configure ISATAP linklocal address using your IPv4 address.
+<p>
+If you have 192.168.0.1, then use the following command.
+<blockquote>
+<pre>
+# ifconfig stf1 inet6 fe80::5efe:192.168.0.1 prefixlen 64
+</pre>
+</blockquote>
+</p>
+
+<li> define ISATAP router's IPv4 address.
+<p>
+If it's statically defined as "192.168.0.254", then use the following command to configure it.
+<blockquote>
+<pre>
+# ifconfig stf1 isataprtr 192.168.0.254
+</pre>
+</blockquote>
+</p>
+
+<p>
+If it's defined as "isatap.appropriate-domain", then execute the following <a href="update-isatap-rtrlist.sh">shell script</a> periodically (every 1 hour according to draft-ietf-ngtrans-isatap-08.txt) by cron or shell-script to dynamically update ISATAP router info.
+<blockquote>
+<pre>
+#!/bin/sh
+#user configuration
+domain=appropriate-domain
+prlname=isatap
+dig=/usr/local/bin/dig  # BIND9's dig
+ifconfig=/usr/local/v6/sbin/ifconfig     # KAME's ifconfig
+
+#internal variables; don't edit
+curprl=""
+oldprl=""
+newprl=""
+
+newprl=`${dig} +short +domain=$domain +search $prlname a | grep '^[0-9.]*$'`
+oldprl=`${ifconfig} stf1 | grep isataprtr | awk '{print $2}'`
+
+for r in $newprl; do
+# case 1. has already appeared in the new list (i.e. already exists
+#	  in the current list) -> do nothing
+        found=`echo "find-isataprrtr $curprl" | grep $r`
+	if [ "X$found" != X ]; then
+		continue;
+	fi
+
+# case 2. already exists in the old list -> update the old list
+        found=`echo "find-isataprrtr $oldprl" | grep $r`
+	if [ "X$found" != X ]; then
+		oldprl=`echo $oldprl | sed s/$r//`
+		continue;
+	fi
+
+# case 3. otherwise -> write down the new isataprtr and update
+#         the old list and the current list.
+	${ifconfig} stf1 isataprtr $r
+	curprl="$r $curprl"
+	oldprl=`echo $oldprl | sed s/$r//`
+	continue;
+done
+
+for r in $oldprl; do
+        ${ifconfig} stf1 deleteisataprtr $r
+done
+</pre>
+</blockquote>
+</p>
+
+<li> Solicite RA periodically.
+<pre>
+	# rtsold stf1
+</pre>
+Please take care that "rtsol" is not enough, because the obtained prefix
+will soon be expired since ISATAP router can only send solicited RAs.
+</ol>
+
+<a name="router-config">
+<h2><li>What you have to do for ISATAP router </h2>
+<ol>
+<li> configure a linklocal address on ISATAP interface using your IPv4 address.
+<pre>
+	# ifconfig stf1 inet6 fe80::5efe:192.168.0.254 prefixlen 64
+</pre>
+
+<li> configure one or multiple non-linklocal addresses as necessary.
+<br>
+please embed the same IPv4 address as linklocal address.
+<pre>
+	# ifconfig stf1 inet6 3ffe:ffff:ffff:ffff::5efe:192.168.0.254 prefixlen 64 alias
+</pre>
+
+<li> Advertise the non-linklocal prefixes by RA
+<pre>
+	# rtadvd stf1
+</pre>
+</ol>
+
+<hr>
+<a name="confirmed-config">
+<h2><li>What is confirmed </h2>
+
+The following configuration has been confirmed to be working.
+
+<ul>
+<li>ISATAP router=KAME-FreeBSD4, ISATAP host=Windows-XP
+<li>ISATAP router=KAME-FreeBSD4, ISATAP host=KAME-FreeBSD4
+<li>ISATAP router=KAME-FreeBSD4, ISATAP host=KAME-NetBSD
+<li>ISATAP router=KAME-FreeBSD4, ISATAP host=KAME-OpenBSD
+<li>ISATAP router=KAME-FreeBSD4, ISATAP host=Linux(USAGI)
+<li>ISATAP router=KAME-NetBSD, ISATAP host=KAME-FreeBSD4
+<li>ISATAP router=IX5003(NEC), ISATAP host=KAME-FreeBSD4
+</ul>
+</ol>
+
+<hr>
+<a name="xp">
+<h2><li>how to enable ISATAP on Windows-XP</h2>
+<ol>
+<li>
+<p> Register a DNS A-record "isatap" to your DNS server, so that you can ping(IPv4) to your ISATAP router using a hostname "isatap".
+</p>
+<p>
+     If it's impossible, please invoke the following command from cmd.exe console.
+<blockquote>
+<pre>
+	 c:\> netsh interface ipv6 isatap set router (ISATAP router's address)
+</pre>
+</blockquote>
+</p>
+<li>
+<p> That's all, if your ISATAP router is properly configured:-)  You can confirm it using the following command </p>
+<blockquote>
+<pre>
+	 c:\> ipconfig 
+	  ....
+	 Tunnel adapter Automatic Tunneling Pseudo-Interface:
+ 	 Connection-specific DNS Suffix . : (blank)
+	 IP Address . . . . . . . . . . . : fe80::5efe:x.x.x.x%2
+	 IP Address . . . . . . . . . . . : (some global prefix)::5efe:x.x.x.x
+	 Default Gateway  . . . . . . . . : fe80::5efe:y.y.y.y%2
+</pre>
+</blockquote>
+</ol>
+<hr>
+<address>suz@kame.net</address>
+</html>
