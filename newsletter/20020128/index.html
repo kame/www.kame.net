@@ -11,9 +11,9 @@
     <h2>Abstract</h2>
 
     <p>
-      This documents decsribes the step-by-step instruction to use
+      This document describes the step-by-step instruction to use
       KAME Mobile IPv6(KAME/MIP6) features.  Since KAME/MIP6 is still
-      under developping, these information may be outdated at the time
+      under developing, these information may be outdated at the time
       when you are reading this document (this document targets the
       kame-20020128-*-snap.tgz).  Please refer the latest
       documentation included in the KAME kit in such a case.
@@ -21,7 +21,7 @@
     <p>
       (NOTE: there is a bug in authentication data processing in
       kame-20020128-*-snap.tgz.  You should get the latest source from
-      the cvs repositry if you are using 20020128 snap and have a plan
+      the cvs repository if you are using 20020128 snap and have a plan
       to use the authentication data sub-option feature.)
     </p>
 
@@ -35,7 +35,7 @@
       Since each MIP6 code had its own advantage, we decided to try to
       merge them into one KAME/MIP6 code.  Now, some part/code/idea of
       the current KAME/MIP6 are from Ericsson, some from NEC and some
-      from SFC.  We are developping MIP6 code to support the latest
+      from SFC.  We are developing MIP6 code to support the latest
       MIP6 specification and trying to provide a stable, full featured
       MIP6 for KAME users.
     </p>
@@ -51,12 +51,12 @@
     <h2>Preparation</h2>
 
     <p>
-      KAME/MIP6 is under developping.  You should use the latest KAME
+      KAME/MIP6 is under developing.  You should use the latest KAME
       snap kit.  The latest is always the best to use.  Get the latest
       snap kit from <a href="http://www.kame.net/">the KAME Project
-      website</a> </p>
+      web site</a> </p>
 
-    <h2>Compile with MIP6 extention</h2>
+    <h2>Compile with MIP6 extension</h2>
     
     <p>
       MIP6 is not enabled by default.  You should prepare a new kernel
@@ -80,14 +80,14 @@ pseudo-device hif 1
     </pre>
     <p>
       If you specify <samp>MIP6_DEBUG</samp>, the kernel will print
-      many debuging messages.  Though it may be annoying you, it is
+      many debugging messages.  Though it may be annoying you, it is
       very useful when you encounter some problems.  These debug
-      messages can be enabled/disabed at run time using the
+      messages can be enabled/disabled at run time using the
       <samp>mip6control</samp> program.
     </p>
     <p>
       <samp>MIP6_ALLOW_COA_FALLBACK</samp> enables the CoA fallback
-      feature.  In the MIP6 specification, the author decleres that
+      feature.  In the MIP6 specification, the author declares that
       all IPv6 node must support the home address destination option.
       But, there are not so many implementations those support the
       option.  If the peer doesn't recognizes the home address
@@ -99,7 +99,7 @@ pseudo-device hif 1
       the next time to connect to the same peer.  Yes, I know that the
       former violates MIP6 specification and the latter prevents the
       mobile node from moving from one network to another network,
-      though, it is very useful in such a transision period that not
+      though, it is very useful in such a transition period that not
       all implementations support the home address destination option.
     </p>
     <p>
@@ -119,7 +119,7 @@ pseudo-device hif 1
       the last is <samp>had</samp>.  If you want to have a home agent,
       you must rebuild <samp>rtadvd</samp> with <samp>MIP6</samp>
       option and build <samp>had</samp>.  <samp>mip6control</samp> is
-      a controll command of KAME/MIP6 functions.  All users need to
+      a control command of KAME/MIP6 functions.  All users need to
       build <samp>mip6control</samp> to use KAME/MIP6.
     </p>
 
@@ -190,9 +190,9 @@ $ su (become the super user)
       address is calculated as follows.
     </p>
     <p>
-      If you have 64 bits length prefix, concatinated address of your
+      If you have 64 bits length prefix, concatenated address of your
       prefix and 0xfdfffffffffffffe is the home agent subnet anycast
-      addrss. If your prefix is not 64 bits, fill host part bits from
+      address. If your prefix is not 64 bits, fill host part bits from
       curving proper bits from the value
       0xfffffffffffffffffffffffffffffffe.  For example, if your prefix
       is 2001:200:1:2::/64, the home agent subnet anycast address is
@@ -283,14 +283,14 @@ fxp0:\
       Advertisement packets.  The easy way is to invoke
       <samp>rtsol</samp> command.  You may want to run
       <samp>rtsold</samp> with <samp>-a -m</samp> options to make the
-      node detect its location quicklly.
+      node detect its location quickly.
     </p>
 
     <h2>Setting up the security features</h2>
 
     <p>
       The KAME/MIP6 can protect the binding update/binding ack using a
-      security mechanism.  By defalt, the KAME/MIP6 uses the
+      security mechanism.  By default, the KAME/MIP6 uses the
       authentication sub-option defined in the
       draft-ietf-mobileip-ipv6-15 to protect them.  To protect them,
       you must set up the security associations between the nodes.
