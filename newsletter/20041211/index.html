@@ -10,7 +10,7 @@
 
 <div align="right">
 KAME Mobility development team<br>
-<pre>$Id: index.html,v 1.2 2004/12/21 06:37:31 t-momose Exp $</pre>
+<pre>$Id: index.html,v 1.3 2005/02/16 13:41:28 t-momose Exp $</pre>
 </div>
 
 <h2>Overview</h2>
@@ -170,16 +170,15 @@ This is a template for a home agent
 # These are the same as a traditional IPv6 router setting
 ipv6_enable="YES"
 ipv6_gateway_enable="YES"
-ipv6_network_interfaces="xx"
-ipv6_ifconfig_xx="xxxx"
-ipv6_default_router="xxxx"
+ipv6_network_interfaces="xxx"
+ipv6_ifconfig_xx="&lt;your home agent address&gt; prefixlen &lt;your home agent address prefix. normally 64&gt"
+ipv6_defaultrouter="xxxx"
 
 # For Home Agent
 ipv6_mobile_enable="YES"
 ipv6_mobile_nodetype="home_agent"
 ipv6_mobile_securtiy_enable="YES"
-
-ipv6_mobile_home_interfaces="xx"
+ipv6_mobile_home_interface="xx"
 </PRE></td></tr></table></blockquote>
 
 Here is a template for a mobile node.
