@@ -1,0 +1,117 @@
+Return-Path: <owner-core@kame.net>
+Received: from localhost (localhost [127.0.0.1])
+	by keiichi00.osaka.iij.ad.jp (8.12.9p2/8.12.9) with ESMTP id i4P5ZLu8030516
+	for <keiichi@localhost>; Tue, 25 May 2004 14:35:22 +0900 (JST)
+	(envelope-from owner-core@kame.net)
+Received: from pofs.iij.ad.jp [192.168.174.62]
+	by localhost with POP3 (fetchmail-6.2.5)
+	for keiichi@localhost (single-drop); Tue, 25 May 2004 14:35:22 +0900 (JST)
+Received: from otm-md.iij.ad.jp (otm-md.iij.ad.jp [192.168.176.37])
+	by pofs.iij.ad.jp (8.11.7/8.11.6) with ESMTP id i4P5Rrg18391
+	for <keiichi@pofs.iij.ad.jp>; Tue, 25 May 2004 14:27:53 +0900 (JST)
+Received: OTM-MD id i4P5Rrcu001009; Tue, 25 May 2004 14:27:53 +0900 (JST)
+Received: OTM-MIX0 id i4P5Rrlp008240; Tue, 25 May 2004 14:27:53 +0900 (JST)
+Received: from orange.kame.net (orange.kame.net [203.178.141.194])
+	by otm-mgi.iij.ad.jp (8.12.11/8.12.11) with ESMTP id i4P5Rr9r024856
+	for <keiichi@iij.ad.jp>; Tue, 25 May 2004 14:27:53 +0900 (JST)
+Received: by orange.kame.net (Postfix)
+	id 1D3AA356820; Tue, 25 May 2004 14:27:53 +0900 (JST)
+Delivered-To: core@kame.net
+Received: from omgo.iij.ad.jp (omgo.iij.ad.jp [202.232.30.157])
+	by orange.kame.net (Postfix) with ESMTP id EC08B35681E
+	for <core@kame.net>; Tue, 25 May 2004 14:27:52 +0900 (JST)
+Received: OMGO id i4P5RqxL006965; Tue, 25 May 2004 14:27:52 +0900 (JST)
+Received: OTM-MIX0 id i4P5RqwV008229; Tue, 25 May 2004 14:27:52 +0900 (JST)
+Received: JC-SMTP from localhost (jc-ssh.iij.ad.jp [192.168.174.22])
+	 for <core@kame.net> id i4P5RoXM006712; Tue, 25 May 2004 14:27:50 +0900 (JST)
+Date: Tue, 25 May 2004 14:25:18 +0900 (JST)
+Message-Id: <20040525.142518.148375701.kazu@iijlab.net>
+To: core@kame.net
+Subject: Re: IPR =?iso-2022-jp?B?GyRCSjhMTBsoQiAoGyRCJFUkISQkJEokaxsoQik=?=
+From: Kazu Yamamoto (=?iso-2022-jp?B?GyRCOzNLXE9CSScbKEI=?=) <kazu@iijlab.net>
+In-Reply-To: <20040525.142211.109795189.kazu@iijlab.net>
+References: <20040525.141312.108098709.kazu@iijlab.net>
+	<y7vr7t9ytep.wl@ocean.jinmei.org>
+	<20040525.142211.109795189.kazu@iijlab.net>
+X-Mailer: Mew version 4.0.65 on Emacs 21.3.50 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-2022-jp
+Content-Transfer-Encoding: 7bit
+X-Bogosity: No, tests=bogofilter, spamicity=0.500000, version=0.17.5
+
+For the 1st/2nd/3rd phases (Apr 1998 - Mar 2004), the KAME
+project had avoided implementing protocols which have
+intellectual property rights(IPR) restrictions.
+
+Our policy was that the KAME project implements only protocols which:
+	- have no IPR restrictions
+	- have IPR concerns, but are royalty-free
+	- do not require any license for anyone AND are free of charge
+          for usage
+
+In other words, the KAME project does not implement protocols which:
+	- require license for implementers or users, or
+	- are not free of charge for usage
+
+Here are reasons for this policy:
+
+	- Software that the KAME project provides is free of charge.
+          Thus, we cannot provide software which requires any payment.
+	- The KAME project does not have a legal body to get such
+          license when implementer is required to do so.
+	- The KAME project cannot take care of users if they are
+          required to get license.
+
+There are some protocols which we once implemented but removed after
+we noticed that they have IPR restrictions.
+
+Two opinions were raised for our policy:
+	- It is real waste to discard such implementations.
+	- The KAME project should not be conservative if a patent is
+          kinds of self defense.
+
+Therefore, for the 4th phase (Apr 2004 - Mar 2006), we decided to try
+negotiating with patent holders and finding a way to release our
+implementations without IPR restrictions.
+
+As of this writing, we notice that the following protocols have IPR 
+restrictions.  We try to resolve IPR problems according to priority.
+
+o TCP bug fixes (draft-ietf-tcpm-tcpsecure-00.txt)
+	Priority: extremely high
+	Implementation: done
+	(probably this is *BSD problem, not KAME problem)
+
+o Source Specific Multicast(SSM)
+	Priority: high
+	Implementation: done
+
+o Modular Exponential(MODP)
+	Priority: high
+	Implementation: done
+
+o Network Mobility(NEMO)
+	Priority: high
+	Implementation: not yet
+
+o Internet Key Exchange version 2(IKEv2)
+	Priority: high
+	Implementation: ongoing
+
+o Intra-Site Automatic Tunnel Addressing Protocol(ISATAP)
+	Priority: high
+	Implementation: done
+
+o Virtual Router Redundancy Protocol(VRRP)
+	Priority: medium
+	Implementation: done
+
+o SEcure Neighbor Discovery(SEND)
+	Priority: low
+	Implementation: not yet
+
+o NAT Traversal(NAT-T)/UDP-ENCAP
+	Priority: low
+	Implementation: not yet
+
+--かず
