@@ -1,0 +1,322 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>KAME Mobile IPv6 How To</title>
+  </head>
+
+  <body>
+    <h1>KAME Mobile IPv6 How To</h1>
+    <a href="mailto:keiichi@iij.ad.jp">Keiichi SHIMA</a> @ {<a href="http://www.kame.net/">KAME Project</a> | <a href="http://www.iij.ad.jp/index-e.html">Internet Initiative Japan</a>}
+
+    <h2>Abstract</h2>
+
+    <p>
+      This documents decsribes the step-by-step instruction to use KAME
+      Mobile IPv6(KAME/MIP6) features.  Since KAME/MIP6 is still under
+      developping, these information may be outdated at the time when
+      you are reading this document.  Please refer the latest
+      documentation included in the KAME kit in such a case.
+    </p>
+      
+    <h2>Supported Platforms</h2>
+
+    <p>
+      Currently, FreeBSD and NetBSD have been checked to work as a
+      home agent, a mobile node and a correspondent node.  Other BSDs
+      (OpenBSD and BSD/OS) have not been tested yet.
+    </p>
+
+    <h2>Preparation</h2>
+
+    <p>
+      KAME/MIP6 is under developping.  You should use the latest KAME
+      snap kit.  The latest is always the best to use.  Get the latest
+      snap kit from <a href="http://www.kame.net/">the KAME Project
+      website</a> </p>
+
+    <h2>Compile with MIP6 extention</h2>
+    
+    <p>
+      MIP6 is not enabled by default.  You should prepare a new kernel
+      configuration file and rebuild your kernel that is able to speak
+      the MIP6 protocol.  Also, some user-space commands need
+      recompilation.  Follow the instruction below.
+    </p>
+
+    <h3>recompile your kernel</h3>
+
+    <p>
+      To enable MIP6 features, specify following kernel options in
+      your kernel configuration file and recompile the kernel.
+    </p>
+    <pre>
+options MIP6
+options MIP6_DEBUG
+options MIP6_ALLOW_COA_FALLBACK
+# options MIP6_DRAFT13
+pseudo-device hif 1
+    </pre>
+    <p>
+      If you specify <samp>MIP6_DEBUG</samp>, the kernel will print
+      many debuging messages.  Though it may be annoying you, it is
+      very useful when you encounter some problems.  These debug
+      messages can be enabled/disabed at run time using the
+      <samp>mip6control</samp> program.
+    </p>
+    <p>
+      <samp>MIP6_ALLOW_COA_FALLBACK</samp> enables the CoA fallback
+      feature.  In the MIP6 specification, the author decleres that
+      all IPv6 node must support the home address destination option.
+      But, there are not so many implementations those support the
+      option.  If the peer doesn't recognizes the home address
+      destination option, the mobile node can't communicate with that
+      node.  If you specify <samp>MIP6_ALLOW_COA_FALLBACK</samp>, the
+      kernel will try to use its home address as a source address
+      <em>WITHOUT</em> the home address destination option.  If this
+      approach fails, the kernel will use CoA as its source address in
+      the next time to connect to the same peer.  Yes, I know that the
+      former violates MIP6 specification and the latter prevents the
+      mobile node from moving from one network to another network,
+      though, it is very useful in such a transision period that not
+      all implementations support the home address destination option.
+    </p>
+    <p>
+      If you want to use MIP6 which is compliant to
+      draft-ietf-mobileip-ipv6-13, <samp>MIP6_DRAFT13</samp> enables
+      this.  Note that, we are usually concentrated to the latest
+      draft.  The backward compatibility is not promised to be
+      available forever.  The rest of this document is for users who
+      are using draft-ietf-mobileip-ipv6-15, not 13.
+    </p>
+
+    <h3>Build user space commands</h3>
+
+    <p>
+      There are three user-space commands related to MIP6.  One is
+      <samp>rtadvd</samp> and the next is <samp>mip6control</samp> and
+      the last is <samp>had</samp>.  If you want to have a home agent,
+      you must rebuild <samp>rtadvd</samp> with <samp>MIP6</samp>
+      option and build <samp>had</samp>.  <samp>mip6control</samp> is
+      a controll command of KAME/MIP6 functions.  All users need to
+      build <samp>mip6control</samp> to use KAME/MIP6.
+    </p>
+
+    <h4>recompile <samp>rtadvd</samp></h4>
+    
+    <p>
+      Go to the directory of <samp>rtadvd</samp>
+      (<samp>${KAME}/freebsd4/sbin/rtadvd/</samp> for FreeBSD), add
+      the following line to <samp>Makefile</samp>
+    </p>
+    <pre>
+CFLAGS+=-DMIP6
+    </pre>
+    Recompile <samp>rtadvd</samp> and install it.
+    <pre>
+$ make clean
+$ make
+$ su (become the super user)
+# make install
+    </pre>
+
+    <h4>build <samp>had</samp></h4>
+
+    <p>
+      Currently, <samp>had</samp> is not automatically
+      built/installed.  Go to <samp>${KAME}/kame/kame/had/</samp> and
+      make it.
+    </p>
+    <pre>
+$ make
+$ su (become the super user)
+# make install
+    </pre>
+
+    <h4>build <samp>mip6control</samp></h4>
+
+    <p>
+      If you are using other operating system than FreeBSD, go to
+      <samp>${KAME}/kame/kame/mip6control/</samp> and just make.
+    </p>
+    <pre>
+$ make
+$ su (become the super user)
+# make install
+    </pre>
+    <p>
+      The latest KAME/FreeBSD4 will automatically compile
+      <samp>mip6control</samp> and install it to the proper directory.
+    </p>
+
+    <h2>Set up a home agent</h2>
+
+    <p>
+      To become a home agent, complete the following settings.
+    </p>
+    <ul>
+      <li>home agent subnet anycast address</li>
+      <li>prepare <samp>rtadvd.conf</samp> for a home agent</li>
+      <li>invoke <samp>rtadvd</samp> with <samp>-m</samp> flag
+      <li>invoke <samp>had</samp>
+    </ul>
+
+    <h3>Assign home agent subnet anycast address</h3>
+
+    <p>
+      Assigning a home agent subnet anycast address makes it possible
+      to do DHAAD (Dynamic Home Agent Address Discovery).  The anycast
+      address is calculated as follows.
+    </p>
+    <p>
+      If you have 64 bits length prefix, concatinated address of your
+      prefix and 0xfdfffffffffffffe is the home agent subnet anycast
+      addrss. If your prefix is not 64 bits, fill host part bits from
+      curving proper bits from the value
+      0xfffffffffffffffffffffffffffffffe.  For example, if your prefix
+      is 2001:200:1:2::/64, the home agent subnet anycast address is
+      2001:200:1:2:fdff:ffff:ffff:fffe.
+    </p>
+    <pre>
+# ifconfig fxp0 inet6 2001:200:1:2:fdff:ffff:ffff:fffe anycast alias
+    </pre>
+    <p>
+      This address must be configured before <samp>had</samp> is
+      invoked.
+    </p>
+
+    <h3>Prepare <samp>rtadvd.conf</samp> for a home agent</h3>
+
+    <p>
+      Here is the example of the <samp>rtadvd.conf</samp>.
+    </p>
+    <pre>
+fxp0:\
+        :maxinterval#60:mininterval#40:
+    </pre>
+    <p>
+      When <samp>rtadvd</samp> is invoked with <samp>-m</samp> switch,
+      it will automatically generate the proper router advertisement
+      for mobile use.  Basically, you need not to prepare
+      <samp>rtadvd.conf</samp>.  The above example is for users who
+      want to change the advertising interval from the default value.
+    </p>
+
+    <h3>Invoke <samp>rtadvd</samp></h3>
+    
+    <p>
+      Invoke <samp>rtadvd</samp> with <samp>-m</samp> option.  This
+      option enables MIP6 feature of rtadvd.  For example, if you have
+      a fxp0 interface,
+    </p>
+    <pre>
+# /usr/local/v6/sbin/rtadvd -m fxp0
+    </pre>
+
+    <h3>Invoke <samp>had</samp></h3>
+
+    <p>
+      Invoke <samp>had</samp> with the interface name that you want to
+      enable the DHAAD on.  Without <samp>had</samp> the DHAAD feature
+      will not work.
+    </p>
+    <pre>
+# /usr/local/v6/sbin/had fxp0
+    </pre>
+
+    <h2>Starting MIP6</h2>
+    
+    <h3>Starting a home agent</h3>
+
+    <p>
+      To start a home agent, invoke the following command.  Of course,
+      you must have finished the setting of the anycast address and
+      daemons described above.
+    </p>
+    <pre>
+# mip6control -g
+    </pre>
+    <p>
+    That's all.
+    </p>
+
+    <h3>Starting a mobile node</h3>
+    
+    <p>
+      To make a node as a mobile node, you must specify your home
+      network prefix.  To do this, invoke the following command.
+    </p>
+    <pre>
+# mip6control -H2001:200:1:1:: -P64 
+    </pre>
+    <p>
+      Replace '2001:200:1:1::' with your home prefix.  After prefix
+      setting has finished, enable mobile function using
+      <samp>-m</samp> option.
+    </p>
+    <pre>
+# mip6control -m
+    </pre>
+    <p>
+      To detect movement, a mobile node need to receive Router
+      Advertisement packets.  The easy way is to invoke
+      <samp>rtsol</samp> command.  You may want to run
+      <samp>rtsold</samp> with <samp>-a -m</samp> options to make the
+      node detect its location quicklly.
+    </p>
+
+    <h2>Setting up the security features</h2>
+
+    <p>
+      The KAME/MIP6 can protect the binding update/binding ack using a
+      security mechanism.  By defalt, the KAME/MIP6 uses the
+      authentication sub-option defined in the
+      draft-ietf-mobileip-ipv6-15 to protect them.  To protect them,
+      you must set up the security associations between the nodes.
+      Currently the KAME/MIP6 re-use the security association database
+      for the IPsec stack of the KAME.  So, you need to use
+      <samp>setkey</samp> program to set up the security associations.
+    </p>
+    <p>
+      For example, if you want to protect the binding update/ack
+      between the mobile node which address is A and the home agent
+      which address is B, set up the security association described
+      bellow:
+    </p>
+    <pre>
+add A B ah 1500 -m transport -A hmac-sha1 "AH SA configuration!";
+add B A ah 1600 -m transport -A hmac-sha1 "AH SA configuration!";
+    </pre>
+    <p>
+      Also, you must set up the security policy as follows:
+    </p>
+    <pre>
+spdadd ::/0[any] ::/0[any] ipv6-opts -P out ipsec ah/transport//require;
+    </pre>
+    <p>
+      If you don't want to protect them, you can disable this feature
+      using <samp>mip6control</samp> program.  To disable the
+      authentication data protection, type the following:
+    </p>
+    <pre>
+# mip6control -T 0
+    </pre>
+
+    <h2>To Do</h2>
+    <p>
+      There are many things to do.  Followings are some of them.  The
+      detailed items are described in <samp>TODO.mobile-ip6</samp> in
+      the top of the KAME directory.
+      <ul>
+      <li>Mobile Prefix Solicitation/Advertisement</li>
+      <li>Socket API</li>
+      </ul>
+    </p>
+
+    <hr>
+    <address><a href="mailto:keiichi@iij.ad.jp">Keiichi SHIMA</a></address>
+<!-- Created: Mon Nov 12 19:08:52 JST 2001 -->
+<!-- hhmts start -->
+Last modified: Mon Jan 28 18:35:36 JST 2002
+<!-- hhmts end -->
+  </body>
+</html>
