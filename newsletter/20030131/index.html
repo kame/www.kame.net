@@ -27,17 +27,6 @@
     </div>
 
     <div class="indent">
-      <h2>Attention</h2>
-
-      <p>
-        <font color="red">
-        This document is obsoleted.  Please find a newer version of
-	Howto document.
-	</font>
-      </p>
-    </div>
-
-    <div class="indent">
       <h2>Abstract</h2>
 
       <p>
@@ -226,24 +215,49 @@ $ su (become the super user)
       <pre class="source">
 mobile_node=2001:200:0:0:201:11ff:fe54:4fde
 home_agent=2001:200:0:0:201:11ff:fe54:5ffc
-spi_mn_to_ha=2000
-spi_ha_to_mn=2001
-algorithm=blowfish-cbc
-secret="THIS_IS_MY_SECRET!!!"
+transport_spi_mn_to_ha=2000
+transport_spi_ha_to_mn=2001
+transport_protocol=esp
+transport_algorithm=blowfish-cbc
+transport_secret="THIS_IS_MY_SECRET!!!"
+tunnel_spi_mn_to_ha=2002
+tunnel_spi_ha_to_mn=2003
+tunnel_uid_mn_to_ha=2002
+tunnel_uid_ha_to_mn=2003
+tunnel_algorithm=blowfish-cbc
+tunnel_secret="THIS_IS_MY_SECRET!!!"
       </pre>
 
       <p>
         <samp class="source">mobile_node</samp> is an address of a
 	mobile node.  <samp class="source">home_agent</samp> is an
-	address of a home agent.  <samp
-	class="source">spi_mn_to_ha</samp> is a SPI value from the
+	address of a home agent.
+      </p>
+      <p>
+        <samp class="source">transport_spi_mn_to_ha</samp> is a SPI
+	value of a SA to protect home registration packets from the
 	mobile node to the home agent. <samp
-	class="source">spi_ha_to_mn</samp> is a SPI value of the
-	reverse direction. <samp class="source">algorithm</samp> is a
-	name of the algorithm used by the IPsec stack.  <samp
-	class="source">secret</samp> is a key for the algorithm
-	specified by the <samp class="source">algorithm</samp>
-	paremeter.
+	class="source">transport_spi_ha_to_mn</samp> is the reverse.
+	<samp class="source">transport_protocol</samp> is a protocol
+	name to protect home registration packets. You can specify
+	either <samp class="source">ah</samp> or <samp
+	class="source">esp</samp>. <samp
+	class="source">transport_algorithm</samp> is a name of the
+	algorithm used to protect home registration.  <samp
+	class="source">transport_secret</samp> is a key for the
+	algorithm specified by the <samp
+	class="source">transport_algorithm</samp> paremeter.
+      </p>
+      <p>
+        The lines which start with <samp class="source">tunnel_</samp>
+        are the parameters for RR (Return Routability) signaling
+        packets.  The protocol is fixed to ESP.  You cannot change
+        this.  As you have done in the above setting, specify the SPIs
+        and the algorithm and the secret to protect signaling
+        packets. In addition, you must specify <samp
+        class="source">tunnel_uid_mn_to_ha</samp> and <samp
+        class="source">tunnel_uid_ha_to_mn</samp>. They are used as
+        unique identifiers to specify SAs for RR signaling.
       </p>
 
       <p>
