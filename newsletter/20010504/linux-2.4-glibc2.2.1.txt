@@ -1,0 +1,42 @@
+starting tests, socktype = SOCK_DGRAM
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	x	x	x	?2	x	?2	x
+wild6:	x	x	x	x	?2	x	?2	x
+loop4:	x	x	x	o	?2	x	?2	o
+loop6:	x	x	o	x	?2	o	?2	o
+wildm:	?1	?1	?1	?1	?1	?1	?1	?1
+loopm:	x	x	x	o	?2	x	?2	o
+onem:	?1	?1	?1	?1	?1	?1	?1	?1
+one4:	x	x	o	o	?2	o	?2	x
+starting tests, socktype = SOCK_DGRAM, SO_REUSEADDR
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	o	o	o	o	?2	o	?2	o
+wild6:	o	o	o	o	?2	o	?2	o
+loop4:	o	o	o	o	?2	o	?2	o
+loop6:	o	o	o	o	?2	o	?2	o
+wildm:	?1	?1	?1	?1	?1	?1	?1	?1
+loopm:	o	o	o	o	?2	o	?2	o
+onem:	?1	?1	?1	?1	?1	?1	?1	?1
+one4:	o	o	o	o	?2	o	?2	o
+starting tests, socktype = SOCK_STREAM
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	x	x	x	?2	x	?2	x
+wild6:	x	x	x	x	?2	x	?2	x
+loop4:	x	x	x	o	?2	x	?2	o
+loop6:	x	x	o	x	?2	o	?2	o
+wildm:	?1	?1	?1	?1	?1	?1	?1	?1
+loopm:	x	x	x	o	?2	x	?2	o
+onem:	?1	?1	?1	?1	?1	?1	?1	?1
+one4:	x	x	o	o	?2	o	?2	x
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	o	o	o	o	?2	o	?2	o
+wild6:	o	o	o	o	?2	o	?2	o
+loop4:	o	o	o	o	?2	o	?2	o
+loop6:	o	o	o	o	?2	o	?2	o
+wildm:	?1	?1	?1	?1	?1	?1	?1	?1
+loopm:	o	o	o	o	?2	o	?2	o
+onem:	?1	?1	?1	?1	?1	?1	?1	?1
+one4:	o	o	o	o	?2	o	?2	o
+
+Linux delenn.venaas.no 2.4.1 #1 Sun Feb 4 13:32:33 MET 2001 i686 unknown
