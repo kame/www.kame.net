@@ -1,0 +1,805 @@
+# This is a shell archive.  Save it in a file, remove anything before
+# this line, and then unpack it by entering "sh file".  Note, it may
+# create directories; files and directories will be owned by you and
+# have default permissions.
+#
+# This archive contains:
+#
+#	./CVS/Entries
+#	./CVS/Repository
+#	./CVS/Root
+#	./DESCR
+#	./distinfo
+#	./files/CVS/Entries
+#	./files/CVS/Repository
+#	./files/CVS/Root
+#	./files/sshd.sh
+#	./Makefile
+#	./MESSAGE
+#	./MESSAGE.pam
+#	./MESSAGE.urandom
+#	./patches/CVS/Entries
+#	./patches/CVS/Repository
+#	./patches/CVS/Root
+#	./patches/patch-aa
+#	./patches/patch-ab
+#	./patches/patch-ac
+#	./patches/patch-ah
+#	./PLIST
+#	./PLIST.pam
+#	./PLIST.prng
+#	./README.html
+#
+echo x - ./CVS/Entries
+sed 's/^X//' >./CVS/Entries << 'END-of-./CVS/Entries'
+XD/files////
+XD/patches////
+X/DESCR/1.1/Thu Nov  1 01:17:04 2001//
+X/MESSAGE/1.3/Tue Feb  5 15:27:04 2002//
+X/MESSAGE.pam/1.1/Tue Feb  5 04:17:31 2002//
+X/MESSAGE.urandom/1.1/Tue Feb  5 04:17:31 2002//
+X/PLIST/1.2/Tue Feb  5 15:27:05 2002//
+X/PLIST.pam/1.1/Tue Feb  5 04:17:32 2002//
+X/PLIST.prng/1.1/Tue Feb  5 04:17:32 2002//
+X/Makefile/1.64/Tue Mar 12 14:56:43 2002//
+X/distinfo/1.13/Thu Mar 14 14:26:56 2002//
+END-of-./CVS/Entries
+echo x - ./CVS/Repository
+sed 's/^X//' >./CVS/Repository << 'END-of-./CVS/Repository'
+X/cvsroot/pkgsrc/security/openssh
+END-of-./CVS/Repository
+echo x - ./CVS/Root
+sed 's/^X//' >./CVS/Root << 'END-of-./CVS/Root'
+Xanoncvs@anoncvs.netbsd.org:/cvsroot
+END-of-./CVS/Root
+echo x - ./DESCR
+sed 's/^X//' >./DESCR << 'END-of-./DESCR'
+XOpenSSH is based on the last free version of Tatu Ylonen's SSH with
+Xall patent-encumbered algorithms removed (to external libraries), all
+Xknown security bugs fixed, new features reintroduced and many other
+Xclean-ups. More information about SSH itself can be found in the file
+XREADME.Ylonen. OpenSSH has been created by Aaron Campbell, Bob Beck,
+XMarkus Friedl, Niels Provos, Theo de Raadt, and Dug Song.
+X
+XThis port consists of the re-introduction of autoconf support, PAM
+Xsupport (for Linux and Solaris), EGD[1] support, SOCKS support (using
+Xthe Dante [6] libraries and replacements for OpenBSD library functions
+Xthat are (regrettably) absent from other unices. This port has been
+Xbest tested on Linux, Solaris, HPUX, NetBSD and Irix. Support for AIX,
+XSCO, NeXT and other Unices is underway. This version actively tracks
+Xchanges in the OpenBSD CVS repository.
+END-of-./DESCR
+echo x - ./distinfo
+sed 's/^X//' >./distinfo << 'END-of-./distinfo'
+X$NetBSD: distinfo,v 1.13 2002/03/14 13:07:32 wiz Exp $
+X
+XSHA1 (openssh-3.0.2p1.tar.gz) = c9a7e02936ace163ea58ec42e8e3f95df27fef2a
+XSize (openssh-3.0.2p1.tar.gz) = 781092 bytes
+XSHA1 (patch-aa) = de7c94edf55cafa779010742b71daa8729d0e112
+XSHA1 (patch-ab) = 8b939ec37bb1ef27eddbdda27d23a5be87c18f5a
+XSHA1 (patch-ac) = e151977f95723c9bdc48dea5e313b89361b5b515
+XSHA1 (patch-ah) = aaeef9d5aff2c8b0b3bc910efb3a508e7da538af
+END-of-./distinfo
+echo x - ./files/CVS/Entries
+sed 's/^X//' >./files/CVS/Entries << 'END-of-./files/CVS/Entries'
+X/sshd.sh/1.7/Tue Feb  5 15:27:07 2002//
+XD
+END-of-./files/CVS/Entries
+echo x - ./files/CVS/Repository
+sed 's/^X//' >./files/CVS/Repository << 'END-of-./files/CVS/Repository'
+X/cvsroot/pkgsrc/security/openssh/files
+END-of-./files/CVS/Repository
+echo x - ./files/CVS/Root
+sed 's/^X//' >./files/CVS/Root << 'END-of-./files/CVS/Root'
+Xanoncvs@anoncvs.netbsd.org:/cvsroot
+END-of-./files/CVS/Root
+echo x - ./files/sshd.sh
+sed 's/^X//' >./files/sshd.sh << 'END-of-./files/sshd.sh'
+X#!/bin/sh
+X#
+X# $NetBSD: sshd.sh,v 1.7 2002/02/05 04:17:32 jlam Exp $
+X#
+X# PROVIDE: sshd
+X# REQUIRE: DAEMON LOGIN
+X
+Xif [ -f /etc/rc.subr ]
+Xthen
+X	. /etc/rc.subr
+Xfi
+X
+Xname="sshd"
+Xrcvar=$name
+Xcommand="@PREFIX@/sbin/${name}"
+Xkeygen_command="@PREFIX@/bin/ssh-keygen"
+Xpidfile="@SSH_PID_DIR@/${name}.pid"
+Xrequired_files="@PKG_SYSCONFDIR@/sshd_config"
+Xextra_commands="keygen reload"
+X
+Xsshd_keygen()
+X{
+X	(
+X	umask 022
+X	if [ -f @PKG_SYSCONFDIR@/ssh_host_key ]; then
+X		@ECHO@ "You already have an RSA host key in @PKG_SYSCONFDIR@/ssh_host_key"
+X		@ECHO@ "Skipping protocol version 1 RSA Key Generation"
+X	else
+X		${keygen_command} -t rsa1 -b 1024 -f @PKG_SYSCONFDIR@/ssh_host_key -N ''
+X	fi
+X
+X	if [ -f @PKG_SYSCONFDIR@/ssh_host_dsa_key ]; then
+X		@ECHO@ "You already have a DSA host key in @PKG_SYSCONFDIR@/ssh_host_dsa_key"
+X		@ECHO@ "Skipping protocol version 2 DSA Key Generation"
+X	else
+X		${keygen_command} -t dsa -f @PKG_SYSCONFDIR@/ssh_host_dsa_key -N ''
+X	fi
+X
+X	if [ -f @PKG_SYSCONFDIR@/ssh_host_rsa_key ]; then
+X		@ECHO@ "You already have a RSA host key in @PKG_SYSCONFDIR@/ssh_host_rsa_key"
+X		@ECHO@ "Skipping protocol version 2 RSA Key Generation"
+X	else
+X		${keygen_command} -t rsa -f @PKG_SYSCONFDIR@/ssh_host_rsa_key -N ''
+X	fi
+X	)
+X}
+X
+Xsshd_precmd()
+X{
+X	if [ ! -f @PKG_SYSCONFDIR@/ssh_host_key -o \
+X	     ! -f @PKG_SYSCONFDIR@/ssh_host_dsa_key -o \
+X	     ! -f @PKG_SYSCONFDIR@/ssh_host_rsa_key ]; then
+X		$0 keygen
+X	fi
+X}
+X
+Xkeygen_cmd=sshd_keygen
+Xstart_precmd=sshd_precmd
+X
+Xif [ -f /etc/rc.subr ]
+Xthen
+X	load_rc_config $name
+X	run_rc_command "$1"
+Xelse
+X	case ${1:-start} in
+X	start)
+X		if [ -x ${command} -a -f ${required_files} ]
+X		then
+X			@ECHO@ "Starting ${name}."
+X			eval ${start_precmd}
+X			eval ${command} ${sshd_flags} ${command_args}
+X		fi
+X		;;
+X	stop)
+X		if [ -f ${pidfile} ]; then
+X			pid=`@HEAD@ -1 ${pidfile}`
+X			@ECHO@ "Stopping ${name}."
+X			kill -TERM ${pid}
+X		else
+X			@ECHO@ "${name} not running?"
+X		fi
+X		;;
+X	restart)
+X		( $0 stop )
+X		sleep 1
+X		$0 start
+X		;;
+X	status)
+X		if [ -f ${pidfile} ]; then
+X			pid=`@HEAD@ -1 ${pidfile}`
+X			@ECHO@ "${name} is running as pid ${pid}."
+X		else
+X			@ECHO@ "${name} is not running."
+X		fi
+X		;;
+X	esac
+Xfi
+END-of-./files/sshd.sh
+echo x - ./Makefile
+sed 's/^X//' >./Makefile << 'END-of-./Makefile'
+X# $NetBSD: Makefile,v 1.64 2002/03/12 06:23:07 itojun Exp $
+X
+XDISTNAME=		openssh-3.0.2p1
+XPKGNAME=		openssh-3.0.2.1
+XSVR4_PKGNAME=		ossh
+XPKGREVISION=		2
+XCATEGORIES=		security
+XMASTER_SITES=		ftp://gd.tuwien.ac.at/OpenBSD/OpenSSH/portable/ \
+X			ftp://ftp.openssh.com/pub/OpenBSD/OpenSSH/portable/ \
+X			ftp://ftp.openssh.com/pub/OpenBSD/OpenSSH/portable/old/
+X# Don't delete the last entry -- it's there if the pkgsrc version is not
+X# up-to-date and the mirrors already removed the old distfile.
+X
+XMAINTAINER=		packages@netbsd.org
+XHOMEPAGE=		http://www.openssh.com/
+XCOMMENT=		Open Source Secure shell client and server (remote login program)
+X
+XCONFLICTS=		sftp-[0-9]*
+XCONFLICTS+=		ssh-[0-9]* ssh6-[0-9]*
+X
+X#BUILD_DEPENDS+=		perl>=${PERL5_REQD}:../../lang/perl5
+X
+XCRYPTO=			yes
+X
+X# retain the following line, for IPv6-ready pkgsrc webpage 
+XBUILD_DEFS+=		USE_INET6
+X#BUILD_DEFS+=		KERBEROS
+XBUILD_DEFS+=		PKG_SYSCONFDIR
+XBUILD_DEFS+=		SSH_SUID
+X
+X.include "../../mk/bsd.prefs.mk"
+X
+XINSTALL_TARGET=		install-nokeys
+XPLIST_SRC=		# empty
+XMESSAGE_SRC=		${.CURDIR}/MESSAGE
+X
+XSSH_PID_DIR=		/var/run	# default directory for PID files
+XSSH_PID_DIR.SunOS=	/etc		# Solaris doesn't have a /var/run
+X
+X.if defined(SSH_PID_DIR.${OPSYS})
+XSSH_PID_DIR=		${SSH_PID_DIR.${OPSYS}}
+X.endif
+X
+XUSE_BUILDLINK_ONLY=	yes
+XGNU_CONFIGURE=		yes
+XCONFIGURE_ARGS+=	--sysconfdir=${PKG_SYSCONFDIR}
+XCONFIGURE_ARGS+=	--with-pid-dir=${SSH_PID_DIR}
+X#CONFIGURE_ARGS+=	--with-ssl-dir=${BUILDLINK_DIR}
+X#CONFIGURE_ARGS+=	--with-tcp-wrappers=${BUILDLINK_DIR}
+X
+X# XXX: PAM authentication causes memory faults, and I haven't tracked down
+X# XXX: why yet.  For the moment, disable PAM authentication.
+X#
+X#.if defined(USE_PAM)
+X#.include "../../security/PAM/buildlink.mk"
+X#CONFIGURE_ARGS+=	--with-pam
+X#PLIST_SRC+=		${.CURDIR}/PLIST.pam
+X#MESSAGE_SRC+=		${.CURDIR}/MESSAGE.pam
+X#.endif
+X
+X# XXX: we have 4 args (4: sslen) to skeychallenge instead of 3
+X#.if ${OPSYS} == "NetBSD"
+X#CONFIGURE_ARGS+=	--with-skey=/usr
+X#.endif
+X
+X.if ${OPSYS} == "Darwin"
+XBUILD_DEPENDS+=		bind>=8.3:../../net/bind8
+XCONFIGURE_ARGS+=	--with-cflags=-I${PREFIX}/lib/bind --with-ldflags=-L${PREFIX}/lib --with-libs=-lbind 
+X.endif
+X
+X# XXX: <krb.h>
+X#.if defined(KERBEROS)
+X#USE_KERBEROS=		yes
+X#CONFIGURE_ARGS+=	--with-kerberos4=/usr
+X#.endif
+X
+X# Don't install "ssh" setuid
+X.if !defined(SSH_SUID) || ${SSH_SUID} != YES
+XCONFIGURE_ARGS+=	--disable-suid-ssh
+X.endif
+X
+X# The ssh-askpass program is in ${X11BASE}/bin or ${X11PREFIX}/bin depending
+X# on if it's part of the X11 distribution, or if it's installed from pkgsrc
+X# (security/ssh-askpass).
+X#
+X.if exists(${X11BASE}/bin/ssh-askpass)
+XASKPASS_PROGRAM=	${X11BASE}/bin/ssh-askpass
+X.else
+XASKPASS_PROGRAM=	${X11PREFIX}/bin/ssh-askpass
+X.endif
+XCONFIGURE_ENV+=		ASKPASS_PROGRAM=${ASKPASS_PROGRAM}
+XMAKE_ENV+=		ASKPASS_PROGRAM=${ASKPASS_PROGRAM}
+X
+XCONFS=			ssh_config sshd_config
+XSUPPS=			moduli
+X
+X.if exists(/dev/urandom)
+XMESSAGE_SRC+=		${.CURDIR}/MESSAGE.urandom
+X.else
+XCONFIGURE_ARGS+=	--without-random
+XCONFS+=			ssh_prng_cmds
+XPLIST_SRC+=		${.CURDIR}/PLIST.prng
+X.endif
+X
+XEGDIR=			${PREFIX}/share/examples/${PKGBASE}
+XCONF_FILES=		# empty
+X.for FILE in ${CONFS}
+XCONF_FILES+=		${EGDIR}/${FILE} ${PKG_SYSCONFDIR}/${FILE}
+X.endfor
+XSUPPORT_FILES=		# empty
+X.for FILE in ${SUPPS}
+XSUPPORT_FILES+=		${EGDIR}/${FILE} ${PKG_SYSCONFDIR}/${FILE}
+X.endfor
+XRCD_SCRIPTS=		sshd
+X
+XPLIST_SRC+=		${.CURDIR}/PLIST
+XFILES_SUBST+=		SSH_PID_DIR=${SSH_PID_DIR}
+XMESSAGE_SUBST+=		EGDIR=${EGDIR}
+X
+Xpost-build:
+X	@${SED} ${FILES_SUBST_SED} ${FILESDIR}/sshd.sh > ${WRKDIR}/sshd
+X
+Xpost-install:
+X	${INSTALL_DATA_DIR} ${EGDIR}
+X	cd ${WRKSRC}; for file in ${CONFS} ${SUPPS}; do			\
+X		${INSTALL_DATA} $${file}.out ${EGDIR}/$${file};		\
+X	done
+X#.if defined(USE_PAM)
+X#	${INSTALL_DATA} ${WRKSRC}/contrib/sshd.pam.freebsd ${EGDIR}/sshd.pam
+X#.endif
+X	${INSTALL_SCRIPT} ${WRKDIR}/sshd ${PREFIX}/etc/rc.d/sshd
+X
+X.include "../../devel/zlib/buildlink.mk"
+X#.include "../../security/openssl/buildlink.mk"
+X#.include "../../security/tcp_wrappers/buildlink.mk"
+X.include "../../mk/bsd.pkg.install.mk"
+X.include "../../mk/bsd.pkg.mk"
+END-of-./Makefile
+echo x - ./MESSAGE
+sed 's/^X//' >./MESSAGE << 'END-of-./MESSAGE'
+X==========================================================================
+X$NetBSD: MESSAGE,v 1.3 2002/02/05 04:17:31 jlam Exp $
+X
+X                           *===* NOTICE *===*
+X
+XThe config files for ${PKGNAME} must be located in:
+X
+X	${PKG_SYSCONFDIR}
+X
+Xand the example files are located in ${EGDIR}.
+X==========================================================================
+END-of-./MESSAGE
+echo x - ./MESSAGE.pam
+sed 's/^X//' >./MESSAGE.pam << 'END-of-./MESSAGE.pam'
+X==========================================================================
+X$NetBSD: MESSAGE.pam,v 1.1 2002/02/05 04:17:31 jlam Exp $
+X
+XTo authenticate for SSH using PAM, add the contents of the file:
+X
+X	${EGDIR}/sshd.pam
+X
+Xto your PAM configuration file.
+X==========================================================================
+END-of-./MESSAGE.pam
+echo x - ./MESSAGE.urandom
+sed 's/^X//' >./MESSAGE.urandom << 'END-of-./MESSAGE.urandom'
+X===========================================================================
+X$NetBSD: MESSAGE.urandom,v 1.1 2002/02/05 04:17:31 jlam Exp $
+X
+XYou will need a working /dev/urandom.  Please make sure you have a kernel
+Xcompiled from a config file containing the line:
+X
+X	pseudo-device	rnd
+X===========================================================================
+END-of-./MESSAGE.urandom
+echo x - ./patches/CVS/Entries
+sed 's/^X//' >./patches/CVS/Entries << 'END-of-./patches/CVS/Entries'
+X/patch-ab/1.7/Tue Feb  5 15:27:09 2002//
+X/patch-ah/1.16/Tue Feb  5 15:27:09 2002//
+X/patch-ac/1.5/Thu Mar  7 16:45:36 2002//
+X/patch-aa/1.20/Thu Mar 14 14:26:56 2002//
+XD
+END-of-./patches/CVS/Entries
+echo x - ./patches/CVS/Repository
+sed 's/^X//' >./patches/CVS/Repository << 'END-of-./patches/CVS/Repository'
+X/cvsroot/pkgsrc/security/openssh/patches
+END-of-./patches/CVS/Repository
+echo x - ./patches/CVS/Root
+sed 's/^X//' >./patches/CVS/Root << 'END-of-./patches/CVS/Root'
+Xanoncvs@anoncvs.netbsd.org:/cvsroot
+END-of-./patches/CVS/Root
+echo x - ./patches/patch-aa
+sed 's/^X//' >./patches/patch-aa << 'END-of-./patches/patch-aa'
+X$NetBSD$
+X
+X--- configure.orig	Sat Dec  1 15:38:55 2001
+X+++ configure	Sat Mar 23 00:20:04 2002
+X@@ -3314,10 +3314,6 @@
+X 
+X 	;;
+X *-*-darwin*)
+X-	cat >>confdefs.h <<\_ACEOF
+X-#define BROKEN_GETADDRINFO 1
+X-_ACEOF
+X-
+X 	;;
+X *-*-hpux10*)
+X 	if test -z "$GCC"; then
+X@@ -3587,8 +3583,6 @@
+X 	CFLAGS="$CFLAGS"
+X 	;;
+X *-*-solaris*)
+X-	CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+X-	LDFLAGS="$LDFLAGS -L/usr/local/lib -R/usr/local/lib"
+X 	need_dash_r=1
+X 	cat >>confdefs.h <<\_ACEOF
+X #define PAM_SUN_CODEBASE 1
+X@@ -4051,6 +4045,9 @@
+X 	;;
+X esac
+X 
+X+# pkgsrc handles any rpath settings this package needs
+X+need_dash_r=
+X+
+X # Allow user to specify flags
+X 
+X # Check whether --with-cflags or --without-cflags was given.
+X@@ -6252,6 +6249,8 @@
+X #line 6252 "configure"
+X #include "confdefs.h"
+X 
+X+#include <sys/cdefs.h>
+X+#include <stdio.h>
+X #include <tcpd.h>
+X 					int deny_severity = 0, allow_severity = 0;
+X 
+X@@ -6289,17 +6288,20 @@
+X _ACEOF
+X 
+X 					TCPW_MSG="yes"
+X+					TCPW_LIB="-lwrap"
+X 
+X else
+X   echo "$as_me: failed program was:" >&5
+X cat conftest.$ac_ext >&5
+X 
+X+					TCPW_LIB=""
+X 					{ { echo "$as_me:6297: error: *** libwrap missing" >&5
+X echo "$as_me: error: *** libwrap missing" >&2;}
+X    { (exit 1); exit 1; }; }
+X 
+X fi
+X rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+X+			LIBS="$saved_LIBS"
+X 		fi
+X 
+X fi;
+X@@ -15590,6 +15592,7 @@
+X s,@TEST_MINUS_S_SH@,$TEST_MINUS_S_SH,;t t
+X s,@LOGIN_PROGRAM_FALLBACK@,$LOGIN_PROGRAM_FALLBACK,;t t
+X s,@LD@,$LD,;t t
+X+s,@TCPW_LIB@,$TCPW_LIB,;t t
+X s,@NO_SFTP@,$NO_SFTP,;t t
+X s,@rsh_path@,$rsh_path,;t t
+X s,@xauth_path@,$xauth_path,;t t
+X@@ -16069,7 +16072,7 @@
+X echo "                 User binaries: $B"
+X echo "               System binaries: $C"
+X echo "           Configuration files: $D"
+X-echo "               Askpass program: $E"
+X+echo "               Askpass program: ${ASKPASS_PROGRAM}"
+X echo "                  Manual pages: $F"
+X echo "                      PID file: $G"
+X echo "        sshd default user PATH: $H"
+END-of-./patches/patch-aa
+echo x - ./patches/patch-ab
+sed 's/^X//' >./patches/patch-ab << 'END-of-./patches/patch-ab'
+X$NetBSD$
+X
+X--- configure.ac.orig	Sat Nov  3 11:09:33 2001
+X+++ configure.ac	Sat Mar 23 00:20:08 2002
+X@@ -77,7 +77,6 @@
+X 	AC_DEFINE(IP_TOS_IS_BROKEN)
+X 	;;
+X *-*-darwin*)
+X-	AC_DEFINE(BROKEN_GETADDRINFO)
+X 	;;
+X *-*-hpux10*)
+X 	if test -z "$GCC"; then
+X@@ -150,8 +149,6 @@
+X 	CFLAGS="$CFLAGS"
+X 	;;
+X *-*-solaris*)
+X-	CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+X-	LDFLAGS="$LDFLAGS -L/usr/local/lib -R/usr/local/lib" 
+X 	need_dash_r=1
+X 	AC_DEFINE(PAM_SUN_CODEBASE)
+X 	AC_DEFINE(LOGIN_NEEDS_UTMPX)
+X@@ -283,6 +280,9 @@
+X 	;;
+X esac
+X 
+X+# pkgsrc handles any rpath settings this package needs
+X+need_dash_r=
+X+
+X # Allow user to specify flags
+X AC_ARG_WITH(cflags,
+X 	[  --with-cflags           Specify additional flags to pass to compiler],
+X@@ -550,6 +550,8 @@
+X 			AC_MSG_CHECKING(for libwrap)
+X 			AC_TRY_LINK(
+X 				[
+X+#include <sys/cdefs.h>
+X+#include <stdio.h>
+X #include <tcpd.h>
+X 					int deny_severity = 0, allow_severity = 0;
+X 				],
+X@@ -558,14 +560,18 @@
+X 					AC_MSG_RESULT(yes)
+X 					AC_DEFINE(LIBWRAP)
+X 					TCPW_MSG="yes"
+X+					TCPW_LIB="-lwrap"
+X 				],
+X 				[
+X+					TCPW_LIB=""
+X 					AC_MSG_ERROR([*** libwrap missing])
+X 				]
+X 			)
+X+			LIBS="$saved_LIBS"
+X 		fi
+X 	]
+X )
+X+AC_SUBST(TCPW_LIB)
+X 
+X dnl    Checks for library functions.
+X AC_CHECK_FUNCS(arc4random atexit b64_ntop bcopy bindresvport_sa \
+X@@ -2194,7 +2200,7 @@
+X echo "                 User binaries: $B"
+X echo "               System binaries: $C"
+X echo "           Configuration files: $D"
+X-echo "               Askpass program: $E"
+X+echo "               Askpass program: ${ASKPASS_PROGRAM}"
+X echo "                  Manual pages: $F"
+X echo "                      PID file: $G"
+X echo "        sshd default user PATH: $H"
+END-of-./patches/patch-ab
+echo x - ./patches/patch-ac
+sed 's/^X//' >./patches/patch-ac << 'END-of-./patches/patch-ac'
+X$NetBSD: patch-ac,v 1.5 2002/03/07 16:45:36 tron Exp $
+X
+X--- channels.c.orig	Fri Oct 12 03:35:05 2001
+X+++ channels.c	Thu Mar  7 17:34:38 2002
+X@@ -145,7 +145,7 @@
+X {
+X 	Channel *c;
+X 
+X-	if (id < 0 || id > channels_alloc) {
+X+	if (id < 0 || id >= channels_alloc) {
+X 		log("channel_lookup: %d: bad id", id);
+X 		return NULL;
+X 	}
+END-of-./patches/patch-ac
+echo x - ./patches/patch-ah
+sed 's/^X//' >./patches/patch-ah << 'END-of-./patches/patch-ah'
+X$NetBSD$
+X
+X--- Makefile.in.orig	Sun Nov 11 15:34:23 2001
+X+++ Makefile.in	Sat Mar 23 00:19:08 2002
+X@@ -16,7 +16,7 @@
+X DESTDIR=
+X VPATH=@srcdir@
+X SSH_PROGRAM=@bindir@/ssh
+X-ASKPASS_PROGRAM=$(libexecdir)/ssh-askpass
+X+#ASKPASS_PROGRAM=$(libexecdir)/ssh-askpass
+X SFTP_SERVER=$(libexecdir)/sftp-server
+X 
+X PATHS= -DETCDIR=\"$(sysconfdir)\" \
+X@@ -30,6 +30,7 @@
+X CFLAGS=@CFLAGS@
+X CPPFLAGS=-I. -I$(srcdir) @CPPFLAGS@ $(PATHS) @DEFS@
+X LIBS=@LIBS@
+X+TCPW_LIB=@TCPW_LIB@
+X AR=@AR@
+X RANLIB=@RANLIB@
+X INSTALL=@INSTALL@
+X@@ -95,35 +96,35 @@
+X 	$(RANLIB) $@
+X 
+X ssh$(EXEEXT): $(LIBCOMPAT) libssh.a $(SSHOBJS)
+X-	$(LD) -o $@ $(SSHOBJS) $(LDFLAGS) -lssh -lopenbsd-compat $(LIBS)
+X+	$(LD) -o $@ $(SSHOBJS) $(LDFLAGS) -lssh $(LIBS) -lopenbsd-compat
+X 
+X sshd$(EXEEXT): libssh.a	$(LIBCOMPAT) $(SSHDOBJS)
+X-	$(LD) -o $@ $(SSHDOBJS) $(LDFLAGS) -lssh -lopenbsd-compat $(LIBS)
+X+	$(LD) -o $@ $(SSHDOBJS) $(LDFLAGS) -lssh $(TCPW_LIB) $(LIBS) -lopenbsd-compat
+X 
+X scp$(EXEEXT): $(LIBCOMPAT) libssh.a scp.o
+X-	$(LD) -o $@ scp.o $(LDFLAGS) -lssh -lopenbsd-compat $(LIBS)
+X+	$(LD) -o $@ scp.o $(LDFLAGS) -lssh $(LIBS) -lopenbsd-compat
+X 
+X ssh-add$(EXEEXT): $(LIBCOMPAT) libssh.a ssh-add.o
+X-	$(LD) -o $@ ssh-add.o $(LDFLAGS) -lssh -lopenbsd-compat $(LIBS) 
+X+	$(LD) -o $@ ssh-add.o $(LDFLAGS) -lssh $(LIBS)  -lopenbsd-compat
+X 
+X ssh-agent$(EXEEXT): $(LIBCOMPAT) libssh.a ssh-agent.o
+X-	$(LD) -o $@ ssh-agent.o $(LDFLAGS) -lssh -lopenbsd-compat $(LIBS) 
+X+	$(LD) -o $@ ssh-agent.o $(LDFLAGS) -lssh $(LIBS)  -lopenbsd-compat
+X 
+X ssh-keygen$(EXEEXT): $(LIBCOMPAT) libssh.a ssh-keygen.o
+X-	$(LD) -o $@ ssh-keygen.o $(LDFLAGS) -lssh -lopenbsd-compat $(LIBS) 
+X+	$(LD) -o $@ ssh-keygen.o $(LDFLAGS) -lssh $(LIBS)  -lopenbsd-compat
+X 
+X ssh-keyscan$(EXEEXT): $(LIBCOMPAT) libssh.a ssh-keyscan.o
+X-	$(LD) -o $@ ssh-keyscan.o $(LDFLAGS) -lssh -lopenbsd-compat -lssh $(LIBS) 
+X+	$(LD) -o $@ ssh-keyscan.o $(LDFLAGS) -lssh -lssh $(LIBS)  -lopenbsd-compat
+X 
+X sftp-server$(EXEEXT): $(LIBCOMPAT) libssh.a sftp.o sftp-common.o sftp-server.o
+X-	$(LD) -o $@ sftp-server.o sftp-common.o $(LDFLAGS) -lssh -lopenbsd-compat $(LIBS) 
+X+	$(LD) -o $@ sftp-server.o sftp-common.o $(LDFLAGS) -lssh $(LIBS)  -lopenbsd-compat
+X 
+X sftp$(EXEEXT): $(LIBCOMPAT) libssh.a sftp.o sftp-client.o sftp-int.o sftp-common.o sftp-glob.o
+X-	$(LD) -o $@ sftp.o sftp-client.o sftp-common.o sftp-int.o sftp-glob.o $(LDFLAGS) -lssh -lopenbsd-compat $(LIBS)
+X+	$(LD) -o $@ sftp.o sftp-client.o sftp-common.o sftp-int.o sftp-glob.o $(LDFLAGS) -lssh $(LIBS) -lopenbsd-compat
+X 
+X # test driver for the loginrec code - not built by default
+X logintest: logintest.o $(LIBCOMPAT) libssh.a loginrec.o
+X-	$(LD) -o $@ logintest.o $(LDFLAGS) loginrec.o -lopenbsd-compat -lssh $(LIBS)
+X+	$(LD) -o $@ logintest.o $(LDFLAGS) loginrec.o -lssh $(LIBS) -lopenbsd-compat
+X 
+X $(MANPAGES): $(MANPAGES_IN)
+X 	if test "$(MANTYPE)" = "cat"; then \
+X@@ -182,7 +183,7 @@
+X scard-install:
+X 	(cd scard && $(MAKE) DESTDIR=$(DESTDIR) install)
+X 
+X-install-files: scard-install
+X+install-files:
+X 	$(srcdir)/mkinstalldirs $(DESTDIR)$(bindir)
+X 	$(srcdir)/mkinstalldirs $(DESTDIR)$(sbindir)
+X 	$(srcdir)/mkinstalldirs $(DESTDIR)$(mandir)
+END-of-./patches/patch-ah
+echo x - ./PLIST
+sed 's/^X//' >./PLIST << 'END-of-./PLIST'
+X@comment $NetBSD: PLIST,v 1.2 2002/02/05 04:17:31 jlam Exp $
+Xbin/scp
+Xbin/sftp
+Xbin/slogin
+Xbin/ssh
+Xbin/ssh-add
+Xbin/ssh-agent
+Xbin/ssh-keygen
+Xbin/ssh-keyscan
+Xetc/rc.d/sshd
+Xlibexec/sftp-server
+Xman/man1/scp.1
+Xman/man1/sftp.1
+Xman/man1/slogin.1
+Xman/man1/ssh-add.1
+Xman/man1/ssh-agent.1
+Xman/man1/ssh-keygen.1
+Xman/man1/ssh-keyscan.1
+Xman/man1/ssh.1
+Xman/man8/sftp-server.8
+Xman/man8/sshd.8
+Xsbin/sshd
+Xshare/examples/openssh/moduli
+Xshare/examples/openssh/ssh_config
+Xshare/examples/openssh/sshd_config
+X@dirrm share/examples/openssh
+END-of-./PLIST
+echo x - ./PLIST.pam
+sed 's/^X//' >./PLIST.pam << 'END-of-./PLIST.pam'
+X@comment $NetBSD: PLIST.pam,v 1.1 2002/02/05 04:17:32 jlam Exp $
+Xshare/examples/openssh/sshd.pam
+END-of-./PLIST.pam
+echo x - ./PLIST.prng
+sed 's/^X//' >./PLIST.prng << 'END-of-./PLIST.prng'
+X@comment $NetBSD: PLIST.prng,v 1.1 2002/02/05 04:17:32 jlam Exp $
+Xshare/examples/openssh/ssh_prng_cmds
+END-of-./PLIST.prng
+echo x - ./README.html
+sed 's/^X//' >./README.html << 'END-of-./README.html'
+X<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+X<!-- $NetBSD: README.pkg,v 1.21 2001/11/03 03:26:08 damon Exp $ -->
+X<html>
+X<head>
+X<title>The NetBSD Packages Collection: security/openssh</title>
+X</head> 
+X<body bgcolor="#ffffff">
+X
+X<a href="http://www.mckusick.com/beastie/mainpage/copyright.html">
+X<img align="right" src="../../templates/pkg-daemon.gif" alt="Daemon Power"
+X	width="147" height="121" border="0">
+X</a>
+X<h1>The NetBSD Packages Collection: <i>security/openssh</i></h1>
+X
+X<p>Brief description of the package:<br>
+X<I>
+XOpen Source Secure shell client and server (remote login program)
+X</I>
+X</p>
+X
+X<p>Please read the file "<a href="DESCR">DESCR</a>" for a
+Xlonger description, or browse the package's
+X<A HREF="http://cvsweb.netbsd.org/bsdweb.cgi/pkgsrc/security/openssh/">history</A>.
+X</p>
+X
+X<p>This package has a home page at <a HREF="http://www.openssh.com/">http://www.openssh.com/</a>.</p>
+X
+X
+X
+X<p>The package is located in the 
+X"<A HREF=".">security/openssh</A>"
+Xdirectory.
+XThe current source version of the package is
+X"openssh-3.0.2.1nb1".
+XFor a summary on how to use the package collection, go to the
+X<a href="../../README.html">top of the packages tree</a>.
+X</p>
+X
+X<p>Problem reports, updates or suggestions for this package should be
+Xreported with
+X<a href="http://www.netbsd.org/Misc/send-pr.html">send-pr.</a></p>
+X
+X<P>
+XThe following security vulnerabilities are known for security/openssh
+Xat Mar 5 05:00
+X:
+X<UL>
+X<STRONG><LI>openssh&lt;2.3.0 has a weak-authentication exploit (see <a href="http://www.openbsd.org/errata27.html#sshforwarding">http://www.openbsd.org/errata27.html#sshforwarding</a> for more details)</STRONG>
+X<STRONG><LI>openssh&lt;2.3.0 has a remote-root-shell exploit (see <a href="http://razor.bindview.com/publish/advisories/adv_ssh1crc.html">http://razor.bindview.com/publish/advisories/adv_ssh1crc.html</a> for more details)</STRONG>
+X<STRONG><LI>openssh&lt;2.9.2 has a remote-file-write exploit (see <a href="http://www.openbsd.org/errata.html#sshcookie">http://www.openbsd.org/errata.html#sshcookie</a> for more details)</STRONG>
+X<STRONG><LI>openssh&lt;2.9.9.2 has a remote-user-access exploit (see <a href="http://www.securityfocus.com/cgi-bin/archive.pl?id=1&mid=216702&start=2001-09-23&end=2001-09-29">http://www.securityfocus.com/cgi-bin/archive.pl?id=1&mid=216702&start=2001-09-23&end=2001-09-29</a> for more details)</STRONG>
+X</UL>
+XIf you have a vulnerable package installed on any machine, you are
+Xadvised to remove the package
+Ximmediately, using the standard package tools.
+XThe <a href="../../security/audit-packages/README.html">audit-packages</a>
+Xpackage locates any installed package which has been mentioned in security
+Xadvisories as being vulnerable.
+X</P>
+X
+X
+X<p>
+XThis package requires the following package(s) to build:
+X<a href="../../lang/perl5/README.html">perl-5.6.1nb7</A>
+X.
+X</p>
+X<p>
+XThis package requires the following package(s) to run:
+X<I>(none)</I>
+X.
+X</p>
+X
+X<p>
+XSelect one of the links below to <FONT COLOR="red">download</FONT> the
+Xpackage in precompiled binary form for installation with pkg_add(1).
+XAvailable machine architectures and package versions: 
+X<TABLE>
+X<TR><TD>amigappc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/amigappc/All/openssh-2.9.9.2.tgz">openssh-2.9.9.2</a> <TD>(NetBSD 1.5)
+X<TR><TD>amigappc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/amigappc/All/openssh-2.9.9p2.tgz">openssh-2.9.9p2</a> <TD>(NetBSD 1.5)
+X<TR><TD>amigappc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/amigappc/All/openssh-3.0.2.1.tgz">openssh-3.0.2.1</a> <TD>(NetBSD 1.5)
+X<TR><TD>amigappc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/amigappc/All/openssh-3.0.2.1nb1.tgz">openssh-3.0.2.1nb1</a> <TD>(NetBSD 1.5)
+X<TR><TD>arc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/arc/All/openssh-2.9.9.2.tgz">openssh-2.9.9.2</a> <TD>(NetBSD 1.5)
+X<TR><TD>arm32:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/arm32/All/openssh-3.0.2.1.tgz">openssh-3.0.2.1</a> <TD>(NetBSD 1.5)
+X<TR><TD>bebox:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/bebox/All/openssh-2.9.9.2.tgz">openssh-2.9.9.2</a> <TD>(NetBSD 1.5)
+X<TR><TD>bebox:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/bebox/All/openssh-2.9.9p2.tgz">openssh-2.9.9p2</a> <TD>(NetBSD 1.5)
+X<TR><TD>bebox:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/bebox/All/openssh-3.0.2.1.tgz">openssh-3.0.2.1</a> <TD>(NetBSD 1.5)
+X<TR><TD>bebox:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/bebox/All/openssh-3.0.2.1nb1.tgz">openssh-3.0.2.1nb1</a> <TD>(NetBSD 1.5)
+X<TR><TD>cobalt:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/cobalt/All/openssh-2.9.9.2.tgz">openssh-2.9.9.2</a> <TD>(NetBSD 1.5)
+X<TR><TD>hpcmips:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/hpcmips/All/openssh-2.9.9.2.tgz">openssh-2.9.9.2</a> <TD>(NetBSD 1.5)
+X<TR><TD>macppc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/macppc/All/openssh-2.9.9.2.tgz">openssh-2.9.9.2</a> <TD>(NetBSD 1.5)
+X<TR><TD>macppc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/macppc/All/openssh-2.9.9p2.tgz">openssh-2.9.9p2</a> <TD>(NetBSD 1.5)
+X<TR><TD>macppc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/macppc/All/openssh-3.0.2.1.tgz">openssh-3.0.2.1</a> <TD>(NetBSD 1.5)
+X<TR><TD>macppc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/macppc/All/openssh-3.0.2.1nb1.tgz">openssh-3.0.2.1nb1</a> <TD>(NetBSD 1.5)
+X<TR><TD>pmax:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/pmax/All/openssh-2.9.9.2.tgz">openssh-2.9.9.2</a> <TD>(NetBSD 1.5)
+X<TR><TD>powerpc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/powerpc/All/openssh-2.9.9.2.tgz">openssh-2.9.9.2</a> <TD>(NetBSD 1.5)
+X<TR><TD>powerpc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/powerpc/All/openssh-2.9.9p2.tgz">openssh-2.9.9p2</a> <TD>(NetBSD 1.5)
+X<TR><TD>powerpc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/powerpc/All/openssh-3.0.2.1.tgz">openssh-3.0.2.1</a> <TD>(NetBSD 1.5)
+X<TR><TD>powerpc:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/powerpc/All/openssh-3.0.2.1nb1.tgz">openssh-3.0.2.1nb1</a> <TD>(NetBSD 1.5)
+X<TR><TD>prep:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/prep/All/openssh-2.9.9.2.tgz">openssh-2.9.9.2</a> <TD>(NetBSD 1.5)
+X<TR><TD>prep:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/prep/All/openssh-2.9.9p2.tgz">openssh-2.9.9p2</a> <TD>(NetBSD 1.5)
+X<TR><TD>prep:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/prep/All/openssh-3.0.2.1.tgz">openssh-3.0.2.1</a> <TD>(NetBSD 1.5)
+X<TR><TD>prep:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5/prep/All/openssh-3.0.2.1nb1.tgz">openssh-3.0.2.1nb1</a> <TD>(NetBSD 1.5)
+X<TR><TD>vax:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5.2/vax/All/openssh-2.9.9.2.tgz">openssh-2.9.9.2</a> <TD>(NetBSD 1.5.2)
+X<TR><TD>vax:<TD><a href="ftp://ftp.netbsd.org/pub/NetBSD/packages/1.5.2/vax/All/openssh-3.0.2.1.tgz">openssh-3.0.2.1</a> <TD>(NetBSD 1.5.2)
+X</TABLE>
+X
+X<p>
+XThe NetBSD packages collection is designed to permit
+X            easy <a href="../../README">installation from source</a> -
+X            particularly useful if the latest binary package is
+X            not available for your chosen platform.
+X</p>
+X
+X<hr noshade>
+X[
+X<a href="../README.html"> Go up one level</a>
+X|
+X<a href="../../README.html"> Go to top of packages tree</a>
+X|
+X<a href="../../README-all.html"> List all packages</a>
+X]
+X</body>
+X</html>
+END-of-./README.html
+exit
+
