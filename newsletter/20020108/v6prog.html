@@ -887,7 +887,7 @@ AF_INET6ソケットのみを使って書いた関数tcp_accept_mapped()を
  26:                   int off = 0;
  27:                   if (setsockopt(s, IPPROTO_IPV6, IPV6_BINDV6ONLY, &off,
  28:                                  sizeof(off)) &lt; 0)
- 29:                           return(-1);
+ 29:                           goto cleanup;
  30:            }
  31:   #endif
  32:   
