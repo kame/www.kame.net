@@ -1,0 +1,23 @@
+.commandline {
+	color:green;
+	background-color:black;
+}
+
+.source {
+	color:black;
+	background-color:silver;
+}
+
+.filename {
+	color:maroon;
+	background-color:white;
+}
+
+.indent {
+	border-top:solid;
+	border-top-width:1pt;
+	border-left:solid;
+	border-left-width:1pt;
+	padding-left:5pt;
+	margin-left:10pt;
+}

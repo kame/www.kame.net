@@ -1,0 +1,510 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <link rel=stylesheet href="kame-newsletter.css" type="text/css">
+    <title>KAME Mobile IPv6 How To</title>
+  </head>
+
+  <body>
+
+    <h1>KAME Mobile IPv6 How To</h1>
+
+    <div>
+      <p>
+        Written by
+        <a href="mailto:keiichi@iij.ad.jp">
+          Keiichi SHIMA
+        </a> @ {
+        <a href="http://www.kame.net/">
+          KAME Project
+        </a> |
+        <a href="http://www.iij.ad.jp/index-e.html">
+          Internet Initiative Japan
+        </a>}
+      </p>
+    </div>
+
+    <div class="indent">
+      <h2>Abstract</h2>
+
+      <p>
+        This documents decsribes the step-by-step instruction to use
+	the KAME Mobile IPv6(KAME/MIP6) features.  Since the KAME/MIP6
+	is still under developping, these information may be outdated
+	at the time when you are reading this document.  Please refer
+	the latest documentation included in the KAME kit in such a
+	case.
+      </p>
+    </div>
+
+    <div class="indent">
+      <h2>Brief history of KAME/MIP6</h2>
+      <p>
+        KAME/MIP6 is based on the three implementations (Ericsson,
+        NEC, Keio Univ.) those have been built on the KAME IPv6
+        protocol stack before.  When we planned to start to provide a
+        MIP6 protocol stack with KAME base distribution, we dicided to
+        rebuild the stack so that we could maintain the code easily
+        and effectively.  The initial KAME/MIP6 was mainly based on
+        the Ericcson's code and some userland application are
+        contributed from from NEC with the notation of a virtual home
+        interface which is taken from the stack design of Keio Univ.
+        Since then, we made many enhancement on KAME/MIP6 code and we
+        now have highly interoperable, BSD-like licenced MIP6 stack.
+      </p>
+    </div>
+
+    <div class="indent">
+      <h2>Supported Platforms</h2>
+
+      <p>
+        Currently, FreeBSD and NetBSD is proved to work as a home
+        agent / a mobile node / a correspondent node.  Regerding to
+        OpenBSD, we have no plan to supprot for a home agent and a
+        mobile node functions because OpenBSD has completely differnt
+        IPsec stack which makes it difficult to port KAME/MIP6 to
+        OpenBSD.  A correspondent node function for OpenBSD is planned
+        but not tested yet.
+      </p>
+    </div>
+
+    <div class="indent">
+      <h2>Get the source code</h2>
+
+      <p>
+        The KAME/MIP6 is under developping.  You should use the latest
+        KAME snap kit always.  Get the latest kit from the
+	<a href="http://www.kame.net/">
+	  KAME Project
+        </a>
+	website.
+      </p>
+    </div>
+
+    <div class="indent">
+      <h2>Rebuilding with the MIP6 extention</h2>
+    
+      <p>
+        MIP6 features are not enabled by default.  You must prepare a
+        new kernel configuration file and rebuild your kernel that is
+        able to speak the MIP6 protocol.  Also, some user-space
+        programs need to be rebuilt.  Follow the instruction below.
+      </p>
+
+      <div class="indent">
+        <h3>Rebuild your kernel for a mobile node</h3>
+
+	<p>
+	  To enable a mobile node feature, set the following kernel
+	  options in your kernel configuration file and rebuild the
+	  kernel.
+	</p>
+
+	<pre class="source">
+options MIP6
+options MIP6_MOBILE_NODE
+pseudo-device hif 1
+        </pre>
+      </div>
+
+      <div class="indent">
+        <h3>Rebuild your kernel for a home agent</h3>
+
+	<p>
+	  To enable a home agent feature, set the following kernel
+	  options in your kernel configuration file and rebuild the
+	  kernel.
+	</p>
+
+	<pre class="source">
+options MIP6
+options MIP6_HOME_AGENT
+        </pre>
+      </div>
+
+      <div class="indent">
+        <h3>Rebuild your kernel for a correspondent node</h3>
+
+	<p>
+	  If you just want a stationaly node which have Mobile IPv6
+	  support (route optimization), set the following kernel
+	  options in your kernel configuration file and rebuild the
+	  kernel.
+	</p>
+
+	<pre class="source">
+options MIP6
+        </pre>
+      </div>
+
+      <div class="indent">
+        <h3>Build user-space programs</h3>
+
+	<p>
+          There are 4 user-space programs related to MIP6.
+        </p>
+        <dl>
+          <dt><samp class="filename">rtadvd</samp></dt>
+	  <dd>The router advertisement daemon.</dd>
+	  <dt><samp class="filename">had</samp></dt>
+	  <dd>The dynamic home agent discovery protocol daemon.</dd>
+	  <dt><samp class="filename">mip6control</samp></dt>
+	  <dd>A control program of the KAME/MIP6 functions.</dd>
+	  <dt><samp class="filename">mip6stat</samp></dt>
+	  <dd>
+	    A program which displays statistics of packets
+	    related to MIP6.
+	  </dd>
+        </dl>
+
+	<div class="indent">
+	  <h4>Rebuild <samp class="filename">rtadvd</samp></h4>
+
+	  <p>
+	    Go to the directory of <samp
+	    class="filename">rtadvd</samp> (<samp
+	    class="filename">${KAME}/freebsd4/sbin/rtadvd/</samp> for
+	    example, if you use FreeBSD), add the following line to
+	    its <samp class="filename">Makefile</samp>
+	  </p>
+
+	  <pre class="source">
+CFLAGS+=-DMIP6
+          </pre>
+
+	  <p>
+	    Recompile <samp class="filename">rtadvd</samp> and install
+	    it.
+	  </p>
+
+	  <pre class="commandline">
+$ make clean
+$ make
+$ su (become the super user)
+# make install
+          </pre>
+
+	  <p>
+	    With <samp class="source">-DMIP6</samp>, <samp
+	    class="filename">rtadvd</samp> is compiled with the <samp
+	    class="source">-m</samp> switch which enables MIP6
+	    related features of <samp class="filename">rtadvd</samp>.
+          </p>
+	</div>
+
+	<div class="indent">
+	  <h4>
+	    Build <samp class="filename">had</samp>,
+	    <samp class="filename">mip6control</samp>,
+	    <samp class="filename">mip6stat</samp>
+	  </h4>
+
+	  <p>
+	    <samp class="filename">had</samp>, <samp
+	    class="filename">mip6control</samp>, <samp
+	    class="filename">mip6stat</samp> are build automatically
+	    when other user-space programs are build.  They are
+	    installed to <samp
+	    class="filename">/usr/local/v6/sbin/</samp>.
+	  </p>
+	</div>
+      </div>
+    </div>
+
+    <div class="indent">
+      <h2>Create IPsec configuration files</h2>
+
+      <p>
+        The KAME/MIP6 uses KAME IPsec to protect binding update
+	messages and tunneled home test init/home test messages.  You
+	need to set up the security associations and policies
+	properly.
+      </p>
+
+      <p>
+        Since the parameters are too complex enough to write down by
+	hand, there are some utilities to aid this work.  You can find
+	<samp class="filename">mip6makeconfig.sh</samp> and <samp
+	class="filename">mip6seccontrol.sh</samp> in the <samp
+	class="filename">kame/kame/kame/mip6control/</samp> directory.
+      </p>
+
+      <p>
+        First of all, you must create a configuration directory that
+	holds MIP6 related IPsec set up files.
+      </p>
+
+      <pre class="commandline">
+(become a super user)
+# mkdir /usr/local/v6/etc/mobileip6
+      </pre>
+
+      <p>
+        Next, create directories for each mobile node.  For example,
+      </p>
+
+      <pre class="commandline">
+# mkdir /usr/local/v6/etc/mobileip6/mobile_node_0
+      </pre>
+
+      <p>
+        The name of the directory is arbitrary.
+      </p>
+
+      <p>
+        Next, create a file named <samp class="filename">config</samp> in
+        the directory.  The contents of the file is looks like as below.
+      </p>
+
+      <pre class="source">
+mobile_node=2001:200:0:0:201:11ff:fe54:4fde
+home_agent=2001:200:0:0:201:11ff:fe54:5ffc
+transport_spi_mn_to_ha=2000
+transport_spi_ha_to_mn=2001
+transport_protocol=esp
+transport_esp_algorithm=blowfish-cbc
+transport_esp_secret="THIS_IS_ESP_SECRET!!"
+transport_auth_algorithm=hmac-sha1
+transport_auth_secret="THIS_IS_AH_SECRET!!!"
+tunnel_spi_mn_to_ha=2002
+tunnel_spi_ha_to_mn=2003
+tunnel_uid_mn_to_ha=2002
+tunnel_uid_ha_to_mn=2003
+tunnel_esp_algorithm=blowfish-cbc
+tunnel_esp_secret="THIS_IS_ESP_SECRET!!"
+tunnel_auth_algorithm=hmac-sha1
+tunnel_auth_secret="THIS_IS_AH_SECRET!!!"
+      </pre>
+
+      <p>
+        <samp class="source">mobile_node</samp> is an address of a
+	mobile node.  <samp class="source">home_agent</samp> is an
+	address of a home agent.
+      </p>
+      <p>
+        <samp class="source">transport_spi_mn_to_ha</samp> is a SPI
+	value of a SA to protect home registration packets which are
+	sent from the mobile node to the home agent. <samp
+	class="source">transport_spi_ha_to_mn</samp> is the reverse.
+	<samp class="source">transport_protocol</samp> is a protocol
+	name to protect home registration packets. You can specify
+	either <samp class="source">ah</samp> or <samp
+	class="source">esp</samp>.
+      </p>
+      <p>
+        If you choose <samp class="source">esp</samp> in <samp
+	class="source">transport_protocol</samp>, you must specify
+	both an encription algorithm/key and a hash algorithm/key by
+	<samp class="source">transport_esp_algorighm</samp>/<samp
+	class="source">transport_esp_secret</samp> and <samp
+	class="source">transport_auth_algorighm</samp>/<samp
+	class="source">transport_auth_secret</samp>.
+      </p>
+      <p>
+        If you use <samp class="source">ah</samp>, you can omit
+        transport encription parameters from your configuration file.
+      </p>
+      <p>
+        The lines which start with <samp class="source">tunnel_</samp>
+        are the parameters for RR (Return Routability) signaling
+        packets.  The protocol is fixed to ESP.  You cannot change
+        this.  As you have done in the above setting, specify the SPIs
+        and the algorithm and the secret to protect signaling
+        packets. In addition, you must specify <samp
+        class="source">tunnel_uid_mn_to_ha</samp> and <samp
+        class="source">tunnel_uid_ha_to_mn</samp>. They are used as
+        unique identifiers to specify SAs for RR signaling.
+      </p>
+
+      <p>
+        Next, create parameter setting files by using <samp
+        class="filename">mip6makeconfig.sh</samp>.  For example,
+      </p>
+
+      <pre class="commandline">
+# mip6makeconfig.sh mobile_node_0
+      </pre>
+
+      <p>
+        Where <samp class="source">mobile_node_0</samp> is the
+	directory name you have created in the <samp
+	class="filename">/usr/local/v6/etc/mobileip6</samp>.  After
+	successful execution of this program, you will find 6 files
+	created in the per node directory.  Each file contains
+	parameters for the IPsec (actually, the parameters for the
+	<samp class="filename">setkey</samp> program).
+      </p>
+
+      <p>
+        <samp class="filename">mip6seccontrol.sh</samp> is a utility
+        program to set/unset IPsec parameters.
+      </p>
+
+      <p>
+        You should invoke the program on your mobile node like:
+      </p>
+
+      <pre class="commandline">
+# mip6seccontrol.sh -m installall
+      </pre>
+
+      <p>
+        This installs the IPsec parameters for all mobile nodes stored
+	in the <samp
+	class="filename">/usr/local/v6/etc/mobileip6</samp> directory.
+      </p>
+
+      <p>
+        On the home agent, you should invoke the program like:
+      </p>
+
+      <pre class="commandline">
+# mip6seccontrol.sh -g installall
+      </pre>
+
+      <p>
+        This installs the IPsec parameters for all mobile nodes stored
+	in the <samp
+	class="filename">/usr/local/v6/etc/mobileip6</samp> directory.
+      </p>
+    </div>
+
+
+    <div class="indent">
+      <h2>Starting MIP6</h2>
+
+      <p>
+        We provide a startup script for the KAME/MIP6.
+      </p>
+
+      <p>
+        If you are using FreeBSD4, you will find <samp
+	class="filename">rc</samp> and <samp
+	class="filename">rc.mobileip6</samp> in the <samp
+	class="filename">/kame/freebsd4/etc</samp> directory.  Copy those
+	files to the <samp class="filename">/etc</samp> directory.
+      </p>
+
+      <p>
+	If you are using NetBSD, you will find <samp
+	class="filename">mobileip6</samp> in the <samp
+	class="filename">/kame/netbsd/etc/rc.d/</samp> directory.
+	Copy this file to <samp class="filename">/etc/rc.d</samp>
+	directory.
+      </p>
+
+      <div class="indent">
+        <h3>Starting a home agent</h3>
+
+	<p>
+	  To start a home agent, add the following lines to your <samp
+	  class="filename">/etc/rc.conf</samp>.
+	</p>
+
+	<pre class="source">
+ipv6_mobile_enable="YES"
+ipv6_mobile_config_dir="/usr/local/v6/etc/mobileip6"
+ipv6_mobile_nodetype="home_agent"
+ipv6_mobile_home_prefixes="2001:200:1:2::/64"
+ipv6_mobile_home_link="fxp0"
+        </pre>
+
+	<p>
+	  Do not forget to replace <samp
+          class="source">ipv6_mobile_home_prefixes</samp> with your
+          home prefix and <samp
+          class="source">ipv6_mobile_home_link</samp> with the
+          interface name you use for the home network.
+	</p>
+	<p>
+	  Since a home agent is a router, you will need other
+	  configuration parameters required for a generic IPv6 router.
+	  For example,
+	</p>
+	<pre class="source">
+ipv6_gateway_enable="YES"
+ipv6_router_enable="YES"
+ipv6_router="/usr/local/v6/sbin/route6d"
+ipv6_ifconfig_fxp0="2001:200:1:2::1"
+        </pre>
+      </div>
+
+      <div class="indent">
+        <h3>Starting a mobile node</h3>
+
+	<p>
+	  To make a node as a mobile node, add the following lines to your
+	  <samp class="filename">/etc/rc.conf</samp>.
+	</p>
+
+	<pre class="source">
+ipv6_mobile_enable="YES"
+ipv6_mobile_config_dir="/usr/local/v6/etc/mobileip6"
+ipv6_mobile_nodetype="mobile_node"
+ipv6_mobile_home_prefixes="2001:200:1:2::/64"
+        </pre>
+
+	<p>
+	  Replace <samp
+          class="source">ipv6_mobile_home_prefixes</samp> with your
+          home prefix.
+	</p>
+      </div>
+    </div>
+
+    <div class="indent">
+      <h2>Tuning access routers</h2>
+
+      <p>
+        You may need to decrease an interval between unsolicited
+        router advertisement of access routers for fast movement
+        detection.  This technique is effective to a certain degree.
+      </p>
+      <div class="indent">
+        <h3>
+	  Prepare <samp class="filename">rtadvd.conf</samp> for your
+	  access routers
+        </h3>
+
+	<pre class="source">
+fxp0:\
+        :maxinterval#6:mininterval#4:
+        </pre>
+
+	<p>
+          <samp class="source">fxp0</samp> is the name of the
+	  interface which your access router advertises router
+	  advertisemetn messages.
+	</p>
+	<p>
+	  Create a <samp class="filename">rtadvd.conf</samp> and place
+	  it in a proper directory.  The directory is <samp
+	  class="filename">/usr/local/v6/etc</samp> if you are using
+	  KAME, otherwise <samp class="filename">/etc</samp>.
+	</p>
+	<p>
+	  NOTE: Mobile IPv6 relaxes the maxinterval/mininterval values
+	  to 0.07/0.03.  But you shouldn't expect a significant
+	  performance gain with this tuning.  It will end up with a
+	  heavy CPU load on the node which rtadvd is running.
+	</p>
+
+      </div>
+    </div>
+
+    <div class="indent">
+      <h2>Doesn't work?</h2>
+
+      <p>
+        Please mail your problems to
+	<a href="mailto:snap-users@kame.net">
+          snap-users@kame.net
+        </a>.
+      </p>
+    </div>
+
+  </body>
+</html>
