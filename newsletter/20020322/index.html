@@ -4,7 +4,7 @@
 <H1>Enabling IPv6 in MacOS X (10.1.3)</H1>
 <A HREF=http://www.itojun.org/>Jun-ichiro itojun Hagino</A>,
 <A HREF=http://www.kame.net/>KAME Project</A>
-<PRE>$Id: index.html,v 1.6 2002/03/24 08:20:59 itojun Exp $</PRE>
+<PRE>$Id: index.html,v 1.7 2002/03/25 21:44:25 itojun Exp $</PRE>
 
 <HR>
 <H2>Introduction</H2>
@@ -72,7 +72,7 @@ functions, such as <TT>if_nametoindex</TT> and <TT>getifaddrs</TT>.
 <PRE>
 % cvs -d :pserver:anoncvs@anoncvs.kame.net:/cvsroot/kame co -P kame/Makefile kame/Makefile.inc
 % cd kame
-% make TARGET=darwin tree prepare
+% bsdmake TARGET=darwin tree prepare
 % (cd darwin/include; bsdmake; sudo bsdmake install)
 % (cd darwin/lib/libinet6; bsdmake; sudo bsdmake install)
 </PRE>
