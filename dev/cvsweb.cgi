@@ -44,6 +44,8 @@ require 'cgi-style.pl';
 	'/cvsroot/doc/ni2k-kame', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/doc/london-kame', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/doc/bsdmag7-v6prog', '/kame-confidential/cvsweb.cgi',
+	'/cvsroot/doc/ipsj-0012-kame', '/kame-confidential/cvsweb.cgi',
+	'/cvsroot/doc/ipsj-0108-pim6', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/apps/fwtk', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/apps-local', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/kame-local', '/kame-confidential/cvsweb.cgi',
