@@ -27,7 +27,7 @@ Request:
   request an IPR claim which doesn't need any contract of a license.
 
 Priority: high
-  This is a big problem, since SSM is supposed to be almost mandatory
+  This is a big problem, since SSM is a promising candidate 
   for the deployment of IPv4/IPv6 multicasting.  Especially in IPv6,
   it is much easier to deploy SSM keeping pace with the deployment of
   IPv6.  If we failed this, we would end up deploying SSM after IPv6
@@ -162,7 +162,8 @@ Concern:
       KAME derived codes (e.g. FreeBSD)?
     * The licensing terms requested by SRI is unknown.  We cannot
       check if the license is compatible with our license.
-  - We got no reply from Peter Marcotullio(the contact person of this IPR)
+  - We sent the above question to Peter Marcotullio (the contact person
+    of this IPR), but got no reply.
   - Fred Templin(the author of the patent and ISATAP specification)
     said, he could do nothing because he did not work for SRI any longer.
 
