@@ -1,8 +1,8 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 $url = 'http://inode-srv.kame.net/e/';
-#$fetch = '/usr/bin/fetch -q -o -';	# FreeBSD
-$fetch = '/usr/bin/ftp -V -o -';	# NetBSD
+$fetch = '/usr/bin/fetch -q -o -';	# FreeBSD
+#$fetch = '/usr/bin/ftp -V -o -';	# NetBSD
 
 print "Content-type: text/html\n\n";
 
