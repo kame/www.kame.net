@@ -53,6 +53,7 @@ require 'cgi-style.pl';
 	'/cvsroot/apps/CVSROOT/passwd', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/kame/CVSROOT/passwd', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/apps-obsoleted/CVSROOT/passwd', '/kame-confidential/cvsweb.cgi',
+	'/cvsroot/doc/advapi', '/kame-confidential/cvsweb.cgi',
 	);
 
 %CVSROOT = (
