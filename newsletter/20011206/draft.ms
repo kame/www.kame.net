@@ -45,7 +45,10 @@ Table of Contents
 KAME/MIP6 is based on the three implementations (Ericsson, NEC, Keio
 Univ.) those have been built on the KAME IPv6 protocol stack before.
 We are trying to utilize the merits of those implementations and
-provide one concrete MIP6 stack for the KAME IPv6 stack.
+provide one concrete MIP6 stack for the KAME IPv6 stack.  Since the
+code is under developing, the information written in this document may
+be outdated, but I think this is still useful to understand our
+implementation.
 
 The KAME/MIP6 supports CN, HA and MN functions.  The base
 specification is the current one.  At this point, the specification is

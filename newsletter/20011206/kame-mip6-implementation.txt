@@ -121,7 +121,10 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
    KAME/MIP6 is based on the three implementations (Ericsson, NEC, Keio
    Univ.) those have been built on the KAME IPv6 protocol stack before.
    We are trying to utilize the merits of those implementations and
-   provide one concrete MIP6 stack for the KAME IPv6 stack.
+   provide one concrete MIP6 stack for the KAME IPv6 stack.  Since the
+   code is under developing, the information written in this document
+   may be outdated, but I think this is still useful to understand our
+   implementation.
 
    The KAME/MIP6 supports CN, HA and MN functions.  The base
    specification is the current one.  At this point, the specification
@@ -161,9 +164,6 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
    Router R1 and R3 are in the same subnet because those routers share
    the prefix P1.  Similarly, Router R2 and R4 are the same subnet.
    Router R5 is only router in the subnet S3 because it doesn't share
-   any information with other router.  KAME/MIP6 treats these 3 subnet
-
-
 
 
 
@@ -172,6 +172,7 @@ draft-keiichi-mobileip-kame-implementation-00.txt               [Page 3]
 DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
 
+   any information with other router.  KAME/MIP6 treats these 3 subnet
    as different ones, even if they are physically on the same wire.
 
 
@@ -219,7 +220,6 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
    has preferred lifetime left but, no advertising router on the current
    subnet.  This happens when we change the network.  We have no way to
    determine if we can use the old (in KAME sense, detached) address.
-
 
 
 
