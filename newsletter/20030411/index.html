@@ -4,7 +4,7 @@
 <h1>IPv6 DNS Server Discovery by DHCPv6</h1>
 <a href="http://www.jinmei.org/">JINMEI Tatuya</a>
 at <a href="http://www.kame.net/">the KAME Project</a>
-<pre>$Id: index.html,v 1.6 2003/05/17 09:40:09 jinmei Exp $</pre>
+<pre>$Id: index.html,v 1.7 2003/07/16 12:50:24 jinmei Exp $</pre>
 
 <hr>
 
@@ -54,10 +54,10 @@ where IFNAME is the interface that the server should receive requests
 from clients.
 Multiple interfaces can be specified as multiple arguments.
 <p>
-<b>Note:</b> DHCPv6 relay agent provided by KAME is based on a quite
-old version of the specification and is not inter-operable with the
-server and client implementation.
-Thus, the server should be located on the same link as the client.
+<b>Note:</b> if the server is located on a different link as the
+client, you will need to run a DHCPv6 relay agent on the client link
+and (in general) to enable IPv6 multicast routing to reach the server
+from the relay agent.
 
 <h2>3. Host Configuration</h2>
 
