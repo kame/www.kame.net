@@ -534,3 +534,19 @@ D (racoon 509) Re: Printing ISAKMP packets
 - (racoon 525) backupsa
 - (racoon 526) generate_policy option / phase1/2 identifier
 - (racoon 527) Re: [Ipsec-tools-devel] host unreachable problem - possible solution
+- (racoon 528) How to prevent racoon from accepting unknown self-signed certificates?
+- (racoon 529) Re: How to prevent racoon from accepting unknown self-signed certificates?
+- (racoon 530) Configuration reload and existing tunnels
+- (racoon 531) Re: Configuration reload and existing tunnels
+- (racoon 532) Re: Configuration reload and existing tunnels
+D (racoon 533) Fw: authentication bug in KAME's racoon
+- (racoon 534) Problem with listen option: getsockname (Socket operation on non-socket)
+D (racoon 535) Re: authentication bug in KAME's racoon (fwd)
+D (racoon 536) Re: [Ipsec-tools-devel] Re: authentication bug in KAME's racoon (fwd)
+D (racoon 537) Re: [Ipsec-tools-devel] Re: authentication bug in KAME's racoon (fwd)
+- (racoon 538) sendmsg (Operation not permitted) while ipsec sa negociation
+D (racoon 539) Re: [Ipsec-tools-devel] Re: authentication bug in KAME's racoon (fwd)
+- (racoon 540) Racoon and FreeSwan RSA Sascha Hdepohl
+- (racoon 541) Re: Racoon and FreeSwan RSA
+- (racoon 542) Re: Racoon and FreeSwan RSA
+- (racoon 543) Re: Racoon and FreeSwan RSA
