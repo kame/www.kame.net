@@ -2,3 +2,4 @@ Redirect /dev/query-pr-summary.cgi http://orange.kame.net/dev/query-pr-summary.c
 Redirect /dev/send-pr.html http://orange.kame.net/dev/send-pr.html
 Redirect /dev/dosendpr.cgi http://orange.kame.net/dev/dosendpr.cgi
 Redirect /dev/query-pr.cgi http://orange.kame.net/dev/query-pr.cgi
+Redirect /dev/cvsweb.cgi http://orange.kame.net/dev/cvsweb.cgi
