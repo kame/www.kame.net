@@ -1,4 +1,4 @@
-$KAME: bindtest.c,v 1.34 2001/05/21 07:48:30 jinmei Exp $
+KAME: bindtest.c,v 1.34 2001/05/21 07:48:30 jinmei Exp
 starting tests, socktype = SOCK_DGRAM
 	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
 wild4:	x	o[--1x]	x	o[-21x]	?2(49)	?2(49)	?2(49)	?2(49)
