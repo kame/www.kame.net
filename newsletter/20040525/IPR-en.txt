@@ -26,7 +26,7 @@ Request:
   Making a contract is a barrier for the deployment of SSM.  We
   request an IPR claim which doesn't need any contract of a license.
 
-Importance: urgent
+Priority: high
   This is a big problem, since SSM is supposed to be almost mandatory
   for the deployment of IPv4/IPv6 multicasting.  Especially in IPv6,
   it is much easier to deploy SSM keeping pace with the deployment of
@@ -59,7 +59,7 @@ Request:
     contract of a license to use key exchange mechanisms will make a
     hurdle for IPsec deployment.
 
-Importance: urgent
+Priority: high
   It is a big problem, since there is no other replacement for
   IKE/IKEv2 for now.
 
@@ -115,7 +115,7 @@ Request:
     - We request Nokia to accept KAME license to distribute NEMO
       technologies, if the technologies are covered by their patents.
 
-Importance: urgent
+Priority: high
   Deployment of network mobility is a key aspect of deployment of the
   whole mobility technologies.  We strongly want to distribute NEMO
   implementation to accelerate deployment of mobility.
@@ -141,7 +141,7 @@ Request:
   - We at least need clarification which part is affected by their
     patents
 
-Importance: urgent
+Priority: high
   We don't have alternative key exchange mechanism other than IKE/IKEv2.
   It is very important for us to deploy IKE/IKEv2.
 
@@ -167,7 +167,7 @@ Concern:
     said, he can do nothing because this patent was submitted before he
     changed his company.
 
-Importance: important
+Priority: medium
   ISATAP is tend to be used as a transition mechanism especially in
   enterprise networks.  KAME project received questions frequently,
   why did we removed the technology.  We want to provide ISATAP as one
@@ -199,7 +199,7 @@ Request:
     VRRP.  We need a royalty free license which doesn't require any
     contract.
 
-Importance: normal
+Priority: medium
   We don't have any urgent needs to distribute VRRP for IPv6 for now.
 
 
@@ -235,7 +235,7 @@ Concern:
   SEND.  We need a royalty free license which doesn't require any
   contract.
 
-Importance: not urgent
+Priority: low
   We are not sure SEND is a correct way.  We will follow the IETF
   discussion of SEND.
 
@@ -258,5 +258,5 @@ Concern:
   companies (Microsoft, Cisco, SSH) claims they have patents for these
   technologies.  With which company should we make a contract?
 
-Importance: not urgent
+Priority: low
   Not all users use this technologies.  There is no urgency.
