@@ -12,7 +12,7 @@ How to use ISATAP on KAME
 <p>
 <a href="http://www.kame.net/~suz/">SUZUKI, Shinsuke</a>
 at <a href="http://www.kame.net/">KAME Project</a>
-<pre>$Id: index.html,v 1.4 2004/12/02 09:39:55 suz Exp $</pre>
+<pre>$Id: index.html,v 1.5 2005/02/08 06:36:36 suz Exp $</pre>
 </p>
 
 <ol>
@@ -137,7 +137,7 @@ but can accept Router Solicitation from older draft implementations
 If you have 192.168.0.1, then use the following command.
 <blockquote>
 <pre>
-# ifconfig ist0 inet6 fe80::5efe:192.168.0.1 prefixlen 64
+# /usr/local/v6/sbin/ifconfig ist0 inet6 fe80::5efe:192.168.0.1 prefixlen 64
 </pre>
 </blockquote>
 </p>
@@ -147,7 +147,7 @@ If you have 192.168.0.1, then use the following command.
 If it's statically defined as "192.168.0.254", then use the following command to configure it.
 <blockquote>
 <pre>
-# ifconfig ist0 isataprtr 192.168.0.254
+# /usr/local/v6/sbin/ifconfig ist0 isataprtr 192.168.0.254
 </pre>
 </blockquote>
 </p>
@@ -203,7 +203,7 @@ done
 
 <li> Solicite RA periodically.
 <pre>
-	# rtsold ist0
+	# /usr/local/v6/sbin/rtsold ist0
 </pre>
 Please take care that "rtsol" is not enough, because the obtained prefix
 will soon be expired since ISATAP router can only send solicited RAs.
@@ -214,19 +214,19 @@ will soon be expired since ISATAP router can only send solicited RAs.
 <ol>
 <li> configure a linklocal address on ISATAP interface using your IPv4 address.
 <pre>
-	# ifconfig ist0 inet6 fe80::5efe:192.168.0.254 prefixlen 64
+	# /usr/local/v6/sbin/ifconfig ist0 inet6 fe80::5efe:192.168.0.254 prefixlen 64
 </pre>
 
 <li> configure one or multiple non-linklocal addresses as necessary.
 <br>
 please embed the same IPv4 address as linklocal address.
 <pre>
-	# ifconfig ist0 inet6 3ffe:ffff:ffff:ffff::5efe:192.168.0.254 prefixlen 64 alias
+	# /usr/local/v6/sbin/ifconfig ist0 inet6 3ffe:ffff:ffff:ffff::5efe:192.168.0.254 prefixlen 64 alias
 </pre>
 
 <li> Advertise the non-linklocal prefixes by RA
 <pre>
-	# rtadvd ist0
+	# /usr/local/v6/sbin/rtadvd ist0
 </pre>
 </ol>
 
