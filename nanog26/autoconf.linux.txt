@@ -1,0 +1,38 @@
+Running IPv6 stateless address autoconfiguration on Linux
+$Id: autoconf.linux.txt,v 1.1 2002/10/26 18:17:37 itojun Exp $
+
+
+From: Yuji Sekiya <sekiya@sfc.wide.ad.jp>
+
+For IPv6 autoconfiguration of your interface,
+please confirm the below items.
+
+/proc/sys/net/ipv6/conf/[your_interface]/forwarding = 0
+/proc/sys/net/ipv6/conf/[your_interface]/accept_ra  = 1
+
+Then you might enable your interface using dhcp client or
+"ifconfig [your_interface] up", you can get autoconfiguration.
+
+
+But original Linux kernel has a bug of joining all-node
+multicast address. If you can't get autoconfiguration in spite of
+enabling your interface, you have to once unplug and re-plug
+your interface or UTP cable.
+
+If you have applied USAGI patch, you will get autoconfiguration
+without trouble :-)
+
+
+BTW, if you use pcmcia-cs-3.1.24 and your wireless card doesn't
+work with IPv6, apply the patch from Heikki Vatiainen.
+
+--- wvlan_cs.c~ Thu Dec 14 00:58:16 2000
++++ wvlan_cs.c  Fri Feb 16 14:08:39 2001
+@@ -2378,7 +2378,7 @@
+        struct net_local *local = (struct net_local *)dev->priv;
+        unsigned long flags;
+        int rc, len;
+-       char *p;
++       unsigned char *p;
+ 
+        DEBUG(DEBUG_CALLTRACE, "-> wvlan_tx(%s)\n", dev->name);

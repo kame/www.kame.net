@@ -1,0 +1,120 @@
+<HTML>
+<HEAD><TITLE>NANOG26 IPv6 network instructions</TITLE></HEAD>
+<BODY>
+<A HREF="http://www.ietf.org/">
+<IMG SRC=http://www.ietf.org/images/ietflogo2e.gif ALT="IETF" WIDTH=80 HEIGHT=45></A>
+<H1><A HREF=http://www.ietf.org/meetings/IETF-52.html>NANOG26</A> IPv6 network instructions</H1>
+
+<PRE>$Id: index.html,v 1.1 2002/10/26 18:17:38 itojun Exp $</PRE>
+
+<H2>Basic configuration</H2>
+<DL>
+<DT><STRONG>Which network segments are IPv6 ready?</STRONG>
+<DD>	term room, and 802.11 wireless segment.
+
+<DT><STRONG>IPv6 global address prefix?</STRONG>
+<DD>	2001:0240:05ff:0000::/64 (802.11/ethernet in term room)
+
+<DT><STRONG>How to configure my notebook PC?</STRONG>
+<DD>	Use IPv6 stateless address autoconfiguration
+	(<A HREF=http://www.normos.org/ietf/rfc/rfc2462.txt>RFC2462</A>).
+<DD>	Quick autoconf howto:
+	<A HREF=autoconf.kame.txt>NetBSD</A>
+	<A HREF=autoconf.kame.txt>OpenBSD</A>
+	<A HREF=autoconf.kame.txt>FreeBSD</A>
+	<A HREF=autoconf.kame.txt>BSD/OS</A>
+	<A HREF=autoconf.win2k.txt>Win2k</A>
+	<A HREF=autoconf.winxp.txt>WinXP</A>
+	<A HREF=autoconf.linux.txt>Linux</A>
+
+<DT><STRONG>How do I get static IPv6 address?</STRONG>
+<DD>	We do not do that.  Autoconfigure it.
+
+<DT><STRONG>IPv6 transport-ready nameservers?</STRONG>
+<DD>	2001:0240:05ff::53
+
+<DT><STRONG>Service time?</STRONG>
+<DD>	Whenever terminal cluster is running.
+	Hopefully 24hours, starting from Sunday and
+	terminating sometime on Oct 31.
+
+<DT><STRONG>How to obtain IPv6 stacks and make my laptop IPv6 ready?</STRONG>
+<DL>
+<DT>In general: <A HREF=http://www.ipv6.org/impl/index.html>http://www.ipv6.org/impl/index.html</A>
+<DT>BSDs:
+	<A HREF=http://www.openbsd.org/>OpenBSD</A> 2.7,
+	<A HREF=http://www.netbsd.org/>NetBSD</A> 1.5,
+	<A HREF=http://www.bsdi.com/>BSD/OS</A> 4.0,
+	<A HREF=http://www.freebsd.org/>FreeBSD</A> 4.0 or later have
+	IPv6 stack integrated.
+<DT>Linux
+<DD>	depends on the distribution you are using.
+	See <A HREF=http://www.bieringer.de/linux/IPv6/status/IPv6+Linux-status-distributions.html>distribution status page</A> and
+	<A HREF=http://www.linux-ipv6.org/tahitest/summary-index.html>conformance test comparison page</A>.
+<DD>	<A HREF=http://www.bieringer.de/linux/IPv6/>http://www.bieringer.de/linux/IPv6/</A> and
+	<A HREF=http://www.linux-ipv6.org/>http://www.linux-ipv6.org/</A>
+	have more info.
+<DT>WinXP:
+	IPv6 stack is integrated.
+<DT>Win2K: <A HREF=http://www.research.microsoft.com/msripv6/>
+	IPv6 research releases from MS research</A>
+<DT>Win95/98: <A HREF=http://www.trumpet.com.au/ipv6.htm>
+	Trumpet IPv6</A> or
+	<A HREF=http://www.hitachi.co.jp/Prod/comp/network/pexv6-e.htm>
+	Hitachi Toolnet6</A>
+<DT><A HREF=http://www.sun.com/solaris/>Sun Solaris</A>:
+	Solaris 8 has IPv6 stack integrated.
+	<A HREF=http://www.sun.com/solaris/ipv6/>more info</A>
+</DL>
+
+<DT><STRONG>Any other questions?</STRONG>
+<DD>	Do not hesitate to contact
+	<A HREF=mailto:nanog26@kame.net>nanog26@kame.net</A>.
+
+</DL>
+
+<HR>
+<H2>Details of configuration</H2>
+<DL>
+<DT><STRONG>Connectivity to the outside world?</STRONG>
+<DD>	<A HREF=http://www.normos.org/ietf/rfc/rfc1933.txt>RFC1933</A>/
+	<A HREF=http://www.normos.org/ietf/rfc/rfc2893.txt>RFC2893</A>
+	configured IPv6-over-IPv4 tunnel to
+	<A HREF=http://www.iij.com/>IIJ</A> equipment
+	in Palo Alto, California (<A HREF=http://www.paix.net/>PAIX</A>).
+	<A HREF=traceroute.txt>IPv4 traceroute for tunnel section</A>.
+<DD>
+<PRE>
+IIJ router in PAIX
+  |
+  | IPv6 over IPv4 tunnel
+  |
+venue IPv6 router
+  |
+==+==
+wireless/term room
+</PRE>
+
+<DT><STRONG>Router equipment?</STRONG>
+<DD>	<A HREF=http://www.netbsd.org/>NetBSD</A>-current
+	(1.6F, <A HREF=http://www.kame.net/>KAME</A> IPv6 stack intergrated)
+	running on top of
+	<A HREF=http://www.wildlab.com/>Wildlab LAMB</A>.
+	Basically, LAMB is used as a plain 486 PC with two 10Base-T ethernet
+	interfaces.
+</DL>
+
+<HR>
+<A HREF=http://www.kame.net/>
+<IMG SRC=kame3.png ALT="KAME"></A>
+<A HREF=http://www.iij.com/>
+<IMG SRC=iij-logo.png ALT="IIJ"></A>
+<A HREF=http://www.iijlab.net/>
+[IIJ research laboratory]</A>
+<A HREF=http://www.ietf.org/meetings/IETF-52.html>[NANOG26]</A>
+
+<BR>
+<!--#include virtual="../v6p.cgi" -->
+
+</BODY>
+</HTML>

@@ -1,0 +1,14 @@
+> /usr/sbin/traceroute -q1 plt6-gate1.iij.net
+traceroute to plt6-gate1.iij.net (216.98.98.82), 64 hops max, 40 byte packets
+ 1  rtr01.nanog26.merit.net (192.35.164.1)  1.133 ms
+ 2  sprint1-gw.oregon-ix.net (198.32.165.2)  1.082 ms
+ 3  sl-bb23-tac-2-3-155M.sprintlink.net (144.232.19.65)  6.080 ms
+ 4  sl-bb20-tac-5-0.sprintlink.net (144.232.17.173)  6.570 ms
+ 5  sl-bb20-sj-5-2.sprintlink.net (144.232.9.213)  24.307 ms
+ 6  sl-bb22-sj-14-0.sprintlink.net (144.232.3.165)  24.594 ms
+ 7  sl-st20-sj-14-0.sprintlink.net (144.232.20.66)  24.816 ms
+ 8  sl-interini-1-0.sprintlink.net (144.223.242.18)  50.945 ms
+ 9  sjc002bb00.IIJ.Net (216.98.96.165)  55.159 ms
+10  paloalto-bb3.IIJ.Net (216.98.96.189)  50.750 ms
+11  paloalto-bb2.IIJ.Net (216.98.96.178)  71.872 ms
+12  plt6-gate1.IIJ.Net (216.98.98.82)  67.032 ms

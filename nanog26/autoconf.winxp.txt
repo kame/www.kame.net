@@ -1,0 +1,5 @@
+Running IPv6 stateless address autoconfiguration on WinXP
+$Id: autoconf.winxp.txt,v 1.1 2002/10/26 18:17:38 itojun Exp $
+
+
+type "ipv6 install" from command prompt, for first time only.
