@@ -1,0 +1,155 @@
+Return-Path: koba@flab.fujitsu.co.jp
+Delivery-Date: Tue Apr 23 15:32:38 2002
+Return-Path: <koba@flab.fujitsu.co.jp>
+Delivered-To: itojun@itojun.org
+Received: from sh1.iijlab.net (sh1.iijlab.net [3ffe:8020:0:1:260:97ff:fe07:69ea])
+	by coconut.itojun.org (Postfix) with ESMTP id 7CF564B26
+	for <itojun@itojun.org>; Tue, 23 Apr 2002 15:32:31 +0900 (JST)
+Received: by sh1.iijlab.net (Postfix)
+	id 07FB7659; Tue, 23 Apr 2002 15:32:31 +0900 (JST)
+Delivered-To: itojun@iijlab.net
+Received: from fgwmail6.fujitsu.co.jp (fgwmail6.fujitsu.co.jp [192.51.44.36])
+	by sh1.iijlab.net (Postfix) with ESMTP id 1844C646
+	for <itojun@iijlab.net>; Tue, 23 Apr 2002 15:31:00 +0900 (JST)
+Received: from m6.gw.fujitsu.co.jp by fgwmail6.fujitsu.co.jp (8.9.3/3.7W-MX0204-Fujitsu Gateway)
+	id PAA00630; Tue, 23 Apr 2002 15:30:35 +0900 (JST)
+	(envelope-from koba@flab.fujitsu.co.jp)
+Received: from phoenix.avalon.flab.fujitsu.co.jp by m6.gw.fujitsu.co.jp (8.9.3/3.7W-0204-Fujitsu Domain Master)
+	id PAA25821; Tue, 23 Apr 2002 15:30:34 +0900
+	(envelope-from koba@flab.fujitsu.co.jp)
+Received: from localhost (koba@localhost [127.0.0.1])
+	by phoenix.avalon.flab.fujitsu.co.jp (8.9.3/3.7W-avalon-2000013115) with ESMTP id PAA20503;
+	Tue, 23 Apr 2002 15:30:29 +0900 (JST)
+To: hinden@IPRG.nokia.com
+Cc: itojun@iijlab.net
+Subject: Re: IPv6 on Sharp Linux PDA
+In-Reply-To: <4.3.2.7.2.20020422215232.02e58200@mailhost.iprg.nokia.com>
+References: <4.3.2.7.2.20020422215232.02e58200@mailhost.iprg.nokia.com>
+X-Mailer: Mew version 1.94.2 on Emacs 19.28 / Mule 2.3 (SUETSUMUHANA)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <20020423153027Y.koba@flab.fujitsu.co.jp>
+Date: Tue, 23 Apr 2002 15:30:27 +0900
+From: KOBAYASHI Shinji <koba@flab.fujitsu.co.jp>
+X-Dispatcher: imput version 20000228(IM140)
+Lines: 117
+X-Filter: mailagent [version 3.0 PL73] for itojun@itojun.org
+
+
+Dear Bob,
+
+>>>>> "Bob" == Bob Hinden <hinden@IPRG.nokia.com> writes:
+
+Bob> Itojun suggested I contact you.  I have a Sharp Zaurus PDA and am looking 
+Bob> for someone who could help building a new kernel for it that also supports 
+Bob> IPv6.  It would be an ideal device to support IPv6.
+
+It's my pleasure to help you. You would need the Linux kernel source
+for the Sharp Zaurus and the cross-compiling environment both
+available at Sharp's web site (http://more.sbc.co.jp/slj/index.asp).
+There also is a good documentation to build the kernel
+(http://more.sbc.co.jp/slj/source/build_image112.asp).
+The cross-compiling environment can be built on RedHat Linux. You will 
+need a CompactFlash memory card (>32MB) to update the kernel.
+
+The procedure is as follows:
+
+1. Update your FlashROM image (binary) to 1.12 or 1.13
+2. Prepare the cross-compiling environment.
+3. Get the kernel source.
+4. Configure and build the kernel.
+5. Transfer the kernel image to FlashROM.
+6. Enable the IPv6 code
+
+Please note that the newly built kernel does NOT support SD cards as
+described in the Sharp's document.
+
+The following is the detailed procedures:
+
+1. Update your FlashROM image (binary) to 1.12 or 1.13
+
+The latest FlashROM image and the kernel source code is different from 
+the shipped FlashROM image. I recommend that you first update the
+binary FlashROM image to the latest version which matches the version
+of the kernel you are going to build.
+The FlashROM image can be downloaded from
+http://more.sbc.co.jp/slj/download.asp
+The update procedure is documented in
+http://more.sbc.co.jp/slj/download/readme/readme_romimage112.asp
+Please read it carefully.
+If you use the Windows driver (Intellisync or Qtopia Desktop), you
+will also need to update these drivers.
+
+2. Prepare the cross-compiling environment.
+
+The procedures and the links to necessary tools are available in
+http://more.sbc.co.jp/slj/source/build_image112.asp
+In short, you will need
+http://more.sbc.co.jp/slj/tool/gcc-cross-sa1100-2.95.2-0.i386.rpm
+http://more.sbc.co.jp/slj/tool/glibc-arm-2.2.2-0.i386.rpm
+http://more.sbc.co.jp/slj/tool/binutils-cross-arm-2.11.2-0.i386.rpm
+Install them with 'rpm -i' command, and include /opt/Embedix/tools/bin
+to your PATH.
+
+3. Get the kernel source.
+
+You can either download the entire source
+http://more.sbc.co.jp/slj/source/linux-sl5000d-20020318.tar.bz2
+or the patch to ARM-Linux kernel
+http://more.sbc.co.jp/slj/source/linux-2.4.6-rmk1-np2-embedix-20011228-sl5000d-20020318.gz
+As describe in the Sharp's document, you will also need
+linux-2.4.6.tar.bz2
+patch-2.4.6-rmk1.gz
+diff-2.4.6-rmk1-np2.gz
+if you are going to use the patch.
+
+4. Configure and build the kernel.
+
+As the document says, please configure the kernel as follows:
+	$ cd linux
+	$ make menuconfig
+	--> Load an Alternate Configuration File
+	input "arch/arm/def-configs/collie"
+	select "ok"
+	select "Exit"
+	Do you wish to save your kernel configuration?  -> Yes
+The default configuration does not enable IPv6, so you will also need
+to enable it. 
+	$ make menuconfig
+	--> Networking options
+	--> The IPv6 protocol (EXPERIMENTAL)
+You can either embed the IPv6 protocol stack to the kernel (displayed
+as '<*>') or make it separated as a loadable module (displayed as
+'<M>'). I tried the latter.
+Now, you can build the kernel.
+	$ make dep; make clean; make zImage
+I you are going to build the IPv6 code as a module, please do
+	$ make modules
+also.
+
+5. Transfer the kernel image to FlashROM.
+
+Copy the built kernel (linux/arm/boot/zImage) to an empty CompactFlash 
+card. The update procedure is same as the binary update procedure
+except that you use the 'zImage' file instead of 'ROMIMAGE' file.
+Please refer
+http://more.sbc.co.jp/slj/download/readme/readme_romimage112.asp
+
+6. Enable the IPv6 code
+
+If you have embedded the IPv6 protocol stack to the kernel, you are
+ready. You can see 'inet6 addr' lines with ifconfig command.
+If you have built as a module, you should copy the module and load it.
+Copy the linux/net/ipv6/ipv6.o to CompactFlash card, and copy it to
+the Zaurus's built-in ROM.
+	# mkdir -p /lib/modules/2.4.6-rmk1-np2-embedix/kernel/net/ipv6/
+	# cp /mnt/cf/ipv6.o /lib/modules/2.4.6-rmk1-np2-embedix/kernel/net/ipv6/
+	# depmod -a
+	# modprobe ipv6
+
+Please ask me if you encounter any problems.
+Best Regards,
+
+Kobayashi Shinji
+koba@flab.fujitsu.co.jp
