@@ -37,8 +37,8 @@ if ($temp > 30) {
 } else {
 	$temp = "<FONT COLOR=\"GREEN\">$temp</FONT>";
 }
-print "the server room's temperature is ${temp}C&deg;at ${time} on ${date}.";
+print "the server room's temperature is ${temp}C&deg;at ${time} on ${date}GMT.";
 print "&nbsp;&nbsp;&nbsp;&nbsp;";
-print "Powered by <A HREF=\"http://www.i-node.co.jp/e/index.html\">Internet node</A>\n";
+print "Powered by <A HREF=\"http://www.i-node.co.jp/e/index.html\">Internet node</A>.\n";
 
 exit 0;
