@@ -1,8 +1,0 @@
-AuthUserFile /usr/local/www/data.kame/stat-it/.htpasswd
-AuthGroupFile /dev/null
-AuthName wide
-AuthType Basic
-
-<Limit GET>
-require user wide
-</Limit>
