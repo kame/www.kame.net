@@ -1,0 +1,1206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN""http://www.w3c.org/TR/REC-html40/strict.dtd">
+<HTML>
+<HEAD>
+<TITLE>IPv6 Conformance Test Report</TITLE>
+<META NAME="GENERATOR" CONTENT="TAHI IPv6 Conformance Test Kit">
+</HEAD>
+
+<BODY BGCOLOR="#F0F0F0">
+<H1>Test Information</H1>
+<TABLE BORDER=1>
+<TR><TD>Title</TD><TD>Valid sequence number A=1</TD></TR>
+<TR><TD>CommandLine</TD><TD>./BU_SEQ_A1.seq -pkt ./BU_SEQ_A1.def -log 23.html -ti Valid sequence number A=1</TD></TR>
+<TR><TD>TestVersion</TD><TD></TD></TR>
+<TR><TD>ToolVersion</TD><TD>undefined</TD></TR>
+<TR><TD>Start</TD><TD>2003/01/20 09:50:56</TD></TR>
+<TR><TD>Tn</TD><TD>/usr/local/v6eval//etc//tn.def</TD></TR>
+<TR><TD>Nu</TD><TD>/usr/local/v6eval//etc//nut.def</TD></TR>
+<TR><TD>Pkt</TD><TD>./BU_SEQ_A1.def</TD></TR>
+<TR><TD>System</TD><TD>manual</TD></TR>
+<TR><TD>TargetName</TD><TD>kame</TD></TR>
+<TR><TD>HostName</TD><TD>target.tahi.org</TD></TR>
+<TR><TD>Type</TD><TD>host</TD></TR>
+</TABLE>
+<HR>
+<H1>Test Sequence Execution Log</H1>
+<TABLE BORDER=1>
+<TR><TD>09:50:56</TD><TD>Start</TD></TR>
+<TR VALIGN="TOP"><TD>09:50:56</TD><TD>Start Capturing Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT COLOR="#FF0000" SIZE="5"><U><B>INITIALIZATION</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:50:56</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT SIZE="4"><U><B>Update care-of address - LinkY</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:50:57</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT SIZE="4"><U><B>Check Reachability</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>09:50:57</TD><TD>
+vSend(Link0,ra_from_r0)<BR>
+<A NAME="vSend0"></A>
+<A HREF="#vSendPKT0">    Send RA: R0 (Link0) -&gt; all-nodes multicast address (Link0)</A><BR>
+
+</TD>
+</TR>
+<TR VALIGN="TOP">
+<TD>09:50:57</TD>
+<TD>Wait 3 second
+</TD></TR>
+<TR VALIGN="TOP"><TD>09:51:00</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR VALIGN="TOP">
+<TD>09:51:00</TD><TD>
+vSend(Link0,ereq_from_hoa_to_nut_global)<BR>
+<A NAME="vSend1"></A>
+<A HREF="#vSendPKT1">    Send Echo Request: MN (LinkX) -&gt; NUT (Link0) (global)</A><BR>
+
+</TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:00</TD>
+<TD>vRecv(Link0,ns_from_nut_to_r0_multicast_global ns_from_nut_to_r0_multicast_linklocal ns_from_nut_to_r0_unicast_global ns_from_nut_to_r0_unicast_linklocal ns_from_nut_to_r0_unicast_sll_global ns_from_nut_to_r0_unicast_sll_linklocal ra_from_nut rs_from_nut rs_from_nut_sll erep_from_nut_to_hoa_global) timeout:1 cntLimit:0 seektime:0<BR>
+<A NAME="vRecv0"></A>
+<A HREF="#vRecvPKT0">    Recv Echo Reply: NUT (Link0) -&gt; MN (LinkX) (global)</A><BR>
+
+</TD>
+</TR>
+
+<TR VALIGN="TOP"><TD>09:51:00</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT SIZE="4"><U><B>Return Routability Procedure</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:00</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR VALIGN="TOP">
+<TD>09:51:00</TD><TD>
+vSend(Link0,HoTI CoTI)<BR>
+<A NAME="vSend2"></A>
+<A HREF="#vSendPKT2">    Send HoTI: MN (LinkX) -&gt; NUT (Link0) (global)</A><BR>
+<A NAME="vSend3"></A>
+<A HREF="#vSendPKT3">    Send CoTI: MN' (LinkY) -&gt; NUT (Link0) (global)</A><BR>
+
+</TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:00</TD>
+<TD>vRecv(Link0,ns_from_nut_to_r0_multicast_global ns_from_nut_to_r0_multicast_linklocal ns_from_nut_to_r0_unicast_global ns_from_nut_to_r0_unicast_linklocal ns_from_nut_to_r0_unicast_sll_global ns_from_nut_to_r0_unicast_sll_linklocal ra_from_nut rs_from_nut rs_from_nut_sll CoT HoT) timeout:1 cntLimit:0 seektime:0<BR>
+<A NAME="vRecv1"></A>
+<A HREF="#vRecvPKT1">    Recv HoT: NUT (Link0) -&gt; MN (LinkX) (global)</A><BR>
+
+</TD>
+</TR>
+
+<TR VALIGN="TOP"><TD>09:51:00</TD>
+<TD>vRecv(Link0,ns_from_nut_to_r0_multicast_global ns_from_nut_to_r0_multicast_linklocal ns_from_nut_to_r0_unicast_global ns_from_nut_to_r0_unicast_linklocal ns_from_nut_to_r0_unicast_sll_global ns_from_nut_to_r0_unicast_sll_linklocal ra_from_nut rs_from_nut rs_from_nut_sll CoT) timeout:1 cntLimit:0 seektime:0<BR>
+<A NAME="vRecv2"></A>
+<A HREF="#vRecvPKT2">    Recv CoT: NUT (Link0) -&gt; MN' (LinkY) (global)</A><BR>
+
+</TD>
+</TR>
+
+<TR VALIGN="TOP"><TD>09:51:00</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT SIZE="4"><U><B>Requests to Cache a Binding</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:00</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR VALIGN="TOP">
+<TD>09:51:00</TD><TD>
+vSend(Link0,BU)<BR>
+<A NAME="vSend4"></A>
+<A HREF="#vSendPKT4">    Send BU: MN' (LinkY) -&gt; NUT (Link0) (global)</A><BR>
+
+</TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:00</TD>
+<TD>vRecv(Link0,ns_from_nut_to_r0_multicast_global ns_from_nut_to_r0_multicast_linklocal ns_from_nut_to_r0_unicast_global ns_from_nut_to_r0_unicast_linklocal ns_from_nut_to_r0_unicast_sll_global ns_from_nut_to_r0_unicast_sll_linklocal ra_from_nut rs_from_nut rs_from_nut_sll BA) timeout:1 cntLimit:0 seektime:0<BR>
+vRecv() return status=1
+
+</TD>
+</TR>
+
+<TR VALIGN="TOP"><TD>09:51:01</TD>
+<TD>vRecv(Link0,ns_from_nut_to_r0_multicast_global ns_from_nut_to_r0_multicast_linklocal ns_from_nut_to_r0_unicast_global ns_from_nut_to_r0_unicast_linklocal ns_from_nut_to_r0_unicast_sll_global ns_from_nut_to_r0_unicast_sll_linklocal ra_from_nut rs_from_nut rs_from_nut_sll BA) timeout:1 cntLimit:0 seektime:0<BR>
+vRecv() return status=1
+
+</TD>
+</TR>
+
+<TR VALIGN="TOP"><TD>09:51:02</TD>
+<TD>vRecv(Link0,ns_from_nut_to_r0_multicast_global ns_from_nut_to_r0_multicast_linklocal ns_from_nut_to_r0_unicast_global ns_from_nut_to_r0_unicast_linklocal ns_from_nut_to_r0_unicast_sll_global ns_from_nut_to_r0_unicast_sll_linklocal ra_from_nut rs_from_nut rs_from_nut_sll BA) timeout:1 cntLimit:0 seektime:0<BR>
+vRecv() return status=1
+
+</TD>
+</TR>
+
+<TR VALIGN="TOP"><TD>09:51:03</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT SIZE="4"><U><B>Check Binding Cache</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:03</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR VALIGN="TOP">
+<TD>09:51:03</TD><TD>
+vSend(Link0,echorequest_hao)<BR>
+<A NAME="vSend5"></A>
+<A HREF="#vSendPKT5">    Send Echo Request w/ HaO: MN' (LinkY) -&gt; NUT (Link0) (global)</A><BR>
+
+</TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:03</TD>
+<TD>vRecv(Link0,ns_from_nut_to_r0_multicast_global ns_from_nut_to_r0_multicast_linklocal ns_from_nut_to_r0_unicast_global ns_from_nut_to_r0_unicast_linklocal ns_from_nut_to_r0_unicast_sll_global ns_from_nut_to_r0_unicast_sll_linklocal ra_from_nut rs_from_nut rs_from_nut_sll echoreply_rh) timeout:1 cntLimit:0 seektime:0<BR>
+<A NAME="vRecv3"></A>
+<A HREF="#vRecvPKT3">    Recv Echo Reply w/ RH: NUT (Link0) -&gt; MN' (LinkY) (global)</A><BR>
+
+</TD>
+</TR>
+
+<TR><TD><BR></TD><TD>
+<FONT COLOR="#FF0000" SIZE="5"><U><B>TEST PROCEDURE</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:03</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT SIZE="4"><U><B>Update care-of address - LinkZ</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:03</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT SIZE="4"><U><B>Return Routability Procedure</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:03</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR VALIGN="TOP">
+<TD>09:51:03</TD><TD>
+vSend(Link0,HoTI CoTI)<BR>
+<A NAME="vSend6"></A>
+<A HREF="#vSendPKT6">    Send HoTI: MN (LinkX) -&gt; NUT (Link0) (global)</A><BR>
+<A NAME="vSend7"></A>
+<A HREF="#vSendPKT7">    Send CoTI: MN'' (LinkZ) -&gt; NUT (Link0) (global)</A><BR>
+
+</TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:04</TD>
+<TD>vRecv(Link0,ns_from_nut_to_r0_multicast_global ns_from_nut_to_r0_multicast_linklocal ns_from_nut_to_r0_unicast_global ns_from_nut_to_r0_unicast_linklocal ns_from_nut_to_r0_unicast_sll_global ns_from_nut_to_r0_unicast_sll_linklocal ra_from_nut rs_from_nut rs_from_nut_sll CoT HoT) timeout:1 cntLimit:0 seektime:0<BR>
+<A NAME="vRecv4"></A>
+<A HREF="#vRecvPKT4">    Recv HoT: NUT (Link0) -&gt; MN (LinkX) (global)</A><BR>
+
+</TD>
+</TR>
+
+<TR VALIGN="TOP"><TD>09:51:04</TD>
+<TD>vRecv(Link0,ns_from_nut_to_r0_multicast_global ns_from_nut_to_r0_multicast_linklocal ns_from_nut_to_r0_unicast_global ns_from_nut_to_r0_unicast_linklocal ns_from_nut_to_r0_unicast_sll_global ns_from_nut_to_r0_unicast_sll_linklocal ra_from_nut rs_from_nut rs_from_nut_sll CoT) timeout:1 cntLimit:0 seektime:0<BR>
+<A NAME="vRecv5"></A>
+<A HREF="#vRecvPKT5">    Recv CoT: NUT (Link0) -&gt; MN'' (LinkZ) (global)</A><BR>
+
+</TD>
+</TR>
+
+<TR VALIGN="TOP"><TD>09:51:04</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT SIZE="4"><U><B>Requests to Cache a Binding</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:04</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR VALIGN="TOP">
+<TD>09:51:04</TD><TD>
+vSend(Link0,BU)<BR>
+<A NAME="vSend8"></A>
+<A HREF="#vSendPKT8">    Send BU: MN'' (LinkZ) -&gt; NUT (Link0) (global)</A><BR>
+
+</TD>
+</TR>
+<TR VALIGN="TOP"><TD>09:51:04</TD>
+<TD>vRecv(Link0,ns_from_nut_to_r0_multicast_global ns_from_nut_to_r0_multicast_linklocal ns_from_nut_to_r0_unicast_global ns_from_nut_to_r0_unicast_linklocal ns_from_nut_to_r0_unicast_sll_global ns_from_nut_to_r0_unicast_sll_linklocal ra_from_nut rs_from_nut rs_from_nut_sll BA) timeout:1 cntLimit:0 seektime:0<BR>
+<A NAME="vRecv6"></A>
+<A HREF="#vRecvPKT6">    Recv BA: NUT (Link0) -&gt; MN'' (LinkZ) (global)</A><BR>
+
+</TD>
+</TR>
+
+<TR><TD><BR></TD><TD>
+<FONT COLOR="#FF0000">Lifetime is grater than MAX_RR_BINDING_LIFE</FONT><BR></TD>
+</TR>
+<TR><TD>09:51:04</TD><TD>End</TD></TR>
+</TABLE>
+<HR><H1>Packet Reverse Log</H1>
+<UL>
+<A NAME="vSendPKT0"></A><A HREF="#vSend0">    Send RA: R0 (Link0) -&gt; all-nodes multicast address (Link0) at 09:50:57</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:118)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 33:33:00:00:00:01
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:104)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 64
+| | | NextHeader                       = 58
+| | | HopLimit                         = 255
+| | | SourceAddress                    = fe80::200:ff:fe00:a0a0
+| | | DestinationAddress               = ff02::1
+| | ICMPv6_RA                       (length:64)
+| | | Type                             = 134
+| | | Code                             = 0
+| | | Checksum                         = 54628 calc(54628)
+| | | CurHopLimit                      = 0
+| | | MFlag                            = 0
+| | | OFlag                            = 0
+| | | HFlag                            = 0
+| | | Preference                       = 0
+| | | Reserved                         = 0
+| | | LifeTime                         = 1800
+| | | ReachableTime                    = 0
+| | | RetransTimer                     = 0
+| | | Opt_ICMPv6_SLL                  (length:8)
+| | | | Type                             = 1
+| | | | Length                           = 1
+| | | | LinkLayerAddress                 = 00:00:00:00:a0:a0
+| | | Opt_ICMPv6_MTU                  (length:8)
+| | | | Type                             = 5
+| | | | Length                           = 1
+| | | | Reserved                         = 0
+| | | | MTU                              = 1500
+| | | Opt_ICMPv6_Prefix               (length:32)
+| | | | Type                             = 3
+| | | | Length                           = 4
+| | | | PrefixLength                     = 64
+| | | | LFlag                            = 1
+| | | | AFlag                            = 1
+| | | | RFlag                            = 0
+| | | | Reserved1                        = 0
+| | | | ValidLifetime                    = 2592000
+| | | | PreferredLifetime                = 604800
+| | | | Reserved2                        = 0
+| | | | Prefix                           = 3ffe:501:ffff:100::
+</PRE><HR><A NAME="vSendPKT1"></A><A HREF="#vSend1">    Send Echo Request: MN (LinkX) -&gt; NUT (Link0) (global) at 09:51:00</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:70)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:03:47:3d:02:bd
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:56)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 16
+| | | NextHeader                       = 58
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:102:200:ff:fe00:9
+| | | DestinationAddress               = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | ICMPv6_EchoRequest              (length:16)
+| | | Type                             = 128
+| | | Code                             = 0
+| | | Checksum                         = 2441 calc(2441)
+| | | Identifier                       = 0
+| | | SequenceNumber                   = 0
+| | | Payload                         (length:8)
+| | | | data                             = 01234567 89abcdef
+</PRE><HR><A NAME="vRecvPKT0"></A><A HREF="#vRecv0">Recv at 09:51:00</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:70)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:00:00:00:a0:a0
+| | SourceAddress                    = 00:03:47:3d:02:bd
+| | Type                             = 34525
+| Packet_IPv6                     (length:56)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 16
+| | | NextHeader                       = 58
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | | DestinationAddress               = 3ffe:501:ffff:102:200:ff:fe00:9
+| | ICMPv6_EchoReply                (length:16)
+| | | Type                             = 129
+| | | Code                             = 0
+| | | Checksum                         = 2185 calc(2185)
+| | | Identifier                       = 0
+| | | SequenceNumber                   = 0
+| | | Payload                         (length:8)
+| | | | data                             = 01234567 89abcdef
+===ns_from_nut_to_r0_multicast_global=================================
+ng compare _HETHER_nut2r0solnode_global.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.ICMPv6_EchoReply
+===ns_from_nut_to_r0_multicast_linklocal=================================
+ng compare _HETHER_nut2r0solnode_linklocal.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.ICMPv6_EchoReply
+===ns_from_nut_to_r0_unicast_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.ICMPv6_EchoReply
+===ns_from_nut_to_r0_unicast_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.ICMPv6_EchoReply
+===ns_from_nut_to_r0_unicast_sll_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.ICMPv6_EchoReply
+===ns_from_nut_to_r0_unicast_sll_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.ICMPv6_EchoReply
+===ra_from_nut=================================
+ng compare _HETHER_nut2allnodes.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:01
+ng compare _HDR_IPV6_ra_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ra_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_ra_from_nut.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::1
+ng meta Packet_IPv6.ICMPv6_RA != Packet_IPv6.ICMPv6_EchoReply
+===rs_from_nut=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = oneof(v6("::0"),nutv6())
+ng compare _HDR_IPV6_rs_from_nut.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.ICMPv6_EchoReply
+===rs_from_nut_sll=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut_sll.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut_sll.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_rs_from_nut_sll.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.ICMPv6_EchoReply
+===erep_from_nut_to_hoa_global=================================
+</PRE><HR><A NAME="vSendPKT2"></A><A HREF="#vSend2">    Send HoTI: MN (LinkX) -&gt; NUT (Link0) (global) at 09:51:00</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:70)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:03:47:3d:02:bd
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:56)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 16
+| | | NextHeader                       = 62
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:102:200:ff:fe00:9
+| | | DestinationAddress               = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | Hdr_MH_HoTI                     (length:16)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 1
+| | | Type                             = 1
+| | | Reserved1                        = 0
+| | | Checksum                         = 60329 calc(60329)
+| | | Reserved2                        = 0
+| | | InitCookie                       = 0000000000000000
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+</PRE><HR><A NAME="vSendPKT3"></A><A HREF="#vSend3">    Send CoTI: MN' (LinkY) -&gt; NUT (Link0) (global) at 09:51:00</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:70)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:03:47:3d:02:bd
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:56)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 16
+| | | NextHeader                       = 62
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:103:200:ff:fe00:9
+| | | DestinationAddress               = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | Hdr_MH_CoTI                     (length:16)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 1
+| | | Type                             = 2
+| | | Reserved1                        = 0
+| | | Checksum                         = 60072 calc(60072)
+| | | Reserved2                        = 0
+| | | InitCookie                       = ffffffffffffffff
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+</PRE><HR><A NAME="vRecvPKT1"></A><A HREF="#vRecv1">Recv at 09:51:00</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:78)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:00:00:00:a0:a0
+| | SourceAddress                    = 00:03:47:3d:02:bd
+| | Type                             = 34525
+| Packet_IPv6                     (length:64)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 24
+| | | NextHeader                       = 62
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | | DestinationAddress               = 3ffe:501:ffff:102:200:ff:fe00:9
+| | Hdr_MH_HoT                      (length:24)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 2
+| | | Type                             = 3
+| | | Reserved1                        = 0
+| | | Checksum                         = 46720 calc(46720)
+| | | Index                            = 13
+| | | InitCookie                       = 0000000000000000
+| | | KeygenNonce                      = 027ecc8f0bd35832
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+===ns_from_nut_to_r0_multicast_global=================================
+ng compare _HETHER_nut2r0solnode_global.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_multicast_linklocal=================================
+ng compare _HETHER_nut2r0solnode_linklocal.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ra_from_nut=================================
+ng compare _HETHER_nut2allnodes.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:01
+ng compare _HDR_IPV6_ra_from_nut.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ra_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ra_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_ra_from_nut.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::1
+ng meta Packet_IPv6.ICMPv6_RA != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut.NextHeader received:62 = 58
+ng compare _HDR_IPV6_rs_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = oneof(v6("::0"),nutv6())
+ng compare _HDR_IPV6_rs_from_nut.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut_sll=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut_sll.NextHeader received:62 = 58
+ng compare _HDR_IPV6_rs_from_nut_sll.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut_sll.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_rs_from_nut_sll.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===CoT=================================
+ng compare _HDR_IPV6_CoT.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = 3ffe:501:ffff:103:200:ff:fe00:9
+ng meta Packet_IPv6.Hdr_MH_CoT != Packet_IPv6.Hdr_MH_HoT
+===HoT=================================
+</PRE><HR><A NAME="vRecvPKT2"></A><A HREF="#vRecv2">Recv at 09:51:00</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:78)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:00:00:00:a0:a0
+| | SourceAddress                    = 00:03:47:3d:02:bd
+| | Type                             = 34525
+| Packet_IPv6                     (length:64)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 24
+| | | NextHeader                       = 62
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | | DestinationAddress               = 3ffe:501:ffff:103:200:ff:fe00:9
+| | Hdr_MH_CoT                      (length:24)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 2
+| | | Type                             = 4
+| | | Reserved1                        = 0
+| | | Checksum                         = 64632 calc(64632)
+| | | Index                            = 13
+| | | InitCookie                       = ffffffffffffffff
+| | | KeygenNonce                      = 02b0267546cb7c29
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+===ns_from_nut_to_r0_multicast_global=================================
+ng compare _HETHER_nut2r0solnode_global.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_multicast_linklocal=================================
+ng compare _HETHER_nut2r0solnode_linklocal.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ra_from_nut=================================
+ng compare _HETHER_nut2allnodes.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:01
+ng compare _HDR_IPV6_ra_from_nut.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ra_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ra_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_ra_from_nut.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = ff02::1
+ng meta Packet_IPv6.ICMPv6_RA != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut.NextHeader received:62 = 58
+ng compare _HDR_IPV6_rs_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = oneof(v6("::0"),nutv6())
+ng compare _HDR_IPV6_rs_from_nut.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut_sll=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut_sll.NextHeader received:62 = 58
+ng compare _HDR_IPV6_rs_from_nut_sll.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut_sll.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_rs_from_nut_sll.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===CoT=================================
+</PRE><HR><A NAME="vSendPKT4"></A><A HREF="#vSend4">    Send BU: MN' (LinkY) -&gt; NUT (Link0) (global) at 09:51:00</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:110)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:03:47:3d:02:bd
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:96)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 56
+| | | NextHeader                       = 60
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:103:200:ff:fe00:9
+| | | DestinationAddress               = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | Hdr_Destination                 (length:24)
+| | | NextHeader                       = 62
+| | | HeaderExtLength                  = 2
+| | | Opt_PadN                        (length:4)
+| | | | OptionType                       = 1
+| | | | OptDataLength                    = 2
+| | | | pad                              = 0000
+| | | Opt_HomeAddress                 (length:18)
+| | | | OptionType                       = 201
+| | | | OptDataLength                    = 16
+| | | | HomeAddress                      = 3ffe:501:ffff:102:200:ff:fe00:9
+| | Hdr_MH_BU                       (length:32)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 3
+| | | Type                             = 5
+| | | Reserved1                        = 0
+| | | Checksum                         = 12389 calc(12389)
+| | | SequenceNumber                   = 16384
+| | | AFlag                            = 0
+| | | HFlag                            = 0
+| | | SFlag                            = 0
+| | | DFlag                            = 0
+| | | LFlag                            = 0
+| | | Reserved2                        = 0
+| | | Lifetime                         = 65535
+| | | Opt_MH_NonceIndices             (length:6)
+| | | | Type                             = 4
+| | | | Length                           = 4
+| | | | HoNonceIndex                     = 13
+| | | | CoNonceIndex                     = 13
+| | | Opt_MH_BindingAuthData          (length:14)
+| | | | Type                             = 5
+| | | | Length                           = 12
+| | | | Authenticator                    = b9a2aaddfbbbbd8242130e36
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+</PRE><HR><A NAME="vSendPKT5"></A><A HREF="#vSend5">    Send Echo Request w/ HaO: MN' (LinkY) -&gt; NUT (Link0) (global) at 09:51:03</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:94)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:03:47:3d:02:bd
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:80)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 40
+| | | NextHeader                       = 60
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:103:200:ff:fe00:9
+| | | DestinationAddress               = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | Hdr_Destination                 (length:24)
+| | | NextHeader                       = 58
+| | | HeaderExtLength                  = 2
+| | | Opt_PadN                        (length:4)
+| | | | OptionType                       = 1
+| | | | OptDataLength                    = 2
+| | | | pad                              = 0000
+| | | Opt_HomeAddress                 (length:18)
+| | | | OptionType                       = 201
+| | | | OptDataLength                    = 16
+| | | | HomeAddress                      = 3ffe:501:ffff:102:200:ff:fe00:9
+| | ICMPv6_EchoRequest              (length:16)
+| | | Type                             = 128
+| | | Code                             = 0
+| | | Checksum                         = 2441 calc(2441)
+| | | Identifier                       = 0
+| | | SequenceNumber                   = 0
+| | | Payload                         (length:8)
+| | | | data                             = 01234567 89abcdef
+</PRE><HR><A NAME="vRecvPKT3"></A><A HREF="#vRecv3">Recv at 09:51:03</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:94)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:00:00:00:a0:a0
+| | SourceAddress                    = 00:03:47:3d:02:bd
+| | Type                             = 34525
+| Packet_IPv6                     (length:80)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 40
+| | | NextHeader                       = 43
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | | DestinationAddress               = 3ffe:501:ffff:103:200:ff:fe00:9
+| | Hdr_Routing                     (length:24)
+| | | NextHeader                       = 58
+| | | HeaderExtLength                  = 2
+| | | RoutingType                      = 2
+| | | SegmentsLeft                     = 1
+| | | Reserved                         = 0
+| | | Address                          = 3ffe:501:ffff:102:200:ff:fe00:9
+| | ICMPv6_EchoReply                (length:16)
+| | | Type                             = 129
+| | | Code                             = 0
+| | | Checksum                         = 2185 calc(2185)
+| | | Identifier                       = 0
+| | | SequenceNumber                   = 0
+| | | Payload                         (length:8)
+| | | | data                             = 01234567 89abcdef
+===ns_from_nut_to_r0_multicast_global=================================
+ng compare _HETHER_nut2r0solnode_global.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_multicast_linklocal=================================
+ng compare _HETHER_nut2r0solnode_linklocal.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ra_from_nut=================================
+ng compare _HETHER_nut2allnodes.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:01
+ng compare _HDR_IPV6_ra_from_nut.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ra_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ra_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_ra_from_nut.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = ff02::1
+ng meta Packet_IPv6.ICMPv6_RA != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut.NextHeader received:43 = 58
+ng compare _HDR_IPV6_rs_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = oneof(v6("::0"),nutv6())
+ng compare _HDR_IPV6_rs_from_nut.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut_sll=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut_sll.NextHeader received:43 = 58
+ng compare _HDR_IPV6_rs_from_nut_sll.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut_sll.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_rs_from_nut_sll.DestinationAddress received:3ffe:501:ffff:103:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===echoreply_rh=================================
+</PRE><HR><A NAME="vSendPKT6"></A><A HREF="#vSend6">    Send HoTI: MN (LinkX) -&gt; NUT (Link0) (global) at 09:51:04</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:70)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:03:47:3d:02:bd
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:56)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 16
+| | | NextHeader                       = 62
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:102:200:ff:fe00:9
+| | | DestinationAddress               = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | Hdr_MH_HoTI                     (length:16)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 1
+| | | Type                             = 1
+| | | Reserved1                        = 0
+| | | Checksum                         = 60329 calc(60329)
+| | | Reserved2                        = 0
+| | | InitCookie                       = 0000000000000000
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+</PRE><HR><A NAME="vSendPKT7"></A><A HREF="#vSend7">    Send CoTI: MN'' (LinkZ) -&gt; NUT (Link0) (global) at 09:51:04</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:70)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:03:47:3d:02:bd
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:56)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 16
+| | | NextHeader                       = 62
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:104:200:ff:fe00:9
+| | | DestinationAddress               = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | Hdr_MH_CoTI                     (length:16)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 1
+| | | Type                             = 2
+| | | Reserved1                        = 0
+| | | Checksum                         = 60071 calc(60071)
+| | | Reserved2                        = 0
+| | | InitCookie                       = ffffffffffffffff
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+</PRE><HR><A NAME="vRecvPKT4"></A><A HREF="#vRecv4">Recv at 09:51:04</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:78)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:00:00:00:a0:a0
+| | SourceAddress                    = 00:03:47:3d:02:bd
+| | Type                             = 34525
+| Packet_IPv6                     (length:64)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 24
+| | | NextHeader                       = 62
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | | DestinationAddress               = 3ffe:501:ffff:102:200:ff:fe00:9
+| | Hdr_MH_HoT                      (length:24)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 2
+| | | Type                             = 3
+| | | Reserved1                        = 0
+| | | Checksum                         = 46720 calc(46720)
+| | | Index                            = 13
+| | | InitCookie                       = 0000000000000000
+| | | KeygenNonce                      = 027ecc8f0bd35832
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+===ns_from_nut_to_r0_multicast_global=================================
+ng compare _HETHER_nut2r0solnode_global.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_multicast_linklocal=================================
+ng compare _HETHER_nut2r0solnode_linklocal.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ra_from_nut=================================
+ng compare _HETHER_nut2allnodes.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:01
+ng compare _HDR_IPV6_ra_from_nut.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ra_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ra_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_ra_from_nut.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::1
+ng meta Packet_IPv6.ICMPv6_RA != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut.NextHeader received:62 = 58
+ng compare _HDR_IPV6_rs_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = oneof(v6("::0"),nutv6())
+ng compare _HDR_IPV6_rs_from_nut.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut_sll=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut_sll.NextHeader received:62 = 58
+ng compare _HDR_IPV6_rs_from_nut_sll.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut_sll.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_rs_from_nut_sll.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_MH_HoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===CoT=================================
+ng compare _HDR_IPV6_CoT.DestinationAddress received:3ffe:501:ffff:102:200:ff:fe00:9 = 3ffe:501:ffff:104:200:ff:fe00:9
+ng meta Packet_IPv6.Hdr_MH_CoT != Packet_IPv6.Hdr_MH_HoT
+===HoT=================================
+</PRE><HR><A NAME="vRecvPKT5"></A><A HREF="#vRecv5">Recv at 09:51:04</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:78)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:00:00:00:a0:a0
+| | SourceAddress                    = 00:03:47:3d:02:bd
+| | Type                             = 34525
+| Packet_IPv6                     (length:64)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 24
+| | | NextHeader                       = 62
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | | DestinationAddress               = 3ffe:501:ffff:104:200:ff:fe00:9
+| | Hdr_MH_CoT                      (length:24)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 2
+| | | Type                             = 4
+| | | Reserved1                        = 0
+| | | Checksum                         = 21001 calc(21001)
+| | | Index                            = 13
+| | | InitCookie                       = ffffffffffffffff
+| | | KeygenNonce                      = b0fedc44068702be
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+===ns_from_nut_to_r0_multicast_global=================================
+ng compare _HETHER_nut2r0solnode_global.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_multicast_linklocal=================================
+ng compare _HETHER_nut2r0solnode_linklocal.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ra_from_nut=================================
+ng compare _HETHER_nut2allnodes.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:01
+ng compare _HDR_IPV6_ra_from_nut.NextHeader received:62 = 58
+ng compare _HDR_IPV6_ra_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ra_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_ra_from_nut.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = ff02::1
+ng meta Packet_IPv6.ICMPv6_RA != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut.NextHeader received:62 = 58
+ng compare _HDR_IPV6_rs_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = oneof(v6("::0"),nutv6())
+ng compare _HDR_IPV6_rs_from_nut.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut_sll=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut_sll.NextHeader received:62 = 58
+ng compare _HDR_IPV6_rs_from_nut_sll.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut_sll.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_rs_from_nut_sll.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_MH_CoT
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===CoT=================================
+</PRE><HR><A NAME="vSendPKT8"></A><A HREF="#vSend8">    Send BU: MN'' (LinkZ) -&gt; NUT (Link0) (global) at 09:51:04</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:110)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:03:47:3d:02:bd
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:96)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 56
+| | | NextHeader                       = 60
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:104:200:ff:fe00:9
+| | | DestinationAddress               = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | Hdr_Destination                 (length:24)
+| | | NextHeader                       = 62
+| | | HeaderExtLength                  = 2
+| | | Opt_PadN                        (length:4)
+| | | | OptionType                       = 1
+| | | | OptDataLength                    = 2
+| | | | pad                              = 0000
+| | | Opt_HomeAddress                 (length:18)
+| | | | OptionType                       = 201
+| | | | OptDataLength                    = 16
+| | | | HomeAddress                      = 3ffe:501:ffff:102:200:ff:fe00:9
+| | Hdr_MH_BU                       (length:32)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 3
+| | | Type                             = 5
+| | | Reserved1                        = 0
+| | | Checksum                         = 19396 calc(19396)
+| | | SequenceNumber                   = 32768
+| | | AFlag                            = 1
+| | | HFlag                            = 0
+| | | SFlag                            = 0
+| | | DFlag                            = 0
+| | | LFlag                            = 0
+| | | Reserved2                        = 0
+| | | Lifetime                         = 65535
+| | | Opt_MH_NonceIndices             (length:6)
+| | | | Type                             = 4
+| | | | Length                           = 4
+| | | | HoNonceIndex                     = 13
+| | | | CoNonceIndex                     = 13
+| | | Opt_MH_BindingAuthData          (length:14)
+| | | | Type                             = 5
+| | | | Length                           = 12
+| | | | Authenticator                    = 9546c0ad3e3b1e2dc0931fb8
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+</PRE><HR><A NAME="vRecvPKT6"></A><A HREF="#vRecv6">Recv at 09:51:04</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:110)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:00:00:00:a0:a0
+| | SourceAddress                    = 00:03:47:3d:02:bd
+| | Type                             = 34525
+| Packet_IPv6                     (length:96)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 56
+| | | NextHeader                       = 43
+| | | HopLimit                         = 64
+| | | SourceAddress                    = 3ffe:501:ffff:100:203:47ff:fe3d:2bd
+| | | DestinationAddress               = 3ffe:501:ffff:104:200:ff:fe00:9
+| | Hdr_Routing                     (length:24)
+| | | NextHeader                       = 62
+| | | HeaderExtLength                  = 2
+| | | RoutingType                      = 2
+| | | SegmentsLeft                     = 1
+| | | Reserved                         = 0
+| | | Address                          = 3ffe:501:ffff:102:200:ff:fe00:9
+| | Hdr_MH_BA                       (length:32)
+| | | NextHeader                       = 59
+| | | HeaderExtLength                  = 3
+| | | Type                             = 6
+| | | Reserved1                        = 0
+| | | Checksum                         = 53666 calc(53666)
+| | | Status                           = 0 (Binding Update accepted)
+| | | Reserved2                        = 0
+| | | SequenceNumber                   = 32768
+| | | Lifetime                         = 65535
+| | | Opt_MH_PadN                     (length:6)
+| | | | Type                             = 1
+| | | | Length                           = 4
+| | | | pad                              = 00000000
+| | | Opt_MH_BindingAuthData          (length:14)
+| | | | Type                             = 5
+| | | | Length                           = 12
+| | | | Authenticator                    = 91582562ce28a7babbb6a68f
+| | Upp_NoNext                      (length:0)
+| | | data                             = 
+===ns_from_nut_to_r0_multicast_global=================================
+ng compare _HETHER_nut2r0solnode_global.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_global.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_multicast_linklocal=================================
+ng compare _HETHER_nut2r0solnode_linklocal.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_multicast_linklocal.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_global.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_linklocal.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_global=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_global.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = 3ffe:501:ffff:100::a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ns_from_nut_to_r0_unicast_sll_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_r0_unicast_sll_linklocal.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = fe80::200:ff:fe00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===ra_from_nut=================================
+ng compare _HETHER_nut2allnodes.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:01
+ng compare _HDR_IPV6_ra_from_nut.NextHeader received:43 = 58
+ng compare _HDR_IPV6_ra_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ra_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_ra_from_nut.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = ff02::1
+ng meta Packet_IPv6.ICMPv6_RA != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut.NextHeader received:43 = 58
+ng compare _HDR_IPV6_rs_from_nut.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = oneof(v6("::0"),nutv6())
+ng compare _HDR_IPV6_rs_from_nut.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===rs_from_nut_sll=================================
+ng compare _HETHER_nut2allrouters.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:00:00:00:02
+ng compare _HDR_IPV6_rs_from_nut_sll.NextHeader received:43 = 58
+ng compare _HDR_IPV6_rs_from_nut_sll.HopLimit received:64 = 255
+ng compare _HDR_IPV6_rs_from_nut_sll.SourceAddress received:3ffe:501:ffff:100:203:47ff:fe3d:2bd = fe80::203:47ff:fe3d:2bd
+ng compare _HDR_IPV6_rs_from_nut_sll.DestinationAddress received:3ffe:501:ffff:104:200:ff:fe00:9 = ff02::2
+ng meta Packet_IPv6.ICMPv6_RS != Packet_IPv6.Hdr_Routing
+ng count Frame_Ether.Packet_IPv6 != Frame_Ether.Packet_IPv6
+===BA=================================
+</PRE><HR></UL>
+
+</BODY>
+</HTML>

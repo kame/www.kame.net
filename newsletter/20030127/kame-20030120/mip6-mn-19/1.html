@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN""http://www.w3c.org/TR/REC-html40/strict.dtd">
+<HTML>
+<HEAD>
+<TITLE>IPv6 Conformance Test Report</TITLE>
+<META NAME="GENERATOR" CONTENT="TAHI IPv6 Conformance Test Kit">
+</HEAD>
+
+<BODY BGCOLOR="#F0F0F0">
+<H1>Test Information</H1>
+<TABLE BORDER=1>
+<TR><TD>Title</TD><TD>Initialization</TD></TR>
+<TR><TD>CommandLine</TD><TD>./Initialization.seq -pkt ./Initialization.def -log 1.html -ti Initialization</TD></TR>
+<TR><TD>TestVersion</TD><TD></TD></TR>
+<TR><TD>ToolVersion</TD><TD>undefined</TD></TR>
+<TR><TD>Start</TD><TD>2003/01/20 10:35:57</TD></TR>
+<TR><TD>Tn</TD><TD>/usr/local/v6eval//etc//tn.def</TD></TR>
+<TR><TD>Nu</TD><TD>/usr/local/v6eval//etc//nut.def</TD></TR>
+<TR><TD>Pkt</TD><TD>./Initialization.def</TD></TR>
+<TR><TD>System</TD><TD>manual</TD></TR>
+<TR><TD>TargetName</TD><TD>kame</TD></TR>
+<TR><TD>HostName</TD><TD>target.tahi.org</TD></TR>
+<TR><TD>Type</TD><TD>host</TD></TR>
+</TABLE>
+<HR>
+<H1>Test Sequence Execution Log</H1>
+<TABLE BORDER=1>
+<TR><TD>10:35:57</TD><TD>Start</TD></TR>
+<TR VALIGN="TOP"><TD>10:35:57</TD><TD>Start Capturing Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT COLOR="#FF0000" SIZE="5"><U><B>INITIALIZATION</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>10:35:57</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT SIZE="4"><U><B>Initialize target</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>10:35:57</TD>
+<TD>
+vRemote(reboot.rmt) ``/usr/local/v6eval//bin/manual//reboot.rmt -t manual -u root -p v6eval -d cuaa0 -o 1   ''
+<PRE>Connected.
+Reboot NUT() manually
+if NUT complete to boot then press enter key.
+~.
+Disconnected.
+</PRE>
+</TD></TR>
+<TR VALIGN="TOP">
+<TD>10:36:01</TD>
+<TD>Wait 3 second
+</TD></TR>
+<TR><TD><BR></TD><TD>
+<FONT COLOR="#FF0000" SIZE="5"><U><B>TEST PROCEDURE</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>10:36:04</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<FONT SIZE="4"><U><B>Check Reachability</B></U></FONT><BR></TD>
+</TR>
+<TR VALIGN="TOP"><TD>10:36:04</TD><TD>Clear Captured Packets (Link0)<BR>
+</TD></TR>
+
+<TR VALIGN="TOP">
+<TD>10:36:04</TD><TD>
+vSend(Link0,ereq_from_ha0_to_nut_linklocal)<BR>
+<A NAME="vSend0"></A>
+<A HREF="#vSendPKT0">    Send Echo Request: HA0 (Link0) -&gt; NUT (Link0) (link-local)</A><BR>
+
+</TD>
+</TR>
+<TR VALIGN="TOP"><TD>10:36:04</TD>
+<TD>vRecv(Link0,ns_from_nut_to_ha0_multicast_linklocal ns_from_nut_to_ha0_unicast_linklocal ns_from_nut_to_ha0_unicast_sll_linklocal erep_from_nut_to_ha0_linklocal) timeout:1 cntLimit:0 seektime:0<BR>
+<A NAME="vRecv0"></A>
+<A HREF="#vRecvPKT0">    Recv NS: NUT (Link0) -&gt; HA0 (Link0) (multicast, link-local)</A><BR>
+
+</TD>
+</TR>
+
+<TR VALIGN="TOP">
+<TD>10:36:04</TD><TD>
+vSend(Link0,na_from_ha0_to_nut_linklocal)<BR>
+<A NAME="vSend1"></A>
+<A HREF="#vSendPKT1">    Send NA: HA0 (Link0) -&gt; NUT (Link0) (link-local)</A><BR>
+
+</TD>
+</TR>
+<TR VALIGN="TOP"><TD>10:36:04</TD>
+<TD>vRecv(Link0,ns_from_nut_to_ha0_multicast_linklocal ns_from_nut_to_ha0_unicast_linklocal ns_from_nut_to_ha0_unicast_sll_linklocal erep_from_nut_to_ha0_linklocal) timeout:1 cntLimit:0 seektime:0<BR>
+<A NAME="vRecv1"></A>
+<A HREF="#vRecvPKT1">    Recv Echo Reply: NUT (Link0) -&gt; HA0 (Link0) (link-local)</A><BR>
+
+</TD>
+</TR>
+
+<TR VALIGN="TOP"><TD>10:36:04</TD><TD>Stop Capturing Packets (Link0)<BR>
+</TD></TR>
+
+<TR><TD><BR></TD><TD>
+<B>PASS</B><BR></TD>
+</TR>
+<TR><TD>10:36:04</TD><TD>End</TD></TR>
+</TABLE>
+<HR><H1>Packet Reverse Log</H1>
+<UL>
+<A NAME="vSendPKT0"></A><A HREF="#vSend0">    Send Echo Request: HA0 (Link0) -&gt; NUT (Link0) (link-local) at 10:36:04</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:70)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:03:47:3d:02:bd
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:56)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 16
+| | | NextHeader                       = 58
+| | | HopLimit                         = 64
+| | | SourceAddress                    = fe80::200:ff:fe00:a0a0
+| | | DestinationAddress               = fe80::203:47ff:fe3d:2bd
+| | ICMPv6_EchoRequest              (length:16)
+| | | Type                             = 128
+| | | Code                             = 0
+| | | Checksum                         = 63471 calc(63471)
+| | | Identifier                       = 0
+| | | SequenceNumber                   = 0
+| | | Payload                         (length:8)
+| | | | data                             = 01234567 89abcdef
+</PRE><HR><A NAME="vRecvPKT0"></A><A HREF="#vRecv0">Recv at 10:36:04</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:86)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 33:33:ff:00:a0:a0
+| | SourceAddress                    = 00:03:47:3d:02:bd
+| | Type                             = 34525
+| Packet_IPv6                     (length:72)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 32
+| | | NextHeader                       = 58
+| | | HopLimit                         = 255
+| | | SourceAddress                    = fe80::203:47ff:fe3d:2bd
+| | | DestinationAddress               = ff02::1:ff00:a0a0
+| | ICMPv6_NS                       (length:32)
+| | | Type                             = 135
+| | | Code                             = 0
+| | | Checksum                         = 42337 calc(42337)
+| | | Reserved                         = 0
+| | | TargetAddress                    = fe80::200:ff:fe00:a0a0
+| | | Opt_ICMPv6_SLL                  (length:8)
+| | | | Type                             = 1
+| | | | Length                           = 1
+| | | | LinkLayerAddress                 = 00:03:47:3d:02:bd
+===ns_from_nut_to_ha0_multicast_linklocal=================================
+</PRE><HR><A NAME="vSendPKT1"></A><A HREF="#vSend1">    Send NA: HA0 (Link0) -&gt; NUT (Link0) (link-local) at 10:36:04</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:86)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:03:47:3d:02:bd
+| | SourceAddress                    = 00:00:00:00:a0:a0
+| | Type                             = 34525
+| Packet_IPv6                     (length:72)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 32
+| | | NextHeader                       = 58
+| | | HopLimit                         = 255
+| | | SourceAddress                    = fe80::200:ff:fe00:a0a0
+| | | DestinationAddress               = fe80::203:47ff:fe3d:2bd
+| | ICMPv6_NA                       (length:32)
+| | | Type                             = 136
+| | | Code                             = 0
+| | | Checksum                         = 27457 calc(27457)
+| | | RFlag                            = 1
+| | | SFlag                            = 1
+| | | OFlag                            = 1
+| | | Reserved                         = 0
+| | | TargetAddress                    = fe80::200:ff:fe00:a0a0
+| | | Opt_ICMPv6_TLL                  (length:8)
+| | | | Type                             = 2
+| | | | Length                           = 1
+| | | | LinkLayerAddress                 = 00:00:00:00:a0:a0
+</PRE><HR><A NAME="vRecvPKT1"></A><A HREF="#vRecv1">Recv at 10:36:04</A>
+<PRE STYLE="line-height:70%">Frame_Ether                     (length:70)
+| Hdr_Ether                       (length:14)
+| | DestinationAddress               = 00:00:00:00:a0:a0
+| | SourceAddress                    = 00:03:47:3d:02:bd
+| | Type                             = 34525
+| Packet_IPv6                     (length:56)
+| | Hdr_IPv6                        (length:40)
+| | | Version                          = 6
+| | | TrafficClass                     = 0
+| | | FlowLabel                        = 0
+| | | PayloadLength                    = 16
+| | | NextHeader                       = 58
+| | | HopLimit                         = 64
+| | | SourceAddress                    = fe80::203:47ff:fe3d:2bd
+| | | DestinationAddress               = fe80::200:ff:fe00:a0a0
+| | ICMPv6_EchoReply                (length:16)
+| | | Type                             = 129
+| | | Code                             = 0
+| | | Checksum                         = 63215 calc(63215)
+| | | Identifier                       = 0
+| | | SequenceNumber                   = 0
+| | | Payload                         (length:8)
+| | | | data                             = 01234567 89abcdef
+===ns_from_nut_to_ha0_multicast_linklocal=================================
+ng compare _HETHER_nut2ha0solnode.DestinationAddress received:00:00:00:00:a0:a0 = 33:33:ff:00:a0:a0
+ng compare _HDR_IPV6_ns_from_nut_to_ha0_multicast_linklocal.HopLimit received:64 = 255
+ng compare _HDR_IPV6_ns_from_nut_to_ha0_multicast_linklocal.DestinationAddress received:fe80::200:ff:fe00:a0a0 = ff02::1:ff00:a0a0
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.ICMPv6_EchoReply
+===ns_from_nut_to_ha0_unicast_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_ha0_unicast_linklocal.HopLimit received:64 = 255
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.ICMPv6_EchoReply
+===ns_from_nut_to_ha0_unicast_sll_linklocal=================================
+ng compare _HDR_IPV6_ns_from_nut_to_ha0_unicast_sll_linklocal.HopLimit received:64 = 255
+ng meta Packet_IPv6.ICMPv6_NS != Packet_IPv6.ICMPv6_EchoReply
+===erep_from_nut_to_ha0_linklocal=================================
+</PRE><HR></UL>
+
+</BODY>
+</HTML>

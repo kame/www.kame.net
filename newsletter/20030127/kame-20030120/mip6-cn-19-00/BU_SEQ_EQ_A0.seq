@@ -1,0 +1,325 @@
+#!/usr/bin/perl
+#
+# $Copyright$
+#
+# $TAHI: ct/mip6-cn-19/BU_SEQ_EQ_A0.seq,v 1.3 2003/01/12 08:00:54 akisada Exp $
+#
+################################################################
+
+BEGIN {$V6evalTool::TestVersion = '$Name:  $';}
+
+use V6evalTool;
+use MIP6;
+
+my $IF0 = 'Link0';
+my $NutType = $V6evalTool::NutDef{'Type'};
+
+vCapture($IF0);
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>INITIALIZATION</B></U></FONT><BR>');
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Update care-of address - LinkY</B></U></FONT><BR>');
+MIP6_UpdateCoA('./MIP6.work', 'CAREOFADDR0');
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Check Reachability</B></U></FONT><BR>');
+if(MIP6_CheckReachability($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Reply</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Return Routability Procedure</B></U></FONT><BR>');
+
+my %rr = MIP6_ReturnRoutability($IF0);
+if($rr{'status'} < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t complete RR</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Requests to Cache a Binding</B></U></FONT><BR>');
+my $sn0 = 16384;
+my $a = 0;
+my $lt = 0xffff;
+if(MIP6_ProcessingBindingsNoAck($IF0, $sn0, $a, $lt, %rr) < 0) {
+	vLogHTML('<FONT COLOR="#00FF00">BA SHOULD NOT be sent.</FONT><BR>');
+	exit($V6evalTool::exitWarn);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Check Binding Cache</B></U></FONT><BR>');
+if(MIP6_CheckBindingCache($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Reply</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>TEST PROCEDURE</B></U></FONT><BR>');
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Update care-of address - LinkZ</B></U></FONT><BR>');
+MIP6_UpdateCoA('./MIP6.work', 'CAREOFADDR1');
+
+$pktdesc{'echorequest_hao'}	= '    Send Echo Request w/ HaO: MN\'\' (LinkZ) -&gt; NUT (Link0) (global)';
+$pktdesc{'echoreply_rh'}	= '    Recv Echo Reply w/ RH: NUT (Link0) -&gt; MN\'\' (LinkZ) (global)';
+$pktdesc{'CoTI'}		= '    Send CoTI: MN\'\' (LinkZ) -&gt; NUT (Link0) (global)';
+$pktdesc{'CoT'}			= '    Recv CoT: NUT (Link0) -&gt; MN\'\' (LinkZ) (global)';
+$pktdesc{'BU'}			= '    Send BU: MN\'\' (LinkZ) -&gt; NUT (Link0) (global)';
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Return Routability Procedure</B></U></FONT><BR>');
+
+my %rr = MIP6_ReturnRoutability($IF0);
+if($rr{'status'} < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t complete RR</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Requests to Cache a Binding</B></U></FONT><BR>');
+my $sn1 = 16384;
+$a = 0;
+$lt = 0xffff;
+if(MIP6_InvalidSequence($IF0, $sn0, $sn1, $a, $lt, %rr) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get BA</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Update care-of address - LinkY</B></U></FONT><BR>');
+MIP6_UpdateCoA('./MIP6.work', 'CAREOFADDR0');
+
+$pktdesc{'echorequest_hao'}	= '    Send Echo Request w/ HaO: MN\' (LinkY) -&gt; NUT (Link0) (global)';
+$pktdesc{'echoreply_rh'}	= '    Recv Echo Reply w/ RH: NUT (Link0) -&gt; MN\' (LinkY) (global)';
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Check Binding Cache</B></U></FONT><BR>');
+if(MIP6_CheckBindingCache($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Reply</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vStop($IF0);
+
+vLogHTML('<B>PASS</B><BR>');
+exit($V6evalTool::exitPass);
+
+#
+# perldoc
+#
+################################################################
+__END__
+
+=head1 NAME
+
+BU_SEQ_EQ_A0 - Invalid sequence number (equal) A=0
+
+=head1 TARGET
+
+=begin html
+<PRE>
+Host/Router
+</PRE>
+
+=end html
+
+=head1 SYNOPSIS
+
+=begin html
+<PRE>
+<A HREF="./BU_SEQ_EQ_A0.seq">BU_SEQ_EQ_A0.seq</A> [-tooloption ...] -pkt <A HREF="./BU_SEQ_EQ_A0.def">BU_SEQ_EQ_A0.def</A>
+</PRE>
+<BLOCKQUOTE>
+<PRE>
+-tooloption: v6eval tool option
+</PRE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 TOPOLOGY
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+                                        MN''
+                                        |
+                        --------+-------+------- LinkZ
+                                |
+                                R2      MN'
+                                |       |
+                --------+-------+-------+------- LinkY
+                        |
+                        R1              MN
+                        |               |
+        --------+-------+---------------+------- LinkX
+                |
+       NUT      R0
+        |       |
+--------+-------+------------------------------- Link0
+</PRE>
+</BLOCKQUOTE>
+<BLOCKQUOTE>
+<TABLE BORDER>
+<TR>
+<TD><TT>Link0</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::/64</TT></TD>
+<TD><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkX</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102::/64</TT></TD>
+<TD><TT>home link</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkY</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:103::/64</TT></TD>
+<TD><TT>foreign link</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkZ</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:104::/64</TT></TD>
+<TD><TT>foreign link</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="3"><TT>R0(Link0)</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::a0a0</TT></TD>
+<TD ROWSPAN="3"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>link-local</TT></TD>
+<TD><TT>fe80::200:ff:fe00:a0a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:a0:a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:200:ff:fe00:26</TT></TD>
+<TD><TT>home address</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN'</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:103:200:ff:fe00:26</TT></TD>
+<TD><TT>care-of address</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN''</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:104:200:ff:fe00:26</TT></TD>
+<TD><TT>care-of address</TT></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 INITIALIZATION
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'
+ |       |       |
+ | <------------ | Echo Request
+ | ------------> | Echo Reply
+ |       |       |
+ | <---- |       | HoTI
+ | <------------ | CoTI
+ | ----> |       | HoT
+ | ------------> | CoT
+ |       |       |
+ | <------------ | BU (SN: 16384)
+ | --X   |       | no response
+ |       |       |
+ | <------------ | Echo Request w/ HaO
+ | ------------> | Echo Reply w/ RH
+ |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+ 1. Send Echo Request
+ 2. Wait Echo Reply
+ 3. Receive Echo Reply
+ 4. Send HoTI & CoTI
+ 5. Wait HoT & CoT
+ 6. Receive HoT & CoT
+ 7. Send BU
+ 8. No response
+ 9. Send Echo Request w/ HaO
+10. Wait Echo Reply w/ RH
+11. Receive Echo Reply w/ RH
+</PRE>
+
+=end html
+
+=head1 TEST PROCEDURE
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'     MN''
+ |       |       |       |
+ | <---- |       |       | HoTI
+ | <-------------------- | CoTI
+ | ----> |       |       | HoT (*1)
+ | --------------------> | CoT (*2)
+ |       |       |       |
+ | <-------------------- | BU (SN: 16384)
+ | --------------------> | BA (*3)
+ |       |       |       |
+ | <------------ |       | Echo Request w/ HaO
+ | ------------> |       | Echo Reply w/ RH (*4)
+ |       |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send HoTI & CoTI
+2. Wait HoT & CoT
+3. Receive HoT & CoT (*1) (*2)
+4. Send BU
+5. Wait BA
+6. Receive BA (*3)
+7. Send Echo Request w/ HaO
+8. Wait Echo Request w/ HaO
+9. Receive Echo Request w/ HaO (*4)
+</PRE>
+
+=end html
+
+=head1 JUDGEMENT
+
+=begin html
+<PRE>
+(*1) PASS: MN receives HoT
+(*2) PASS: MN'' receives CoT
+(*3) PASS: MN'' receives BA
+(*4) PASS: MN' receives Echo Request w/ HaO
+</PRE>
+
+=end html
+
+=head1 SEE ALSO
+
+=begin html
+<PRE>
+<A HREF="./MIP6.pm">MIP6.pm</A>
+<A HREF="./MIP6.def">MIP6.def</A>
+</PRE>
+
+=end html
+
+=cut

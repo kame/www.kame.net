@@ -1,0 +1,11 @@
+//
+// $Copyright$
+//
+// $TAHI: ct/mip6-cn-19/BU_InvalidChecksum_A0.def,v 1.1 2003/01/10 12:27:13 akisada Exp $
+//
+////////////////////////////////////////////////////////////////
+
+#define HOMEADDR	"3ffe:0501:ffff:0102:0200:00ff:fe00:0018"
+#define CAREOFADDR	"3ffe:0501:ffff:0103:0200:00ff:fe00:0018"
+
+#include "./MIP6.def"

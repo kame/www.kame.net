@@ -1,0 +1,11 @@
+//
+// $Copyright$
+//
+// $TAHI: ct/mip6-cn-19/Initialization.def,v 1.2 2003/01/07 09:01:58 akisada Exp $
+//
+////////////////////////////////////////////////////////////////
+
+#define HOMEADDR        "3ffe:0501:ffff:0102:0200:00ff:fe00:0000"
+#define CAREOFADDR      "3ffe:0501:ffff:0103:0200:00ff:fe00:0000"
+
+#include "./MIP6.def"

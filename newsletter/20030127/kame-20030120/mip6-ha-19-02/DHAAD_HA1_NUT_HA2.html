@@ -1,0 +1,210 @@
+<HTML>
+<HEAD>
+<TITLE>DHAAD_HA1_NUT_HA2 - Receiving Local RA Msgs w/ Prfs</TITLE>
+<LINK REV="made" HREF="mailto:hackers@FreeBSD.org">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#NAME">NAME</A>
+	<LI><A HREF="#TARGET">TARGET</A>
+	<LI><A HREF="#SYNOPSIS">SYNOPSIS</A>
+	<LI><A HREF="#TOPOLOGY">TOPOLOGY</A>
+	<LI><A HREF="#INITIALIZATION">INITIALIZATION</A>
+	<LI><A HREF="#TEST_PROCEDURE">TEST PROCEDURE</A>
+	<LI><A HREF="#JUDGEMENT">JUDGEMENT</A>
+	<LI><A HREF="#SEE_ALSO">SEE ALSO</A>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="NAME">NAME</A></H1>
+<P>
+DHAAD_HA1_NUT_HA2 - Receiving Local RA Msgs w/ Prfs (HA1, NUT, HA2)
+
+<P>
+<HR>
+<H1><A NAME="TARGET">TARGET</A></H1>
+<PRE>
+Router
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="SYNOPSIS">SYNOPSIS</A></H1>
+<PRE>
+<A HREF="./DHAAD_HA1_NUT_HA2.seq">DHAAD_HA1_NUT_HA2.seq</A> [-tooloption ...] -pkt <A HREF="./DHAAD_HA1_NUT_HA2.def">DHAAD_HA1_NUT_HA2.def</A>
+</PRE>
+<BLOCKQUOTE>
+<PRE>
+-tooloption: v6eval tool option
+</PRE>
+</BLOCKQUOTE>
+
+<P>
+<HR>
+<H1><A NAME="TOPOLOGY">TOPOLOGY</A></H1>
+<BLOCKQUOTE>
+<PRE>
+                        MN'     TN
+                        |       |
+        --------+-------+-------+--------------- LinkX
+                |
+       NUT      R0      MN      HA1     HA2
+        |       |       |       |       |
+--------+-------+-------+-------+-------+------- Link0
+</PRE>
+</BLOCKQUOTE>
+<BLOCKQUOTE>
+<TABLE BORDER>
+<TR>
+<TD ROWSPAN="2"><TT>Link0</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::/64</TT></TD>
+<TD ROWSPAN="2"><TT>home link</TT></TD>
+</TR>
+<TR>
+<TD><TT>site-local</TT></TD>
+<TD><TT>fec0:0:0:100::/64</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkX</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102::/64</TT></TD>
+<TD><TT>foreign link</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="2"><TT>R0(Link0)</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::a0a0</TT></TD>
+<TD ROWSPAN="2"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:a0:a0</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="3"><TT>HA1</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::b0b0</TT></TD>
+<TD ROWSPAN="3"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>link-local</TT></TD>
+<TD><TT>fe80::200:ff:fe00:b0b0</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:b0:b0</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="3"><TT>HA2</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::c0c0</TT></TD>
+<TD ROWSPAN="3"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>link-local</TT></TD>
+<TD><TT>fe80::200:ff:fe00:c0c0</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:c0:c0</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100:200:ff:fe00:25</TT></TD>
+<TD><TT>home address</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN'</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:200:ff:fe00:25</TT></TD>
+<TD><TT>care-of address</TT></TD>
+</TR>
+<TR>
+<TD><TT>TN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:&lt;TN&gt;</TT></TD>
+<TD><TT>&nbsp;</TT></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>
+<HR>
+<H1><A NAME="INITIALIZATION">INITIALIZATION</A></H1>
+<UL>
+<LI>Reboot NUT (reboot.rmt)
+<LI>Configure site-local address (manualaddrconf.rmt)
+<LI>Enable HA function (mip6EnableHA.rmt)
+<LI>Add default router into routing table of NUT (route.rmt)
+</UL>
+<BLOCKQUOTE>
+<PRE>
+NUT      TN
+ |       |
+ | <---- | Echo Request
+ | ----> | Echo Reply
+ |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send Echo Request
+2. Wait Echo Reply
+3. Receive Echo Reply
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="TEST_PROCEDURE">TEST PROCEDURE</A></H1>
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      HA1     HA2     MN'
+ |       |       |       |       |
+ |   <-- |       |       |       | RS
+ |       |   <-- |       |       | RA
+ |       |       |   <-- |       | RA
+ |       |       |       |       |
+ | <---------------------------- | HAAD Request
+ | ----------------------------> | HAAD Reply
+ |       |       |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. MN Send RS
+2. HA1 Send RA
+3. HA2 Send RA
+4. Send HAAD Request
+5. Wait HAAD Reply
+6. Receive HAAD Reply
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="JUDGEMENT">JUDGEMENT</A></H1>
+<PRE>
+PASS: MN' receives HAAD Reply
+<FONT COLOR="#00FF00">WARN</FONT>: no response
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="SEE_ALSO">SEE ALSO</A></H1>
+<PRE>
+<A HREF="./MIP6.pm">MIP6.pm</A>
+<A HREF="./MIP6.def">MIP6.def</A>
+</PRE>
+
+</BODY>
+
+</HTML>

@@ -1,0 +1,76 @@
+#
+# $Copyright$
+#
+# $Name:  $
+#
+# $TAHI: ct/mip6-ha-19/INDEX,v 1.19 2003/01/14 09:47:44 akisada Exp $
+#
+# <seq>:<def>:<opts>:<htmldoc>:<dsc>:<links>
+#
+
+&print:<B>10. Home Agent Operation</B>
+./Initialization.seq:./Initialization.def:::Initialization:
+
+&print:<B>10.1. Conceptual Data Structures</B>
+&print:<B>10.2. Processing Mobility Headers</B>
+&print:<B>10.3. Processing Bindings</B>
+&print:<B>10.3.1. Primary Care-of Address Registration</B>
+&print:<B><FONT SIZE="-1">Valid Registration</FONT></B>
+./BU_Valid_A1.seq:./BU_Valid_A1.def:::Receiving valid BU A=1:
+./BU_Valid_A0.seq:./BU_Valid_A0.def:::Receiving valid BU A=0:
+
+&print:<B><FONT SIZE="-1">Invalid Registration</FONT></B>
+./BU_NotHomeSubnet_A1.seq:./BU_NotHomeSubnet_A1.def:::Receiving invalid BU A=1 (Not home subnet):
+./BU_NotHomeSubnet_A0.seq:./BU_NotHomeSubnet_A0.def:::Receiving invalid BU A=0 (Not home subnet):
+
+&print:<B><FONT SIZE="-1">Proxy DAD Succeeded</FONT></B>
+./BU_DAD_S0_L0.seq:./BU_DAD_S0_L0.def:::DAD Succeeded S=0 & L=0:
+./BU_DAD_S0_L1.seq:./BU_DAD_S0_L1.def:::DAD Succeeded S=0 & L=1:
+./BU_DAD_S1_L0.seq:./BU_DAD_S1_L0.def:::DAD Succeeded S=1 & L=0:
+./BU_DAD_S1_L1.seq:./BU_DAD_S1_L1.def:::DAD Succeeded S=1 & L=1:
+
+&print:<B><FONT SIZE="-1">Proxy DAD Failed</FONT></B>
+./BU_DAD_Failed_S0_L0.seq:./BU_DAD_Failed_S0_L0.def:::DAD Failed S=0 & L=0:
+./BU_DAD_Failed_S0_L1.seq:./BU_DAD_Failed_S0_L1.def:::DAD Failed S=0 & L=1:
+./BU_DAD_Failed_S1_L0.seq:./BU_DAD_Failed_S1_L0.def:::DAD Failed S=1 & L=0:
+./BU_DAD_Failed_S1_L1.seq:./BU_DAD_Failed_S1_L1.def:::DAD Failed S=1 & L=1:
+
+&print:<B>10.3.2. Primary Care-of Address De-Registration</B>
+&print:<B><FONT SIZE="-1">Valid De-Registration</FONT></B>
+./DeReg_LT0_FOREIGN.seq:./DeReg_LT0_FOREIGN.def:::Valid De-Registration (Lifetime=0 & CoA!=HoA):
+./DeReg_LT0_HOME.seq:./DeReg_LT0_HOME.def:::Valid De-Registration (Lifetime=0 & CoA=HoA):
+./DeReg_LT1_HOME.seq:./DeReg_LT1_HOME.def:::Valid De-Registration (Lifetime!=0 & CoA=HoA):
+
+&print:<B><FONT SIZE="-1">Invalid De-Registration</FONT></B>
+./DeReg_NotHA4ThisMN.seq:./DeReg_NotHA4ThisMN.def:::Invalid De-Registration (Not home agent for this mobile node):
+
+&print:<B>10.4. Packet Processing</B>
+&print:<B><FONT SIZE="-1">Sending multicast NA</FONT></B>
+./BU_NA_S0_L0.seq:./BU_NA_S0_L0.def:::Sending multicast NA S=0 & L=0:
+./BU_NA_S0_L1.seq:./BU_NA_S0_L1.def:::Sending multicast NA S=0 & L=1:
+./BU_NA_S1_L0.seq:./BU_NA_S1_L0.def:::Sending multicast NA S=1 & L=0:
+./BU_NA_S1_L1.seq:./BU_NA_S1_L1.def:::Sending multicast NA S=1 & L=1:
+
+&print:<B><FONT SIZE="-1">Proxy ND</FONT></B>
+./BU_ND_S0_L0.seq:./BU_ND_S0_L0.def:::ND S=0 & L=0:
+./BU_ND_S0_L1.seq:./BU_ND_S0_L1.def:::ND S=0 & L=1:
+./BU_ND_S1_L0.seq:./BU_ND_S1_L0.def:::ND S=1 & L=0:
+./BU_ND_S1_L1.seq:./BU_ND_S1_L1.def:::ND S=1 & L=1:
+
+&print:<B><FONT SIZE="-1">Reverse Tunneling</FONT></B>
+./RevTun_Simple.seq:./RevTun_Simple.def:::Reverse Tunneling:
+
+&print:<B>10.5. Dynamic Home Agent Address Discovery</B>
+./DHAAD_Simple.seq:./DHAAD_Simple.def:::Dynamic Home Agent Address Discovery:
+
+&print:<B><FONT SIZE="-1">Receiving Router Advertisement Messages</FONT></B>
+./DHAAD_Highest.seq:./DHAAD_Highest.def:::Receiving Local RA Msgs w/ the Highest Prf:
+./DHAAD_Lowest.seq:./DHAAD_Lowest.def:::Receiving Local RA Msgs w/ the Lowest Prf:
+
+./DHAAD_Delete.seq:./DHAAD_Delete.def:::Receiving Local RA Msgs w/ Lifetime=0:
+
+./DHAAD_NUT_HA1_HA2.seq:./DHAAD_NUT_HA1_HA2.def:::Receiving Local RA Msgs w/ Prfs (NUT, HA1, HA2):
+./DHAAD_HA1_NUT_HA2.seq:./DHAAD_HA1_NUT_HA2.def:::Receiving Local RA Msgs w/ Prfs (HA1, NUT, HA2):
+./DHAAD_HA1_HA2_NUT.seq:./DHAAD_HA1_HA2_NUT.def:::Receiving Local RA Msgs w/ Prfs (HA1, HA2, NUT):
+
+&print:<B>10.6. Sending Prefix Information to the Mobile Node</B>

@@ -1,0 +1,1027 @@
+//
+// $Copyright$
+//
+// $TAHI: ct/mip6-cn-19/MIP6.def,v 1.21 2003/01/12 06:25:48 akisada Exp $
+//
+////////////////////////////////////////////////////////////////
+
+#undef IGNORE_AUTHENTICATOR
+#undef NOT_USE_HOME_KBM
+#undef USE_HOA_FOR_HOTI_INCLUDE_HAO
+
+#ifndef HOMEADDR
+#define HOMEADDR	_GLOBAL2A0N_UCAST_ADDR
+#endif
+
+#ifndef CAREOFADDR
+#define CAREOFADDR	_GLOBAL3A0N_UCAST_ADDR
+#endif
+
+#ifndef R0_LLOCAL_ADDR
+#define R0_LLOCAL_ADDR	_LLOCAL0A0N_UCAST_ADDR
+#endif
+
+#ifndef R0_GLOBAL_ADDR
+#define R0_GLOBAL_ADDR	"3ffe:501:ffff:100::a0a0"
+#endif
+
+#ifndef R0_MAC_ADDR
+#define R0_MAC_ADDR	A0N_MAC_ADDR
+#endif
+
+#ifndef HOTCOOKIE
+#define HOTCOOKIE	"0000000000000000"
+#endif
+
+#ifndef COTCOOKIE
+#define COTCOOKIE	"ffffffffffffffff"
+#endif
+
+#ifndef HOKEYGENTOKEN
+#define HOKEYGENTOKEN	"0000000000000000"
+#endif
+
+#ifndef COKEYGENTOKEN
+#define COKEYGENTOKEN	"0000000000000000"
+#endif
+
+#ifndef HOINDEX
+#define HOINDEX	0
+#endif
+
+#ifndef COINDEX
+#define COINDEX	0
+#endif
+
+#ifndef ACKNOWLEDGE
+#define ACKNOWLEDGE	0
+#endif
+
+#ifndef HOMEREGISTRATION
+#define HOMEREGISTRATION	0
+#endif
+
+#ifndef LIFETIME
+#define LIFETIME	0
+#endif
+
+#ifndef STATUS_BA
+#define STATUS_BA	0
+#endif
+
+#ifndef SEQ_BU
+#define SEQ_BU	0
+#endif
+
+#ifndef SEQ_BA
+#define SEQ_BA	0
+#endif
+
+
+
+_HETHER_define(_HETHER_r02nut, ether(R0_MAC_ADDR), nutether())
+_HETHER_define(_HETHER_nut2r0, nutether(), ether(R0_MAC_ADDR))
+_HETHER_define(_HETHER_nut2r0solnode_linklocal, nutether(), _ETHER_SOLNODE_MCAST(v6(R0_LLOCAL_ADDR)))
+_HETHER_define(_HETHER_nut2r0solnode_global, nutether(), _ETHER_SOLNODE_MCAST(v6(R0_GLOBAL_ADDR)))
+_HETHER_define(_HETHER_r02allnode, ether(R0_MAC_ADDR), v62ethermulti(v6(_ALLNODES_MCAST_ADDR)))
+
+
+
+//
+//  Echo Request
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  MN -> NUT (global)
+//
+////////////////////////////////
+
+FEM_icmp6_echo_request(
+	ereq_from_hoa_to_nut_global,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(HOMEADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+Payload payload8 {
+	data	= hexstr("0123456789abcdef", 8);
+}
+
+//
+//  MN' -> NUT (global)
+//
+////////////////////////////////
+
+FEM_icmp6_echo_request_exth(
+	echorequest_hao,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header	= _HDR_IPV6_NAME(echorequest_hao);
+		exthdr	= ext_homeaddress;
+		upper	= _ICMPV6_NAME(echorequest_hao);
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+
+
+//
+//  Echo Reply
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  NUT -> MN (global)
+//
+////////////////////////////////
+
+FEM_icmp6_echo_reply(
+	erep_from_nut_to_hoa_global,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+//
+//  NUT -> MN' (global)
+//
+////////////////////////////////
+
+FEM_icmp6_echo_reply_exth(
+	echoreply_rh,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(CAREOFADDR));
+	},
+	{
+		header	= _HDR_IPV6_NAME(echoreply_rh);
+		exthdr	= ext_routing;
+		upper	= _ICMPV6_NAME(echoreply_rh);
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+
+
+//
+// RA
+//
+////////////////////////////////////////////////////////////////
+
+//
+// R0
+//
+////////////////////////////////
+
+FEM_icmp6_ra(
+	ra_from_r0,
+	_HETHER_r02allnode,
+	{
+		HopLimit	= 255;
+		_SRC(v6(R0_LLOCAL_ADDR));
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		LifeTime	= 1800;
+		option		= opt_sll_r0;
+		option		= opt_mtu;
+		option		= opt_prefixinformation_r0;
+	}
+)
+
+Opt_ICMPv6_SLL opt_sll_r0 {
+	LinkLayerAddress	= ether(R0_MAC_ADDR);
+}
+
+Opt_ICMPv6_MTU opt_mtu {
+	MTU	= 1500;
+}
+
+Opt_ICMPv6_Prefix opt_prefixinformation_r0 {
+	LFlag			= 1;
+	AFlag			= 1;
+	ValidLifetime		= 2592000;
+	PreferredLifetime	= 604800;
+	Prefix			= v6(_GLOBAL0_UCAST_PRFX);
+}
+
+//
+// NUT
+//
+////////////////////////////////
+
+FEM_icmp6_ra(
+	ra_from_nut,
+	_HETHER_nut2allnodes,
+	{
+		TrafficClass	= any;
+		FlowLabel	= any;
+		HopLimit	= 255;
+		_SRC(nutv6());
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		CurHopLimit	= any;
+		MFlag		= any;
+		OFlag		= any;
+		HFlag		= any;
+		LifeTime	= any;
+		ReachableTime	= any;
+		RetransTimer	= any;
+		option		= stop;
+	}
+)
+
+
+
+//
+// RS
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  w/o SLL
+//
+////////////////////////////////
+
+FEM_icmp6_rs(
+	rs_from_nut,
+	_HETHER_nut2allrouters,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(v6(_UNSPEC_ADDR), nutv6()));
+		_DST(v6(_ALLROUTERS_MCAST_ADDR));
+	},
+	{}
+)
+
+//
+//  w/ SLL
+//
+////////////////////////////////
+
+FEM_icmp6_rs(
+	rs_from_nut_sll,
+	_HETHER_nut2allrouters,
+	{
+		HopLimit	= 255;
+		_SRC(nutv6());
+		_DST(v6(_ALLROUTERS_MCAST_ADDR));
+	},
+	{
+		option	= _SLLOPT_nut;
+	}
+)
+
+
+
+//
+//  Neighbor Solicitation
+//
+////////////////////////////////////////////////////////////////
+
+//
+// NUT -> R0 (link-local)
+//
+////////////////////////////////
+
+FEM_icmp6_ns(
+	ns_from_nut_to_r0_multicast_linklocal,
+	_HETHER_nut2r0solnode_linklocal,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(_IPV6_SOLNODE_MCAST(v6(R0_LLOCAL_ADDR)));
+	},
+	{
+		TargetAddress	= v6(R0_LLOCAL_ADDR);
+		option		= _SLLOPT_nut;
+	}
+)
+
+FEM_icmp6_ns(
+	ns_from_nut_to_r0_unicast_linklocal,
+	_HETHER_nut2r0,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(v6(R0_LLOCAL_ADDR));
+	},
+	{
+		TargetAddress	= v6(R0_LLOCAL_ADDR);
+	}
+)
+
+FEM_icmp6_ns(
+	ns_from_nut_to_r0_unicast_sll_linklocal,
+	_HETHER_nut2r0,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(v6(R0_LLOCAL_ADDR));
+	},
+	{
+		TargetAddress	= v6(R0_LLOCAL_ADDR);
+		option		= _SLLOPT_nut;
+	}
+)
+
+//
+// NUT -> R0 (global)
+//
+////////////////////////////////
+
+FEM_icmp6_ns(
+	ns_from_nut_to_r0_multicast_global,
+	_HETHER_nut2r0solnode_global,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(_IPV6_SOLNODE_MCAST(v6(R0_GLOBAL_ADDR)));
+	},
+	{
+		TargetAddress	= v6(R0_GLOBAL_ADDR);
+		option		= _SLLOPT_nut;
+	}
+)
+
+FEM_icmp6_ns(
+	ns_from_nut_to_r0_unicast_global,
+	_HETHER_nut2r0,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(v6(R0_GLOBAL_ADDR));
+	},
+	{
+		TargetAddress	= v6(R0_GLOBAL_ADDR);
+	}
+)
+
+FEM_icmp6_ns(
+	ns_from_nut_to_r0_unicast_sll_global,
+	_HETHER_nut2r0,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(v6(R0_GLOBAL_ADDR));
+	},
+	{
+		TargetAddress	= v6(R0_GLOBAL_ADDR);
+		option		= _SLLOPT_nut;
+	}
+)
+
+
+
+//
+//  Neighbor Advertisement
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  R0 -> NUT (link-local)
+//
+////////////////////////////////
+
+FEM_icmp6_na(
+	na_from_r0_to_nut_linklocal,
+	_HETHER_r02nut,
+	{
+		HopLimit	= 255;
+		_SRC(v6(R0_LLOCAL_ADDR));
+		_DST(nutv6());
+	},
+	{
+		RFlag		= 1;
+		SFlag		= 1;
+		OFlag		= 1;
+		TargetAddress	= v6(R0_LLOCAL_ADDR);
+		option		= opt_tll_r0;
+	}
+)
+
+Opt_ICMPv6_TLL opt_tll_r0 {
+	LinkLayerAddress	= ether(R0_MAC_ADDR);
+}
+
+//
+//  R0 -> NUT (global)
+//
+////////////////////////////////
+
+FEM_icmp6_na(
+	na_from_r0_to_nut_global,
+	_HETHER_r02nut,
+	{
+		HopLimit	= 255;
+		_SRC(v6(R0_GLOBAL_ADDR));
+		_DST(nutv6());
+	},
+	{
+		RFlag		= 1;
+		SFlag		= 1;
+		OFlag		= 1;
+		TargetAddress	= v6(R0_GLOBAL_ADDR);
+		option		= opt_tll_r0;
+	}
+)
+
+
+
+//
+//  CoTI
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  valid
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	CoTI,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header  = _HDR_IPV6_NAME(CoTI);
+		exthdr  = ext_CoTI;
+		upper   = _UPP_NONEXT_NAME(CoTI);
+	},
+	{}
+)
+
+Hdr_MH_CoTI ext_CoTI {
+	InitCookie	= hexstr(COTCOOKIE, 8);
+}
+
+//
+//  invalid checksum
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	CoTI_Invalid_Checksum,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header	= _HDR_IPV6_NAME(CoTI_Invalid_Checksum);
+		exthdr	= ext_CoTI_Invalid_Checksum;
+		upper	= _UPP_NONEXT_NAME(CoTI_Invalid_Checksum);
+	},
+	{}
+)
+
+Hdr_MH_CoTI ext_CoTI_Invalid_Checksum {
+	Checksum	= 0;
+	InitCookie	= hexstr(COTCOOKIE, 8);
+}
+
+//
+//  piggybacking
+//
+////////////////////////////////
+
+FEM_icmp6_echo_request_exth(
+	CoTI_Piggyback,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header	= _HDR_IPV6_NAME(CoTI_Piggyback);
+		exthdr	= ext_CoTI;
+		upper	= _ICMPV6_NAME(CoTI_Piggyback);
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+//
+//  w/ HaO
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	CoTI_HaO,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header  = _HDR_IPV6_NAME(CoTI_HaO);
+		exthdr  = ext_homeaddress;
+		exthdr  = ext_CoTI;
+		upper   = _UPP_NONEXT_NAME(CoTI_HaO);
+	},
+	{}
+)
+
+
+
+//
+//  CoT
+//
+////////////////////////////////////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	CoT,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(CAREOFADDR));
+	},
+	{
+		header	= _HDR_IPV6_NAME(CoT);
+		exthdr	= ext_CoT;
+		upper	= _UPP_NONEXT_NAME(CoT);
+	},
+	{}
+)
+
+Hdr_MH_CoT ext_CoT {
+	Index		= any;
+	InitCookie	= hexstr(COTCOOKIE, 8);
+	KeygenNonce	= any;
+}
+
+
+
+//
+//  HoTI
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  valid
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	HoTI,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(HOMEADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header  = _HDR_IPV6_NAME(HoTI);
+		exthdr  = ext_HoTI;
+		upper   = _UPP_NONEXT_NAME(HoTI);
+	},
+	{}
+)
+
+Hdr_MH_HoTI ext_HoTI {
+	InitCookie	= hexstr(HOTCOOKIE, 8);
+}
+
+//
+//  invalid checksum
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	HoTI_Invalid_Checksum,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(HOMEADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header	= _HDR_IPV6_NAME(HoTI_Invalid_Checksum);
+		exthdr	= ext_HoTI_Invalid_Checksum;
+		upper	= _UPP_NONEXT_NAME(HoTI_Invalid_Checksum);
+	},
+	{}
+)
+
+Hdr_MH_HoTI ext_HoTI_Invalid_Checksum {
+	Checksum	= 0;
+	InitCookie	= hexstr(HOTCOOKIE, 8);
+}
+
+//
+//  piggybacking
+//
+////////////////////////////////
+
+FEM_icmp6_echo_request_exth(
+	HoTI_Piggyback,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(HOMEADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header	= _HDR_IPV6_NAME(HoTI_Piggyback);
+		exthdr	= ext_HoTI;
+		upper	= _ICMPV6_NAME(HoTI_Piggyback);
+	},
+	{
+		payload = payload8;
+	}
+)
+
+//
+//  w/ HaO
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	HoTI_HaO,
+	_HETHER_r02nut,
+	{
+#ifdef USE_HOA_FOR_HOTI_INCLUDE_HAO
+		_SRC(v6(HOMEADDR));
+#else
+		_SRC(v6(CAREOFADDR));
+#endif
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header  = _HDR_IPV6_NAME(HoTI_HaO);
+		exthdr  = ext_homeaddress;
+		exthdr  = ext_HoTI;
+		upper   = _UPP_NONEXT_NAME(HoTI_HaO);
+	},
+	{}
+)
+
+
+
+//
+//  HoT
+//
+////////////////////////////////////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	HoT,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		header	= _HDR_IPV6_NAME(HoT);
+		exthdr	= ext_HoT;
+		upper	= _UPP_NONEXT_NAME(HoT);
+	},
+	{}
+)
+
+Hdr_MH_HoT ext_HoT {
+	Index		= any;
+	InitCookie	= hexstr(HOTCOOKIE, 8);
+	KeygenNonce	= any;
+}
+
+
+
+//
+//  BU
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  valid
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	BU,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header  = _HDR_IPV6_NAME(BU);
+		exthdr  = ext_homeaddress;
+		exthdr  = ext_BU;
+		upper   = _UPP_NONEXT_NAME(BU);
+	},
+	{}
+)
+
+Hdr_Destination ext_homeaddress {
+	option	= opt_pad4;
+	option	= opt_hao;
+}
+
+Opt_HomeAddress opt_hao {
+	HomeAddress     = v6(HOMEADDR);
+}
+
+Opt_PadN opt_pad4 {
+	pad	= repeat(0x00, 2);
+}
+
+Hdr_MH_BU ext_BU {
+	SequenceNumber	= SEQ_BU;
+	AFlag		= ACKNOWLEDGE;
+	HFlag		= HOMEREGISTRATION;
+	Lifetime	= LIFETIME;
+	option		= opt_mh_nonce;
+	option		= opt_mh_auth;
+}
+
+Opt_MH_NonceIndices opt_mh_nonce {
+	HoNonceIndex	= HOINDEX;
+	CoNonceIndex	= COINDEX;
+}
+
+Opt_MH_BindingAuthData opt_mh_auth {
+	Authenticator	= bsa(kbm(hexstr(HOKEYGENTOKEN, 8), hexstr(COKEYGENTOKEN, 8)), v6(CAREOFADDR), nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+}
+
+//
+//  piggybacking
+//
+////////////////////////////////
+
+FEM_icmp6_echo_request_exth(
+	BU_Piggyback,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header  = _HDR_IPV6_NAME(BU_Piggyback);
+		exthdr  = ext_homeaddress;
+		exthdr  = ext_BU;
+		upper   = _ICMPV6_NAME(BU_Piggyback);
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+//
+//  invalid checksum
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	BU_Invalid_Checksum,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header  = _HDR_IPV6_NAME(BU_Invalid_Checksum);
+		exthdr  = ext_homeaddress;
+		exthdr  = ext_BU_Invalid_Checksum;
+		upper   = _UPP_NONEXT_NAME(BU_Invalid_Checksum);
+	},
+	{}
+)
+
+Hdr_MH_BU ext_BU_Invalid_Checksum {
+	Checksum	= 0;
+	SequenceNumber	= SEQ_BU;
+	AFlag		= ACKNOWLEDGE;
+	HFlag		= HOMEREGISTRATION;
+	Lifetime	= LIFETIME;
+	option		= opt_mh_nonce;
+	option		= opt_mh_auth;
+}
+
+//
+//  CoA=HoA
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	BU_Home,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(HOMEADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header  = _HDR_IPV6_NAME(BU_Home);
+		exthdr  = ext_homeaddress;
+		exthdr  = ext_BU_Home;
+		upper   = _UPP_NONEXT_NAME(BU_Home);
+	},
+	{}
+)
+
+Hdr_MH_BU ext_BU_Home {
+	SequenceNumber	= SEQ_BU;
+	AFlag		= ACKNOWLEDGE;
+	HFlag		= HOMEREGISTRATION;
+	Lifetime	= LIFETIME;
+	option		= opt_mh_nonce;
+	option		= opt_mh_auth_home;
+}
+
+Opt_MH_BindingAuthData opt_mh_auth_home {
+#ifdef NOT_USE_HOME_KBM
+	Authenticator	= bsa(kbm(hexstr(HOKEYGENTOKEN, 8), hexstr(COKEYGENTOKEN, 8)), v6(HOMEADDR), nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+#else
+	Authenticator	= bsa(kbm(hexstr(HOKEYGENTOKEN, 8)), v6(HOMEADDR), nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+#endif
+}
+
+
+
+//
+//  BA
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  CoA!=HoA
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	BA,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(CAREOFADDR));
+	},
+	{
+		header	= _HDR_IPV6_NAME(BA);
+		exthdr	= ext_routing;
+		exthdr	= ext_BA;
+		upper	= _UPP_NONEXT_NAME(BA);
+	},
+	{}
+)
+
+Hdr_Routing ext_routing {
+	RoutingType	= 2;
+	SegmentsLeft	= 1;
+	Address		= v6(HOMEADDR);
+}
+
+Hdr_MH_BA ext_BA {
+	Status		= STATUS_BA;
+	SequenceNumber	= SEQ_BA;
+	Lifetime	= any;
+	option		= opt_mh_pad6;
+#ifdef IGNORE_AUTHENTICATOR
+	option		= opt_mh_auth_any;
+#else
+	option		= opt_mh_auth;
+#endif
+}
+
+Opt_MH_BindingAuthData opt_mh_auth_any {
+	Authenticator	= any;
+}
+
+Opt_MH_PadN opt_mh_pad6 {
+	pad	= repeat(0x00, 4);
+}
+
+//
+//  CoA=HoA
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	BA_Home,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		header	= _HDR_IPV6_NAME(BA_Home);
+		exthdr	= ext_BA_Home;
+		upper	= _UPP_NONEXT_NAME(BA_Home);
+	},
+	{}
+)
+
+Hdr_MH_BA ext_BA_Home {
+	Status		= STATUS_BA;
+	SequenceNumber	= SEQ_BA;
+	Lifetime	= any;
+	option		= opt_mh_pad6;
+#ifdef IGNORE_AUTHENTICATOR
+	option		= opt_mh_auth_any;
+#else
+	option		= opt_mh_auth_home;
+#endif
+}
+
+
+
+//
+//  BE
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  Unknown binding for Home Address destination option
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	BE_NoBinding,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(CAREOFADDR));
+	},
+	{
+		header  = _HDR_IPV6_NAME(BE_NoBinding);
+		exthdr  = ext_BE_NoBinding;
+		upper   = _UPP_NONEXT_NAME(BE_NoBinding);
+	},
+	{}
+)
+
+Hdr_MH_BE ext_BE_NoBinding {
+	Status	= 1;
+	Address	= v6(HOMEADDR);
+}
+
+//
+//  Unrecognized MH Type value
+//
+////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	BE_UnknownType,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		header	= _HDR_IPV6_NAME(BE_UnknownType);
+		exthdr	= ext_BE_UnknownType;
+		upper	= _UPP_NONEXT_NAME(BE_UnknownType);
+	},
+	{}
+)
+
+Hdr_MH_BE ext_BE_UnknownType {
+	Status	= 2;
+	Address	= v6(_UNSPEC_ADDR);
+}
+
+
+
+//
+//  MH_ANY
+//
+////////////////////////////////////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	MH_ANY,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(HOMEADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header	= _HDR_IPV6_NAME(MH_ANY);
+		exthdr	= ext_MH_ANY;
+		upper	= _UPP_NONEXT_NAME(MH_ANY);
+	},
+	{}
+)
+
+Hdr_MH_ANY ext_MH_ANY {
+	Type    = 255;
+	data    = repeat(0x00, 2);
+}

@@ -1,0 +1,11 @@
+//
+// $Copyright$
+//
+// $TAHI: ct/mip6-cn-19/BE_NoBinding.def,v 1.1 2003/01/08 08:39:11 akisada Exp $
+//
+////////////////////////////////////////////////////////////////
+
+#define HOMEADDR	"3ffe:0501:ffff:0102:0200:00ff:fe00:0006"
+#define CAREOFADDR	"3ffe:0501:ffff:0103:0200:00ff:fe00:0006"
+
+#include "./MIP6.def"

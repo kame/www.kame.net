@@ -1,0 +1,269 @@
+#!/usr/bin/perl
+#
+# $Copyright$
+#
+# $TAHI: ct/mip6-ha-19/DeReg_LT0_HOME.seq,v 1.3 2003/01/14 06:41:16 akisada Exp $
+#
+################################################################
+
+BEGIN {$V6evalTool::TestVersion = '$Name:  $';}
+
+use V6evalTool;
+use MIP6;
+
+my $IF0			= 'Link0';
+
+my $Link0_device	= $V6evalTool::NutDef{'Link0_device'};
+my $NutType		= $V6evalTool::NutDef{'Type'};
+
+if($V6evalTool::NutDef{'Type'} ne 'router') {
+	vLogHTML('<FONT COLOR="#00FF00">This test is only for the router.</FONT><BR>');
+	exit($V6evalTool::exitRouterOnly);
+}
+
+vCapture($IF0);
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>INITIALIZATION</B></U></FONT><BR>');
+vClear($IF0);
+
+vLogHTML('<FONT SIZE="4"><U><B>Check Reachability</B></U></FONT><BR>');
+if(MIP6_CheckReachability($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Reply</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vClear($IF0);
+
+vLogHTML('<FONT SIZE="4"><U><B>Primary CoA Registration</B></U></FONT><BR>');
+
+my $sn = 0;
+my $a = 1;
+my $h = 1;
+my $s = 1;
+my $d = 0;
+my $l = 0;
+my $lt = 0xffff;
+
+if(MIP6_Registration($IF0, $sn, $a, $h, $s, $d, $l, $lt) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get BA</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Check Binding Cache</B></U></FONT><BR>');
+if(MIP6_CheckBindingCache($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Request</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>TEST PROCEDURE</B></U></FONT><BR>');
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Primary CoA De-Registration</B></U></FONT><BR>');
+
+$sn = 1;
+$a = 1;
+$h = 1;
+$s = 1;
+$d = 0;
+$l = 0;
+$lt = 0;
+
+if(MIP6_DeRegistrationHome($IF0, $sn, $a, $h, $s, $d, $l, $lt) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get BA</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Check Binding Cache</B></U></FONT><BR>');
+if(MIP6_CheckNoBindingCacheHomeSubnet($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Request</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vStop($IF0);
+
+vLogHTML('<B>PASS</B><BR>');
+exit($V6evalTool::exitPass);
+
+#
+# perldoc
+#
+################################################################
+__END__
+
+=head1 NAME
+
+DeReg_LT0_HOME - Valid De-Registration (Lifetime=0 & CoA=HoA)
+
+=head1 TARGET
+
+=begin html
+<PRE>
+Router
+</PRE>
+
+=end html
+
+=head1 SYNOPSIS
+
+=begin html
+<PRE>
+<A HREF="./DeReg_LT0_HOME.seq">DeReg_LT0_HOME.seq</A> [-tooloption ...] -pkt <A HREF="./DeReg_LT0_HOME.def">DeReg_LT0_HOME.def</A>
+</PRE>
+<BLOCKQUOTE>
+<PRE>
+-tooloption: v6eval tool option
+</PRE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 TOPOLOGY
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+                        MN'     TN
+                        |       |
+        --------+-------+-------+------- LinkX
+                |
+       NUT      R0      MN
+        |       |       |
+--------+-------+-------+--------------- Link0
+</PRE>
+</BLOCKQUOTE>
+<BLOCKQUOTE>
+<TABLE BORDER>
+<TR>
+<TD ROWSPAN="2"><TT>Link0</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::/64</TT></TD>
+<TD ROWSPAN="2"><TT>home link</TT></TD>
+</TR>
+<TR>
+<TD><TT>site-local</TT></TD>
+<TD><TT>fec0:0:0:100::/64</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkX</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102::/64</TT></TD>
+<TD><TT>foreign link</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="2"><TT>R0(Link0)</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::a0a0</TT></TD>
+<TD ROWSPAN="2"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:a0:a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100:200:ff:fe00:14</TT></TD>
+<TD><TT>home address</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN'</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:200:ff:fe00:14</TT></TD>
+<TD><TT>care-of address</TT></TD>
+</TR>
+<TR>
+<TD><TT>TN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:&lt;TN&gt;</TT></TD>
+<TD><TT>&nbsp;</TT></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 INITIALIZATION
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'     TN
+ |       |       |       |
+ | <-------------------- | Echo Request
+ | --------------------> | Echo Reply
+ |       |       |       |
+ | <------------ |       | BU
+ | ------------> |       | BA (*1)
+ |       |       |       |
+ |       | <------------ | Echo Request
+ | ============> |       | Echo Request (encapsulated) (*2)
+ |       |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send Echo Request
+2. Wait Echo Reply
+3. Receive Echo Reply
+4. Send BU
+5. Wait BA
+6. Receive BA
+7. Send Echo Request
+8. Wait Echo Request (encapsulated)
+9. Receive Echo Request (encapsulated)
+</PRE>
+
+=end html
+
+=head1 TEST PROCEDURE
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'     TN
+ |       |       |       |
+ | <---- |       |       | BU
+ | ----> |       |       | BA (*1)
+ |       |       |       |
+ |       | <------------ | Echo Request
+ | ----> |       |       | Echo Request (forwarded) (*2)
+ |       |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send BU
+2. Wait BA
+3. Receive BA (*1)
+4. Send Echo Request
+5. Wait Echo Request (forwarded)
+6. Receive Echo Request (forwarded) (*2)
+</PRE>
+
+=end html
+
+=head1 JUDGEMENT
+
+=begin html
+<PRE>
+(*1) PASS: MN receives BA
+(*2) PASS: MN receives Echo Request (forwarded)
+</PRE>
+
+=end html
+
+=head1 SEE ALSO
+
+=begin html
+<PRE>
+<A HREF="./MIP6.pm">MIP6.pm</A>
+<A HREF="./MIP6.def">MIP6.def</A>
+</PRE>
+
+=end html
+
+=cut

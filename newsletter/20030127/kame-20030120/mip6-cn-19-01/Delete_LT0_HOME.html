@@ -1,0 +1,207 @@
+<HTML>
+<HEAD>
+<TITLE>Delete_LT0_HOME - Delete a Binding A=1</TITLE>
+<LINK REV="made" HREF="mailto:hackers@FreeBSD.org">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#NAME">NAME</A>
+	<LI><A HREF="#TARGET">TARGET</A>
+	<LI><A HREF="#SYNOPSIS">SYNOPSIS</A>
+	<LI><A HREF="#TOPOLOGY">TOPOLOGY</A>
+	<LI><A HREF="#INITIALIZATION">INITIALIZATION</A>
+	<LI><A HREF="#TEST_PROCEDURE">TEST PROCEDURE</A>
+	<LI><A HREF="#JUDGEMENT">JUDGEMENT</A>
+	<LI><A HREF="#SEE_ALSO">SEE ALSO</A>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="NAME">NAME</A></H1>
+<P>
+Delete_LT0_HOME - Delete a Binding A=1 (Lifetime=0 &amp; CoA=HoA)
+
+<P>
+<HR>
+<H1><A NAME="TARGET">TARGET</A></H1>
+<PRE>
+Host/Router
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="SYNOPSIS">SYNOPSIS</A></H1>
+<PRE>
+<A HREF="./Delete_LT0_HOME.seq">Delete_LT0_HOME.seq</A> [-tooloption ...] -pkt <A HREF="./Delete_LT0_HOME.def">Delete_LT0_HOME.def</A>
+</PRE>
+<BLOCKQUOTE>
+<PRE>
+-tooloption: v6eval tool option
+</PRE>
+</BLOCKQUOTE>
+
+<P>
+<HR>
+<H1><A NAME="TOPOLOGY">TOPOLOGY</A></H1>
+<BLOCKQUOTE>
+<PRE>
+                                MN'
+                                |
+                --------+-------+------- LinkY
+                        |
+                        R1      MN
+                        |       |
+        --------+-------+-------+------- LinkX
+                |
+       NUT      R0
+        |       |
+--------+-------+----------------------- Link0
+</PRE>
+</BLOCKQUOTE>
+<BLOCKQUOTE>
+<TABLE BORDER>
+<TR>
+<TD><TT>Link0</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::/64</TT></TD>
+<TD><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkX</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102::/64</TT></TD>
+<TD><TT>home link</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkY</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:103::/64</TT></TD>
+<TD><TT>foreign link</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="3"><TT>R0(Link0)</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::a0a0</TT></TD>
+<TD ROWSPAN="3"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>link-local</TT></TD>
+<TD><TT>fe80::200:ff:fe00:a0a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:a0:a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:200:ff:fe00:31</TT></TD>
+<TD><TT>home address</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN'</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:103:200:ff:fe00:31</TT></TD>
+<TD><TT>care-of address</TT></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>
+<HR>
+<H1><A NAME="INITIALIZATION">INITIALIZATION</A></H1>
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'
+ |       |       |
+ | <------------ | Echo Request
+ | ------------> | Echo Reply
+ |       |       |
+ | <---- |       | HoTI
+ | <------------ | CoTI
+ | ----> |       | HoT
+ | ------------> | CoT
+ |       |       |
+ | <------------ | BU
+ | --X   |       | no response
+ |       |       |
+ | <------------ | Echo Request w/ HaO
+ | ------------> | Echo Reply w/ RH
+ |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+ 1. Send Echo Request
+ 2. Wait Echo Reply
+ 3. Receive Echo Reply
+ 4. Send HoTI & CoTI
+ 5. Wait HoT & CoT
+ 6. Receive HoT & CoT
+ 7. Send BU
+ 8. No response
+ 9. Send Echo Request w/ HaO
+10. Wait Echo Reply w/ RH
+11. Receive Echo Reply w/ RH
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="TEST_PROCEDURE">TEST PROCEDURE</A></H1>
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'
+ |       |       |
+ | <---- |       | HoTI
+ | ----> |       | HoT (*1)
+ |       |       |
+ | <---- |       | BU
+ | ----> |       | BA (*2)
+ |       |       |
+ | <------------ | Echo Request w/ HaO
+ | ------------> | BE (*3)
+ |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send HoTI
+2. Wait HoT
+3. Receive HoT (*1)
+4. Send BU
+5. Wait BA
+6. Receive BA (*2)
+7. Send Echo Request w/ HaO
+8. Wait BE
+9. Receive BE (*3)
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="JUDGEMENT">JUDGEMENT</A></H1>
+<PRE>
+(*1) PASS: MN receives HoT
+(*3) PASS: MN receives BA
+(*4) PASS: MN' receives BE
+     <FONT COLOR="#00FF00">WARN</FONT>: no response
+     <FONT COLOR="#FF0000">FAIL</FONT>: Recv unexpect packets
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="SEE_ALSO">SEE ALSO</A></H1>
+<PRE>
+<A HREF="./MIP6.pm">MIP6.pm</A>
+<A HREF="./MIP6.def">MIP6.def</A>
+</PRE>
+
+</BODY>
+
+</HTML>

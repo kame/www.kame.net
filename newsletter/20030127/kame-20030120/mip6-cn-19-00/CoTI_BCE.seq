@@ -1,0 +1,253 @@
+#!/usr/bin/perl
+#
+# $Copyright$
+#
+# $TAHI: ct/mip6-cn-19/CoTI_BCE.seq,v 1.1 2003/01/10 12:53:06 akisada Exp $
+#
+################################################################
+
+BEGIN {$V6evalTool::TestVersion = '$Name:  $';}
+
+use V6evalTool;
+use MIP6;
+
+my $IF0 = 'Link0';
+my $NutType = $V6evalTool::NutDef{'Type'};
+
+vCapture($IF0);
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>INITIALIZATION</B></U></FONT><BR>');
+vClear($IF0);
+
+vLogHTML('<FONT SIZE="4"><U><B>Check Reachability</B></U></FONT><BR>');
+if(MIP6_CheckReachability($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Reply</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Return Routability Procedure</B></U></FONT><BR>');
+
+my %rr = MIP6_ReturnRoutability($IF0);
+if($rr{'status'} < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t complete RR</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Requests to Cache a Binding</B></U></FONT><BR>');
+my $sn = 0;
+my $a = 0;
+my $lt = 0xffff;
+if(MIP6_ProcessingBindingsNoAck($IF0, $sn, $a, $lt, %rr) < 0) {
+	vLogHTML('<FONT COLOR="#00FF00">BA SHOULD NOT be sent.</FONT><BR>');
+	exit($V6evalTool::exitWarn);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Check Binding Cache</B></U></FONT><BR>');
+if(MIP6_CheckBindingCache($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Reply</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>TEST PROCEDURE</B></U></FONT><BR>');
+vClear($IF0);
+
+vLogHTML('<FONT SIZE="4"><U><B>Receiving CoTI</B></U></FONT><BR>');
+
+if(MIP6_CoT($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get CoT</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vStop($IF0);
+
+vLogHTML('<B>PASS</B><BR>');
+exit($V6evalTool::exitPass);
+
+#
+# perldoc
+#
+################################################################
+__END__
+
+=head1 NAME
+
+CoTI_BCE - CoTI w/ BCE
+
+=head1 TARGET
+
+=begin html
+<PRE>
+Host/Router
+</PRE>
+
+=end html
+
+=head1 SYNOPSIS
+
+=begin html
+<PRE>
+<A HREF="./CoTI_BCE.seq">CoTI_BCE.seq</A> [-tooloption ...] -pkt <A HREF="./CoTI_BCE.def">CoTI_BCE.def</A>
+</PRE>
+<BLOCKQUOTE>
+<PRE>
+-tooloption: v6eval tool option
+</PRE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 TOPOLOGY
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+                                MN'
+                                |
+                --------+-------+------- LinkY
+                        |
+                        R1      MN
+                        |       |
+        --------+-------+-------+------- LinkX
+                |
+       NUT      R0
+        |       |
+--------+-------+----------------------- Link0
+</PRE>
+</BLOCKQUOTE>
+<BLOCKQUOTE>
+<TABLE BORDER>
+<TR>
+<TD><TT>Link0</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::/64</TT></TD>
+<TD><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkX</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102::/64</TT></TD>
+<TD><TT>home link</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkY</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:103::/64</TT></TD>
+<TD><TT>foreign link</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="3"><TT>R0(Link0)</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::a0a0</TT></TD>
+<TD ROWSPAN="3"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>link-local</TT></TD>
+<TD><TT>fe80::200:ff:fe00:a0a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:a0:a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:200:ff:fe00:20</TT></TD>
+<TD><TT>home address</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN'</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:103:200:ff:fe00:20</TT></TD>
+<TD><TT>care-of address</TT></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 INITIALIZATION
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'
+ |       |       |
+ | <------------ | Echo Request
+ | ------------> | Echo Reply
+ |       |       |
+ | <---- |       | HoTI
+ | <------------ | CoTI
+ | ----> |       | HoT
+ | ------------> | CoT
+ |       |       |
+ | <------------ | BU
+ | --X   |       | no response
+ |       |       |
+ | <------------ | Echo Request w/ HaO
+ | ------------> | Echo Reply w/ RH
+ |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+ 1. Send Echo Request
+ 2. Wait Echo Reply
+ 3. Receive Echo Reply
+ 4. Send HoTI & CoTI
+ 5. Wait HoT & CoT
+ 6. Receive HoT & CoT
+ 7. Send BU
+ 8. No response
+ 9. Send Echo Request w/ HaO
+10. Wait Echo Reply w/ RH
+11. Receive Echo Reply w/ RH
+</PRE>
+
+=end html
+
+=head1 TEST PROCEDURE
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      MN'
+ |       |
+ | <---- | CoTI
+ | ----> | CoT
+ |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send CoTI
+2. Wait CoT
+3. Receive CoT
+</PRE>
+
+=end html
+
+=head1 JUDGEMENT
+
+=begin html
+<PRE>
+PASS: MN' receives CoT
+</PRE>
+
+=end html
+
+=head1 SEE ALSO
+
+=begin html
+<PRE>
+<A HREF="./MIP6.pm">MIP6.pm</A>
+<A HREF="./MIP6.def">MIP6.def</A>
+</PRE>
+
+=end html
+
+=cut

@@ -1,0 +1,1250 @@
+//
+// $Copyright$
+//
+// $TAHI: ct/mip6-ha-19/MIP6.def,v 1.16 2003/01/14 09:47:44 akisada Exp $
+//
+////////////////////////////////////////////////////////////////
+
+#undef NOT_VRFY_LT_DEREG
+
+#ifndef PREFIX_SL
+#define PREFIX_SL	"fec0:0000:0000:0100::"
+#endif
+
+#ifndef HOMEADDR
+#define HOMEADDR	_GLOBAL2A1N_UCAST_ADDR
+#endif
+
+#ifndef HOMEADDR_SL
+#define HOMEADDR_SL	"fec0:0000:0000:0100:0200:00ff:fe00:a1a1"
+#endif
+
+#ifndef HOMEADDR_LL
+#define HOMEADDR_LL	_LLOCAL0A1N_UCAST_ADDR
+#endif
+
+#ifndef CAREOFADDR
+#define CAREOFADDR	_GLOBAL3A1N_UCAST_ADDR
+#endif
+
+#ifndef R0_GLOBAL_ADDR
+#define R0_GLOBAL_ADDR	"3ffe:501:ffff:100::a0a0"
+#endif
+
+#ifndef R0_MAC_ADDR
+#define R0_MAC_ADDR	A0N_MAC_ADDR
+#endif
+
+#ifndef MN_MAC_ADDR
+#define MN_MAC_ADDR	A1N_MAC_ADDR
+#endif
+
+#ifndef SEQ
+#define SEQ	0
+#endif
+
+#ifndef ACKNOWLEDGE
+#define ACKNOWLEDGE	0
+#endif
+
+#ifndef HOMEREGISTRATION
+#define HOMEREGISTRATION	0
+#endif
+
+#ifndef SINGLEADDR
+#define SINGLEADDR	0
+#endif
+
+#ifndef DAD
+#define DAD	0
+#endif
+
+#ifndef LINKLOCAL
+#define LINKLOCAL	0
+#endif
+
+#ifndef LIFETIME
+#define LIFETIME	0
+#endif
+
+#ifndef STATUS
+#define STATUS	0
+#endif
+
+#ifndef HOMEAGENT1
+#define HOMEAGENT1	_GLOBAL0A2N_UCAST_ADDR
+#endif
+
+#ifndef HOMEAGENT1_LL
+#define HOMEAGENT1_LL	_LLOCAL0A2N_UCAST_ADDR
+#endif
+
+#ifndef HOMEAGENT1_MAC
+#define HOMEAGENT1_MAC	A2N_MAC_ADDR
+#endif
+
+#ifndef HA1_PREF
+#define HA1_PREF	0
+#endif
+
+#ifndef HA1_LIFETIME
+#define HA1_LIFETIME	0
+#endif
+
+#ifndef HOMEAGENT2
+#define HOMEAGENT2	_GLOBAL0A3N_UCAST_ADDR
+#endif
+
+#ifndef HOMEAGENT2_LL
+#define HOMEAGENT2_LL	_LLOCAL0A3N_UCAST_ADDR
+#endif
+
+#ifndef HOMEAGENT2_MAC
+#define HOMEAGENT2_MAC	A3N_MAC_ADDR
+#endif
+
+#ifndef HA2_PREF
+#define HA2_PREF	0
+#endif
+
+#ifndef HA2_LIFETIME
+#define HA2_LIFETIME	0
+#endif
+
+
+
+_HETHER_define(_HETHER_r02nut, ether(R0_MAC_ADDR), nutether())
+_HETHER_define(_HETHER_nut2r0, nutether(), ether(R0_MAC_ADDR))
+_HETHER_define(_HETHER_nut2r0solnode, nutether(), _ETHER_SOLNODE_MCAST(v6(R0_GLOBAL_ADDR)))
+_HETHER_define(_HETHER_nut2globalhomesolnode, nutether(), _ETHER_SOLNODE_MCAST(v6(HOMEADDR)))
+_HETHER_define(_HETHER_nut2sitelocalhomesolnode, nutether(), _ETHER_SOLNODE_MCAST(v6(HOMEADDR_SL)))
+_HETHER_define(_HETHER_nut2linklocalhomesolnode, nutether(), _ETHER_SOLNODE_MCAST(v6(HOMEADDR_LL)))
+_HETHER_define(_HETHER_mn2nut, ether(MN_MAC_ADDR), nutether())
+_HETHER_define(_HETHER_mn2allnodes, ether(MN_MAC_ADDR), v62ethermulti(v6(_ALLNODES_MCAST_ADDR)))
+_HETHER_define(_HETHER_nut2mn, nutether(), ether(MN_MAC_ADDR))
+_HETHER_define(_HETHER_nut2mnsolnode, nutether(), _ETHER_SOLNODE_MCAST(v6(HOMEADDR)))
+_HETHER_define(_HETHER_ha12allnodes, ether(HOMEAGENT1_MAC), v62ethermulti(v6(_ALLNODES_MCAST_ADDR)))
+_HETHER_define(_HETHER_ha22allnodes, ether(HOMEAGENT2_MAC), v62ethermulti(v6(_ALLNODES_MCAST_ADDR)))
+_HETHER_define(_HETHER_mn2allrouters, ether(MN_MAC_ADDR), v62ethermulti(v6(_ALLROUTERS_MCAST_ADDR)))
+_HETHER_define(_HETHER_tn2globalhomesolnode,	tnether(),	_ETHER_SOLNODE_MCAST(v6(HOMEADDR)))
+_HETHER_define(_HETHER_tn2linklocalhomesolnode,	tnether(),	_ETHER_SOLNODE_MCAST(v6(HOMEADDR_LL)))
+_HETHER_define(_HETHER_tn2sitelocalhomesolnode,	tnether(),	_ETHER_SOLNODE_MCAST(v6(HOMEADDR_SL)))
+
+
+
+//
+//  Echo Request
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  TN -> NUT (global)
+//
+////////////////////////////////
+
+FEM_icmp6_echo_request(
+	ereq_from_tn_to_nut_global,
+	_HETHER_r02nut,
+	{
+		_SRC(tn2v6(_GLOBAL2_UCAST_PRFX, 64));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+Payload payload8 {
+	data	= hexstr("0123456789abcdef", 8);
+}
+
+//
+//  TN -> HoA
+//
+////////////////////////////////
+
+FEM_icmp6_echo_request(
+	ereq_from_tn_to_hoa_global,
+	_HETHER_r02nut,
+	{
+		_SRC(tn2v6(_GLOBAL2_UCAST_PRFX, 64));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+//
+//  TN -> HoA (encapsulated)
+//
+////////////////////////////////
+
+FEM_hdr_ipv6_exth(
+	ereq_from_tn_to_hoa_global_encapsulated,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(CAREOFADDR));
+	},
+	{
+		header	= _HDR_IPV6_NAME(ereq_from_tn_to_hoa_global_encapsulated);
+		upper	= _PACKET_IPV6_NAME(ereq_from_tn_to_hoa_global);
+	}
+)
+
+//
+//  TN -> HoA (LinkY) (forwarded)
+//
+////////////////////////////////
+
+FEM_icmp6_echo_request(
+	ereq_from_tn_to_hoa_y_global,
+	_HETHER_nut2r0,
+	{
+		_SRC(tn2v6(_GLOBAL2_UCAST_PRFX, 64));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+//
+//  TN -> HoA (Link0) (forwarded)
+//
+////////////////////////////////
+
+FEM_icmp6_echo_request(
+	ereq_from_tn_to_hoa_0_global,
+	_HETHER_nut2mn,
+	{
+		_SRC(tn2v6(_GLOBAL2_UCAST_PRFX, 64));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+//
+//  MN -> TN (global)
+//
+////////////////////////////////
+
+FEM_icmp6_echo_request(
+	ereq_from_mn_to_tn_global,
+	_HETHER_nut2r0,
+	{
+		_SRC(v6(HOMEADDR));
+		_DST(tn2v6(_GLOBAL2_UCAST_PRFX, 64));
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+//
+//  MN -> TN (encapsulated)
+//
+////////////////////////////////
+
+FEM_hdr_ipv6_exth(
+	ereq_from_mn_to_tn_global_encapsulated,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header	= _HDR_IPV6_NAME(ereq_from_mn_to_tn_global_encapsulated);
+		upper	= _PACKET_IPV6_NAME(ereq_from_mn_to_tn_global);
+	}
+)
+
+
+
+//
+//  Echo Reply
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  NUT -> TN (global)
+//
+////////////////////////////////
+
+FEM_icmp6_echo_reply(
+	erep_from_nut_to_tn_global,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(tn2v6(_GLOBAL2_UCAST_PRFX, 64));
+	},
+	{
+		payload	= payload8;
+	}
+)
+
+
+
+//
+//  Neighbor Solicitation
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  NUT -> R0
+//
+////////////////////////////////
+
+FEM_icmp6_ns(
+	ns_from_nut_to_r0_multicast_global,
+	_HETHER_nut2r0solnode,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(_IPV6_SOLNODE_MCAST(v6(R0_GLOBAL_ADDR)));
+	},
+	{
+		TargetAddress	= v6(R0_GLOBAL_ADDR);
+		option		= _SLLOPT_nut;
+	}
+)
+
+FEM_icmp6_ns(
+	ns_from_nut_to_r0_unicast_global,
+	_HETHER_nut2r0,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(v6(R0_GLOBAL_ADDR));
+	},
+	{
+		TargetAddress	= v6(R0_GLOBAL_ADDR);
+	}
+)
+
+FEM_icmp6_ns(
+	ns_from_nut_to_r0_unicast_sll_global,
+	_HETHER_nut2r0,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(v6(R0_GLOBAL_ADDR));
+	},
+	{
+		TargetAddress	= v6(R0_GLOBAL_ADDR);
+		option		= _SLLOPT_nut;
+	}
+)
+
+//
+//  NUT -> MN
+//
+////////////////////////////////
+
+FEM_icmp6_ns(
+	ns_from_nut_to_mn_multicast_global,
+	_HETHER_nut2mnsolnode,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(_IPV6_SOLNODE_MCAST(v6(HOMEADDR)));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR);
+		option		= _SLLOPT_nut;
+	}
+)
+
+FEM_icmp6_ns(
+	ns_from_nut_to_mn_unicast_global,
+	_HETHER_nut2mn,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR);
+	}
+)
+
+FEM_icmp6_ns(
+	ns_from_nut_to_mn_unicast_sll_global,
+	_HETHER_nut2mn,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nutv6(), nut2v6(_GLOBAL0_UCAST_PRFX, 64)));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR);
+		option		= _SLLOPT_nut;
+	}
+)
+
+
+
+//
+//  Neighbor Advertisement
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  R0 -> NUT
+//
+////////////////////////////////
+
+FEM_icmp6_na(
+	na_from_r0_to_nut_global,
+	_HETHER_r02nut,
+	{
+		HopLimit	= 255;
+		_SRC(v6(R0_GLOBAL_ADDR));
+		_DST(nutv6());
+	},
+	{
+		RFlag		= 1;
+		SFlag		= 1;
+		OFlag		= 1;
+		TargetAddress	= v6(R0_GLOBAL_ADDR);
+		option		= opt_tll_r0;
+	}
+)
+
+Opt_ICMPv6_TLL opt_tll_r0 {
+	LinkLayerAddress	= ether(R0_MAC_ADDR);
+}
+
+//
+//  MN -> NUT
+//
+////////////////////////////////
+
+FEM_icmp6_na(
+	na_from_mn_to_nut_global,
+	_HETHER_mn2nut,
+	{
+		HopLimit	= 255;
+		_SRC(v6(HOMEADDR));
+		_DST(nutv6());
+	},
+	{
+		RFlag		= 0;
+		SFlag		= 1;
+		OFlag		= 1;
+		TargetAddress	= v6(HOMEADDR);
+		option		= opt_tll_mn;
+	}
+)
+
+//
+//  MN -> all-nodes multicast address
+//
+////////////////////////////////
+
+FEM_icmp6_na(
+	na_dad_global,
+	_HETHER_mn2allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(tn2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		OFlag		= 1;
+		TargetAddress	= v6(HOMEADDR);
+		option		= opt_tll_mn;
+	}
+)
+
+Opt_ICMPv6_TLL opt_tll_mn {
+	LinkLayerAddress	= ether(MN_MAC_ADDR);
+}
+
+FEM_icmp6_na(
+	na_dad_sitelocal,
+	_HETHER_mn2allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(tn2v6(PREFIX_SL, 64));
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		OFlag		= 1;
+		TargetAddress	= v6(HOMEADDR_SL);
+		option		= opt_tll_mn;
+	}
+)
+
+FEM_icmp6_na(
+	na_dad_linklocal,
+	_HETHER_mn2allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(tnv6());
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		OFlag		= 1;
+		TargetAddress	= v6(HOMEADDR_LL);
+		option		= opt_tll_mn;
+	}
+)
+
+//
+//  NUT -> all-nodes multicast address
+//
+////////////////////////////////
+
+FEM_icmp6_na(
+	multicast_na_global,
+	_HETHER_nut2allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nut2v6(_GLOBAL0_UCAST_PRFX, 64), nut2v6(PREFIX_SL, 64), nutv6(), v6(HOMEADDR), v6(HOMEADDR_SL), v6(HOMEADDR_LL)));
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		OFlag		= 1;
+		TargetAddress	= v6(HOMEADDR);
+		option		= _TLLOPT_nut;
+	}
+)
+
+FEM_icmp6_na(
+	multicast_na_sitelocal,
+	_HETHER_nut2allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nut2v6(_GLOBAL0_UCAST_PRFX, 64), nut2v6(PREFIX_SL, 64), nutv6(), v6(HOMEADDR), v6(HOMEADDR_SL), v6(HOMEADDR_LL)));
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		OFlag		= 1;
+		TargetAddress	= v6(HOMEADDR_SL);
+		option		= _TLLOPT_nut;
+	}
+)
+
+FEM_icmp6_na(
+	multicast_na_linklocal,
+	_HETHER_nut2allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(oneof(nut2v6(_GLOBAL0_UCAST_PRFX, 64), nut2v6(PREFIX_SL, 64), nutv6(), v6(HOMEADDR), v6(HOMEADDR_SL), v6(HOMEADDR_LL)));
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		OFlag		= 1;
+		TargetAddress	= v6(HOMEADDR_LL);
+		option		= _TLLOPT_nut;
+	}
+)
+
+
+
+//
+//  RA
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  NUT
+//
+////////////////////////////////
+
+FEM_icmp6_ra(
+	ra_from_nut,
+	_HETHER_nut2allnodes,
+	{
+		TrafficClass	= any;
+		FlowLabel	= any;
+		HopLimit	= 255;
+		_SRC(nutv6());
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		CurHopLimit	= any;
+		MFlag		= any;
+		OFlag		= any;
+		HFlag		= any;
+		LifeTime	= any;
+		ReachableTime	= any;
+		RetransTimer	= any;
+		option		= stop;
+	}
+)
+
+//
+//  HA1
+//
+////////////////////////////////
+
+FEM_icmp6_ra(
+	ra_from_ha1,
+	_HETHER_ha12allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(v6(HOMEAGENT1_LL));
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		HFlag		= 1;
+		LifeTime	= 1800;
+		option		= opt_sll_ha1;
+		option		= opt_mtu;
+		option		= opt_hainfo_ha1;
+		option		= opt_prefixinformation_ha1;
+	}
+)
+
+Opt_ICMPv6_SLL opt_sll_ha1 {
+	LinkLayerAddress	= ether(HOMEAGENT1_MAC);
+}
+
+Opt_ICMPv6_MTU opt_mtu {
+	MTU	= 1500;
+}
+
+Opt_ICMPv6_HomeAgentInfo opt_hainfo_ha1 {
+	Preference	= HA1_PREF;
+	Lifetime	= HA1_LIFETIME;
+}
+
+Opt_ICMPv6_Prefix opt_prefixinformation_ha1 {
+	LFlag			= 1;
+	AFlag			= 1;
+	RFlag			= 1;
+	ValidLifetime		= 2592000;
+	PreferredLifetime	= 604800;
+	Prefix			= v6(HOMEAGENT1);
+}
+
+//
+//  HA2
+//
+////////////////////////////////
+
+FEM_icmp6_ra(
+	ra_from_ha2,
+	_HETHER_ha22allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(v6(HOMEAGENT2_LL));
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		HFlag		= 1;
+		LifeTime	= 1800;
+		option		= opt_sll_ha2;
+		option		= opt_mtu;
+		option		= opt_hainfo_ha2;
+		option		= opt_prefixinformation_ha2;
+	}
+)
+
+Opt_ICMPv6_SLL opt_sll_ha2 {
+	LinkLayerAddress	= ether(HOMEAGENT2_MAC);
+}
+
+Opt_ICMPv6_HomeAgentInfo opt_hainfo_ha2 {
+	Preference	= HA2_PREF;
+	Lifetime	= HA2_LIFETIME;
+}
+
+Opt_ICMPv6_Prefix opt_prefixinformation_ha2 {
+	LFlag			= 1;
+	AFlag			= 1;
+	RFlag			= 1;
+	ValidLifetime		= 2592000;
+	PreferredLifetime	= 604800;
+	Prefix			= v6(HOMEAGENT2);
+}
+
+
+
+//
+//  BU
+//
+////////////////////////////////////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	BU,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header	= _HDR_IPV6_NAME(BU);
+		exthdr	= ext_homeaddress;
+		exthdr	= ext_BU;
+		upper	= _UPP_NONEXT_NAME(BU);
+	},
+	{}
+)
+
+Hdr_Destination ext_homeaddress {
+	option	= opt_pad4;
+	option	= opt_hao;
+}
+
+Opt_HomeAddress opt_hao {
+	HomeAddress	= v6(HOMEADDR);
+}
+
+Opt_PadN opt_pad4 {
+	pad	= repeat(0x00, 2);
+}
+
+Hdr_MH_BU ext_BU {
+	SequenceNumber	= SEQ;
+	AFlag		= ACKNOWLEDGE;
+	HFlag		= HOMEREGISTRATION;
+	SFlag		= SINGLEADDR;
+	DFlag		= DAD;
+	LFlag		= LINKLOCAL;
+	Lifetime	= LIFETIME;
+	option		= opt_mh_pad4;
+}
+
+Opt_MH_PadN opt_mh_pad4 {
+	pad	= repeat(0x00, 2);
+}
+
+FEM_upp_no_next_header_exth(
+	BU_Home,
+	_HETHER_mn2nut,
+	{
+		_SRC(v6(HOMEADDR));
+		_DST(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		header	= _HDR_IPV6_NAME(BU_Home);
+		exthdr	= ext_homeaddress;
+		exthdr	= ext_BU;
+		upper	= _UPP_NONEXT_NAME(BU_Home);
+	},
+	{}
+)
+
+//
+//  BA
+//
+////////////////////////////////////////////////////////////////
+
+FEM_upp_no_next_header_exth(
+	BA,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(CAREOFADDR));
+	},
+	{
+		header	= _HDR_IPV6_NAME(BA);
+		exthdr	= ext_routing;
+		exthdr	= ext_BA;
+		upper	= _UPP_NONEXT_NAME(BA);
+	},
+	{}
+)
+
+Hdr_Routing ext_routing {
+	RoutingType	= 2;
+	SegmentsLeft	= 1;
+	Address		= v6(HOMEADDR);
+}
+
+Hdr_MH_BA ext_BA {
+	Status		= STATUS;
+	SequenceNumber	= SEQ;
+	Lifetime	= any;
+	option		= stop;
+}
+
+FEM_upp_no_next_header_exth(
+	BA_DeReg,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(CAREOFADDR));
+	},
+	{
+		header	= _HDR_IPV6_NAME(BA_DeReg);
+		exthdr	= ext_routing;
+		exthdr	= ext_BA_DeReg;
+		upper	= _UPP_NONEXT_NAME(BA_DeReg);
+	},
+	{}
+)
+
+Hdr_MH_BA ext_BA_DeReg {
+	Status		= 0;
+	SequenceNumber	= SEQ;
+#ifdef NOT_VRFY_LT_DEREG
+	Lifetime	= any;
+#else
+	Lifetime	= 0;
+#endif
+	option		= opt_mh_pad4;
+}
+
+FEM_upp_no_next_header_exth(
+	BA_Home_DeReg,
+	_HETHER_nut2mn,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		header	= _HDR_IPV6_NAME(BA_Home_DeReg);
+		exthdr	= ext_BA_DeReg;
+		upper	= _UPP_NONEXT_NAME(BA_Home_DeReg);
+	},
+	{}
+)
+
+//
+//  DAD
+//
+////////////////////////////////////////////////////////////////
+
+FEM_icmp6_ns(
+	dad_global,
+	_HETHER_nut2globalhomesolnode,
+	{
+		HopLimit	= 255;
+		_SRC(v6(_UNSPEC_ADDR));
+		_DST(_IPV6_SOLNODE_MCAST(v6(HOMEADDR)));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR);
+	}
+)
+
+FEM_icmp6_ns(
+	dad_sitelocal,
+	_HETHER_nut2sitelocalhomesolnode,
+	{
+		HopLimit	= 255;
+		_SRC(v6(_UNSPEC_ADDR));
+		_DST(_IPV6_SOLNODE_MCAST(v6(HOMEADDR_SL)));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR_SL);
+	}
+)
+
+FEM_icmp6_ns(
+	dad_linklocal,
+	_HETHER_nut2linklocalhomesolnode,
+	{
+		HopLimit	= 255;
+		_SRC(v6(_UNSPEC_ADDR));
+		_DST(_IPV6_SOLNODE_MCAST(v6(HOMEADDR_LL)));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR_LL);
+	}
+)
+
+//
+//  for getting site-local address
+//
+////////////////////////////////////////////////////////////////
+
+FEM_upp_no_next_header(
+	get_sitelocal,
+	_HETHER_tn2tn,
+	{
+		_SRC(nut2v6(PREFIX_SL, 64));
+		_DST(nut2v6(PREFIX_SL, 64));
+	},
+	{}
+)
+
+//
+//  Home Agent Address Discovery Request
+//
+////////////////////////////////////////////////////////////////
+
+FEM_icmp6_haadrequest(
+	HAADReq,
+	_HETHER_r02nut,
+	{
+		_SRC(v6(CAREOFADDR));
+		_DST(v6merge(_GLOBAL0_UCAST_PRFX, 64, v6(MIP6HA)));
+	},
+	{}
+)
+
+//
+//  RS
+//
+////////////////////////////////////////////////////////////////
+
+//
+//  w/o SLL
+//
+////////////////////////////////
+
+FEM_icmp6_rs(
+	rs_from_mn,
+	_HETHER_mn2allrouters,
+	{
+		HopLimit	= 255;
+		_SRC(v6(_UNSPEC_ADDR));
+		_DST(v6(_ALLROUTERS_MCAST_ADDR));
+	},
+	{}
+)
+
+//
+//  for proxy ND
+//
+////////////////////////////////////////////////////////////////
+
+FEM_icmp6_ns(
+	proxy_global_ns_dad,
+	_HETHER_tn2globalhomesolnode,
+	{
+		HopLimit	= 255;
+		_SRC(v6(_UNSPEC_ADDR));
+		_DST(_IPV6_SOLNODE_MCAST(v6(HOMEADDR)));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR);
+	}
+)
+
+FEM_icmp6_ns(
+	proxy_site_ns_dad,
+	_HETHER_tn2sitelocalhomesolnode,
+	{
+		HopLimit	= 255;
+		_SRC(v6(_UNSPEC_ADDR));
+		_DST(_IPV6_SOLNODE_MCAST(v6(HOMEADDR_SL)));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR_SL);
+	}
+)
+
+FEM_icmp6_ns(
+	proxy_link_ns_dad,
+	_HETHER_tn2linklocalhomesolnode,
+	{
+		HopLimit	= 255;
+		_SRC(v6(_UNSPEC_ADDR));
+		_DST(_IPV6_SOLNODE_MCAST(v6(HOMEADDR_LL)));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR_LL);
+	}
+)
+
+FEM_icmp6_ns(
+	proxy_global_ns_multi,
+	_HETHER_tn2globalhomesolnode,
+	{
+		HopLimit	= 255;
+		_SRC(tn2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(_IPV6_SOLNODE_MCAST(v6(HOMEADDR)));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR);
+		option		= _SLLOPT_tn;
+	}
+)
+
+FEM_icmp6_ns(
+	proxy_site_ns_multi,
+	_HETHER_tn2sitelocalhomesolnode,
+	{
+		HopLimit	= 255;
+		_SRC(tn2v6(PREFIX_SL, 64));
+		_DST(_IPV6_SOLNODE_MCAST(v6(HOMEADDR_SL)));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR_SL);
+		option		= _SLLOPT_tn;
+	}
+)
+
+FEM_icmp6_ns(
+	proxy_link_ns_multi,
+	_HETHER_tn2linklocalhomesolnode,
+	{
+		HopLimit	= 255;
+		_SRC(tnv6());
+		_DST(_IPV6_SOLNODE_MCAST(v6(HOMEADDR_LL)));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR_LL);
+		option		= _SLLOPT_tn;
+	}
+)
+
+FEM_icmp6_ns(
+	proxy_global_ns_uni,
+	_HETHER_tn2nut,
+	{
+		HopLimit	= 255;
+		_SRC(tn2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(HOMEADDR));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR);
+		option		= _SLLOPT_tn;
+	}
+)
+
+FEM_icmp6_ns(
+	proxy_site_ns_uni,
+	_HETHER_tn2nut,
+	{
+		HopLimit	= 255;
+		_SRC(tn2v6(PREFIX_SL, 64));
+		_DST(v6(HOMEADDR_SL));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR_SL);
+		option		= _SLLOPT_tn;
+	}
+)
+
+FEM_icmp6_ns(
+	proxy_link_ns_uni,
+	_HETHER_tn2nut,
+	{
+		HopLimit	= 255;
+		_SRC(tnv6());
+		_DST(v6(HOMEADDR_LL));
+	},
+	{
+		TargetAddress	= v6(HOMEADDR_LL);
+		option		= _SLLOPT_tn;
+	}
+)
+
+FEM_icmp6_na(
+	proxy_global_na_dad,
+	_HETHER_nut2allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(
+			oneof(
+				nut2v6(_GLOBAL0_UCAST_PRFX, 64),
+				nut2v6(PREFIX_SL, 64),
+				nutv6(),
+				v6(HOMEADDR),
+				v6(HOMEADDR_SL),
+				v6(HOMEADDR_LL)
+			)
+		);
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		OFlag		= any;
+		TargetAddress	= v6(HOMEADDR);
+		option		= _TLLOPT_nut;
+	}
+)
+
+FEM_icmp6_na(
+	proxy_site_na_dad,
+	_HETHER_nut2allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(
+			oneof(
+				nut2v6(_GLOBAL0_UCAST_PRFX, 64),
+				nut2v6(PREFIX_SL, 64),
+				nutv6(),
+				v6(HOMEADDR),
+				v6(HOMEADDR_SL),
+				v6(HOMEADDR_LL)
+			)
+		);
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		OFlag		= any;
+		TargetAddress	= v6(HOMEADDR_SL);
+		option		= _TLLOPT_nut;
+	}
+)
+
+FEM_icmp6_na(
+	proxy_link_na_dad,
+	_HETHER_nut2allnodes,
+	{
+		HopLimit	= 255;
+		_SRC(
+			oneof(
+				nut2v6(_GLOBAL0_UCAST_PRFX, 64),
+				nut2v6(PREFIX_SL, 64),
+				nutv6(),
+				v6(HOMEADDR),
+				v6(HOMEADDR_SL),
+				v6(HOMEADDR_LL)
+			)
+		);
+		_DST(v6(_ALLNODES_MCAST_ADDR));
+	},
+	{
+		OFlag		= any;
+		TargetAddress	= v6(HOMEADDR_LL);
+		option		= _TLLOPT_nut;
+	}
+)
+
+FEM_icmp6_na(
+	proxy_global_na,
+	_HETHER_nut2tn,
+	{
+		HopLimit	= 255;
+		_SRC(
+			oneof(
+				nut2v6(_GLOBAL0_UCAST_PRFX, 64),
+				nut2v6(PREFIX_SL, 64),
+				nutv6(),
+				v6(HOMEADDR),
+				v6(HOMEADDR_SL),
+				v6(HOMEADDR_LL)
+			)
+		);
+		_DST(tn2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		SFlag		= 1;
+		OFlag		= any;
+		TargetAddress	= v6(HOMEADDR);
+	}
+)
+
+FEM_icmp6_na(
+	proxy_site_na,
+	_HETHER_nut2tn,
+	{
+		HopLimit	= 255;
+		_SRC(
+			oneof(
+				nut2v6(_GLOBAL0_UCAST_PRFX, 64),
+				nut2v6(PREFIX_SL, 64),
+				nutv6(),
+				v6(HOMEADDR),
+				v6(HOMEADDR_SL),
+				v6(HOMEADDR_LL)
+			)
+		);
+		_DST(tn2v6(PREFIX_SL, 64));
+	},
+	{
+		SFlag		= 1;
+		OFlag		= any;
+		TargetAddress	= v6(HOMEADDR_SL);
+	}
+)
+
+FEM_icmp6_na(
+	proxy_link_na,
+	_HETHER_nut2tn,
+	{
+		HopLimit	= 255;
+		_SRC(
+			oneof(
+				nut2v6(_GLOBAL0_UCAST_PRFX, 64),
+				nut2v6(PREFIX_SL, 64),
+				nutv6(),
+				v6(HOMEADDR),
+				v6(HOMEADDR_SL),
+				v6(HOMEADDR_LL)
+			)
+		);
+		_DST(tnv6());
+	},
+	{
+		SFlag		= 1;
+		OFlag		= any;
+		TargetAddress	= v6(HOMEADDR_LL);
+	}
+)
+
+FEM_icmp6_na(
+	proxy_global_na_tll,
+	_HETHER_nut2tn,
+	{
+		HopLimit	= 255;
+		_SRC(
+			oneof(
+				nut2v6(_GLOBAL0_UCAST_PRFX, 64),
+				nut2v6(PREFIX_SL, 64),
+				nutv6(),
+				v6(HOMEADDR),
+				v6(HOMEADDR_SL),
+				v6(HOMEADDR_LL)
+			)
+		);
+		_DST(tn2v6(_GLOBAL0_UCAST_PRFX, 64));
+	},
+	{
+		SFlag		= 1;
+		OFlag		= any;
+		TargetAddress	= v6(HOMEADDR);
+		option		= _TLLOPT_nut;
+	}
+)
+
+FEM_icmp6_na(
+	proxy_site_na_tll,
+	_HETHER_nut2tn,
+	{
+		HopLimit	= 255;
+		_SRC(
+			oneof(
+				nut2v6(_GLOBAL0_UCAST_PRFX, 64),
+				nut2v6(PREFIX_SL, 64),
+				nutv6(),
+				v6(HOMEADDR),
+				v6(HOMEADDR_SL),
+				v6(HOMEADDR_LL)
+			)
+		);
+		_DST(tn2v6(PREFIX_SL, 64));
+	},
+	{
+		SFlag		= 1;
+		OFlag		= any;
+		TargetAddress	= v6(HOMEADDR_SL);
+		option		= _TLLOPT_nut;
+	}
+)
+
+FEM_icmp6_na(
+	proxy_link_na_tll,
+	_HETHER_nut2tn,
+	{
+		HopLimit	= 255;
+		_SRC(
+			oneof(
+				nut2v6(_GLOBAL0_UCAST_PRFX, 64),
+				nut2v6(PREFIX_SL, 64),
+				nutv6(),
+				v6(HOMEADDR),
+				v6(HOMEADDR_SL),
+				v6(HOMEADDR_LL)
+			)
+		);
+		_DST(tnv6());
+	},
+	{
+		SFlag		= 1;
+		OFlag		= any;
+		TargetAddress	= v6(HOMEADDR_LL);
+		option		= _TLLOPT_nut;
+	}
+)

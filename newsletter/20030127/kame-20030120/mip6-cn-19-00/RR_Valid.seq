@@ -1,0 +1,212 @@
+#!/usr/bin/perl
+#
+# $Copyright$
+#
+# $TAHI: ct/mip6-cn-19/RR_Valid.seq,v 1.4 2003/01/12 08:00:55 akisada Exp $
+#
+################################################################
+
+BEGIN {$V6evalTool::TestVersion = '$Name:  $';}
+
+use V6evalTool;
+use MIP6;
+
+my $IF0 = 'Link0';
+my $NutType = $V6evalTool::NutDef{'Type'};
+
+vCapture($IF0);
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>INITIALIZATION</B></U></FONT><BR>');
+vClear($IF0);
+
+vLogHTML('<FONT SIZE="4"><U><B>Check Reachability</B></U></FONT><BR>');
+if(MIP6_CheckReachability($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Reply</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>TEST PROCEDURE</B></U></FONT><BR>');
+vClear($IF0);
+
+vLogHTML('<FONT SIZE="4"><U><B>Return Routability Procedure</B></U></FONT><BR>');
+
+my %rr = MIP6_ReturnRoutability($IF0);
+if($rr{'status'} < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t complete RR</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vStop($IF0);
+
+vLogHTML('<B>PASS</B><BR>');
+exit($V6evalTool::exitPass);
+
+#
+# perldoc
+#
+################################################################
+__END__
+
+=head1 NAME
+
+RR_Valid - Receiving HoTI & CoTI
+
+=head1 TARGET
+
+=begin html
+<PRE>
+Host/Router
+</PRE>
+
+=end html
+
+=head1 SYNOPSIS
+
+=begin html
+<PRE>
+<A HREF="./RR_Valid.seq">RR_Valid.seq</A> [-tooloption ...] -pkt <A HREF="./RR_Valid.def">RR_Valid.def</A>
+</PRE>
+<BLOCKQUOTE>
+<PRE>
+-tooloption: v6eval tool option
+</PRE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 TOPOLOGY
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+                                MN'
+                                |
+                --------+-------+------- LinkY
+                        |
+                        R1      MN
+                        |       |
+        --------+-------+-------+------- LinkX
+                |
+       NUT      R0
+        |       |
+--------+-------+----------------------- Link0
+</PRE>
+</BLOCKQUOTE>
+<BLOCKQUOTE>
+<TABLE BORDER>
+<TR>
+<TD><TT>Link0</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::/64</TT></TD>
+<TD><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkX</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102::/64</TT></TD>
+<TD><TT>home link</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkY</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:103::/64</TT></TD>
+<TD><TT>foreign link</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="3"><TT>R0(Link0)</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::a0a0</TT></TD>
+<TD ROWSPAN="3"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>link-local</TT></TD>
+<TD><TT>fe80::200:ff:fe00:a0a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:a0:a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:200:ff:fe00:4</TT></TD>
+<TD><TT>home address</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN'</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:103:200:ff:fe00:4</TT></TD>
+<TD><TT>care-of address</TT></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 INITIALIZATION
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      MN
+ |       |
+ | <---- | Echo Request
+ | ----> | Echo Reply
+ |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send Echo Request
+2. Wait Echo Reply
+3. Receive Echo Reply
+</PRE>
+
+=end html
+
+=head1 TEST PROCEDURE
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'
+ |       |       |
+ | <---- |       | HoTI
+ | <------------ | CoTI
+ | ----> |       | HoT (*1)
+ | ------------> | CoT (*2)
+ |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send HoTI & CoTI
+2. Wait HoT & CoT
+3. Receive HoT & CoT (*1) (*2)
+</PRE>
+
+=end html
+
+=head1 JUDGEMENT
+
+=begin html
+<PRE>
+(*1) PASS: MN receives HoT
+(*2) PASS: MN' receives CoT
+</PRE>
+
+=end html
+
+=head1 SEE ALSO
+
+=begin html
+<PRE>
+<A HREF="./MIP6.pm">MIP6.pm</A>
+<A HREF="./MIP6.def">MIP6.def</A>
+</PRE>
+
+=end html
+
+=cut

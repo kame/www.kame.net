@@ -1,0 +1,228 @@
+#!/usr/bin/perl
+#
+# $Copyright$
+#
+# $TAHI: ct/mip6-ha-19/DHAAD_Simple.seq,v 1.5 2003/01/14 07:15:51 akisada Exp $
+#
+################################################################
+
+BEGIN {$V6evalTool::TestVersion = '$Name:  $';}
+
+use V6evalTool;
+use MIP6;
+
+my $IF0			= 'Link0';
+
+my $Link0_device	= $V6evalTool::NutDef{'Link0_device'};
+my $NutType		= $V6evalTool::NutDef{'Type'};
+
+if($V6evalTool::NutDef{'Type'} ne 'router') {
+	vLogHTML('<FONT COLOR="#00FF00">This test is only for the router.</FONT><BR>');
+	exit($V6evalTool::exitRouterOnly);
+}
+
+vCapture($IF0);
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>INITIALIZATION</B></U></FONT><BR>');
+vClear($IF0);
+
+if(MIP6_Initialize($IF0, $Link0_device) < 0) {
+	exit($V6evalTool::exitFail);
+}
+
+vLogHTML('<FONT SIZE="4"><U><B>Check Reachability</B></U></FONT><BR>');
+if(MIP6_CheckReachability($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Reply</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>TEST PROCEDURE</B></U></FONT><BR>');
+vClear($IF0);
+
+vSend($IF0, 'rs_from_mn');
+
+vClear($IF0);
+
+vLogHTML('<FONT SIZE="4"><U><B>Dynamic Home Agent Address Discovery</B></U></FONT><BR>');
+if(MIP6_DHAAD($IF0, 'HAADReq', 'HAADRep') < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get HAAD Reply</FONT><BR>');
+	exit($V6evalTool::exitWarn);
+}
+
+vStop($IF0);
+
+vLogHTML('<B>PASS</B><BR>');
+exit($V6evalTool::exitPass);
+
+#
+# perldoc
+#
+################################################################
+__END__
+
+=head1 NAME
+
+DHAAD_Simple - Dynamic Home Agent Address Discovery
+
+=head1 TARGET
+
+=begin html
+<PRE>
+Router
+</PRE>
+
+=end html
+
+=head1 SYNOPSIS
+
+=begin html
+<PRE>
+<A HREF="./DHAAD_Simple.seq">DHAAD_Simple.seq</A> [-tooloption ...] -pkt <A HREF="./DHAAD_Simple.def">DHAAD_Simple.def</A>
+</PRE>
+<BLOCKQUOTE>
+<PRE>
+-tooloption: v6eval tool option
+</PRE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 TOPOLOGY
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+                        MN'     TN
+                        |       |
+        --------+-------+-------+------- LinkX
+                |
+       NUT      R0      MN
+        |       |       |
+--------+-------+-------+--------------- Link0
+</PRE>
+</BLOCKQUOTE>
+<BLOCKQUOTE>
+<TABLE BORDER>
+<TR>
+<TD ROWSPAN="2"><TT>Link0</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::/64</TT></TD>
+<TD ROWSPAN="2"><TT>home link</TT></TD>
+</TR>
+<TR>
+<TD><TT>site-local</TT></TD>
+<TD><TT>fec0:0:0:100::/64</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkX</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102::/64</TT></TD>
+<TD><TT>foreign link</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="2"><TT>R0(Link0)</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::a0a0</TT></TD>
+<TD ROWSPAN="2"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:a0:a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100:200:ff:fe00:22</TT></TD>
+<TD><TT>home address</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN'</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:200:ff:fe00:22</TT></TD>
+<TD><TT>care-of address</TT></TD>
+</TR>
+<TR>
+<TD><TT>TN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:&lt;TN&gt;</TT></TD>
+<TD><TT>&nbsp;</TT></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 INITIALIZATION
+
+=begin html
+<UL>
+<LI>Reboot NUT (reboot.rmt)
+<LI>Configure site-local address (manualaddrconf.rmt)
+<LI>Enable HA function (mip6EnableHA.rmt)
+<LI>Add default router into routing table of NUT (route.rmt)
+</UL>
+<BLOCKQUOTE>
+<PRE>
+NUT      TN
+ |       |
+ | <---- | Echo Request
+ | ----> | Echo Reply
+ |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send Echo Request
+2. Wait Echo Reply
+3. Receive Echo Reply
+</PRE>
+
+=end html
+
+=head1 TEST PROCEDURE
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'
+ |       |       |
+ |   <-- |       | RS
+ |       |       |
+ | <------------ | HAAD Request
+ | ------------> | HAAD Reply
+ |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send RS
+2. Send HAAD Request
+3. Wait HAAD Reply
+4. Receive HAAD Reply
+</PRE>
+
+=end html
+
+=head1 JUDGEMENT
+
+=begin html
+<PRE>
+PASS: MN' receives HAAD Reply
+<FONT COLOR="#00FF00">WARN</FONT>: no response
+</PRE>
+
+=end html
+
+=head1 SEE ALSO
+
+=begin html
+<PRE>
+<A HREF="./MIP6.pm">MIP6.pm</A>
+<A HREF="./MIP6.def">MIP6.def</A>
+</PRE>
+
+=end html
+
+=cut

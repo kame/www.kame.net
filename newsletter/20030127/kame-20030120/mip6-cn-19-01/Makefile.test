@@ -1,0 +1,33 @@
+#
+# $Copyright$
+#
+# $TAHI: ct/mip6-cn-19/Makefile.test,v 1.1 2003/01/07 02:19:49 akisada Exp $
+#
+################################################################
+
+TITLE = "Conformance Test For Mobility Support in IPv6"
+INDEX = ./INDEX
+RM    = /bin/rm
+
+document:
+	$(AUTORUN) -g $(INDEX)
+
+document2:
+	$(AUTORUN) -G $(INDEX)
+
+tiny:
+	$(AUTORUN) -tiny -nolcna $(INDEX)
+
+clean:
+	-$(RM) -f *.dump *.log [0-9]*.html index.html report.html summary.html MIP6.work
+
+test:
+	touch MIP6.work
+	$(AUTORUN) $(AROPT) -title=$(TITLE) $(INDEX)
+
+tahi: document
+	-$(RM) -f index.html summary.html report.html
+	touch MIP6.work
+	$(AUTORUN) $(AROPT) -title=$(TITLE) -dump2txt $(INDEX)
+
+.include "../Makefile.inc"

@@ -1,0 +1,16 @@
+#
+# $Copyright$
+#
+# $Name:  $
+#
+# $TAHI: ct/mip6-mn-19/INDEX,v 1.2 2002/12/02 11:52:14 akisada Exp $
+#
+# <seq>:<def>:<opts>:<htmldoc>:<dsc>:<links>
+#
+################################################################
+
+&print:<B>11. Mobile Node Operation</B>
+./Initialization.seq:./Initialization.def:::Initialization:
+
+&#./SendingPacketsHome.seq:./SendingPacketsHome.def:::Sending Packets at Home:
+./MovementDetection.seq:./MovementDetection.def:::Movement Detection:

@@ -1,0 +1,14 @@
+//
+// $Copyright$
+//
+// $TAHI: ct/mip6-ha-19/DeReg_NotHA4ThisMN.def,v 1.1 2003/01/13 09:17:26 akisada Exp $
+//
+////////////////////////////////////////////////////////////////
+
+#define HOMEADDR	"3ffe:0501:ffff:0100:0200:00ff:fe00:0016"
+#define HOMEADDR_SL	"fec0:0000:0000:0100:0200:00ff:fe00:0016"
+#define HOMEADDR_LL	"fe80:0000:0000:0000:0200:00ff:fe00:0016"
+#define CAREOFADDR	"3ffe:0501:ffff:0102:0200:00ff:fe00:0016"
+#define MN_MAC_ADDR	"00:00:00:00:00:16"
+
+#include "./MIP6.def"

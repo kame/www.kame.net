@@ -1,0 +1,36 @@
+//
+// $Copyright$
+//
+// $TAHI: ct/mip6-ha-19/DHAAD_Highest.def,v 1.2 2003/01/14 05:37:40 akisada Exp $
+//
+////////////////////////////////////////////////////////////////
+
+#define HOMEADDR	"3ffe:0501:ffff:0100:0200:00ff:fe00:0023"
+#define HOMEADDR_SL	"fec0:0000:0000:0100:0200:00ff:fe00:0023"
+#define HOMEADDR_LL	"fe80:0000:0000:0000:0200:00ff:fe00:0023"
+#define CAREOFADDR	"3ffe:0501:ffff:0102:0200:00ff:fe00:0023"
+#define MN_MAC_ADDR	"00:00:00:00:00:23"
+
+#define HOMEAGENT1	"3ffe:0501:ffff:0100:0000:0000:0000:b0b0"
+#define HOMEAGENT1_LL	"fe80:0000:0000:0000:0200:00ff:fe00:b0b0"
+#define HOMEAGENT1_MAC	"00:00:00:00:b0:b0"
+
+#include "./MIP6.def"
+
+//
+// Home Agent Address Discovery Reply
+//
+////////////////////////////////////////////////////////////////
+
+FEM_icmp6_haadreply(
+	HAADRep,
+	_HETHER_nut2r0,
+	{
+		_SRC(nut2v6(_GLOBAL0_UCAST_PRFX, 64));
+		_DST(v6(CAREOFADDR));
+	},
+	{
+		Address = v6(HOMEAGENT1);
+		Address = nut2v6(_GLOBAL0_UCAST_PRFX, 64);
+	}
+)

@@ -1,0 +1,187 @@
+<HTML>
+<HEAD>
+<TITLE>DeReg_LT0_HOME - Valid De-Registration</TITLE>
+<LINK REV="made" HREF="mailto:hackers@FreeBSD.org">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#NAME">NAME</A>
+	<LI><A HREF="#TARGET">TARGET</A>
+	<LI><A HREF="#SYNOPSIS">SYNOPSIS</A>
+	<LI><A HREF="#TOPOLOGY">TOPOLOGY</A>
+	<LI><A HREF="#INITIALIZATION">INITIALIZATION</A>
+	<LI><A HREF="#TEST_PROCEDURE">TEST PROCEDURE</A>
+	<LI><A HREF="#JUDGEMENT">JUDGEMENT</A>
+	<LI><A HREF="#SEE_ALSO">SEE ALSO</A>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="NAME">NAME</A></H1>
+<P>
+DeReg_LT0_HOME - Valid De-Registration (Lifetime=0 &amp; CoA=HoA)
+
+<P>
+<HR>
+<H1><A NAME="TARGET">TARGET</A></H1>
+<PRE>
+Router
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="SYNOPSIS">SYNOPSIS</A></H1>
+<PRE>
+<A HREF="./DeReg_LT0_HOME.seq">DeReg_LT0_HOME.seq</A> [-tooloption ...] -pkt <A HREF="./DeReg_LT0_HOME.def">DeReg_LT0_HOME.def</A>
+</PRE>
+<BLOCKQUOTE>
+<PRE>
+-tooloption: v6eval tool option
+</PRE>
+</BLOCKQUOTE>
+
+<P>
+<HR>
+<H1><A NAME="TOPOLOGY">TOPOLOGY</A></H1>
+<BLOCKQUOTE>
+<PRE>
+                        MN'     TN
+                        |       |
+        --------+-------+-------+------- LinkX
+                |
+       NUT      R0      MN
+        |       |       |
+--------+-------+-------+--------------- Link0
+</PRE>
+</BLOCKQUOTE>
+<BLOCKQUOTE>
+<TABLE BORDER>
+<TR>
+<TD ROWSPAN="2"><TT>Link0</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::/64</TT></TD>
+<TD ROWSPAN="2"><TT>home link</TT></TD>
+</TR>
+<TR>
+<TD><TT>site-local</TT></TD>
+<TD><TT>fec0:0:0:100::/64</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkX</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102::/64</TT></TD>
+<TD><TT>foreign link</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="2"><TT>R0(Link0)</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::a0a0</TT></TD>
+<TD ROWSPAN="2"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:a0:a0</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100:200:ff:fe00:14</TT></TD>
+<TD><TT>home address</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN'</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:200:ff:fe00:14</TT></TD>
+<TD><TT>care-of address</TT></TD>
+</TR>
+<TR>
+<TD><TT>TN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:&lt;TN&gt;</TT></TD>
+<TD><TT>&nbsp;</TT></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<P>
+<HR>
+<H1><A NAME="INITIALIZATION">INITIALIZATION</A></H1>
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'     TN
+ |       |       |       |
+ | <-------------------- | Echo Request
+ | --------------------> | Echo Reply
+ |       |       |       |
+ | <------------ |       | BU
+ | ------------> |       | BA (*1)
+ |       |       |       |
+ |       | <------------ | Echo Request
+ | ============> |       | Echo Request (encapsulated) (*2)
+ |       |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send Echo Request
+2. Wait Echo Reply
+3. Receive Echo Reply
+4. Send BU
+5. Wait BA
+6. Receive BA
+7. Send Echo Request
+8. Wait Echo Request (encapsulated)
+9. Receive Echo Request (encapsulated)
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="TEST_PROCEDURE">TEST PROCEDURE</A></H1>
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'     TN
+ |       |       |       |
+ | <---- |       |       | BU
+ | ----> |       |       | BA (*1)
+ |       |       |       |
+ |       | <------------ | Echo Request
+ | ----> |       |       | Echo Request (forwarded) (*2)
+ |       |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send BU
+2. Wait BA
+3. Receive BA (*1)
+4. Send Echo Request
+5. Wait Echo Request (forwarded)
+6. Receive Echo Request (forwarded) (*2)
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="JUDGEMENT">JUDGEMENT</A></H1>
+<PRE>
+(*1) PASS: MN receives BA
+(*2) PASS: MN receives Echo Request (forwarded)
+</PRE>
+
+<P>
+<HR>
+<H1><A NAME="SEE_ALSO">SEE ALSO</A></H1>
+<PRE>
+<A HREF="./MIP6.pm">MIP6.pm</A>
+<A HREF="./MIP6.def">MIP6.def</A>
+</PRE>
+
+</BODY>
+
+</HTML>

@@ -1,0 +1,248 @@
+#!/usr/bin/perl
+#
+# $Copyright$
+#
+# $TAHI: ct/mip6-ha-19/BU_NA_S0_L0.seq,v 1.1 2003/01/13 10:08:39 akisada Exp $
+#
+################################################################
+
+BEGIN {$V6evalTool::TestVersion = '$Name:  $';}
+
+use V6evalTool;
+use MIP6;
+
+my $IF0			= 'Link0';
+
+my $Link0_device	= $V6evalTool::NutDef{'Link0_device'};
+my $NutType		= $V6evalTool::NutDef{'Type'};
+
+if($V6evalTool::NutDef{'Type'} ne 'router') {
+	vLogHTML('<FONT COLOR="#00FF00">This test is only for the router.</FONT><BR>');
+	exit($V6evalTool::exitRouterOnly);
+}
+
+vCapture($IF0);
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>INITIALIZATION</B></U></FONT><BR>');
+vClear($IF0);
+
+vLogHTML('<FONT SIZE="4"><U><B>Check Reachability</B></U></FONT><BR>');
+if(MIP6_CheckReachability($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Reply</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+#--------------------------------------------------------------#
+vLogHTML('<FONT COLOR="#FF0000" SIZE="5"><U><B>TEST PROCEDURE</B></U></FONT><BR>');
+vClear($IF0);
+
+vLogHTML('<FONT SIZE="4"><U><B>Primary CoA Registration</B></U></FONT><BR>');
+
+my $sn = 0;
+my $a = 1;
+my $h = 1;
+my $s = 0;
+my $d = 0;
+my $l = 0;
+my $lt = 0xffff;
+
+if(MIP6_MulticastNA($IF0, $sn, $a, $h, $s, $d, $l, $lt) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get BA</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vClear($IF0);
+vLogHTML('<FONT SIZE="4"><U><B>Check Binding Cache</B></U></FONT><BR>');
+if(MIP6_CheckBindingCache($IF0) < 0) {
+	vLogHTML('<FONT COLOR="#FF0000">Can\'t get Echo Request</FONT><BR>');
+	exit($V6evalTool::exitFail);
+}
+
+vStop($IF0);
+
+vLogHTML('<B>PASS</B><BR>');
+exit($V6evalTool::exitPass);
+
+#
+# perldoc
+#
+################################################################
+__END__
+
+=head1 NAME
+
+BU_NA_S0_L0 - Sending multicast NA S=0 & L=0
+
+=head1 TARGET
+
+=begin html
+<PRE>
+Router
+</PRE>
+
+=end html
+
+=head1 SYNOPSIS
+
+=begin html
+<PRE>
+<A HREF="./BU_NA_S0_L0.seq">BU_NA_S0_L0.seq</A> [-tooloption ...] -pkt <A HREF="./BU_NA_S0_L0.def">BU_NA_S0_L0.def</A>
+</PRE>
+<BLOCKQUOTE>
+<PRE>
+-tooloption: v6eval tool option
+</PRE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 TOPOLOGY
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+                        MN'     TN
+                        |       |
+        --------+-------+-------+------- LinkX
+                |
+       NUT      R0      MN
+        |       |       |
+--------+-------+-------+--------------- Link0
+</PRE>
+</BLOCKQUOTE>
+<BLOCKQUOTE>
+<TABLE BORDER>
+<TR>
+<TD ROWSPAN="2"><TT>Link0</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::/64</TT></TD>
+<TD ROWSPAN="2"><TT>home link</TT></TD>
+</TR>
+<TR>
+<TD><TT>site-local</TT></TD>
+<TD><TT>fec0:0:0:100::/64</TT></TD>
+</TR>
+<TR>
+<TD><TT>LinkX</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102::/64</TT></TD>
+<TD><TT>foreign link</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="2"><TT>R0(Link0)</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100::a0a0</TT></TD>
+<TD ROWSPAN="2"><TT>&nbsp;</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:a0:a0</TT></TD>
+</TR>
+<TR>
+<TD ROWSPAN="4"><TT>MN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:100:200:ff:fe00:18</TT></TD>
+<TD ROWSPAN="4"><TT>home address</TT></TD>
+</TR>
+<TR>
+<TD><TT>site-local</TT></TD>
+<TD><TT>fec0::100:200:ff:fe00:18</TT></TD>
+</TR>
+<TR>
+<TD><TT>link-local</TT></TD>
+<TD><TT>fe80::100:200:ff:fe00:18</TT></TD>
+</TR>
+<TR>
+<TD><TT>ether</TT></TD>
+<TD><TT>00:00:00:00:00:18</TT></TD>
+</TR>
+<TR>
+<TD><TT>MN'</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:200:ff:fe00:18</TT></TD>
+<TD><TT>care-of address</TT></TD>
+</TR>
+<TR>
+<TD><TT>TN</TT></TD>
+<TD><TT>global</TT></TD>
+<TD><TT>3ffe:501:ffff:102:&lt;TN&gt;</TT></TD>
+<TD><TT>&nbsp;</TT></TD>
+</TR>
+</TABLE>
+</BLOCKQUOTE>
+
+=end html
+
+=head1 INITIALIZATION
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      TN
+ |       |
+ | <---- | Echo Request
+ | ----> | Echo Reply
+ |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send Echo Request
+2. Wait Echo Reply
+3. Receive Echo Reply
+</PRE>
+
+=end html
+
+=head1 TEST PROCEDURE
+
+=begin html
+<BLOCKQUOTE>
+<PRE>
+NUT      MN      MN'     TN
+ |       |       |       |
+ | <------------ |       | BU
+ | -->   |       |       | NA (*1)
+ | ------------> |       | BA (*2)
+ |       |       |       |
+ |       | <------------ | Echo Request
+ | ============> |       | Echo Request (encapsulated) (*3)
+ |       |       |       |
+</PRE>
+</BLOCKQUOTE>
+<P>
+<PRE>
+1. Send BU
+2. Wait NA & BA
+3. Receive NA (*1)
+5. Receive BA (*2)
+6. Send Echo Request
+7. Wait Echo Request (encapsulated)
+8. Receive Echo Request (encapsulated) (*3)
+</PRE>
+
+=end html
+
+=head1 JUDGEMENT
+
+=begin html
+<PRE>
+(*1) PASS: receives NA
+(*2) PASS: MN' receives BA
+(*3) PASS: MN receives Echo Request (encapsulated)
+</PRE>
+
+=end html
+
+=head1 SEE ALSO
+
+=begin html
+<PRE>
+<A HREF="./MIP6.pm">MIP6.pm</A>
+<A HREF="./MIP6.def">MIP6.def</A>
+</PRE>
+
+=end html
+
+=cut

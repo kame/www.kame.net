@@ -1,0 +1,72 @@
+#
+# $Copyright$
+#
+# $Name:  $
+#
+# $TAHI: ct/mip6-cn-19/INDEX,v 1.20 2003/01/12 08:48:58 akisada Exp $
+#
+# <seq>:<def>:<opts>:<htmldoc>:<dsc>:<links>
+#
+################################################################
+
+&print:<B>9. Correspondent Node Operation</B>
+./Initialization.seq:./Initialization.def:::Initialization:
+
+&print:<B>9.1. Conceptual Data Structures</B>
+&print:<B>9.2. Processing Mobility Headers</B>
+./BE_UnknownType.seq:./BE_UnknownType.def:::BE - Unrecognized MH Type value:
+
+&print:<B>9.3. Packet Processing</B>
+./BE_NoBinding.seq:./BE_NoBinding.def:::BE - Unknown binding for HaO:
+
+&print:<B>9.4. Return Routability Procedure</B>
+./HoTI_Valid.seq:./HoTI_Valid.def:::Receiving valid HoTI:
+./CoTI_Valid.seq:./CoTI_Valid.def:::Receiving valid CoTI:
+
+./RR_Valid.seq:./RR_Valid.def:::Receiving HoTI & CoTI:
+
+./HoTI_Piggyback.seq:./HoTI_Piggyback.def:::Receiving invalid HoTI (piggybacking):
+./CoTI_Piggyback.seq:./CoTI_Piggyback.def:::Receiving invalid CoTI (piggybacking):
+
+./HoTI_InvalidChecksum.seq:./HoTI_InvalidChecksum.def:::Receiving invalid HoTI (invalid checksum):
+./CoTI_InvalidChecksum.seq:./CoTI_InvalidChecksum.def:::Receiving invalid CoTI (invalid checksum):
+
+&print:<B>9.5. Processing Bindings</B>
+&print:<B>9.5.2. Requests to Cache a Binding</B>
+./BU_A1_H0.seq:./BU_A1_H0.def:::Receiving valid BU A=1:
+./BU_A0_H0.seq:./BU_A0_H0.def:::Receiving valid BU A=0:
+
+./BU_A1_H1.seq:./BU_A1_H1.def:::Receiving invalid BU A=1 & H1 (Home registration not supported):
+./BU_A0_H1.seq:./BU_A0_H1.def:::Receiving invalid BU A=0 & H1 (Home registration not supported):
+
+./BU_Piggyback_A1.seq:./BU_Piggyback_A1.def:::Receiving invalid BU A=1 (piggybacking):
+./BU_Piggyback_A0.seq:./BU_Piggyback_A0.def:::Receiving invalid BU A=0 (piggybacking):
+
+./BU_InvalidChecksum_A1.seq:./BU_InvalidChecksum_A1.def:::Receiving invalid BU A=1 (invalid checksum):
+./BU_InvalidChecksum_A0.seq:./BU_InvalidChecksum_A0.def:::Receiving invalid BU A=0 (invalid checksum):
+
+./HoTI_BCE.seq:./HoTI_BCE.def:::HoTI w/ BCE:
+./CoTI_BCE.seq:./CoTI_BCE.def:::CoTI w/ BCE:
+
+./HoTI_HaO.seq:./HoTI_HaO.def:::Receiving invalid HoTI (include HaO):
+./CoTI_HaO.seq:./CoTI_HaO.def:::Receiving invalid CoTI (include HaO):
+
+./BU_SEQ_A1.seq:./BU_SEQ_A1.def:::Valid sequence number A=1:
+./BU_SEQ_A0.seq:./BU_SEQ_A0.def:::Valid sequence number A=0:
+
+./BU_SEQ_LESS_A1.seq:./BU_SEQ_LESS_A1.def:::Invalid sequence number (less) A=1:
+./BU_SEQ_LESS_A0.seq:./BU_SEQ_LESS_A0.def:::Invalid sequence number (less) A=0:
+
+./BU_SEQ_EQ_A1.seq:./BU_SEQ_EQ_A1.def:::Invalid sequence number (equal) A=1:
+./BU_SEQ_EQ_A0.seq:./BU_SEQ_EQ_A0.def:::Invalid sequence number (equal) A=0:
+
+./BU_SEQ_MORE_A1.seq:./BU_SEQ_MORE_A1.def:::Invalid sequence number (too greater) A=1:
+./BU_SEQ_MORE_A0.seq:./BU_SEQ_MORE_A0.def:::Invalid sequence number (too greater) A=0:
+
+&print:<B>Requests to Delete a Binding</B>
+./Delete_LT0_FOREIGN.seq:./Delete_LT0_FOREIGN.def:::Delete a Binding A=1 (Lifetime=0 & CoA!=HoA):
+
+./Delete_LT0_HOME.seq:./Delete_LT0_HOME.def:::Delete a Binding A=1 (Lifetime=0 & CoA=HoA):
+./Delete_LT1_HOME.seq:./Delete_LT1_HOME.def:::Delete a Binding A=1 (Lifetime!=0 & CoA=HoA):
+
+&print:<B>9.6. Cache Replacement Policy</B>
