@@ -18,7 +18,7 @@ Concern:
   claim says, Apple will issue a license to "a compliant
   implementation of the protocol".  What does "a compliant
   implementation of the protocol" exactly mean?  Does it mean the code
-  distributed from KAME project?  Or does it mean all implementations
+  distributed from the KAME project?  Or does it mean all implementations
   which use KAME SSM code?  Or does it mean all users who are using
   KAME SSM code?
 
@@ -95,7 +95,7 @@ Concern:
   Cisco:
     - Assuming that KAME implements NEMO and the NEMO technology is
       covered by the Cisco patent, who should make a contract with
-      Cisco?  Only KAME project?  Or all KAME code integrators (such
+      Cisco?  Only the KAME project?  Or all KAME code integrators (such
       as BSD development teams)?  Or all users which use KAME-derived
       NEMO code
     - What does "under reasonable, non-discriminatory terms" exactly
@@ -161,7 +161,7 @@ Concern:
   - What does "Royalty-Free, Reasonable and Non-Discriminatory License
     to All Implementers" exactly mean?
     * Who should make a contract?  Only KAME?  Or implementors who use
-      KAME derived codes (e.g. FreeBSD)?
+      KAME derived code (e.g. FreeBSD)?
     * The licensing terms requested by SRI is unknown.  We cannot
       check if the license is compatible with ours.
   - We sent the above question to Peter Marcotullio (the contact person
@@ -171,9 +171,9 @@ Concern:
 
 Priority: medium
   ISATAP is often used as a transition mechanism especially in
-  enterprise networks.  KAME project has been received questions frequently
-  regarding why we removed the technology.  We want to provide ISATAP as one
-  of transition mechanisms.
+  enterprise networks.  The KAME project has frequently received
+  questions regarding why we removed the technology.  We want to
+  provide ISATAP as one of transition mechanisms.
 
 Note: This holds true for Teredo, too.
 
