@@ -275,7 +275,7 @@ x done
 - (racoon 260) What's the point of gif interfaces?
 - (racoon 261) Re: What's the point of gif interfaces?
 - (racoon 262) Re: What's the point of gif interfaces?
-- (racoon 263) DH over ECC groups
+x (racoon 263) DH over ECC groups
 - (racoon 264) L2TP/IPSec "Split Tunneling" Mechanism?
 - (racoon 265) Re: L2TP/IPSec "Split Tunneling" Mechanism?
 - (racoon 266) Re: check your pactches.
@@ -286,20 +286,20 @@ x done
 - (racoon 271) CRL checking patch
 - (racoon 272) Patch to eliminate delay before beginning phase 2 negotiation
 - (racoon 273) WinXP<-->FreeBSD/racoon tunnel breaks down
-- (racoon 274) Is base mode RFC compliant?
-- (racoon 275) Problem of key excange via IPv6
-- (racoon 276) Re: Problem of key excange via IPv6
-- (racoon 277) Accounting
+x (racoon 274) Is base mode RFC compliant?
+x (racoon 275) Problem of key excange via IPv6
+x (racoon 276) Re: Problem of key excange via IPv6
+x (racoon 277) Accounting
 - (racoon 278) Re: Problem of key excange via IPv6
 - (racoon 279) RSA/DSS certificates query!!
-- (racoon 280) Re: Is base mode RFC compliant?
-- (racoon 281) Patch to fix SIGHUP handling with an anonymous sainfo section
+x (racoon 280) Re: Is base mode RFC compliant?
+x (racoon 281) Patch to fix SIGHUP handling with an anonymous sainfo section
 - (racoon 282) Re: WinXP<-->FreeBSD/racoon tunnel breaks down
-- (racoon 283) Re: Is base mode RFC compliant?
+x (racoon 283) Re: Is base mode RFC compliant?
 - (racoon 284) libipsec failed pfkey check (Invalid SA type) ??
 - (racoon 285) RFC3526 D-H groups
 - (racoon 286) Fw: multiple vendor IKE insecurity
-- (racoon 287) Re: Is base mode RFC compliant?
+x (racoon 287) Re: Is base mode RFC compliant?
 - (racoon 288) RSA/DSS certificates query!!
 - (racoon 289) hacking racoon
 - (racoon 289) hacking racoon
@@ -344,11 +344,11 @@ x done
 - (racoon 328) setkey and spdadd
 - (racoon 329) setkey and spdadd
 - (racoon 330) pfkey_timeover
-- (racoon 331) SPD and IKE+IPSec
+x (racoon 331) SPD and IKE+IPSec
 - (racoon 332) Re: Racoon porting
-- (racoon 333) Racoon with Linux Kernel 2.6 and IPv6
-- (racoon 334) racoon Seg faults on Linux with ppp interface ??
-- (racoon 335) Re: racoon Seg faults on Linux with ppp interface ??
+x (racoon 333) Racoon with Linux Kernel 2.6 and IPv6
+x (racoon 334) racoon Seg faults on Linux with ppp interface ??
+x (racoon 335) Re: racoon Seg faults on Linux with ppp interface ??
 - (racoon 336) Racoon "eating" keys trouble
 - (racoon 337) no problem while connecting but can't use any service within remote
 - (racoon 338) Re: no problem while connecting but can't use any service
@@ -386,7 +386,7 @@ x done
 - (racoon 366) Re: HASH mismatch
 - (racoon 367) Re: Main mode = Identity Protection
 - (racoon 368) Howto setup Transport adjacency with Racoon?
-- (racoon 368) Howto setup Transport adjacency with Racoon?
+x (racoon 368) Howto setup Transport adjacency with Racoon?
 - (racoon 369) Re: HASH mismatch
 - (racoon 370) RE: Howto setup Transport adjacency with Racoon?
 - (racoon 371) Re: Please Help: Can't get IPsec to Work!
@@ -425,43 +425,43 @@ x done
 - (racoon 400) Re: Please Help: Can't get IPsec to Work!
 - (racoon 401) Re: Unstable connection between CheckPoint
 - (racoon 402) Re: Patch to fix SIGHUP handling with an anonymous sainfo section
-- (racoon 403) Re: Dead Peer Detection
+x (racoon 403) Re: Dead Peer Detection
 - (racoon 404) Re: Racoon "eating" keys trouble
-- (racoon 405) Re: Dead Peer Detection
-- (racoon 406) Re: Dead Peer Detection
+x (racoon 405) Re: Dead Peer Detection
+x (racoon 406) Re: Dead Peer Detection
 - (racoon 407) Re: DH over ECC groups
 - (racoon 408) Re: SPD and IKE+IPSec
 - (racoon 409) Re: Racoon with Linux Kernel 2.6 and IPv6
-- (racoon 410) Re: Dead Peer Detection
-- (racoon 411) Re: Dead Peer Detection
+x (racoon 410) Re: Dead Peer Detection
+x (racoon 411) Re: Dead Peer Detection
 - (racoon 412) road warrior problem
-- (racoon 413) Re: Dead Peer Detection
+x (racoon 413) Re: Dead Peer Detection
 - (racoon 414) Racoon error
-- (racoon 415) Re: Dead Peer Detection
-- (racoon 416) Re: Dead Peer Detection
+x (racoon 415) Re: Dead Peer Detection
+x (racoon 416) Re: Dead Peer Detection
 - (racoon 417) Re: message has no hash payload
-- (racoon 418) Re: Dead Peer Detection
-- (racoon 419) Re: Dead Peer Detection
-- (racoon 420) NAT-Traversal, IPRs, etc... [was: Re: Dead Peer Detection]
-- (racoon 421) Re: NAT-Traversal, IPRs, etc...
-- (racoon 422) Re: NAT-Traversal, IPRs, etc...
-- (racoon 423) Re: NAT-Traversal, IPRs, etc...
-- (racoon 424) Re: NAT-Traversal, IPRs, etc... [was: Re: Dead Peer Detection] 
+x (racoon 418) Re: Dead Peer Detection
+x (racoon 419) Re: Dead Peer Detection
+x (racoon 420) NAT-Traversal, IPRs, etc... [was: Re: Dead Peer Detection]
+x (racoon 421) Re: NAT-Traversal, IPRs, etc...
+x (racoon 422) Re: NAT-Traversal, IPRs, etc...
+x (racoon 423) Re: NAT-Traversal, IPRs, etc...
+x (racoon 424) Re: NAT-Traversal, IPRs, etc... [was: Re: Dead Peer Detection] 
 - (racoon 425) Re: message has no hash payload
 - (racoon 426) Racoon error
-- (racoon 427) Re: NAT-Traversal, IPRs, etc...
+x (racoon 427) Re: NAT-Traversal, IPRs, etc...
 - (racoon 428) Re: message has no hash payload
 - (racoon 429) Re: message has no hash payload
 - (racoon 430) Re: message has no hash payload
 - (racoon 431) Re: message has no hash payload
 - (racoon 432) Re: message has no hash payload
-- (racoon 433) IPsec NAT-T implementation
+x (racoon 433) IPsec NAT-T implementation
 - (racoon 434) Odd behaviour with policies
-- (racoon 435) Re: IPsec NAT-T implementation
-- (racoon 436) Re: IPsec NAT-T implementation
+x (racoon 435) Re: IPsec NAT-T implementation
+x (racoon 436) Re: IPsec NAT-T implementation
 - (racoon 437) Re: Odd behaviour with policies
-- (racoon 438) Re: IPsec NAT-T implementation
-- (racoon 439) When endpoints go away
+x (racoon 438) Re: IPsec NAT-T implementation
+x (racoon 439) When endpoints go away
 - (racoon 440) Re: Odd behaviour with policies
 - (racoon 441) Re: road warrior problem
 - (racoon 442) Kame, racoon, licensing, patents, NAT-Traversal and other stuff.....
@@ -472,9 +472,9 @@ x done
 - (racoon 447) [PATCH] Use AES provided by OpenSSL
 - (racoon 448) [PATCH] Fix 'null' encryption in setkey.
 - (racoon 449) Fw: Racoon endpoint question
-- (racoon 450) fixes for racoonctl
-- (racoon 451) Re: When endpoints go away
-- (racoon 452) Re: When endpoints go away
+x (racoon 450) fixes for racoonctl
+x (racoon 451) Re: When endpoints go away
+x (racoon 452) Re: When endpoints go away
 - (racoon 453) (No Subject in original)
 - (racoon 454) Re: (No Subject in original)
 - (racoon 455) Re: (No Subject in original)
@@ -484,17 +484,17 @@ x done
 x (racoon 459) call to getaddrinfo() in oakley.c
 - (racoon 460) High number of entries in SPD.....
 - (racoon 461) searching policies
-- (racoon 462) EXACT mode
-- (racoon 463) Deleting older SA's
+x (racoon 462) EXACT mode
+x (racoon 463) Deleting older SA's
 - (racoon 464) CAN-2004-0155:  The KAME IKE Daemon Racoon does not verify RSA
 - (racoon 465) Re: EXACT mode
 - (racoon 466) Re: Deleting older SA's
 o (racoon 467) Re: call to getaddrinfo() in oakley.c
 - (racoon 468) Re: Deleting older SA's
-- (racoon 469) little fix in handler.c
-- (racoon 470) Re: [PATCH] Fix 'null' encryption in setkey.
-- (racoon 471) anycast address are not suitable
-- (racoon 472) Re: [PATCH] Fix 'null' encryption in setkey.
+x (racoon 469) little fix in handler.c
+x (racoon 470) Re: [PATCH] Fix 'null' encryption in setkey.
+x (racoon 471) anycast address are not suitable
+x (racoon 472) Re: [PATCH] Fix 'null' encryption in setkey.
 - (racoon 473) can't establish IPsec SA
 - (racoon 474) Re: can't establish IPsec SA
 - (racoon 475) Re: anycast address are not suitable
