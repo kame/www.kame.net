@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# $Id: query-pr.cgi,v 1.2 2003/05/19 10:22:35 jinmei Exp $
+# $Id: query-pr.cgi,v 1.3 2004/10/22 01:26:31 suz Exp $
 
 $ENV{'PATH'} = "/bin:/usr/bin:/usr/sbin:/sbin:/usr/local/bin";
 
@@ -91,7 +91,7 @@ while(<Q>) {
     if ($inhdr && /^$/) {
 	$from = $replyto if ($replyto);
 	$email = $from;
-	$email .= '@kame.net' unless ($email =~ /@/);
+	$email .= '\@kame.net' unless ($email =~ /@/);
 	$inhdr = 0;
     }
 
@@ -99,7 +99,7 @@ while(<Q>) {
 	$_ = &getline($_);
 	s/\(.*\)//;			# remove personal name
 	s/\s+//g;
-	$_ = $_ . '@kame.net' if !/@/;
+	$_ = $_ . '\@kame.net' if !/@/;
 	$_ = '>Responsible:<a href="mailto:' . $_ . '">' . $_ . '</a>';
 	$html_fixup = 0;
     }
@@ -152,7 +152,7 @@ print "</dl>";
 $syn =~ s/[\?&%"]/"%" . sprintf("%02X", unpack(C, $&))/eg;
 $email =~ s/[\?&%]/"%" . sprintf("%02X", unpack(C, $&))/eg;
 
-print "<A HREF=\"mailto:kame-bugs@kame.net,${email}?subject=Re: ${cat}/${number}: $syn\">Submit Followup</A>\n";
+print "<A HREF=\"mailto:kame-bugs\@kame.net,${email}?subject=Re: ${cat}/${number}: $syn\">Submit Followup</A>\n";
 
 print &html_footer;
 
