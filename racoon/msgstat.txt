@@ -399,11 +399,11 @@ x (racoon 368) Howto setup Transport adjacency with Racoon?
 - (racoon 377) Unstable connection between CheckPoint VPN/firewall<-->FreeBSD/racoon
 - (racoon 378) Re: Unstable connection between CheckPoint
 - (racoon 378) Re: Unstable connection between CheckPoint VPN/firewall<-->FreeBSD/racoon
-- (racoon 379) Aggressive mode tunnels w/ ISP line outage.
-- (racoon 380) Re: Aggressive mode tunnels w/ ISP line outage.
-- (racoon 380) Re: Aggressive mode tunnels w/ ISP line outage.
-- (racoon 381) RE: Aggressive mode tunnels w/ ISP line outage.
-- (racoon 382) Re: Aggressive mode tunnels w/ ISP line outage.
+D (racoon 379) Aggressive mode tunnels w/ ISP line outage.
+D (racoon 380) Re: Aggressive mode tunnels w/ ISP line outage.
+D (racoon 380) Re: Aggressive mode tunnels w/ ISP line outage.
+D (racoon 381) RE: Aggressive mode tunnels w/ ISP line outage.
+D (racoon 382) Re: Aggressive mode tunnels w/ ISP line outage.
 - (racoon 383) RE: Unstable connection between CheckPoint VPN/firewall<-->FreeBSD/racoon
 - (racoon 384) Re: Unstable connection between CheckPoint VPN/firewall<-->FreeBSD/racoon
 - (racoon 385) Re: Please Help: Can't get IPsec to Work!
@@ -416,10 +416,10 @@ x (racoon 368) Howto setup Transport adjacency with Racoon?
 - (racoon 392) Re: HASH mismatch
 - (racoon 393) Re: HASH mismatch
 - (racoon 394) Re: message has no hash payload
-- (racoon 395) Re: Aggressive mode tunnels w/ ISP line outage.
-- (racoon 396) Re: Aggressive mode tunnels w/ ISP line outage.
-- (racoon 396) Re: Aggressive mode tunnels w/ ISP line outage.
-- (racoon 397) RE: Aggressive mode tunnels w/ ISP line outage.
+D (racoon 395) Re: Aggressive mode tunnels w/ ISP line outage.
+D (racoon 396) Re: Aggressive mode tunnels w/ ISP line outage.
+D (racoon 396) Re: Aggressive mode tunnels w/ ISP line outage.
+D (racoon 397) RE: Aggressive mode tunnels w/ ISP line outage.
 - (racoon 398) Re: connecting WinXP to Racoon IPSec VPN Gateway
 - (racoon 399) Re: Fw: Certicom IP Statement Regarding IKE
 - (racoon 400) Re: Please Help: Can't get IPsec to Work!
