@@ -164,8 +164,7 @@ Concern:
       check if the license is compatible with our license.
   - We got no reply from Peter Marcotullio(the contact person of this IPR)
   - Fred Templin(the author of the patent and ISATAP specification)
-    said, he can do nothing because this patent was submitted before he
-    changed his company.
+    said, he could do nothing because he did not work for SRI any longer.
 
 Priority: medium
   ISATAP is often used as a transition mechanism especially in
