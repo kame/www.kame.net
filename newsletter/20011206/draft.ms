@@ -15,7 +15,7 @@ DRAFT                                                      Keiichi Shima
                                                         December 7, 2001
 .sp 2
 .ce 2
-KAME Mobile IPv6 Implementation
+KAME Mobile IPv6 Implementation notes
 .fi
 .sp 2
 .SH
