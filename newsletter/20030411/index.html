@@ -1,0 +1,183 @@
+<html>
+<head><title>IPv6 DNS server discovery by DHCPv6</title></head>
+<body>
+<h1>IPv6 DNS server discovery by DHCPv6</h1>
+<a href="http://www.jinmei.org/">JINMEI Tatuya</a>
+at <a href="http://www.kame.net/">the KAME Project</a>
+<pre>$Id: index.html,v 1.1 2003/04/11 15:07:10 jinmei Exp $</pre>
+
+<hr>
+
+This document is a brief instruction to play with IPv6 DNS server
+discovery using (stateless) DHCPv6.
+
+<h2>1. Installation</h2>
+
+<ol>
+  <li> Get the latest KAME snap kit at <a href="http://www.kame.net/">
+  the project web page.</a>
+  20030414 version should work as described here.
+  <li> Go down to the dhcp6 source directory.  It should be located at
+  kame/kame/kame/dhcp6.
+  <li> Build the DHCPv6 kit.  The following simple procedure should
+  work at least for the corresponding KAME snap system:
+<pre>
+% ./configure
+% make
+# make install
+</pre>
+  <li> Be sure to install the server (dhcp6s) to the server machine,
+  and the client (dhcp6c) to all client hosts.
+</ol>
+
+<h2>2. Server Configuration</h2>
+
+First, add the following to your server configuration file
+(which is /usr/local/etc/dhcp6s.conf by default):
+
+<pre>
+option domain-name-servers DNS_SERVER_ADDRESS;
+</pre>
+
+where DNS_SERVER_ADDRESS is the IPv6 numeric address of the DNS
+server.
+
+Multiple addresses can be specified by multiple 'option' statements.
+
+Then start the server:
+
+<pre>
+# dhcp6s IFNAME
+</pre>
+
+where IFNAME is the interface that the server should receive requests
+from clients.
+Multiple interfaces can be specified as multiple arguments.
+<p>
+<b>Note:</b> DHCPv6 relay agent provided by KAME is based on a quite
+old version of the specification and is not inter-operable with the
+server and client implementation.
+Thus, the server should be located on the same link as the client.
+
+<h2>3. Host Configuration</h2>
+
+<h3>3.1. DHCPv6 Client Configuration</h3>
+
+Add the following to your server configuration file
+(which is /usr/local/etc/dhcp6c.conf by default):
+
+<pre>
+interface IFNAME {
+	information-only;
+	request domain-name-servers;
+	script "SCRIPT_PATH";
+};
+</pre>
+
+where IFNAME is the interface name, like "fxp0", on which the host
+machine is connected to the network, and SCRIPT_PATH is an absolute
+path to a script file which processes DNS server addresses given by
+the sever.
+
+<h3>3.2. Client Script</h3>
+
+If you do not mind to override the /etc/resolv.conf file, the
+following simple script should be fine:
+
+<pre>
+#!/bin/sh
+
+for nameserver in $new_domain_name_servers; do
+      echo nameserver $nameserver >>/etc/resolv.conf
+done
+</pre>
+
+This is exactly what <a href="http://www.isc.org/products/DHCP/">ISC dhclient
+</a> does with regards to DNS server addresses.
+<p>
+Save this file to somewhere in the client machine.
+<p>
+Assuming the script file is /sbin/dhcp6c-script and the DHCPv6 client
+interface is fxp0, a complete example of dhcp6c.conf is:
+
+<pre>
+interface fxp0 {
+	information-only;
+	request domain-name-servers;
+	script "/sbin/dhcp6c-script";
+};
+</pre>
+
+<h3>3.3. Start the Client</h3>
+
+Then invoke the client:
+<pre>
+# dhcp6c fxp0
+</pre>
+
+That's it.  The client should be able to get DNS server addresses from
+the server, and will update /etc/resolv.conf accordingly.
+
+<h2>4. Interaction with Router Advertisement</h2>
+
+If the router(s) serving for the client host has the ability to set
+the "Other Configuration (O)" flag of router advertisement, you can
+automatically (re)invoke the DHCPv6 client upon receipt of
+advertisements with the flag being set.
+This can be done by the latest rtsold(8) daemon with the -O flag.
+<p>
+The following subsections describe the procedure.
+
+<h3>4.1 Router Configuration</h3>
+
+If you are using a KAME PC router and the rtadvd(8) daemon for router
+advertisements, you'll be able to set the O flag with the following
+configuration:
+<pre>
+fxp0:[backslash]
+	:raflags#64:
+</pre>
+where [backslash] is the backslash character.
+(You may need to change the interface name "fxp0" appropriately.)
+If you have installed the latest version of rtadvd from KAME
+snapshots, you can also specify the flag is a string notation:
+<pre>
+fxp0:[backslash]
+	:raflags="o":
+</pre>
+
+<h3>4.2 Host Configuration</h3>
+
+First, prepare a script file that (re)invokes the DHCPv6 client.
+It should be like this:
+<pre>
+#!/bin/sh
+
+IFNAME=$1
+PIDFILE=/var/run/dhcp6c.pid
+
+if [ -f ${PIDFILE} ]; then
+	kill -HUP `cat ${PIDFILE}`
+else
+	/usr/local/sbin/dhcp6c $IFNAME
+fi
+</pre>
+
+Put this script somewhere in the client host machine
+(we assume "/sbin/start-dhcp6c").
+<p>
+Then invoke the rtsold(8) daemon (which should be built from the
+latest KAME snapshot):
+<pre>
+# rtsold -O /sbin/start-dhcp6c IFNAME
+</pre>
+
+When the daemon receives a router advertisement with the O flag on, it
+will invoke the start-dhcp6c script, which will then (re)start the
+DHCPv6 client.
+
+If the host machine moves from link to link, you may also want to
+specify the -m option to the rtsold daemon.
+
+</doby>
+</html>
