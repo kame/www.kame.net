@@ -4,7 +4,7 @@
 <H1>Implementing AF-independent application</H1>
 <A HREF=http://www.itojun.org/>Jun-ichiro itojun Itoh</A>,
 <A HREF=http://www.kame.net/>KAME Project</A>
-<PRE>$Id: index.html,v 1.2 2002/05/18 15:04:54 itojun Exp $</PRE>
+<PRE>$Id: index.html,v 1.3 2003/05/16 15:42:36 itojun Exp $</PRE>
 
 <HR>
 <H2>Introduction</H2>
@@ -162,6 +162,7 @@ Anyway.  <TT>inet_aton()</TT> can be written as follows:
 	else {
 		while (res) {
 			sa = res->ai_addr;
+			salen = res->ai_addrlen;
 			/* do what you want */
 			res = res->ai_next;
 		}
@@ -213,7 +214,8 @@ Anyway.  <TT>inet_aton()</TT> can be written as follows:
 		perror(gai_strerror(error));
 	else {
 		while (res) {
-			sa = (struct sockaddr *)res->ai_addr;
+			sa = res->ai_addr;
+			salen = res->ai_addrlen;
 			/* do what you want */
 			res = res->ai_next;
 		}
@@ -250,6 +252,22 @@ Now, <TT>gethostbyaddr()</TT> can be written as follows:
 		perror("getnameinfo");
 	name = namebuf;
 </PRE>
+
+
+<H3>3. do not hardcode knowledge about particular AF.</H3>
+Since we are trying to be AF-independent, it is not preferred to hardcode
+AF-dependent knowledge into the program.
+The construct like below should be avoided:
+<PRE>
+	/* BAD EXAMPLE */
+	switch (sa->sa_family) {
+	case AF_INET:
+		salen = sizeof(struct sockaddr_in);
+		break;
+	}
+</PRE>
+
+Instead, use res->ai_addrlen returned by getaddrinfo(3).
 
 
 <HR>
