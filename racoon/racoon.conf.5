@@ -1,0 +1,432 @@
+RACOON.CONF(5)		  FreeBSD File Formats Manual		RACOON.CONF(5)
+
+NAME
+     racoon.conf - configuration file for racoon
+
+DESCRIPTION
+     racoon.conf is the configuration file for the racoon(8) ISAKMP daemon.
+     racoon(8) negotiates security associations for itself (ISAKMP SA, or
+     phase 1 SA) and for kernel IPsec (IPsec SA, or phase 2 SA).  The file
+     consists of a sequence of directives and statements.  Each directive is
+     composed by a tag, and statements are enclosed by `{' and `}'.  Lines
+     beginning with `#' are comments.
+
+   Meta Syntax
+     Keywords and special characters that the parser expects exactly are dis-
+     played using this font.  Parameters are specified with this font.	Square
+     brackets (`' and `') are used to show optional keywords and parameters.
+     Note that you have to pay attention when this manual is describing port
+     numbers.  The port number is always enclosed by `' and `'.  In this case,
+     the port number is not an optional keyword.  If it is possible to omit
+     port number, the expression becomes [[port]].  The vertical bar (`|') is
+     used to indicate a choice between optional parameters.  Parentheses (`'
+     and `') are used to group keywords and parameters when necessary.	Major
+     parameters are listed below.
+
+     number    means a hexadecimal or a decimal number.  The former must be
+	       prefixed with `0x'.
+     string
+     path
+     file      means any string enclosed in `"' (double quote).
+     address   means IPv6 and/or IPv4 address.
+     port      means a TCP/UDP port number.  The port number is always
+	       enclosed by `' and `'.
+     timeunit  is one of following: sec, secs, second, seconds, min, mins,
+	       minute, minutes, hour, hours.
+
+   Path Specification
+     path include path;
+	     specifies a path to include a file.  See File Inclusion.
+     path pre_shared_key file;
+	     specifies a file containing pre-shared key(s) for various ID(s).
+	     See Pre-shared key File.
+     path certificate path;
+	     racoon(8) will search this directory if a certificate or certifi-
+	     cate request is received.
+     path backupsa file;
+	     specifies a file to be stored a SA information which is negoti-
+	     ated by racoon.  racoon(8) will install SA(s) from the file with
+	     a boot option -B.	The file is increasing because racoon(8) sim-
+	     ply add a SA to the file at the moment.  You should maintain the
+	     file manually.
+
+   File Inclusion
+     include file
+	     other configuration files can be included.
+
+   Identifier Specification
+     is obsolete.  It must be defined at each remote directive.
+
+   Timer Specification
+     timer { statements }
+	     specifies various timer values.
+
+	     counter number;
+		     the maximum number of retries to send.  The default is 5.
+	     interval number timeunit;
+		     the interval to resend, in seconds.  The default time is
+		     10 seconds.
+	     persend number;
+		     the number of packets per send.  The default is 1.
+	     phase1 number timeunit;
+		     the maximum time it should take to complete phase 1.  The
+		     default time is 15 seconds.
+	     phase2 number timeunit;
+		     the maximum time it should take to complete phase 2.  The
+		     default time is 10 seconds.
+
+   Listening Port Specification
+     listen { statements }
+	     If no listen directive is specified, racoon(8) will listen on all
+	     of the available interface addresses.  The following is the list
+	     of valid statements:
+
+	     isakmp address [[port]];
+		     If this is specified, racoon(8) will only listen on
+		     address.  The default port is 500, which is specified by
+		     IANA.  You can provide more than one address definition.
+	     strict_address;
+		     require that all addresses for ISAKMP must be bound.
+		     This statement will be ignored if you do not specify any
+		     addresses.
+
+   Remote Nodes Specifications
+     remote (address | anonymous) [[port]] { statements }
+	     specifies the parameters for IKE phase 1 for each remote node.
+	     The default port is 500.  If anonymous is specified, the state-
+	     ments apply to all peers which do not match any other remote
+	     directive.
+
+	     The following are valid statements.
+
+	     exchange_mode (main | aggressive | base);
+		     defines the exchange mode for phase 1 when racoon is the
+		     initiator.  Also it means the acceptable exchange mode
+		     when racoon is responder.	More than one mode can be
+		     specified by separating them with a comma.  All of the
+		     modes are acceptable.  The first exchange mode is what
+		     racoon uses when it is the initiator.
+	     doi ipsec_doi;
+		     means to use IPSEC-DOI as specified RFC 2407.  You can
+		     omit this statement.
+	     situation identity_only;
+		     means to use SIT_IDENTITY_ONLY as specified RFC 2407.
+		     You can omit this statement.
+	     identifier idtype;
+		     is obsolete.  Instead, use my_identifier.
+	     my_identifier idtype ...;
+		     specifies the identifier sent to the remote host and the
+		     type to use in the phase 1 negotiation.  address, fqdn,
+		     user_fqdn, keyid and asn1dn can be used as an idtype.
+		     they are used like:
+		     my_identifier address [address];
+			     the type is the IP address.  This is the default
+			     type if you do not specify an identifier to use.
+		     my_identifier user_fqdn string;
+			     the type is a USER_FQDN (user fully-qualified
+			     domain name).
+		     my_identifier fqdn string;
+			     the type is a FQDN (fully-qualified domain name).
+		     my_identifier keyid file;
+			     the type is a KEY_ID.
+		     my_identifier asn1dn [string];
+			     the type is an ASN.1 distinguished name.  If
+			     string is omitted, racoon(8) will get DN from
+			     Subject field in the certificate.
+	     peers_identifier idtype ...;
+		     specifies the peer's identifier to be received.  If it is
+		     not defined then racoon(8) will not verify the peer's
+		     identifier in ID payload transmitted from the peer.  If
+		     it is defined, the behavior of the verification depends
+		     on the flag of verify_identifier.	The usage of idtype is
+		     same to my_identifier.
+	     verify_identifier (on | off);
+		     If you want to verify the peer's identifier, set this to
+		     on.  In this case, if the value defined by
+		     peers_identifier is not same to the peer's identifier in
+		     the ID payload, the negotiation will failed.  The default
+		     is off.
+	     certificate_type certspec;
+		     specifies a certificate specification.  certspec is one
+		     of followings:
+		     x509 certfile privkeyfile;
+			     certfile means a file name of certificate.
+			     privkeyfile means a file name of secret key.
+	     peers_certfile (dnssec | certfile);
+		     If dnssec is defined, racoon(8) will ignore the CERT pay-
+		     load from the peer, and try to get the peer's certificate
+		     from DNS instead.	If certfile is defined, racoon(8) will
+		     ignore the CERT payload from the peer, and will use this
+		     certificate as the peer's certificate.
+	     send_cert (on | off);
+		     If you do not want to send a certificate for some reason,
+		     set this to off.  The default is on.
+	     send_cr (on | off);
+		     If you do not want to send a certificate request for some
+		     reason, set this to off.  The default is on.
+	     verify_cert (on | off);
+		     If you do not want to verify the peer's certificate for
+		     some reason, set this to off.  The default is on.
+	     lifetime time number timeunit;
+		     define a lifetime of a certain time which will be pro-
+		     posed in the phase 1 negotiations.  Any proposal will be
+		     accepted, and the attribute(s) will be not proposed to
+		     the peer if you do not specify it(them).  They can be
+		     individually specified in each proposal.
+	     initial_contact (on | off);
+		     enable this to send an INITIAL-CONTACT message.  The
+		     default value is on.  This message is useful only when
+		     the implementation of the responder choices an old SA
+		     when there are multiple SAs which are different estab-
+		     lished time, and the initiator reboots.  If racoon did
+		     not use the message, the responder would use an old SA
+		     even when an new SA was established.  The KAME stack has
+		     the switch in the system wide value, net.key.pre-
+		     ferred_oldsa.  when the value is zero, the stack always
+		     use an new SA.
+	     passive (on | off);
+		     If you do not want to initiate the negotiation, set this
+		     to on.  The default value is off.	It is useful for a
+		     server.
+	     proposal_check level;
+		     specifies the action of lifetime length and PFS of the
+		     phase 2 selection on the responder side.  The default
+		     level is strict.  If the level is;
+		     obey    the responder will obey the initiator anytime.
+		     strict  If the responder's length is longer than the ini-
+			     tiator's one, the responder uses the initiator's
+			     one.  Otherwise it rejects the proposal.  If PFS
+			     is not required by the responder, the responder
+			     will obey the proposal.  If PFS is required by
+			     both sides and if the responder's group is not
+			     equal to the initiator's one, then the responder
+			     will reject the proposal.
+		     claim   If the responder's length is longer than the ini-
+			     tiator's one, the responder will use the initia-
+			     tor's one.  If the responder's length is shorter
+			     than the initiator's one, the responder uses its
+			     own length AND sends a RESPONDER-LIFETIME notify
+			     message to an initiator in the case of lifetime.
+			     About PFS, this directive is same as strict.
+		     exact   If the initiator's length is not equal to the
+			     responder's one, the responder will reject the
+			     proposal.	If PFS is required by both sides and
+			     if the responder's group is not equal to the ini-
+			     tiator's one, then the responder will reject the
+			     proposal.
+	     support_mip6 (on | off);
+		     If this value is set on then both values of ID payloads
+		     in phase 2 exchange are always used as the addresses of
+		     end-point of IPsec-SAs.  The default is off.
+	     generate_policy (on | off);
+		     This directive is for the responder.  Therefore you
+		     should set passive on in order that racoon(8) only
+		     becomes a responder.  If the responder does not have any
+		     policy in SPD during phase 2 negotiation, and the direc-
+		     tive is set on, then racoon(8) will choice the first pro-
+		     posal in the SA payload from the initiator, and generate
+		     policy entries from the proposal.	It is useful to nego-
+		     tiate with the client which is allocated IP address
+		     dynamically.  Note that inappropriate policy might be
+		     installed by the initiator because the responder just
+		     installs policies as the initiator proposes.  So that
+		     other communication might fail if such policies
+		     installed.  This directive is ignored in the initiator
+		     case.  The default value is off.
+	     nonce_size number;
+		     define the byte size of nonce value.  Racoon can send any
+		     value although RFC2409 specifies that the value MUST be
+		     between 8 and 256 bytes.  The default size is 16 bytes.
+	     proposal { sub-substatements }
+		     encryption_algorithm algorithm;
+			     specify the encryption algorithm used for the
+			     phase 1 negotiation.  This directive must be
+			     defined.  algorithm is one of following: des,
+			     3des, blowfish, cast128 for oakley.  For other
+			     transforms, this statement should not be used.
+		     hash_algorithm algorithm;
+			     define the hash algorithm used for the phase 1
+			     negotiation.  This directive must be defined.
+			     algorithm is one of following: md5, sha1 for oak-
+			     ley.
+		     authentication_method type;
+			     defines the authentication method used for the
+			     phase 1 negotiation.  This directive must be
+			     defined.  type is one of: pre_shared_key, rsasig,
+			     gssapi_krb.
+		     dh_group group;
+			     define the group used for the Diffie-Hellman
+			     exponentiations.  This directive must be defined.
+			     group is one of following: modp768, modp1024,
+			     modp1536.	Or you can define 1, 2, or 5 as the DH
+			     group number.  When you want to use aggressive
+			     mode, you must define same DH group in each pro-
+			     posal.
+		     lifetime time number timeunit;
+			     define lifetime of the phase 1 SA proposal.
+			     Refer to the description of lifetime directive
+			     immediately defined in remote directive.
+		     gssapi_id string;
+			     define the GSS-API endpoint name, to be included
+			     as an attribute in the SA, if the gssapi_krb
+			     authentication method is used. If this is not
+			     defined, the default value of `ike/hostname' is
+			     used, where hostname is the FQDN of the interface
+			     being used.
+
+   Policy Specifications
+     The policy directive is obsolete, policies are now in the SPD.  racoon(8)
+     will obey the policy configured into the kernel by setkey(8), and will
+     construct phase 2 proposals by combining sainfo specifications in
+     racoon.conf, and policies in the kernel.
+
+   Sainfo Specifications
+     sainfo (source_id destination_id | anonymous) { statements }
+	     defines the parameters of the IKE phase 2 (IPsec-SA establish-
+	     ment).  source_id and destination_id are constructed like:
+
+	     address address [/ prefix] [[port]] ul_proto
+
+	     or
+
+	     idtype string
+
+	     It means exactly the content of ID payload.  This is not like a
+	     filter rule.  For example, if you define 3ffe:501:4819::/48 as
+	     source_id.  3ffe:501:4819:1000:/64 will not match.
+
+	     pfs_group group;
+		     define the group of Diffie-Hellman exponentiations.  If
+		     you do not require PFS then you can omit this directive.
+		     Any proposal will be accepted if you do not specify one.
+		     group is one of following: modp768, modp1024, modp1536.
+		     Or you can define 1, 2, or 5 as the DH group number.
+	     lifetime time number timeunit;
+		     define the lifetime of amount of time which are to be
+		     used IPsec-SA.  Any proposal will be accepted, and no
+		     attribute(s) will be proposed to the peer if you do not
+		     specify it(them).	See the proposal_check directive.
+	     my_identifier idtype ...;
+		     is obsolete.  It does not make sense to specify a identi-
+		     fier in the phase 2.
+
+	     racoon(8) does not have the list of security protocols to be
+	     negotiated.  The list of security protocols are passed by SPD in
+	     the kernel.  Therefore you have to define all of the potential
+	     algorithms in the phase 2 proposals even if there is a algorithm
+	     which will not be used.  These algorithms are define by using the
+	     following three directives, and they are lined with single comma
+	     as the separator.	For algorithms that can take variable-length
+	     keys, algorithm names can be followed by a key length, like
+	     ``blowfish 448''.	racoon(8) will compute the actual phase 2 pro-
+	     posals by computing the permutation of the specified algorithms,
+	     and then combining them with the security protocol specified by
+	     the SPD.  For example, if des, 3des, hmac_md5, and hmac_sha1 are
+	     specified as algorithms, we have four combinations for use with
+	     ESP, and two for AH.  Then, based on the SPD settings, racoon(8)
+	     will construct the actual proposals.  If the SPD entry asks for
+	     ESP only, there will be 4 proposals.  If it asks for both AH and
+	     ESP, there will be 8 proposals.  Note that the kernel may not
+	     support the algorithm you have specified.
+	     encryption_algorithm algorithms;
+		     des, 3des, des_iv64, des_iv32, rc5, rc4, idea, 3idea,
+		     cast128, blowfish, null_enc, twofish, rijndael (used with
+		     ESP)
+	     authentication_algorithm algorithms;
+		     des, 3des, des_iv64, des_iv32, hmac_md5, hmac_sha1,
+		     non_auth (used with ESP authentication and AH)
+	     compression_algorithm algorithms;
+		     deflate (used with IPComp)
+
+   Logging level
+     log level;
+	     define logging level.  level is one of following: notify, debug
+	     and debug2.  The default is notify.  If you put too high logging
+	     level on slower machines, IKE negotiation can fail due to timing
+	     constraint changes.
+
+   Specifying the way to pad
+     padding { statements }
+	     specified padding format.	The following are valid statements:
+	     randomize (on | off);
+		     enable using a randomized value for padding.  The default
+		     is on.
+	     randomize_length (on | off);
+		     the pad length is random.	The default is off.
+	     maximum_length number;
+		     define a maximum padding length.  If randomize_length is
+		     off, this is ignored. The default is 20 bytes.
+	     exclusive_tail (on | off);
+		     means to put the number of pad bytes minus one into last
+		     part of the padding.  The default is on.
+	     strict_check (on | off);
+		     means to be constrained the peer to set the number of pad
+		     bytes.  The default is off.
+
+   Special directives
+     complex_bundle (on | off);
+	     defines the interpretation of proposal in the case of SA bundle.
+	     Normally ``IP AH ESP IP payload'' is proposed as ``AH tunnel and
+	     ESP tunnel''.  The interpretation is more common to other IKE
+	     implementations, however, it allows very limited set of combina-
+	     tions for proposals.  With the option enabled, it will be pro-
+	     posed as ``AH transport and ESP tunnel''.	The default value is
+	     off.
+
+   Pre-shared key File
+     Pre-shared key file defines a pair of the identifier and the shared
+     secret key which are used at Pre-shared key authentication method in
+     phase 1.  The pair in each lines are separated by some number of blanks
+     and/or tab characters like hosts(5).  Key can be included any blanks
+     because all of the words after 2nd column are interpreted as a secret
+     key.  Lines start with `#' are ignored.  Keys which start with `0x' are
+     hexa-decimal strings.  Note that the file must be owned by the user ID
+     running racoon(8) (usually the privileged user), and must not be accessi-
+     ble by others.
+
+EXAMPLE
+     The following shows how the remote directive should be configured.
+
+     path pre_shared_key "/usr/local/v6/etc/psk.txt" ;
+     remote anonymous
+     {
+	     exchange_mode aggressive,main,base;
+	     lifetime time 24 hour;
+	     proposal {
+		     encryption_algorithm 3des;
+		     hash_algorithm sha1;
+		     authentication_method pre_shared_key;
+		     dh_group 2;
+	     }
+     }
+
+     sainfo anonymous
+     {
+	     pfs_group 2;
+	     lifetime time 12 hour ;
+	     encryption_algorithm 3des, blowfish 448, twofish, rijndael ;
+	     authentication_algorithm hmac_sha1, hmac_md5 ;
+	     compression_algorithm deflate ;
+     }
+
+     The following is a sample of the file defined pre-shared key.
+
+     10.160.94.3     mekmitasdigoat
+     172.16.1.133    0x12345678
+     194.100.55.1    whatcertificatereally
+     3ffe:501:410:ffff:200:86ff:fe05:80fa    mekmitasdigoat
+     3ffe:501:410:ffff:210:4bff:fea2:8baa    mekmitasdigoat
+     foo@kame.net    mekmitasdigoat
+     foo.kame.net    hoge
+
+SEE ALSO
+     racoon(8), setkey(8)
+
+HISTORY
+     The racoon.conf configuration file first appeared in ``YIPS'' Yokogawa
+     IPsec implementation.
+
+BUGS
+     Some statements may not be handled by racoon(8) yet.
+
+KAME			       November 20, 2000			  KAME

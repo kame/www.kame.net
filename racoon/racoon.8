@@ -1,0 +1,60 @@
+RACOON(8)		FreeBSD System Manager's Manual 	     RACOON(8)
+
+NAME
+     racoon - IKE (ISAKMP/Oakley) key management daemon
+
+SYNOPSIS
+     racoon [-BdFv46] [-f configfile] [-l logfile] [-p isakmp-port]
+
+DESCRIPTION
+     racoon speaks IKE (ISAKMP/Oakley) key management protocol, to establish
+     security association with other hosts.  SPD (Security Policy Database) in
+     the kernel usually triggers to start racoon.  racoon usually sends all of
+     informational messages, warnings and error messages to syslogd(8) with
+     the facility LOG_DAEMON, the priority LOG_INFO.  Debugging messages are
+     sent with the priority LOG_DEBUG.	You should configure syslog.conf(5)
+     appropriately to see these messages.
+
+     -B   Install SA(s) from the file which is specified in racoon.conf(5).
+
+     -d   Increase the debug level.  Multiple -d will increase the debug level
+	  even more.
+
+     -F   Run racoon in the foreground.
+
+     -f configfile
+	  Use configfile as the configuration file instead of the default.
+
+     -l logfile
+	  Use logfile as the logging file instead of syslogd(8).
+
+     -p isakmp-port
+	  Listen to ISAKMP key exchange on port isakmp-port instead of the
+	  default port number, 500.
+
+     -v   The flag causes the packet dump be more verbose, with higher debug-
+	  ging level.
+
+     -4
+
+     -6   Specifies the default address family for the sockets.
+
+     racoon assumes the presence of kernel random number device rnd(4) at
+     /dev/urandom.  Informational messages are labeled info, and debugging
+     messages are labeled debug.  You have to configure syslog.conf(5) if you
+     want to see them in a logging file.
+
+FILES
+     /usr/local/v6/etc/racoon.conf  default configuration file.
+
+RETURN VALUES
+     The command exits with 0 on success, and non-zero on errors.
+
+SEE ALSO
+     ipsec(4), racoon.conf(5), setkey(8), syslogd(8) syslog.conf(5)
+
+HISTORY
+     The racoon command first appeared in ``YIPS'' Yokogawa IPsec implementa-
+     tion.
+
+KAME			       November 20, 2000			  KAME

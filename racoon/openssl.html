@@ -1,0 +1,52 @@
+<html>
+<title>Tips of Openssl</title>
+<!--
+%Hd: Tips of OpenSSL
+-->
+<body>
+
+$Id: openssl.html,v 1.1 2003/01/29 15:15:32 sakane Exp $
+
+<p>
+To install OpenSSL, you just type `Configure' with the OS name you use,
+and type `make install'.
+
+<p>
+To install SSLeay, if you are not USA resident, set variable USA_RESIDENT to NO,
+and let's make install.
+
+<p>
+For FreeBSD and NetBSD, OpenSSL ports is ready.
+But, You may think to get new OpenSSL package as possible.
+You put new SSLeay packages into /usr/ports/distfiles, and change the directory into /usr/ports/security/SSLeay.
+
+You must modify DISTNAME in Makefile like below,<br>
+
+<blockquote><tt>
+DISTNAME= SSLeay-0.9.0b
+</tt></blockquote>
+
+`SSLeay-0.9.0b' is latest package name.  Then you type linke below,
+
+<blockquote><tt>
+% make NO_CHECKSUM=yes install
+</tt></blockquote>
+
+But it may be rejected some patches, so you may patch manually,
+and you type below,
+
+<blockquote><tt>
+% make NO_CHECKSUM=yes NO_PATCH=yes install
+</tt></blockquote>
+
+In FreeBSD 2.2.8 or later,
+
+<blockquote><tt>
+% make NO_CHECKSUM=yes -ik install
+</tt></blockquote>
+
+<p>
+You type `./configure' to check and to build appropreate Makefile.
+And Just type `make'.
+
+<!--#include virtual="/~sakane/footer.html"-->
