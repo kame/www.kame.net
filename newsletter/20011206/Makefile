@@ -1,5 +1,5 @@
-draft-keiichi-mobileip-kame-implementation-00.txt: draft.txt
-	cp -p draft.txt draft-keiichi-mobileip-kame-implementation-00.txt
+kame-mip6-implementation.txt: draft.txt
+	cp -p draft.txt kame-mip6-implementation.txt
 
 draft.txt: draft.ms fix.sh tmac.draft
 	sh Make
@@ -7,4 +7,4 @@ draft.txt: draft.ms fix.sh tmac.draft
 	sh Make
 
 clean:
-	-rm -f draft.txt draft.toc draft.txt draft-keiichi-mobileip-kame-implementation-00.txt *~
+	-rm -f draft.txt draft.toc draft.txt kame-mip6-implementation.txt
