@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3c.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+<title>Mobile IPv6 and NEMO</title>
+</head>
+
+<body>
+
+<h1>New mobility support code in KAME</h1>
+
+<h2>Overview</h2>
+
+<p>
+The KAME Mobile IPv6 stack had been developped for long time.  Now, it
+enoughly works well and is regarded reference code.  However, it cause
+a kernel size enlarged since the most of codes are implemented in the
+kernel side.  In addition to the kernel enlargement problem, there are
+other problems that implementing in kernel makes it difficult to debug
+and improve some extensions.
+</p>
+
+<p>
+On the other hand, the current Mobile IPv6 specification introduced a
+new extention header, mobility header, to convey mobile ip signaling
+packet.  This decision makes it possibe to implement mobile IPv6 stack
+on userland.
+</p>
+
+<p>
+In WIDE project, another Moble IPv6 code for BSDs had been developed
+by SFC in Keio University.  They also faced similar problems to us.
+Therefore we have agreed to unify and re-design our implementations.
+</p>
+
+<p>
+The new Mobile IPv6 code is named 'SHISA' which is derived from a
+traditional roof ornament of Okinawa, a tropical island in Japan,
+because the first developping camp was held in Okinawa in April 2004.
+In the initial stage, SHISA was being developed independently (<a
+href="http://www.mobileip.jp/">www.mobileip.jp</a>) from the KAME
+project.  We had almost done the work on the basic functions by
+October 2004 and had confirmed interoperability at the <a
+href="http://www.etsi.org">ETSI</a> IPv6 plugtests event.  Based on
+the result, we thought it is time to merge the code to the KAME source
+code and start distributing the code as a part of the KAME
+distribution.
+</p>
+
+<p>
+Since December 2004, we are distributing the new code called SHISA
+which supports not only Mobile IPv6 but also NEMO as a part of
+mobility functions provided by the KAME project.
+</p>
+
+<h2>More information</h2>
+
+<p>
+We will issue newsletters when we provide any documentation about the
+mobility code.  Please take a look at <a href="../index.html">the
+newsletter page</a>.
+
+
+<h2>Acknowledgment</h2>
+
+<p>
+We thank the following people and project who tested and reported bugs
+of the pre-release version of the code.  Their contribution helped us
+to make the initial version of the code.
+</p>
+
+<ul>
+<li>Francis Dupont</li>
+<li>Christian Vogt</li>
+<li>Daniel Jungbluth</li>
+<li>Ralf Beck</li>
+<li>Constantin Schimmel</li>
+<li><a href="http://www.nautilus6.org/">The Nautilus6 project</a></li>
+</ul>
+
+</body>
+</html>
