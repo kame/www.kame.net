@@ -1,8 +1,16 @@
 #!/usr/bin/env perl
 
 $url = 'http://inode-srv.kame.net/e/';
-$fetch = '/usr/bin/fetch -q -o -';	# FreeBSD
-#$fetch = '/usr/bin/ftp -V -o -';	# NetBSD
+$osname = `uname`;
+chop($osname);
+
+if ($osname eq "FreeBSD") {
+	$fetch = '/usr/bin/fetch -q -o -';
+} elsif ($osname eq "NetBSD") {
+	$fetch = '/usr/bin/ftp -V -o -';
+} else {
+	die "unsupported OS type $osname";
+}
 
 print "Content-type: text/html\n\n";
 
