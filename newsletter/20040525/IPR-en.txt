@@ -259,4 +259,4 @@ Concern:
   technologies.  With which company should we make a contract?
 
 Priority: low
-  Not all users use this technologies.  There is no urgency.
+  Not all users use these technologies.  There is no urgency.
