@@ -1,0 +1,72 @@
+starting tests, socktype = SOCK_DGRAM
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	x	x	x	?2(99)	x	?2(99)	x
+wild6:	x	x	x	x	?2(99)	x	?2(99)	x
+loop4:	x	x	x	o[12]	?2(99)	x	?2(99)	o[1x]
+loop6:	x	x	x	x	?2(99)	o[12]	?2(99)	x
+wildm:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+loopm:	x	x	x	o[12]	?2(99)	x	?2(99)	o[1x]
+onem:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+one4:	x	x	o[x2]	o[x2]	?2(99)	o[x2]	?2(99)	x
+starting tests, socktype = SOCK_DGRAM, SO_REUSEADDR
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	x	o[-2]	o[-2]	?2(99)	o[-2]	?2(99)	o[-x]
+wild6:	x	x	x	o[-2]	?2(99)	o[-2]	?2(99)	x
+loop4:	o[1-]	o[1-]	x	o[12]	?2(99)	x	?2(99)	o[1x]
+loop6:	x	o[1-]	x	x	?2(99)	o[12]	?2(99)	x
+wildm:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+loopm:	o[1-]	o[1-]	x	o[12]	?2(99)	x	?2(99)	o[1x]
+onem:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+one4:	o[x-]	o[x-]	o[x2]	o[x2]	?2(99)	o[x2]	?2(99)	x
+starting tests, socktype = SOCK_STREAM
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	x	x	x	?2(99)	x	?2(99)	x
+wild6:	x	x	x	x	?2(99)	x	?2(99)	x
+loop4:	x	x	x	o[]	?2(99)	x	?2(99)	o[]
+loop6:	x	x	x	x	?2(99)	o[]	?2(99)	x
+wildm:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+loopm:	x	x	x	o[]	?2(99)	x	?2(99)	o[]
+onem:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+one4:	x	x	o[]	o[]	?2(99)	o[]	?2(99)	x
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to 1st
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	x	x	x	?2(99)	x	?2(99)	x
+wild6:	x	x	x	x	?2(99)	x	?2(99)	x
+loop4:	x	x	x	o[1-]	?1(98)	?1(98)	?1(98)	?1(98)
+loop6:	x	x	x	x	?2(99)	x	?2(99)	x
+wildm:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+loopm:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+onem:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+one4:	x	x	x	o[c-]	?2(99)	x	?2(99)	x
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to 1st, delayed listen
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+wild6:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+loop4:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+loop6:	x	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+wildm:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+loopm:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+onem:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+one4:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to 2nd
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	x	x	x	?2(99)	x	?2(99)	x
+wild6:	x	x	x	x	?2(99)	x	?2(99)	x
+loop4:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+loop6:	x	x	x	x	?2(99)	x	?2(99)	x
+wildm:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+loopm:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+onem:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+one4:	x	x	x	o[-2]	?1(98)	?1(98)	?1(98)	?1(98)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to 2nd, delayed listen
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+wild6:	x	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+loop4:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+loop6:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+wildm:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+loopm:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+onem:	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)	?1(99)
+one4:	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)	?1(98)
+
+Linux marduk 2.2.18 #2 Thu Apr 5 12:58:09 EDT 2001 i686 unknown
