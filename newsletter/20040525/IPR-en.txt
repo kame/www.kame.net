@@ -14,7 +14,7 @@ IPR claim overview:
     use, for a compliant implementation of the protocol."
 
 Concern:
-  It is unclear for us who should make a contract with Apple.  The IPR
+  Who should make a contract with Apple?  The IPR
   claim says, Apple will issue a license to "a compliant
   implementation of the protocol".  What does "a compliant
   implementation of the protocol" exactly mean?  Does it mean the code
@@ -168,12 +168,12 @@ Concern:
     changed his company.
 
 Priority: medium
-  ISATAP is tend to be used as a transition mechanism especially in
-  enterprise networks.  KAME project received questions frequently,
-  why did we removed the technology.  We want to provide ISATAP as one
+  ISATAP is often used as a transition mechanism especially in
+  enterprise networks.  KAME project has been received questions frequently
+  regarding why we removed the technology.  We want to provide ISATAP as one
   of transition mechanisms.
 
-Note: The same discussion can be applied to Teredo.
+Note: This holds true for Teredo, too.
 
 
 ----------------------------------------------------------------------
