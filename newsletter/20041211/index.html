@@ -1,0 +1,207 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+  <link rel=stylesheet href="kame-newsletter.css" type="text/css">
+  <title>SHISA; The new KAME Mobile IPv6 / NEMO stack</title>
+</head>
+
+<body>
+<h1>SHISA; The new KAME Mobile IPv6 / NEMO stack</h1>
+
+<div align="right">
+KAME Mobility development team<br>
+<pre>$Id: index.html,v 1.1 2004/12/11 09:09:20 t-momose Exp $</pre>
+</div>
+
+<h2>Overview</h2>
+The KAME Mobile IPv6 stack had been developped for long time.
+Now, it enoughly works well and is regarded reference code. 
+However, it cause a kernel size enlarged since the most of codes are implemented in the kernel side.
+Addition the kernel enlargement problem, there are other probelms that 
+implementing in kernel makes it difficult to debug and improve some extensions.
+<P>
+On the other hand, the current Mobile IPv6 specification introduced a new extention header, mobility header, to convey mobile ip signaling packet. 
+This decision makes it possibe to implement mobile IPv6 stack on userland.
+<p>
+In WIDE project, another Moble IPv6 code for BSDs had been developed by SFC in Keio University.
+They also faced similar problems to us.
+Therefore we have agreed to unify and re-design our implementations.
+<p>
+The new MIP6 code is named 'SHISA' which is derived from a traditional roof ornament of Okinawa, a tropical island in Japan, because the first developping camp was held in Okinawa in April, 2004.
+We had almost done the work by October and attended <a href="http://www.etsi.org">ETSI</a> IPv6 plugtests event to confirm its interoperability.
+
+
+<h2>What were changed ?</h2>
+From a operetain view, some points are changed.
+<DL>
+  <DT>Userland
+  <DD>Most of parts especially signaling are moved to user land.
+      Userland programs are separated to four parts for each functions.
+  <DT>Home address assignement
+  <DD>Home addresses are not assigned automatically.
+      You should specify it explicitly.
+  <DT>Supported NEMO protocol
+  <DD>NEMO Basic protocol is implemented by default.
+  <DT>Getting BCE/BUL informations
+  <DD>'mip6control' is no longer supported.
+      You can use telnet interfaces to get mobility status or informations.
+</dl>
+
+
+<h2>Status</h2>
+The current Shisa is based on RFC3775, RFC3776, draft-ietf-nemo-basic-03 and draft-wakikawa-mobileip-multiplecoa-03.
+It works on FreeBSD 4.10, FreeBSD 5.3 and NetBSD 1.6.2.
+OpenBSD edition isn't ported yet.
+But note that FreeBSD 4.10 will not supported in kame snap soon as announced on snap-users mailing list.
+<P>
+But, there remains some work to do such as:
+<ul>
+  <li>Mobile Prefix Discovery
+  <li>Treating L bit in Binding update
+  <li>DAD for a home address on a home link
+  <li>Configuration files
+  <li>Good documentation
+</ul>
+
+<h2>How to Use Shisa</h2>
+There is a good documentation of usage MIP6 and NEMO.
+Please refer <a href="http://www.mobileip.jp/shisa-readme.pdf">here</a>(pdf).
+<!--
+<h3>Getting source code</h3>
+You have to get the latest kame snap after as possible at <a href="http://www.kame.net/">KAME Project</a> web site.
+
+<h3>Preparing</h3>
+<h4>Kernel</h4>
+You have to bulid a mobile IPv6 enabled kernel with configuring 'options MIP6'.
+'Options MIP6_DEBUG' might be useful if you try to find problems.
+<BR>
+Also you have to add 'pseudo-device mip &lt;number&gt' configuration when you build mobile node.
+On FreeBSD 5, it would be 'device mip &lt;number&gt'.
+The number of the device indicate the number of interfaces to allocate home address.
+Normally, '1' is enough.
+The device doesn't cause any problems if you don't configure it.
+So, you can use it even if it's not a mobile node.
+
+<h4>Userland</h4>
+You need Mobile IP capable commands besides some shisa daemons.
+What commands you should add -DMIP6 are 'rtadvd' and 'ifconfig'.
+Addtion them, you should build and install commands under 'shisad'.
+
+<h3>For Mobile IPv6</h3>
+<h4>Setup</h4>
+
+<h5>Home Agent</h5>
+Prior MIP6 configuration, you should setup for IPv6 router configuration.
+<blockquote><PRE>
+# sysctl net.inet6.ip6.forwarding=1
+# sysctl net.inet6.ip6.accept_rtadv=0
+</PRE></blockquote>
+Assign addresses to interfaces, set route.
+Assign DHAAD anycast adderss on a home link.
+<blockquote><PRE>
+# ifconfig &lt;homelink interface&gt inet6 &lt;home prefix&gt;fdff:ffff:ffff:fffe prefixlen 64 anycast
+</PRE></blockquote>
+<P>
+If you will protect signaling packets between a mobile node(it is recommended and normal), turn a switch on, and setup security associations.
+<blockquote><PRE>
+# sysctl net.inet6.mip6.ipsec=1
+</PRE></blockquote>
+Currently, A way of setting securtiy associations is the same as before. Plerease refer the section 'Create IPsec configuration files' of the document <a href="../20031007/index.html">KAME Mobile IPv6 How To</a>.
+<P>
+Start home agent daemon, had, and correspondent node daemon, cnd.
+<blockquote><PRE>
+# /usr/local/v6/sbin/had -i &lt;home link&gt -n
+# /usr/local/v6/sbin/cnd -n
+</PRE></blockquote>
+
+
+<h5>Mobile Node</h5>
+A mobile node works as an IPv6 host.
+<blockquote><PRE>
+# sysctl net.inet6.ip6.forwarding=0
+# sysctl net.inet6.ip6.accept_rtadv=1
+</PRE></blockquote>
+Assign home address on mip?? interfaces with 'home' flag.
+<blockquote><PRE>
+# /usr/local/v6/sbin/ifconfig mip0 inet6 &lt;home address&gt prefixlen 64 home
+</PRE></blockquote>
+Start mobile node related daemons.
+<blockquote><PRE>
+# /usr/local/v6/sbin/mnd -i mip??
+# /usr/local/v6/sbin/mdd
+</PRE></blockquote>
+
+
+<h5>Correspondent Node</h5>
+Just start a correspondent node daemon.
+<blockquote><PRE>
+# /usr/local/v6/sbin/cnd -n
+</PRE></blockquote>
+-->
+
+<h5>Using IPsec</h5>
+If you will protect signaling packets between a mobile node(it is recommended and normal), turn a switch on, and setup security associations.
+<blockquote><PRE>
+# sysctl net.inet6.mip6.ipsec=1
+</PRE></blockquote>
+Currently, setting securtiy associations is the same way as before. Please refer the section 'Create IPsec configuration files' of the document <a href="../20031007/index.html">KAME Mobile IPv6 How To</a>.
+<P>
+
+<h5>the Most Convinient Way</h5>
+For FreeBSD and NetBSD users, a special rc script to be able to describe MIP6 configuration in /etc/rc.conf is provided.
+To use this feature, you have to copy the rc scripts from $(kame)/$(bsd)/etc/.
+<P>
+Following keywords are defined:
+<DL>
+  <DT>ipv6_mobile_enable &lt;All&gt
+  <DD>(bool) if set to 'YES', mobile IPv6 is supported. At least correspondent node functionality is enabled if others are not set.
+  <DT>ipv6_mobile_nodetype &lt;All&gt
+  <DD>(str) Select from 'mobile_node', 'correspondent_node', or 'home_agent'.
+  <DT>ipv6_mobile_security &lt;Home Agent / Mobile Node&gt
+  <DD>(bool) if set to 'NO', the node accepts packets not protected with IPsec.
+      But it is not recommended using 'NO' except on experimental network. 
+      If set to 'YES', you have to setup IPsec parameters.
+  <DT>ipv6_mobile_home_interface &lt;Home Agent&gt
+  <DD>(str) Specify a home link.
+</DL>
+
+This is a template for a home agent
+<blockquote><table border="1" width="100%"><tr><td><PRE>
+# These are the same as a traditional IPv6 router setting
+ipv6_enable="YES"
+ipv6_gateway_enable="YES"
+ipv6_network_interfaces="xx"
+ipv6_ifconfig_xx="xxxx"
+ipv6_default_router="xxxx"
+
+# For Home Agent
+ipv6_mobile_enable="YES"
+ipv6_mobile_nodetype="home_agent"
+ipv6_mobile_securtiy_enable="YES"
+
+ipv6_mobile_home_interfaces="xx"
+</PRE></td></tr></table></blockquote>
+
+Here is a template for a mobile nade.
+<blockquote><table border="1" width="100%"><tr><td><PRE>
+# IPv6 host setting
+ipv6_enable="YES"
+ipv6_gateway_enable="NO"
+
+# For MN
+ipv6_mobile_enable="YES"
+ipv6_ifconfig_mip0="2001:200:0:8002::beef prefixlen 64 home"
+ipv6_mobile_nodetype="mobile_node"
+ipv6_mobile_security_enable="xx"
+</PRE></td></tr></table></blockquote>
+
+<h2>More Reading</h2>
+<ul>
+  <li><a href="http://www.mobileip.jp/">SHISA</a> Shisa Home page
+</ul>
+
+
+<hr>
+<address>momose@kame.net</address>
+</body>
+</html>
