@@ -4,13 +4,19 @@
 <H1>Enabling IPv6 in MacOS X (10.1.3)</H1>
 <A HREF=http://www.itojun.org/>Jun-ichiro itojun Hagino</A>,
 <A HREF=http://www.kame.net/>KAME Project</A>
-<PRE>$Id: index.html,v 1.7 2002/03/25 21:44:25 itojun Exp $</PRE>
+<PRE>$Id: index.html,v 1.8 2002/03/28 08:43:33 itojun Exp $</PRE>
 
 <HR>
 <H2>Introduction</H2>
 
-The document describes how you can enable Ipv6 in MacOS X (10.1.3),
+The document describes how you can enable IPv6 in MacOS X (10.1.3),
 using Darwin public source code.
+<P>
+
+MacOS X 10.1.3 kernel (= Darwin xnu Apple-201-15 or Apple-201-19 tag)
+contains IPv4/v6 stack (<TT>sys/netinet</TT> and <TT>sys/netinet6</TT>)
+which is equivalent to FreeBSD 3.x with KAME patch as of spring 2000.
+The article describes how to enable IPv6/IPsec portion of the code.
 
 <HR>
 <H2>Building kernel</H2>
