@@ -4,7 +4,7 @@
 <H1>Enabling IPv6 in MacOS X (10.1.3)</H1>
 <A HREF=http://www.itojun.org/>Jun-ichiro itojun Hagino</A>,
 <A HREF=http://www.kame.net/>KAME Project</A>
-<PRE>$Id: index.html,v 1.10 2002/04/26 07:27:49 itojun Exp $</PRE>
+<PRE>$Id: index.html,v 1.11 2002/04/26 09:18:12 itojun Exp $</PRE>
 
 <HR>
 <H2>Introduction</H2>
@@ -12,6 +12,14 @@
 The document describes how you can enable IPv6 in MacOS X (10.1.3),
 using Darwin public source code.
 <P>
+
+Update: there was a structural change in Darwin repository, for userland
+source code - Commands/Next/network_cmds is now found in network_cmds
+(at the top of CVS tree).
+The following text is updated for the change, however, patch is not updated yet.
+(2002/4/26)
+
+<HR>
 
 MacOS X 10.1.3 kernel (= Darwin xnu Apple-201-15 or Apple-201-19 tag)
 contains IPv4/v6 stack (<TT>sys/netinet</TT> and <TT>sys/netinet6</TT>)
@@ -106,20 +114,19 @@ If you would like to start IPv6-ready sshd at startup, modify
 Make sure you have installed BIND8 already from pkgsrc.
 <P>
 
-Checkout <TT>Commands</TT> tree from darwin repository.
+Checkout <TT>network_cmds</TT> tree from darwin repository.
 <PRE>
-% cvs -d :pserver:yourid@anoncvs.opensource.apple.com:/cvs/Darwin checkout Commands
+% cvs -d :pserver:yourid@anoncvs.opensource.apple.com:/cvs/Darwin checkout network_cmds
 </PRE>
 
-Apply <A HREF=commands-next-20020323.diff>the patch</A> under <TT>Commands/Next</TT>.
+Apply <A HREF=commands-next-20020323.diff>the patch</A> (it may not apply cleanly - sorry).
 <PRE>
-% cd Commands/Next
 % patch -p0 < commands-next-20020323.diff
 </PRE>
 
 build and install ifconfig.
 <PRE>
-% cd Commands/Next/network_cmds/ifconfig.tproj
+% cd network_cmds/ifconfig.tproj
 % make
 % sudo make install
 </PRE>
@@ -132,11 +139,11 @@ and BIND8 from pkgsrc.
 <P>
 
 <PRE>
-% cd Commands/Next/network_cmds/netstat.tproj
+% cd network_cmds/netstat.tproj
 % make
 % sudo make install
 % cd
-% cd Commands/Next/network_cmds/route.tproj
+% cd network_cmds/route.tproj
 % make
 % sudo make install
 </PRE>
