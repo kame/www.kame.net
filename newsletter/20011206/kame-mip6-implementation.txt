@@ -69,7 +69,7 @@ Table of Contents
        2.2.  CoA selection in KAME/MIP6 .................................  4
             2.2.1.  Comment to the spec .................................  4
        2.3.  Movement detaction in KAME/MIP6 ............................  5
-       2.4.  Ineffciency of our movement detection ......................  5
+       2.4.  One more note about CoA selection ..........................  5
        2.5.  Router Identifier ..........................................  6
             2.5.1.  Comment to the spec .................................  6
        2.6.  Security mechanism is not implemented yet ..................  6
@@ -251,7 +251,7 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
    list.
 
 
-2.4.  Ineffciency of our movement detection
+2.4.  One more note about CoA selection
 
    Our algorithm may detect wrong location in the following case.
 
@@ -288,12 +288,14 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
    Now, assume we select P1 as a home prefix.  If we select CoA derived
    from P2, we determine that we are on the foreign network.  But in
-   fact, we are home too.  MN will start sending a binding update to
-   make a home registration.  In this case, MN should determine that it
-   is home to avoid unneeded binding/encapsulation/routing header.
+   fact, we are home too.  MN will start configuring addresses and get
+   two addresses.  One is from P1 and the other is from P2.  Next, MN
+   sends a binding update to make a home registration but it fails
+   because HA fails DAD for the MN home address.  In this case, MN
+   should determine that it is home.
 
-   This inefficiency can be easily avoided by preferring the home
-   address in selecting a new CoA.  Not implemented yet.
+   This problem can be easily avoided by preferring the home address in
+   selecting a new CoA.  (Not implemented yet.)
 
    (Current implementation have bugs in handing this situation, so, this
    doesn't work with such a network described above.)
@@ -330,8 +332,6 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
    todo
 
-   - define the behavior of the socket API for home addresses.
-
 
 
 
@@ -339,6 +339,8 @@ draft-keiichi-mobileip-kame-implementation-00.txt               [Page 6]
 
 DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
+
+   - define the behavior of the socket API for home addresses.
 
    - security mechanism.
 
@@ -387,14 +389,14 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
    - home registration.
 
-   - encapsulate packets destined to MNs.
-
 
 
 draft-keiichi-mobileip-kame-implementation-00.txt               [Page 7]
 
 DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
+
+   - encapsulate packets destined to MNs.
 
    - dynamic home agent discovery.
 
@@ -406,8 +408,6 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
     Edobori Center Bldg. 19F
     2-1-1 Edobori, Nishi-ku, Osaka 550-0002, Japan
     Email: keiichi@iij.ad.jp
-
-
 
 
 

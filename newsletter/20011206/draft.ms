@@ -148,7 +148,7 @@ When KAME/MIP6 detects movement (this means that KAME/MIP6 detects CoA
 change), KAME/MIP6 start movement processing.  For example, sending
 binding updates to each destination node of binding update list.
 .\" --------------------------------------------------------------------
-.N2 "Ineffciency of our movement detection"
+.N2 "One more note about CoA selection"
 .LP
 Our algorithm may detect wrong location in the following case.
 .DS 0
@@ -172,17 +172,20 @@ Subnet S1 (Router R1) (Prefix P1)
 Subnet S2 (Router R2) (Prefix P2)
 .DE
 Under this condition, if we specify only one prefix as a home prefix,
-we can't determine that we are home.  In this network, both P1 and P2
-are valid.  We can use both addresses derived from each prefix.
+we can't determine whether we are home or not.  In this network, both
+P1 and P2 are valid.  We can use both addresses derived from each
+prefix.
 .LP
 Now, assume we select P1 as a home prefix.  If we select CoA derived
 from P2, we determine that we are on the foreign network.  But in
-fact, we are home too.  MN will start sending a binding update to make
-a home registration.  In this case, MN should determine that it is
-home to avoid unneeded binding/encapsulation/routing header.
+fact, we are home too.  MN will start configuring addresses and get
+two addresses.  One is from P1 and the other is from P2.  Next, MN
+sends a binding update to make a home registration but it fails
+because HA fails DAD for the MN home address.  In this case, MN should
+determine that it is home.
 .LP
-This inefficiency can be easily avoided by preferring the home address
-in selecting a new CoA.  Not implemented yet.
+This problem can be easily avoided by preferring the home address
+in selecting a new CoA.  (Not implemented yet.)
 .LP
 (Current implementation have bugs in handing this situation, so, this
 doesn't work with such a network described above.)
