@@ -136,14 +136,14 @@ gethostbyname(3)$B$r(BIPv6$B$KBP1~$5$;$k%*%W%7%g%s$bB8:_$9$k$,!";H$$$K$/$$!#
 <p>
 
 <pre>
-  1:   #include <sys/types.h>                /* FreeBSD and NetBSD need this */
-  2:   #include <sys/socket.h>
+  1:   #include &lt;sys/types.h&gt;                /* FreeBSD and NetBSD need this */
+  2:   #include &lt;sys/socket.h&gt;
   3:   
-  4:   #include <netinet/in.h>
+  4:   #include &lt;netinet/in.h&gt;
   5:   
-  6:   #include <stdio.h>
-  7:   #include <unistd.h>
-  8:   #include <netdb.h>
+  6:   #include &lt;stdio.h&gt;
+  7:   #include &lt;unistd.h&gt;
+  8:   #include &lt;netdb.h&gt;
   9:   
  10:   int
  11:   tcp_connect(hostname, port)
@@ -165,7 +165,7 @@ gethostbyname(3)$B$r(BIPv6$B$KBP1~$5$;$k%*%W%7%g%s$bB8:_$9$k$,!";H$$$K$/$$!#
  27:           
  28:           for (ai = res; ai != NULL; ai = ai->ai_next) {
  29:                   s = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
- 30:                   if (s < 0)
+ 30:                   if (s &lt; 0)
  31:                           continue;
  32:   
  33:                   if (connect(s, ai->ai_addr, ai->ai_addrlen) == 0)
@@ -555,16 +555,16 @@ getaddrinfo(3)$B$O(Baddrinfo$B9=B$BN$N%j%9%H$rF0E*$K@8@.$9$k$N$G!"(B
 <p>
 
 <pre>
-  1:   #include <sys/types.h>                /* FreeBSD and NetBSD need this */
-  2:   #include <sys/socket.h>
-  3:   #include <sys/select.h>
+  1:   #include &lt;sys/types.h&gt;                /* FreeBSD and NetBSD need this */
+  2:   #include &lt;sys/socket.h&gt;
+  3:   #include &lt;sys/select.h&gt;
   4:   
-  5:   #include <netinet/in.h>
+  5:   #include &lt;netinet/in.h&gt;
   6:   
-  7:   #include <stdio.h>
-  8:   #include <stdlib.h>
-  9:   #include <unistd.h>
- 10:   #include <netdb.h>
+  7:   #include &lt;stdio.h&gt;
+  8:   #include &lt;stdlib.h&gt;
+  9:   #include &lt;unistd.h&gt;
+ 10:   #include &lt;netdb.h&gt;
  11:   
  12:   static char *sa2str __P((struct sockaddr *, socklen_t));
  13:   
@@ -599,17 +599,17 @@ getaddrinfo(3)$B$O(Baddrinfo$B9=B$BN$N%j%9%H$rF0E*$K@8@.$9$k$N$G!"(B
  42:   
  43:           for (ai = res; ai != NULL; ai = ai->ai_next) {
  44:                   if ((s = socket(ai->ai_family, ai->ai_socktype,
- 45:                                   ai->ai_protocol)) < 0)
+ 45:                                   ai->ai_protocol)) &lt; 0)
  46:                           continue;
- 47:                   if (bind(s, ai->ai_addr, ai->ai_addrlen) < 0) {
+ 47:                   if (bind(s, ai->ai_addr, ai->ai_addrlen) &lt; 0) {
  48:                           close(s);
  49:                           continue;
  50:                   }
- 51:                   if (listen(s, 1) < 0) {
+ 51:                   if (listen(s, 1) &lt; 0) {
  52:                           close(s);
  53:                           continue;
  54:                   }
- 55:                   if (s > maxsoc)
+ 55:                   if (s &gt; maxsoc)
  56:                           maxsoc = s;
  57:                   if ((ct = (struct conntable *)malloc(sizeof(*ct))) == NULL) {
  58:                           close(s);
@@ -621,7 +621,7 @@ getaddrinfo(3)$B$O(Baddrinfo$B9=B$BN$N%j%9%H$rF0E*$K@8@.$9$k$N$G!"(B
  64:                   *ctp = ct;
  65:                   ctp = &ct->next;
  66:           }
- 67:           if (maxsoc < 0)
+ 67:           if (maxsoc &lt; 0)
  68:                   goto cleanup;
  69:   
  70:           masks = howmany(maxsoc + 1, NFDBITS) * sizeof(fd_mask);
@@ -631,7 +631,7 @@ getaddrinfo(3)$B$O(Baddrinfo$B9=B$BN$N%j%9%H$rF0E*$K@8@.$9$k$N$G!"(B
  74:           for (ct = ct_top; ct != NULL; ct = ct->next)
  75:                   FD_SET(ct->soc, mask);
  76:   
- 77:           if (select(maxsoc + 1, mask, NULL, NULL, NULL) <= 0)
+ 77:           if (select(maxsoc + 1, mask, NULL, NULL, NULL) &lt;= 0)
  78:                   goto cleanup;
  79:   
  80:           for (ct = ct_top; ct != NULL; ct = ct->next) {
@@ -859,15 +859,15 @@ AF_INET6$B%=%1%C%H$N$_$r;H$C$F=q$$$?4X?t(Btcp_accept_mapped()$B$r(B
 <p>
 
 <pre>
-  1:   #include <sys/types.h>                /* FreeBSD and NetBSD need this */
-  2:   #include <sys/socket.h>
+  1:   #include &lt;sys/types.h&gt;                /* FreeBSD and NetBSD need this */
+  2:   #include &lt;sys/socket.h&gt;
   3:   
-  4:   #include <netinet/in.h>
+  4:   #include &lt;netinet/in.h&gt;
   5:   
-  6:   #include <stdio.h>
-  7:   #include <stdlib.h>
-  8:   #include <unistd.h>
-  9:   #include <netdb.h>
+  6:   #include &lt;stdio.h&gt;
+  7:   #include &lt;stdlib.h&gt;
+  8:   #include &lt;unistd.h&gt;
+  9:   #include &lt;netdb.h&gt;
  10:   
  11:   static char *sa2str __P((struct sockaddr *, socklen_t));
  12:   
@@ -879,14 +879,14 @@ AF_INET6$B%=%1%C%H$N$_$r;H$C$F=q$$$?4X?t(Btcp_accept_mapped()$B$r(B
  18:           struct sockaddr_in6 sa6;
  19:           socklen_t fromlen = sizeof(sa6);
  20:   
- 21:           if ((s = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP)) < 0)
+ 21:           if ((s = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP)) &lt; 0)
  22:                   return(-1);
  23:   
  24:   #ifdef __NetBSD__
  25:            {
  26:                   int off = 0;
  27:                   if (setsockopt(s, IPPROTO_IPV6, IPV6_BINDV6ONLY, &off,
- 28:                                  sizeof(off)) < 0)
+ 28:                                  sizeof(off)) &lt; 0)
  29:                           return(-1);
  30:            }
  31:   #endif
@@ -895,10 +895,10 @@ AF_INET6$B%=%1%C%H$N$_$r;H$C$F=q$$$?4X?t(Btcp_accept_mapped()$B$r(B
  34:           sa6.sin6_family = AF_INET6;
  35:           sa6.sin6_len = sizeof(sa6); /* XXX: portability */
  36:           sa6.sin6_port = htons(atoi(port));
- 37:           if (bind(s, (struct sockaddr *)&sa6, sizeof(sa6)) < 0)
+ 37:           if (bind(s, (struct sockaddr *)&sa6, sizeof(sa6)) &lt; 0)
  38:                   goto cleanup;
  39:   
- 40:           if (listen(s, 1) < 0)
+ 40:           if (listen(s, 1) &lt; 0)
  41:                   goto cleanup;
  42:   
  43:           ret = accept(s, (struct sockaddr *)&sa6, &fromlen);
