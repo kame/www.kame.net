@@ -4,7 +4,7 @@
 <H1>getnameinfo(3) and access controls</H1>
 <A HREF=http://www.itojun.org/>Jun-ichiro itojun Hagino</A>,
 <A HREF=http://www.kame.net/>KAME Project</A>
-<PRE>$Id: index.html,v 1.4 2003/05/27 13:23:12 jinmei Exp $</PRE>
+<PRE>$Id: index.html,v 1.5 2003/05/27 13:24:15 jinmei Exp $</PRE>
 
 This is a little warning on the use of getnameinfo(3) in the context of
 access control.
@@ -55,7 +55,7 @@ follows:
 	x.x.x.x.in-addr.arpa.	IN PTR	10.1.1.1
 </PRE>
 
-To protect against such an attack, thhe return value from getnameinfo(3)
+To protect against such an attack, the return value from getnameinfo(3)
 has to be verified in "hasptr == 1" case.
 <PRE>
 	...
