@@ -14,13 +14,12 @@ IPR claim overview:
     use, for a compliant implementation of the protocol."
 
 Concern:
-  Who should make a contract with Apple?  The IPR
-  claim says, Apple will issue a license to "a compliant
-  implementation of the protocol".  What does "a compliant
-  implementation of the protocol" exactly mean?  Does it mean the code
-  distributed from the KAME project?  Or does it mean all implementations
-  which use KAME SSM code?  Or does it mean all users who are using
-  KAME SSM code?
+  - Who should make a contract with Apple?  The IPR claim says, Apple
+    will issue a license to "a compliant implementation of the
+    protocol".  What does "a compliant implementation of the protocol"
+    exactly mean?  Does it mean the code distributed from the KAME
+    project?  Or does it mean all implementations which use KAME SSM
+    code?  Or does it mean all users who are using KAME SSM code?
 
 Request:
   Making a contract is a barrier for the deployment of SSM.  We
