@@ -26,7 +26,7 @@ while (<IN>) {
 	}
 	if ($t && $t++ == 5) {
 		tr/\r\n//d;
-		$date = $_;
+		($date, $time) = split(/\s/, $_);
 		$t = 0;
 	}
 }
@@ -37,7 +37,8 @@ if ($temp > 30) {
 } else {
 	$temp = "<FONT COLOR=\"GREEN\">$temp</FONT>";
 }
-print "the server room's temperature is ${temp}C&deg;on ${date}.  ";
-print "Powered by <A HREF=\"http://www.i-node.co.jp/e/index.html/\">Internet node</A>\n";
+print "the server room's temperature is ${temp}C&deg;at ${time} on ${date}.";
+print "&nbsp;&nbsp;&nbsp;&nbsp;";
+print "Powered by <A HREF=\"http://www.i-node.co.jp/e/index.html\">Internet node</A>\n";
 
 exit 0;
