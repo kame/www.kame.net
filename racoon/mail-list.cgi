@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#! /usr/pkg/bin/perl
 
 $mlname = 'racoon';
 $url = "ftp://ftp.kame.net/pub/mail-list/$mlname";
