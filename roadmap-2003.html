@@ -1,0 +1,99 @@
+<html>
+<head><title>Roadmap of KAME (2003)</title></head>
+<body>
+
+We give high priority to merging IPv6 functionality to the BSD
+variants by March 2004. We may implement new features, however, will
+not merge them to the BSD variants since they might be unstable.
+
+<hr>
+
+Here are features to be merged to the BSD variants:
+
+<ul>
+<li>Advanced API (waiting for RFC)
+<li>Default Address Selection (RFC 3484)
+<li>Code clean up for ip6_mroute.c (to be implemented)
+<li>MIP6 CN (see MIP6)
+<li>IGMPv3 (see SSM)
+</ul>
+
+<hr>
+
+Here are working items:
+
+<dl>
+<dt>SSM
+<dd>RFC3376 for IGMPv3 is ready but API for IGMPv3 is a draft. So,
+need to wait.
+MLDv2 is a draft. Thus, can't merge.
+
+<dt>mDNS
+<dd>Need to consider framework (libc vs daemon).
+Waiting for RFC.
+
+<dt>Scoped routing
+<dd>The remaining work is to integrate the scope architecture to
+routing table.  Since site-local is likely to be deprecated,
+however, we can't see advantages against the expected heavy
+work.  Also, the change would cause compatibility issue, we
+need to discuss with the BSD community if this can be
+accepted.  We'll continue to work on this in the KAME snap for
+the moment as well as having the discussion.  Once the course
+of the action is determined, the snap code will be cleaned up
+accordingly.
+
+<dt>X Window System
+<dd>We made an IPv6 patch for XFree86. However, X.org now has
+implemented its own IPv6 code and it will be available soon.
+So, we won't merge our patch to X.
+
+<dt>VRRP
+<dd>We don't have a plan to merge since there are few interests.
+
+<dt>MIP6
+<dd>MIP6 CN should be merged. Waiting for RFC.
+MN and HA are pending due to dirty code clean up
+
+<dt>IPsec
+<dd>ESPv3 and AH revise are now draft. Need to catch up when RFC
+will be published.
+
+<dt>KMP
+<dd>We had planed to implement and to merge a KMP which would be
+light weight and would be simple.  But IKEv2 is now going to
+be RFC and it is more complex protocol than we expected. We
+have a plan to implement it. However, we will not merge it
+though it will be provided by KAME snap.
+
+<dt>Router Selection
+<dd>Standardization status is unclear. We want to merge
+router-preference flag. But a draft covers other features
+including route-information option and router load balance.
+
+<dt>ISATAP
+<dd>Since its standardization process is a mess, we have to pend
+its merge.
+
+<dt>ICMPv6 name lookup
+<dd>Waiting for RFC. Need to consider framework like mDNS.
+
+<dt>DNS server discovery
+<dd>Waiting for RFC. 
+
+<dt>DHCPv6
+<dd>The code is already quite mature and inter-operable.  Once the
+specification becomes an RFC, we'll merge it to the BSD
+repository.
+
+<dt>SCTP
+<dd>Need more tests.
+</dl>
+
+<hr>
+
+<a href="http://www.kame.net/">KAME Project</a>
+
+</body>
+</html>
+
