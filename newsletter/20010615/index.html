@@ -1,0 +1,48 @@
+<html>
+<head><title>Wish/questions list to router vendors</title></head>
+<h1>Wish/questions list to router vendors</h1>
+Akira Kato, WIDE project
+<pre>$Id: index.html,v 1.1 2001/06/15 10:01:21 itojun Exp $</pre>
+
+Here are a set of questions we would like to ask to router vendors,
+when we make purchase decisions <TT>:-)</TT>
+
+<UL>
+<LI>which interface types do you support IPv6?  ether, p2p (BRI/PRI/OC48/...), dialup, 802.1Q VLAN, ...
+<LI>SNMP IPv6 transport?  IPv6 MIBs?
+<LI>ssh/telnet IPv6 support, incoming/outgoung
+<LI>ipv6 forwading performance: normal case (fast path), and with routing header case (slow path).
+<LI>any negative impact on IPv4 performance, if we have IPv6 traffic?  or, when we configure IPv6?
+<LI>do we have a good orthogonal user-interface for ipv4 and ipv6?
+  some vendor routers do like this:
+<PRE>
+	show ip bgp summary
+	show bgp ipv6 summary
+</PRE>
+  and is confusing.
+<LI>can we establish BGP peering over IPv6 link-local address?  what happens if we have multiple interfaces?
+<LI>can we configure multiple link-local addresses to a single i/f?
+<LI>can we configure multiple address from the same prefix, onto a single i/f:  like P::a and P::b to the same interface?
+<LI>can we configure lifetimes on RA messages?  what is the default value? (the value suggested on RFC, or what?)  validation against RAs from other routers?
+<LI>acl?  filters?  performance drawbacks if we configure filters?
+<LI>router renumbering support?
+<LI>memory footprint growth?
+<LI>stability?
+<LI>support?  no support, special contacts, or normal support contact?
+<LI>when do you going to support IPv6 by default?  do we need a special firmware for IPv6, or is IPv6 integrated to normal firmware?
+<LI>can we operate routers IPv6-only?  can we disable IPv4?
+<LI>performance with tunnels?
+<LI>support for ping6 -w (ICMPv6 node information query)?
+<LI>DNS over IPv6?
+<LI>DNS record types?  (AAAA is fine for us)
+<LI>multicast routing?  which multicast routing protocols?
+<LI>can we use the box as site border router?  can we support multiple site routing domains?
+<LI>which IGPs do you support?  RIPng, ISIS, OSPFv3?  (OSPFv3 is important for many Japanese networks)
+<LI>tftp over IPv6?
+<LI>how can we disambiguate linklocal peers on multiple different interfaces?
+<LI>which kind of tunnelling encapsulations?  static configured tunnel, 6to4, auto-tunnel? (no need for auto-tunnel)
+</UL>
+
+<!--#include virtual="../index.inc" -->
+</body>
+</html>
