@@ -1,0 +1,402 @@
+<html>
+<head><title>Simple Configuration Samples of Racoon</title></head>
+<h1>Simple Configuration Samples of Racoon</h1>
+<a href="http://www.wide.ydc.co.jp/~sakane/">Shoichi Sakane</a>,
+<a href="http://www.kame.net/">KAME Project</a>
+<pre>$Id: index-jp.html,v 1.1 2003/01/29 14:49:15 sakane Exp $</pre>
+
+<a href="http://www.kame.net/newsletter/20000428/">英語版</a>
+<hr>
+
+<h2>
+概要
+</h2>
+本稿では、KAMEスタックにおいて IPsecの Security Association(IPsec-SA)を
+自動で確立するために必要な設定に関して述べる。
+IPsec-SAを自動で確立するためには、沢山の項目を設定しなければならない。
+そのため全てを理解するには IPsecに関する多くの知識が必要になる。
+本稿では、使用環境を限定することにより、設定項目を最小限にとどめ、
+全体像を説明することに重点をおく。
+読者には、IPsecの知識がある程度必要とされるが、熟知している必要はない。
+
+<hr>
+<h2>
+はじめに
+</h2>
+IPsecを使うためには通信する相手と Security Association(IPsec-SA)を
+確立しなければならない。
+IPsec-SAを確立する方法は2種類ある。
+1つは手動で確立する方法である。
+もう1つは自動で確立する方法である。
+KAMEでは、後者を実現するために racoonを用意している。
+<br>
+IPsec-SAを確立するためには、いくつかのパラメータ(鍵情報)を
+確立したい相手と交換しなければならない。
+racoonは IKEを使ってこのパラメータを交換する。
+<br>
+IKEは IPsec-SAを使わずに自分で SAを確立する。
+そのためにIKEは2つのフェーズに分けられる。
+1つはIKE自身の通信を守るSA(IKE-SA)を確立するフェーズ。
+もう1つはIPsec-SAを確立するフェーズである。
+以降では、それぞれ Phase 1, Phase 2と呼ぶ。
+<br>
+IKEでは、Phase 1, Phase 2に必要な鍵情報を交換するが、
+それぞれのフェーズで、始動者が複数の提案(Proposal)をして応答者がそれを選択する。
+このため racoonを使うには、多くの情報を設定しなければならない。
+<br>
+ここでは KAME-snap20000501以降のキットに含まれる racoonを対象として、
+簡単な例を元に設定方法を説明する。
+複雑な設定方法は、ここでは述べない。
+<p>
+ここでは KAME-snap20000501以降のキットに含まれる racoonを対象として、
+簡単な例を元に設定方法を説明する。
+複雑な設定方法は、ここでは述べない。
+KAME-snap20000501以降のキットに含まれる racoonを対象とする。
+20000501以前のものには該当しない。
+<hr>
+<h2>
+基本メカニズム
+</h2>
+
+kernelは IPsecを使うために 2つのデータベースを管理している。
+1つは、パケットに IPsecを適用するかどうかを判断するため、
+また、どの IPsec-SAを適用するかを記述したSecurity Policy Database(SPD)。
+もう1つは、IPsec-SAの鍵情報を定義した Security Association Database(SAD)である。
+<p>
+下図は kernelがパケットに IPsecを適用するまでの流れをを示したものである。
+
+<pre>
+	 setkey                racoon  <-------(IKE)-------> somebody
+	   |                    ^  |      (5)
+	   |                    |  |(6)
+	   |(1)           +-----+  +---+
+	   |           (4)|            |
+	   v              |            v
+	+-----+  (2)      |    (3)  +-----+
+	| SPD |<----- kernel ------>| SAD |
+	+-----+         |           +-----+
+                        |(7)
+                        v
+</pre>
+
+<p>
+(1)自動で IPsec-SAを設定するために、管理者は setkeyを使って、
+どのパケットに IPsecを適用するかを SPDに登録する。<br>
+(2)kernelは SPDを検索してパケットに IPsecを適用するかどうかを判断する。<br>
+(3)IPsecを適用すると分かったら、SADを検索して鍵情報を取得する。<br>
+(4)鍵情報がなかった場合、racoonへ IPsec-SAの確立要求をする。<br>
+(5)racoonは IPsec-SAを確立すべき相手とIKEを使ってパラメータを交換する。<br>
+(6)racoonは交換した鍵情報を SADに登録する。<br>
+(7)Kernel can send a packet applyed IPsec.<br>
+
+<p>
+上記の様に、管理者は setkeyを使ってSPDを設定する作業とracoonの設定が必要になる。
+また、IPsec-SAを確立しようとする相手にも
+racoonまたは、これに相当するものがなければならない。
+
+<hr>
+<h2>
+racoonの起動方法
+</h2>
+
+racoonを起動するにはルート権限が必要である。
+これはIKEのためにUDPの500番を使うからである。
+またログファイルとして /var/log/racoon.logを使用するからである。
+<br>
+racoonの起動オプションは少ないが、その中でもさらに代表的なものだけを説明する。
+
+<dl>
+<dt>-<b>f</b> <i>configfile</i>
+<dd>Specify alternate configuration file.
+<dd><tt>/usr/local/v6/etc/racoon.conf</tt> as default.
+
+<dt>-<b>l</b> <i>logfile</i>
+<dd>Specify alternate log file.
+<dd><tt>/var/log/racoon.log</tt> as default.
+
+<dt>-<b>d</b> <i>dlevel</i>
+<dd>Set debugging level of hexadecimal.
+<dd>As below, racoon outputs many information onto standard output and log file.
+<pre>
+	# racoon -d 0xffffffff
+</pre>
+</dl>
+
+以下のように起動すると非常に多くの情報が標準出力に表示される。
+<pre>
+	# racoon -d 0xffffffff
+</pre>
+
+<h2>
+簡単な設定例
+</h2>
+以下は、もっとも簡単な racoonの設定例の一つである。
+
+<pre>
+	# cat case1.conf
+	<b>path pre_shared_key</b> "/usr/local/v6/etc/psk.txt" ;
+	<b>identifier user_fqdn</b> "sakane@kame.net" ;
+	<b>identifier fqdn</b> "mine.kame.net" ;
+
+	<b>remote</b> anonymous
+	{
+		<b>exchange_mode</b> aggressive ;
+		<b>identifier</b> user_fqdn ;
+		<b>lifetime</b> time 24 hour ;
+		<b>lifetime</b> byte 100 MB ;
+		<b>proposal</b> {
+			<b>encryption_algorithm</b> 3des;
+			<b>hash_algorithm</b> sha1;
+			<b>authentication_method</b> pre_shared_key ;
+			<b>dh_group</b> 2 ;
+		}
+	}
+
+	<b>sainfo</b> anonymous
+	{
+		<b>pfs_group</b> 1;
+		<b>lifetime time</b> 12 hour ;
+		<b>lifetime byte</b> 50 MB ;
+		<b>encryption_algorithm</b> 3des, rc5, cast128, blowfish, des ;
+		<b>authentication_algorithm</b> hmac_sha1, hmac_md5 ;
+		<b>compression_algorithm</b> deflate ;
+	}
+</pre>
+
+この設定例について、上から順番に説明する。
+
+<p>
+<ul>
+<li>path pre_shared_keyはPhase 1の認証に使うPre-shared Keyを設定しているファイルを示す。
+認証方式として Pre-shared Keyを使わない場合は設定する必要はない。
+このファイルのフォーマットは hosts(4)と同様に行の先頭に識別子を書いて、
+空白文字で区切り、鍵を記述する。
+この識別子と鍵のペアを複数書く時は改行する。
+例えば、識別子として sakane@kame.net、鍵を hogehoge とすると、
+<pre>
+	sakane@kame.net	hogehoge
+</pre>
+となる。今の所、鍵には空白を含める事ができない。
+
+<li>identifier user_fqdnと identifier fqdnは、Phase 1の認証に使う識別子を設定する。
+識別子はIPアドレス、ユーザFQDN、FQDNが使える。
+ユーザFQDNとFQDNの区別は特にない。
+double quotationで囲む。
+また、厳密なチェックをしてないので、ただの文字列でも使える。
+</ul>
+
+<h3>remote directive</h3>
+<ul>
+<li>remoteは Phase 1の設定をする。
+anonymousは全ての相手にマッチする。
+相手を限定する場合は、IPアドレスを書くがここでは述べない。
+
+<li>exchange_modeは Phase 1での通信のモードを設定する。
+aggressiveは、aggressive modeで通信することを意味する。
+他に main, baseが使える。
+これは、それぞれ main mode, base modeで通信することを意味する。
+ここに設定したモード以外で相手が通信しようとすると拒否する。
+3つのモードを受け付けることは可能だが、その設定方法はここでは述べない。
+
+<li>remoteの中の identiferは、自分の識別子に何を使うかを指定する。
+ここで指定した情報が相手に送信され、認証情報の一つとして使われる。
+上記の場合、user_fqdnなので identifier user_fqdnに設定された
+sakane@kame.netが採用される。
+
+<li>lifetime timeと lifetime byteは、
+それぞれ時間とバイト数による IPsec-SAの有効期間を設定する。
+有効期間の単位としては sec, min, hourが使える。
+有効バイト数の単位としては B, KB, MB, TBが使えるが、1024B以上でなければならない。
+
+<li>proposalは Phase 1で使う proposalを設定する。
+複数の proposalを記述することができるが、その設定方法はここでは述べない。
+
+<li>encryption_algorithmは暗号アルゴリズムを設定する。
+暗号アルゴリズムとしては DES, 3DES, RC5, IDEA, CAST, BLOWFISHが使える。
+それぞれ des, 3des, rc5, idea, cast, blowfishとして設定する。
+
+<li>hash_algorithmはハッシュアルゴリズムを設定する。
+ハッシュアルゴリズムとしては MD5, SHA1が使える。
+それぞれ md5, sha1として設定する。
+
+<li>authentication_methodは認証方式を設定する。
+上記の場合は Pre-shared Keyの使用を意味する。
+他に RSA Signatureも使えるが、その設定方法はここでは述べない。
+
+<li>dh_groupは DH交換のグループを設定する。
+グループとして、1, 2, 5が使える。
+それぞれ 1, 2, 5として設定する。
+</ul>
+
+<h3>sainfo directive</h3>
+<ul>
+<li>sainfoは Phase 2の設定をする。
+anonymousは全ての相手にマッチする。
+相手を限定することもできるが、その設定方法はここでは述べない。
+
+<li>pfs_groupは Phase 2で使用するDH交換のグループを設定する。
+グループとして、1, 2, 5が使える。
+それぞれ 1, 2, 5として設定する。
+
+<li>lifetime timeと lifetime byteは、
+それぞれ時間とバイト数による IPsec-SAの有効期間を設定する。
+有効期間の単位としては sec, min, hourが使える。
+有効バイト数の単位としては B, KB, MB, TBが使えるが、1024B以上でなければならない。
+
+<li>encryption_algorithmはESPで使用する暗号アルゴリズムの候補を設定する。
+暗号アルゴリズムとしては DES, 3DES, RC5, CAST, BLOWFISH, NULLが使える。
+それぞれ des, 3des, rc5, idea, cast, blowfish, null_encとして設定する。
+
+<li>authentication_algorithmはESPまたはAHで使用する認証アルゴリズムの候補を設定する。
+認証アルゴリズムとしては HMAC-SHA1, HMAC-MD5, Keyed-MD5が使える。
+それぞれ hmac_sha1, hmac_md5, kpdkとして設定する。
+
+<li>compression_algorithmは圧縮アルゴリズムの候補を設定する。
+圧縮アルゴリズムとしては DEFLATEのみが使える。
+deflate と指定する。
+</ul>
+
+<p>
+上記の設定は、Pre-shared Keyを事前に設定してさえいれば、
+Phase 1, Phase 2ともに相手を選ばない設定になっている。
+それぞれ相手を限定することもできるが、その設定方法はここでは述べない。
+
+<hr>
+<h2>
+SPDの設定例
+</h2>
+
+<h3>
+Case 1
+</h3>
+Security protocol is <b><i>ESP</i></b>.
+Encapsulation mode is <b><i>Transport</i></b>.
+
+<pre>
+	   Host-A                        Host-B
+	  fec0::1 ---------------------- fec0::2
+</pre>
+
+<br>
+Configuration at Host-A:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd <b>fec0::1</b> <b>fec0::2</b> any -P <b>out</b> ipsec
+		esp/transport//require ;
+	spdadd <b>fec0::2</b> <b>fec0::1</b> any -P <b>in</b> ipsec
+		esp/transport//require ;
+	EOF
+</pre>
+
+Note that IP address and direction.
+First IP address means source of IP header.
+Next IP address means destination of IP header.
+<b>out</b> means a packet goes out.
+<b>in</b> means a packet comes in.
+
+<p>
+At Host-B:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd <b>fec0::2</b> <b>fec0::1</b> any -P <b>out</b> ipsec
+		esp/transport//require ;
+	spdadd <b>fec0::1</b> <b>fec0::2</b> any -P <b>in</b> ipsec
+		esp/transport//require ;
+	EOF
+</pre>
+
+<h3>
+Case 2
+</h3>
+<b><i>ESP</i></b> <b><i>Transport</b></i> mode applyed first
+and <b><i>AH</i></b> <b><i>Transport</b></i> mode next.<br>
+It means that kernel makes a packet to be [IP|AH|ESP|ULP].
+</pre>
+
+<pre>
+	   Host-A                        Host-B
+	  fec0::1 ---------------------- fec0::2
+</pre>
+
+Configuration at Host-A:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd fec0::1 fec0::2 any -P <b>out</b> ipsec
+		<b>esp</b>/transport//require
+		<b>ah</b>/transport//require ;
+	spdadd fec0::2 fec0::1 any -P <b>in</b> ipsec
+		<b>esp</b>/transport//require
+		<b>ah</b>/transport//require ;
+	EOF
+</pre>
+
+Note that the ordering of security protocol.
+In outgoing case defined <b>out</b>,
+it specifies the sequence of security protocol which kernel apply to the packet.
+In incoming case defined <b>in</b>,
+it specifies the sequence of security protocol to be applyed to the packet.
+The above case means that ESP transport mode is first,
+and the next is AH transport mode.
+<p>
+At Host-B:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd fec0::2 fec0::1 any -P out ipsec
+		esp/transport//require
+		ah/transport//require ;
+	spdadd fec0::1 fec0::2 any -P in ipsec
+		esp/transport//require
+		ah/transport//require ;
+	EOF
+</pre>
+
+Note IP addresses as case 1.
+
+<h3>
+Case 3
+</h3>
+<b><i>ESP</i></b> <b><i>Tunnel</i></b> for VPN.
+
+<pre>
+			       ======= ESP =======
+			       |                 |
+	   Network-A       Gateway-A         Gateway-B        Network-B
+	  10.0.1.0/24 ---- 172.16.0.1 ------ 172.16.0.2 ---- 10.0.2.0/24
+</pre>
+
+<br>
+Configuration at Gateway-A:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd 10.0.1.0/24 10.0.2.0/24 any -P out ipsec
+		esp/tunnel/<b>172.16.0.1-172.16.0.2</b>/require ;
+	spdadd 10.0.2.0/24 10.0.1.0/24 any -P in ipsec
+		esp/tunnel/<b>172.16.0.2-172.16.0.1</b>/require ;
+</pre>
+
+Tunnel end points must be defined.
+
+<p>
+and at Gateway-B:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd 10.0.2.0/24 10.0.1.0/24 any -P out ipsec
+		esp/tunnel/<b>172.16.0.2-172.16.0.1</b>/require ;
+	spdadd 10.0.1.0/24 10.0.2.0/24 any -P in ipsec
+		esp/tunnel/<b>172.16.0.1-172.16.0.2</b>/require ;
+</pre>
+
+<hr>
+<h2>
+まとめ
+</h2>
+本稿では、racoonの簡単な設定例と3つの代表的な環境をあげて、
+それぞれについて IPsec-SAを自動で確立するための設定を述べた。
+また、IPsec-SAを自動で確立するための基本メカニズムも説明した。
+racoonの細かい設定には、より多くのパラメータが必要になる。
+しかし、本稿では全体像を把握することに重点をおいた。
+今後、詳細な設定について説明をする。
+
+<!--#include virtual="../index.inc" -->
+</doby>
+</html>
