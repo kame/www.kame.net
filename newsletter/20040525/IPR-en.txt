@@ -22,8 +22,8 @@ Concern:
     code?  Or does it mean all users who are using KAME SSM code?
 
 Request:
-  Making a contract is a barrier for the deployment of SSM.  We
-  request an IPR claim which doesn't need any contract of a license.
+  - Making a contract is a barrier for the deployment of SSM.  We
+    request an IPR claim which doesn't need any contract of a license.
 
 Priority: high
   This is a big problem, since SSM is a promising candidate 
