@@ -1,4 +1,4 @@
-#!/usr/pkg/bin/perl
+#!/usr/bin/perl
 
 $url = 'http://inode-srv.kame.net/e/';
 #$fetch = '/usr/bin/fetch -q -o -';	# FreeBSD

@@ -1,4 +1,4 @@
-#! /usr/pkg/bin/perl
+#! /usr/bin/perl
 
 if ($ENV{'REMOTE_ADDR'} =~ /:/) {
 	$v6p = 'yes';
