@@ -1,0 +1,87 @@
+<HTML>
+<HEAD><TITLE>getnameinfo(3) and access controls</TITLE></HEAD>
+<BODY>
+<H1>getnameinfo(3) and access controls</H1>
+<A HREF=http://www.itojun.org/>Jun-ichiro itojun Hagino</A>,
+<A HREF=http://www.kame.net/>KAME Project</A>
+<PRE>$Id: index.html,v 1.1 2003/05/27 03:37:08 itojun Exp $</PRE>
+
+This is a little warning on the use of getnameinfo(3) in the context of
+access control.
+<p>
+
+If your software, for example, have access control list (ACL) implemented as
+string comparison:
+<PRE>
+	char *permit[] = {
+		"10.1.1.1",
+		"foo.bar.com",
+		NULL,
+	};
+</PRE>
+
+You would perform getpeername(3) to get the peer's address, and then
+you will compare it with the ACL.
+
+<PRE>
+	int s;
+	struct sockaddr_storage ss;
+	socklen_t sslen;
+	char name[NI_MAXHOST];
+	int i;
+	hasptr fqdn;
+
+	sslen = sizeof(ss);
+	getpeername(s, (struct sockaddr *)&ss, &sslen);
+	if (getnameinfo((struct sockaddr *)&ss, sslen, name, sizeof(name),
+	    NULL, 0, NI_NAMEREQD) == 0) {
+		hasptr = 1;
+	} else {
+		getnameinfo((struct sockaddr *)&ss, sslen, name, sizeof(name),
+		    NULL, 0, NI_NUMERICHOST);
+		hasptr = 0;
+	}
+
+	for (i = 0; permit[i]; i++) {
+		if (strcmp(name, permit[i]) == 0)
+			return 1;	/*in the ACL*/
+	}
+	return 0;	/*not in the ACL*/
+</PRE>
+
+However, the code is vulnerable to malicious PTR records, configured as
+follows:
+<PRE>
+	x.x.x.x.in-addr.arpa.	IN PTR	10.1.1.1
+</PRE>
+
+To protect against such an attack, thhe return value from getnameinfo(3)
+has to be verified in "hasptr == 1" case.
+<PRE>
+	...
+	if (getnameinfo((struct sockaddr *)&ss, sslen, name, sizeof(name),
+	    NULL, 0, NI_NAMEREQD) == 0) {
+		/*
+		 * if "name" contains numeric IP address representation,
+		 * it is a malicious PTR record.
+		 */
+		memset(&hints, 0, sizeof(hints));
+		hints.ai_socktype = SOCK_DGRAM;	/*dummy*/
+		hints.ai_flags = AI_NUMERICHOST;
+		if (getaddrinfo(name, "0", &hints, &res) == 0) {
+			freeaddrinfo(res);
+			return 0;	/*invalid PTR*/
+		}
+		hasptr = 1;
+	} else {
+		...
+	}
+	...
+</PRE>
+
+Also, with hasptr == 1 case you may want to verified it
+by usual double-reverse lookup for integrity.
+
+<!--#include virtual="../index.inc" -->
+</BODY>
+</HTML>
