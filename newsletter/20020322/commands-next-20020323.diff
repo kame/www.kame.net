@@ -1,0 +1,331 @@
+Index: network_cmds/ifconfig.tproj/Makefile
+===================================================================
+RCS file: /cvs/Darwin/Commands/NeXT/network_cmds/ifconfig.tproj/Makefile,v
+retrieving revision 1.2
+diff -u -r1.2 Makefile
+--- network_cmds/ifconfig.tproj/Makefile	28 Jul 2000 23:47:17 -0000	1.2
++++ network_cmds/ifconfig.tproj/Makefile	24 Mar 2002 08:10:13 -0000
+@@ -26,11 +26,12 @@
+ NEXTSTEP_INSTALLDIR = /sbin
+ WINDOWS_INSTALLDIR = /sbin
+ PDO_UNIX_INSTALLDIR = /sbin
+-LIBS = 
++LIBS = -L/usr/pkg/lib -lbind
+ DEBUG_LIBS = $(LIBS)
+ PROF_LIBS = $(LIBS)
+ 
+ 
++HEADER_PATHS=	-I/usr/pkg/include/bind
+ 
+ 
+ NEXTSTEP_OBJCPLUS_COMPILER = /usr/bin/cc
+Index: network_cmds/ifconfig.tproj/ifconfig.c
+===================================================================
+RCS file: /cvs/Darwin/Commands/NeXT/network_cmds/ifconfig.tproj/ifconfig.c,v
+retrieving revision 1.4
+diff -u -r1.4 ifconfig.c
+--- network_cmds/ifconfig.tproj/ifconfig.c	5 Mar 2002 20:35:12 -0000	1.4
++++ network_cmds/ifconfig.tproj/ifconfig.c	24 Mar 2002 08:10:13 -0000
+@@ -200,16 +200,20 @@
+ 	{ "-tentative",	-IN6_IFF_TENTATIVE, setip6flags },
+ 	{ "deprecated",	IN6_IFF_DEPRECATED, setip6flags },
+ 	{ "-deprecated", -IN6_IFF_DEPRECATED, setip6flags },
++#ifdef IN6_IFF_AUTOCONF
+ 	{ "autoconf",	IN6_IFF_AUTOCONF, setip6flags },
+ 	{ "-autoconf",	-IN6_IFF_AUTOCONF, setip6flags },
++#endif
+ 	{ "pltime",     NEXTARG,        setip6pltime },
+ 	{ "vltime",     NEXTARG,        setip6vltime },
+ #endif
+ 	{ "metric",	NEXTARG,	setifmetric },
+ 	{ "broadcast",	NEXTARG,	setifbroadaddr },
+ 	{ "ipdst",	NEXTARG,	setifipdst },
++#if 0
+ 	{ "tunnel",	NEXTARG2,	NULL,	settunnel },
+ 	{ "deletetunnel", 0,		deletetunnel },
++#endif
+ 	{ "link0",	IFF_LINK0,	setifflags },
+ 	{ "-link0",	-IFF_LINK0,	setifflags },
+ 	{ "link1",	IFF_LINK1,	setifflags },
+@@ -258,7 +262,9 @@
+ 	{ "compress",	IFF_LINK0,	setifflags },
+ 	{ "noicmp",	IFF_LINK1,	setifflags },
+ 	{ "mtu",	NEXTARG,	setifmtu },
++#ifdef SIOCSIFLLADDR
+ 	{ "lladdr",	NEXTARG,	setiflladdr },
++#endif
+ 	{ 0,		0,		setifaddr },
+ 	{ 0,		0,		setifdstaddr },
+ };
+@@ -310,8 +316,10 @@
+ 	{ "ns", AF_NS, xns_status, xns_getaddr, NULL,
+ 	     SIOCDIFADDR, SIOCAIFADDR, C(ridreq), C(addreq) },
+ #endif
++#ifdef SIOCSIFLLADDR
+ 	{ "ether", AF_LINK, ether_status, ether_getaddr, NULL,
+ 	     0, SIOCSIFLLADDR, NULL, C(ridreq) },
++#endif
+ #if 0	/* XXX conflicts with the media command */
+ #ifdef USE_IF_MEDIA
+ 	{ "media", AF_UNSPEC, media_status, NULL, NULL, }, /* XXX not real!! */
+@@ -720,6 +728,7 @@
+ 	(*afp->af_getaddr)(addr, (doalias >= 0 ? ADDR : RIDADDR));
+ }
+ 
++#if 0
+ void
+ settunnel(src, dst, s, afp)
+ 	const char *src, *dst;
+@@ -795,6 +804,7 @@
+ 	if (ioctl(s, SIOCDIFPHYADDR, &ifr) < 0)
+ 		err(1, "SIOCDIFPHYADDR");
+ }
++#endif
+ 
+ void
+ setifnetmask(addr, dummy, s, afp)
+@@ -1000,6 +1010,7 @@
+ 		warn("ioctl (set mtu)");
+ }
+ 
++#ifdef SIOCSIFLLADDR
+ void
+ setiflladdr(val, dummy, s, afp)
+ 	const char *val;
+@@ -1023,6 +1034,7 @@
+ 
+ 	return;
+ }
++#endif
+ 
+ #define	IFFBITS \
+ "\020\1UP\2BROADCAST\3DEBUG\4LOOPBACK\5POINTOPOINT\6SMART\7RUNNING" \
+@@ -1044,7 +1056,9 @@
+ 	const struct afswtch *p = NULL;
+ 	struct	rt_addrinfo info;
+ 	int allfamilies, s;
++#ifdef SIOCGIFSTATUS
+ 	struct ifstat ifs;
++#endif
+ 
+ 	if (afp == NULL) {
+ 		allfamilies = 1;
+@@ -1118,9 +1132,11 @@
+ 	if (allfamilies || afp->af_status == ieee80211_status)
+ 		ieee80211_status(s, NULL);
+ #endif
++#ifdef SIOCGIFSTATUS
+ 	strncpy(ifs.ifs_name, name, sizeof ifs.ifs_name);
+ 	if (ioctl(s, SIOCGIFSTATUS, &ifs) == 0) 
+ 		printf("%s", ifs.ascii);
++#endif
+ 
+ 	if (!allfamilies && !p && afp->af_status != media_status &&
+ 	    afp->af_status != ether_status
+@@ -1356,10 +1372,14 @@
+ 		printf("detached ");
+ 	if ((flags6 & IN6_IFF_DEPRECATED) != 0)
+ 		printf("deprecated ");
++#ifdef IN6_IFF_AUTOCONF
+ 	if ((flags6 & IN6_IFF_AUTOCONF) != 0)
+ 		printf("autoconf ");
++#endif
++#ifdef IN6_IFF_TEMPORARY
+ 	if ((flags6 & IN6_IFF_TEMPORARY) != 0)
+ 		printf("temporary ");
++#endif
+ 
+         if (scopeid)
+ 		printf("scopeid 0x%x ", scopeid);
+Index: network_cmds/netstat.tproj/Makefile
+===================================================================
+RCS file: /cvs/Darwin/Commands/NeXT/network_cmds/netstat.tproj/Makefile,v
+retrieving revision 1.3
+diff -u -r1.3 Makefile
+--- network_cmds/netstat.tproj/Makefile	5 Mar 2002 20:35:13 -0000	1.3
++++ network_cmds/netstat.tproj/Makefile	24 Mar 2002 08:10:13 -0000
+@@ -14,7 +14,7 @@
+ 
+ HFILES = netstat.h
+ 
+-CFILES = data.c if.c inet.c inet6.c ipsec.c main.c mbuf.c mroute.c mroute6.c route.c\
++CFILES = data.c if.c inet.c inet6.c main.c mbuf.c mroute.c mroute6.c route.c\
+          tp_astring.c unix.c
+ 
+ OTHERSRCS = Makefile.preamble Makefile Makefile.postamble netstat.1\
+@@ -27,12 +27,13 @@
+ NEXTSTEP_INSTALLDIR = /usr/sbin
+ WINDOWS_INSTALLDIR = /usr/sbin
+ PDO_UNIX_INSTALLDIR = /usr/sbin
+-LIBS = 
++LIBS = -L/usr/pkg/lib -lbind -L/usr/local/v6/lib -linet6
+ DEBUG_LIBS = $(LIBS)
+ PROF_LIBS = $(LIBS)
+ 
+ 
+ HEADER_PATHS =\
++		-I/usr/pkg/include/bind  \
+                -I$(NEXT_ROOT)$(SYSTEM_LIBRARY_DIR)/Frameworks/System.framework/PrivateHeaders/bsd/netat
+ 
+ 
+Index: network_cmds/netstat.tproj/Makefile.preamble
+===================================================================
+RCS file: /cvs/Darwin/Commands/NeXT/network_cmds/netstat.tproj/Makefile.preamble,v
+retrieving revision 1.2
+diff -u -r1.2 Makefile.preamble
+--- network_cmds/netstat.tproj/Makefile.preamble	5 Mar 2002 20:35:13 -0000	1.2
++++ network_cmds/netstat.tproj/Makefile.preamble	24 Mar 2002 08:10:13 -0000
+@@ -1,5 +1,5 @@
+ CLEAN_ALL_SUBPROJECTS = YES
+ OTHER_GENERATED_OFILES = $(VERS_OFILE)
+-OTHER_CFLAGS += -DINET6 -DIPSEC
++OTHER_CFLAGS += -DINET6
+ -include ../Makefile.include
+ vpath %.c `pwd`
+Index: network_cmds/netstat.tproj/inet.c
+===================================================================
+RCS file: /cvs/Darwin/Commands/NeXT/network_cmds/netstat.tproj/inet.c,v
+retrieving revision 1.3
+diff -u -r1.3 inet.c
+--- network_cmds/netstat.tproj/inet.c	5 Mar 2002 20:35:14 -0000	1.3
++++ network_cmds/netstat.tproj/inet.c	24 Mar 2002 08:10:13 -0000
+@@ -545,7 +545,9 @@
+ 	p(ips_ofragments, "\t%lu fragment%s created\n");
+ 	p(ips_cantfrag, "\t%lu datagram%s that can't be fragmented\n");
+ 	p(ips_nogif, "\t%lu tunneling packet%s that can't find gif\n");
++#if 0
+ 	p(ips_badaddr, "\t%lu datagram%s with bad address in header\n");
++#endif
+ #undef p
+ #undef p1a
+ }
+Index: network_cmds/netstat.tproj/inet6.c
+===================================================================
+RCS file: /cvs/Darwin/Commands/NeXT/network_cmds/netstat.tproj/inet6.c,v
+retrieving revision 1.2
+diff -u -r1.2 inet6.c
+--- network_cmds/netstat.tproj/inet6.c	5 Mar 2002 20:35:14 -0000	1.2
++++ network_cmds/netstat.tproj/inet6.c	24 Mar 2002 08:10:13 -0000
+@@ -60,7 +60,9 @@
+ #include <netinet6/in6_var.h>
+ #include <netinet6/ip6_var.h>
+ #include <netinet6/pim6_var.h>
++#if 0
+ #include <netinet6/raw_ip6.h>
++#endif
+ 
+ #include <arpa/inet.h>
+ #include <netdb.h>
+@@ -491,8 +493,10 @@
+ 		}
+ 	}
+ 
++#if 0
+ 	p1a(ip6s_forward_cachehit, "\t%llu forward cache hit\n");
+ 	p1a(ip6s_forward_cachemiss, "\t%llu forward cache miss\n");
++#endif
+ #undef p
+ #undef p1a
+ }
+@@ -869,6 +873,7 @@
+ 			    (unsigned long long)icmp6stat.icp6s_inhist[i]);
+ 		}
+ #undef NELEM
++#if 0
+ 	printf("\tHistogram of error messages to be generated:\n");
+ 	p_5(icp6s_odst_unreach_noroute, "\t\t%llu no route\n");
+ 	p_5(icp6s_odst_unreach_admin, "\t\t%llu administratively prohibited\n");
+@@ -893,6 +898,7 @@
+ 	p(icp6s_badra, "\t%qu bad router advertisement message%s\n");
+ 	p(icp6s_badredirect, "\t%qu bad redirect message%s\n");
+ 	p(icp6s_pmtuchg, "\t%llu path MTU change%s\n");
++#endif
+ #undef p
+ #undef p_5
+ }
+@@ -993,6 +999,7 @@
+ void
+ rip6_stats(u_long off __unused, char *name, int af __unused)
+ {
++#if 0
+ 	struct rip6stat rip6stat;
+ 	u_quad_t delivered;
+ 	int mib[4];
+@@ -1029,6 +1036,7 @@
+ 		printf("\t%llu delivered\n", (unsigned long long)delivered);
+ 	p(rip6s_opackets, "\t%llu datagram%s output\n");
+ #undef p
++#endif
+ }
+ 
+ /*
+Index: network_cmds/netstat.tproj/route.c
+===================================================================
+RCS file: /cvs/Darwin/Commands/NeXT/network_cmds/netstat.tproj/route.c,v
+retrieving revision 1.3
+diff -u -r1.3 route.c
+--- network_cmds/netstat.tproj/route.c	5 Mar 2002 20:35:15 -0000	1.3
++++ network_cmds/netstat.tproj/route.c	24 Mar 2002 08:10:13 -0000
+@@ -308,7 +308,7 @@
+ 
+ again:
+ 	kget(rn, rnode);
+-	if (rnode.rn_bit < 0) {
++	if (rnode.rn_b < 0) {
+ 		if (Aflag)
+ 			printf("%-8.8lx ", (u_long)rn);
+ 		if (rnode.rn_flags & RNF_ROOT) {
+@@ -332,8 +332,8 @@
+ 			printf("%-8.8lx ", (u_long)rn);
+ 			p_rtnode();
+ 		}
+-		rn = rnode.rn_right;
+-		p_tree(rnode.rn_left);
++		rn = rnode.rn_r;
++		p_tree(rnode.rn_l);
+ 		p_tree(rn);
+ 	}
+ }
+@@ -345,7 +345,7 @@
+ {
+ 	struct radix_mask *rm = rnode.rn_mklist;
+ 
+-	if (rnode.rn_bit < 0) {
++	if (rnode.rn_b < 0) {
+ 		if (rnode.rn_mask) {
+ 			printf("\t  mask ");
+ 			p_sockaddr(kgetsa((struct sockaddr *)rnode.rn_mask),
+@@ -353,14 +353,14 @@
+ 		} else if (rm == 0)
+ 			return;
+ 	} else {
+-		sprintf(nbuf, "(%d)", rnode.rn_bit);
+-		printf("%6.6s %8.8lx : %8.8lx", nbuf, (u_long)rnode.rn_left, (u_long)rnode.rn_right);
++		sprintf(nbuf, "(%d)", rnode.rn_b);
++		printf("%6.6s %8.8lx : %8.8lx", nbuf, (u_long)rnode.rn_l, (u_long)rnode.rn_r);
+ 	}
+ 	while (rm) {
+ 		kget(rm, rmask);
+ 		sprintf(nbuf, " %d refs, ", rmask.rm_refs);
+ 		printf(" mk = %8.8lx {(%d),%s",
+-			(u_long)rm, -1 - rmask.rm_bit, rmask.rm_refs ? nbuf : " ");
++			(u_long)rm, -1 - rmask.rm_b, rmask.rm_refs ? nbuf : " ");
+ 		if (rmask.rm_flags & RNF_NORMAL) {
+ 			struct radix_node rnode_aux;
+ 			printf(" <normal>, ");
+Index: network_cmds/route.tproj/Makefile
+===================================================================
+RCS file: /cvs/Darwin/Commands/NeXT/network_cmds/route.tproj/Makefile,v
+retrieving revision 1.2
+diff -u -r1.2 Makefile
+--- network_cmds/route.tproj/Makefile	22 Feb 2002 00:42:04 -0000	1.2
++++ network_cmds/route.tproj/Makefile	24 Mar 2002 08:10:13 -0000
+@@ -26,7 +26,7 @@
+ NEXTSTEP_INSTALLDIR = /sbin
+ WINDOWS_INSTALLDIR = /sbin
+ PDO_UNIX_INSTALLDIR = /sbin
+-LIBS = 
++LIBS = -L/usr/pkg/lib -lbind -L/usr/local/v6/lib -linet6
+ DEBUG_LIBS = $(LIBS)
+ PROF_LIBS = $(LIBS)
+ 
