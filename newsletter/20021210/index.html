@@ -1,0 +1,329 @@
+<html>
+<head><title>PF_KEY Extensions for IPsec Policy Management in KAME Stack</title></head>
+<body>
+<h1>PF_KEY Extensions for IPsec Policy Management in KAME Stack</h1>
+<a href="http://www.tanu.org/~sakane/">Shoichi Sakane</a>,
+<a href="http://www.kame.net/">KAME Project</a>
+<pre>$Id: index.html,v 1.1 2002/12/10 10:21:41 sakane Exp $</pre>
+
+<hr>
+
+<pre>
+o Abstract
+
+   RFC2401 defines that the kernel must consults the Security Policy Database
+   (SPD) about the way to handle all inbound and outbound traffic.
+   The administrators or some applications need to maintain the SPD
+   in the kernel.
+   This document describes the messages to manage the SPD in the KAME stack.
+   the messages is extended to the PF_KEY version 2 [RFC2367].
+
+o Extended Header
+
+   Two extension headers are defined in order to describe a security policy.
+   The one is "Security policy extension header" that is to specify the way
+   to process a traffic.  For example, it makes the kernel discard the traffic
+   or it makes the kernel apply security protocols, like ESP, to the traffice.
+   The another is "Security protocol extension header" is to specify the
+   information about security protocol to be applyed.  This header is used
+   only when security protocol is required by the security policy extension
+   header.  For example, ESP tunnel mode is required and the addresses of
+   the SA end-point is between A and B.
+
+- Security policy extension header
+
+   Security policy extension header specifies the way to process a traffic.
+   this structure also includes the direction of a traffic.
+
+   struct sadb_x_policy {
+      u_int16_t sadb_x_policy_len;
+      u_int16_t sadb_x_policy_exttype;
+      u_int16_t sadb_x_policy_type;
+      u_int8_t sadb_x_policy_dir;
+      u_int8_t sadb_x_policy_reserved;
+      u_int32_t sadb_x_policy_id;
+      u_int32_t sadb_x_policy_reserved2;
+   };
+   /* sizeof(struct sadb_x_policy) == 16 */
+   
+   sadb_x_policy_len
+      length of the header in 64 bit words.  it is always 2.
+
+   sadb_x_policy_exttype
+      the type of the header.  it is always 18.
+   
+      #define SADB_X_EXT_POLICY 18
+
+   sadb_x_policy_type
+      the type of the policy.  
+
+      #define IPSEC_POLICY_DISCARD    0       /* discard the packet */
+      #define IPSEC_POLICY_NONE       1       /* bypass IPsec engine */
+      #define IPSEC_POLICY_IPSEC      2       /* pass to IPsec */
+      #define IPSEC_POLICY_ENTRUST    3       /* consulting SPD if present. */
+      #define IPSEC_POLICY_BYPASS     4       /* only for privileged socket. */
+
+      both IPSEC_POLICY_ENTRUST and IPSEC_POLICY_BYPASS are not used, but
+      for the socket API.
+
+   sadb_x_policy_dir
+      the direction of the packet which the policy matches with.
+
+      #define IPSEC_DIR_INBOUND       1
+      #define IPSEC_DIR_OUTBOUND      2
+
+   sadb_x_policy_id
+      the policy identifier.  the kernel assigns a number to each
+      individual security policy.
+
+   sadb_x_policy_reserved
+   sadb_x_policy_reserved2
+      reserved value.  it must be zeroed by the sender.
+
+- Security protocol extension header
+
+   Security protocol extension header specifies the information about a single
+   SA.  This extension header is used only when security protocol is required.
+   In other words, when sadb_x_policy_type in the security policy extension
+   header is set IPSEC_POLICY_IPSEC, this extension header MUST be required.
+   In the case of SA bundle, multiple Security protocol extension headers
+   must exist in a single PF_KEY message.  The security protocol extension
+   header of the most of innner SA is located to the top of these headers.
+   For example, when ESP is applied to a outbound packet and then AH applys to
+   to the packet, the packet format is like [IP|AH|ESP|data],
+   the extension header about ESP must be placed first, then the extension
+   header about AH must be next.
+   A single security protocol extension header is constructed by two parts.
+   First part specifies the security protocol to be used including
+   the ipsec mode, the level of the SA and the SA identifier.
+   Second part specifies the addresses of the end point of the security
+   association.  The part must follows the first part.  The second part may
+   not be needed when the ipsec mode is transport mode.
+   Second part is constructed by the source IP address of the SA and
+   immediately followed by the destination IP address of the SA.
+   These are packed into two of sockaddr structures without any padding.
+   sa_len MUST be set exact lenght of the sockaddr structure.
+   Each length of the sockaddr structure are not aligned to 64 bits,
+   Total length of the security protocol extension header MUST be aligned
+   to 64bits.  The padding must be set zero.
+
+   struct sadb_x_ipsecrequest {
+     u_int16_t sadb_x_ipsecrequest_len;
+     u_int16_t sadb_x_ipsecrequest_proto;
+     u_int8_t sadb_x_ipsecrequest_mode;
+     u_int8_t sadb_x_ipsecrequest_level;
+     u_int16_t sadb_x_ipsecrequest_reqid;
+   };
+   [total length of ipsec policy requests]
+       = (sadb_x_policy_len * sizeof(uint64_t) - sizeof(struct sadb_x_policy))
+   
+   u_int16_t sadb_x_ipsecrequest_len;
+      length of the field in 64 bit words.
+
+   u_int16_t sadb_x_ipsecrequest_proto;
+      the security protocol of the security association to be used.
+
+      IPPROTO_ESP             50
+      IPPROTO_AH              51
+      IPPROTO_IPCOMP          108
+
+   u_int8_t sadb_x_ipsecrequest_mode;
+      the protocol mode of the securitfy association to be used.
+
+      IPSEC_MODE_ANY          0
+      IPSEC_MODE_TRANSPORT    1
+      IPSEC_MODE_TUNNEL       2
+
+   u_int8_t sadb_x_ipsecrequest_level;
+      the security level of the security association to be used.
+
+      #define IPSEC_LEVEL_DEFAULT     0       /* reference to system default */
+      #define IPSEC_LEVEL_USE         1       /* use SA if present. */
+      #define IPSEC_LEVEL_REQUIRE     2       /* require SA. */
+      #define IPSEC_LEVEL_UNIQUE      3       /* unique SA. */
+
+   u_int16_t sadb_x_ipsecrequest_reqid;
+      the identifier of the security association to be used.
+      this value MUST be zero when the security level is not IPSEC_LEVEL_UNIQUE.
+
+o Extended Message
+   
+   the policy mangement message is always constructed by
+   some of extension payloads defined by RFC2367 and two extensions
+   which defined above.
+   In the following description,
+   a policy extension header is represented by "policy" and
+   a ipsec policy extension header is represented by "request".
+
+- SADB_X_SPDSETIDX
+
+   the SADB_X_SPDSETIDX message allows a process to add only selector
+   of the security policy entry to the SPD.
+   when an IP datagram matches this selector, the kernel sends up
+   the SADB_X_SPDACQUIRE message to a process listened to the socket.
+   thus this entry will be triggered to start a negotiation to fill the
+   parameters of the security policy.
+   this entry will be updated by SADB_X_SPDUPDATE message.
+
+   the message from a user process to the kernel is:
+      <base, address(SD), (lifetime(H),) policy>
+
+   the message from the kernel to a user process is:
+      <base, address(SD), (lifetime(H),) policy>
+
+   the message type is 20.
+      #define SADB_X_SPDSETIDX  20
+
+- SADB_X_SPDUPDATE
+
+   the SADB_X_SPDUPDATE message allows a process to replace the parameters of
+   an existing security policy entry.  this message is normaly used after
+   the SADB_X_SPDSETIDX message.
+   
+   the message from a user process to the kernel is:
+      <base, address(SD), (lifetime(H),) policy(, request(, request..))>
+
+   the message from the kernel to a user process is:
+      <base, address(SD), (lifetime(H),) policy(, request(, request..))>
+
+   the message type is 13.
+      #define SADB_X_SPDUPDATE  13
+
+- SADB_X_SPDADD
+
+   the SADB_X_SPDADD message allows a process to add a new security policy
+   entry to the SPD.
+   
+   the message from a user process to the kernel is:
+      <base, address(SD), (lifetime(H),) policy(, request(, request..))>
+
+   the message from the kernel to a user process is:
+      <base, address(SD), (lifetime(H),) policy(, request(, request..))>
+
+   the message type is 14.
+      #define SADB_X_SPDADD     14
+
+- SADB_X_SPDDELETE
+
+   the SADB_X_SPDDELETE message allows a process to delete a security policy
+   entry from the SPD.  a selector is used to specify a single
+   security policy entry.
+
+   the message from a user process to the kernel is:
+      <base, address(SD), policy(*)>
+   policy(*) header does not need the value of the policy identifier.
+
+   the message from the kernel to a user process is:
+      <base, address(SD), policy(*)>
+
+   the message type is 15.
+      #define SADB_X_SPDDELETE  15
+
+- SADB_X_SPDDELETE2
+
+   the SADB_X_SPDDELETE2 message is nearly identical to the SADB_X_SPDDELETE
+   message, except that it specifies the policy id.
+
+   the message from a user process to the kernel is:
+      <base, policy(*)>
+   policy(*) header does not need the value of the direction.
+
+   the message from the kernel to a user process is:
+      <base, policy(*)>
+
+   the message type is 22.
+      #define SADB_X_SPDDELETE2 22
+
+- SADB_X_SPDGET
+
+   the SADB_X_SPDGET message allows a process to retrieve a copy of a security
+   policy entry from the SPD.
+
+   the message from a user process to the kernel is:
+      <base, policy(*)>
+
+   the message from the kernel to a user process is:
+      <base, address(SD), (lifetime(H),) policy(, request(, request..))>
+
+   the message type is 16.
+      #define SADB_X_SPDGET     16
+
+- SADB_X_SPDACQUIRE
+
+   the SADB_X_SPDACQUIRE message is sent only by the kernel to the key socket
+   listeners who have registered their key socket by the SADB_REGISTER message.
+   The SADB_X_SPDACQUIRE message is triggered by an outbound packet
+   that needs security policy but for which there is no applicable informatioin
+   existing in the security policy which is added by SADB_X_SPDSETIDX.
+   
+   the message **from the kernel** to a user process is:
+      <base, policy(*)>
+
+   the message from a user process to the kernel is:
+
+   the message type is 17.
+      #define SADB_X_SPDACQUIRE 17
+
+- SADB_X_SPDEXPIRE
+
+   the kernel is responsible for tracking security policy expirations.
+   If the limit of a security policy has expired,
+   then the kernel issues an SADB_X_SPDEXPIRE message
+   to all key socket listeners. 
+
+   the message **from the kernel** to a user process is:
+      <base, address(SD), lifetime(CH), policy>
+
+   the message type is 21.
+      #define SADB_X_SPDEXPIRE  21
+
+- SADB_X_SPDDUMP
+
+   the SADB_X_SPDDUMP message causes the kernel to dump all entries in
+   the SPD.
+
+   the message from a user process to the kernel is:
+      <base>
+
+   the message from the kernel to a user process is similar to SADB_DUMP.
+
+   the message type is 18.
+      #define SADB_X_SPDDUMP    18
+
+- SADB_X_SPDFLUSH
+
+   the SADB_X_SPDFLUSH message causes the kernel to delete all entries in
+   the SPD.
+
+   the message from a user process to the kernel is:
+      <base>
+
+   the message from the kernel to a user process is:
+      <base>
+
+   the message type is 19.
+      #define SADB_X_SPDFLUSH   19
+
+o Conclusion
+
+   The policy management API of KAME stack should be revised.
+   First reason is that the API is extended by KAME uniquely.
+   Solaris, OpenBSD and Linux have own original interface
+   for the policy management like the API which described
+   by this document.  But they are not common.  The API should be
+   standardized because the application chould be portable.
+
+   Second reason is that the policy management API based on PF_KEY should
+   be revised because PF_KEY is designed for the key management,
+   not for the policy management.  We have to defined the requirement
+   to manage the policy.  Then we find a approach to implement the API.
+
+   There is the work to design the API of the policy management,
+   aka PF_POLICY.  But the work is not active.
+   This document will be startpoint to discuss and to design PF_POLICY.
+
+</pre>
+
+<!--#include virtual="../index.inc" -->
+</doby>
+</html>
