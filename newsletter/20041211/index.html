@@ -10,7 +10,7 @@
 
 <div align="right">
 KAME Mobility development team<br>
-<pre>$Id: index.html,v 1.1 2004/12/11 09:09:20 t-momose Exp $</pre>
+<pre>$Id: index.html,v 1.2 2004/12/21 06:37:31 t-momose Exp $</pre>
 </div>
 
 <h2>Overview</h2>
@@ -182,7 +182,8 @@ ipv6_mobile_securtiy_enable="YES"
 ipv6_mobile_home_interfaces="xx"
 </PRE></td></tr></table></blockquote>
 
-Here is a template for a mobile nade.
+Here is a template for a mobile node.
+You have to specify home address statically.
 <blockquote><table border="1" width="100%"><tr><td><PRE>
 # IPv6 host setting
 ipv6_enable="YES"
@@ -190,7 +191,8 @@ ipv6_gateway_enable="NO"
 
 # For MN
 ipv6_mobile_enable="YES"
-ipv6_ifconfig_mip0="2001:200:0:8002::beef prefixlen 64 home"
+ipv6_network_interfaces="mip0"
+ipv6_ifconfig_mip0="&lt;&lt;Your home address&gt;&gt prefixlen 64 home"
 ipv6_mobile_nodetype="mobile_node"
 ipv6_mobile_security_enable="xx"
 </PRE></td></tr></table></blockquote>
