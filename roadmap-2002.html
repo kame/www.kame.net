@@ -1,0 +1,239 @@
+<HTML>
+<HEAD><TITLE>Roadmap of KAME Project (2002/4 - 2004/3)</TITLE></HEAD>
+<BODY>
+
+<h2>Roadmap of the KAME Project (2002/4 - 2004/3)</h2>
+
+<PRE>$Id: roadmap-2002.html,v 1.1 2002/04/17 05:12:06 itojun Exp $</PRE>
+
+<hr>
+
+<h3>Overview</h3>
+
+The third phase of the KAME Project started in Apr 2002 and
+will end in Mar 2004. We divide the third phase into two Japanese years.
+The first Japanese year is for implementation as we have done in
+the first and second phase.
+The second Japanese year is used to feedback our results
+to each BSD project.
+
+<dl>
+<dt>Apr 2002 - Mar 2003
+<dd>Implement new features described below.
+
+<dt>Apr 2003 - Mar 2004
+<dd>Feedback our results to each BSD project.
+</dl>
+
+<hr>
+
+<h3>IPv6</h3>
+
+<dl>
+<dt>DNS server discovery
+<dd>Finalize DNS server discovery ASAP.
+
+<dt>DHCPv6
+<dd>Implement DHCPv6 for DNS server and prefix delegation (PD)
+by IETF Yokohama.
+
+<dt>ICMPv6 name lookup
+<dd>Waiting for the final spec.
+
+<dt>Source Specific Multicast (SSM)
+<dd>Implement SSM by Sep 2002.
+
+<dt>Multicast DNS
+<dd>Too many spec changes, sigh. Hope that the spec will be finalized
+by Mar 2003.
+
+<dt>Scoped address routing
+<dd>Modify the current routing table to scope capable by Mar 2003.
+
+<dt>X window system
+<dd>Make X window system IPv6-friendly by Sep 2002 and contribute it
+to XF86 group.
+
+<dt>VRRP
+<dd>Implment VRRP by Mar 2003.
+
+</dl>
+
+<hr>
+
+<h3>IPv6(low priority)</h3>
+
+<dl>
+<dt>Router selection
+<dd>If time allows, implement router selection by Mar 2003.
+This includes re-implementation of RA in application space.
+
+<dt>ISATAP
+<dd>If time allows, implement ISATAP by Mar 2003.
+</dl>
+
+<hr>
+
+<h3>MobileIP6</h3>
+
+<dl>
+<dt>MoblieIP6
+<dd>Implement ID-17 by IETF Yokohama. ETSI in Aug 2002.
+Implement ID-1x by connectathon. Connectathon in Feb 2003.
+</dl>
+
+<hr>
+
+<h3>IPsec</h3>
+
+<dl>
+<dt>Revised IPsec architecture and security protocols
+<dd>Follow them as soon as these specifications will be open.
+
+<dt>IPsec policy
+<dd>Document KAME's IPsec policy features and its API by Sep 2002.
+Design more general IPsec policy architecture
+with other projects and implement it by Mar 2003. 
+
+<dt>Key Management Protocol (KMP)
+<dd>We are afraid tha spec of Key exchange will not be finalized 
+by even Mar 2004. So, we will implement one simple key exchange protocol, 
+JFK for example.
+
+<dt>Minimum requirement spec of IPsec
+<dd>Document minimum requirement spec of IPsec by Sep 2002.
+</dl>
+
+<hr>
+
+<h3>Misc</h3>
+
+The following items are included in the "snap" release but they
+are not supported by the KAME Project.
+
+<ul>
+<li>NAT/PT
+<li>SCTP
+</ul>
+
+<hr>
+
+<h3>Time table</h3>
+
+<table border=1>
+<tr>
+<td>item</td>
+<td>Apr 2002</td><td>May 2002</td><td>Jun 2002</td>
+<td>Jul 2002</td><td>Aug 2002</td><td>Sep 2002</td>
+<td>Oct 2002</td><td>Nov 2002</td><td>Dec 2002</td>
+<td>Jan 2003</td><td>Fec 2003</td><td>Mar 2003</td>
+</tr>
+<tr>
+<td>DNS discovery</td>
+<td>-&gt;</td><td>done</td><td></td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+</tr>
+<tr>
+<td>DHCPv6</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>done</td><td></td><td></td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+</tr>
+<tr>
+<td>Name lookup</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>done</td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+</tr>
+<tr>
+<td>SSM</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>done</td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+</tr>
+<tr>
+<td>mDNS</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>done</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>done</td>
+</tr>
+<tr>
+<td>X Window</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>done</td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+</tr>
+<tr>
+<td>VRRP</td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>done</td>
+</tr>
+<tr>
+<td>MobileIP6</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>ID-17</td><td>-&gt;</td><td>ETSI</td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>ID-1X</td><td>c'thon</td><td>done</td>
+</tr>
+<tr>
+<td>IPsec</td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>done</td>
+</tr>
+<tr>
+<td>IPsec policy</td>
+<td>doc</td><td>doc</td><td>doc</td>
+<td>doc</td><td>doc</td><td>doc</td>
+<td>ID/imp</td><td>ID/imp</td><td>ID/imp</td>
+<td>ID/imp</td><td>ID/imp</td><td>done</td>
+</tr>
+<tr>
+<td>min IPsec spec</td>
+<td>doc</td><td>doc</td><td>doc</td>
+<td>doc</td><td>doc</td><td>doc</td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+</tr>
+<tr>
+<td>KMP</td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>done</td>
+</tr>
+<tr>
+<td>Router select</td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>done</td>
+</tr>
+<tr>
+<td>ISATAP</td>
+<td></td><td></td><td></td>
+<td></td><td></td><td></td>
+<td>-&gt;</td><td>-&gt;</td><td>-&gt;</td>
+<td>-&gt;</td><td>-&gt;</td><td>done</td>
+</tr>
+</table>
+
+</BODY>
+</HTML>

@@ -164,115 +164,8 @@ implementing and improving the software.
 	</UL>
 </UL>
 
-<A NAME=goals><H1>Detailed goals for year 2000-2002</H1></A>
-
-<!--
-EASY  1ヶ月以内に終る
-MEDIUM: 半年以内に終る
-HARD: それ以上 or 測定不能 or やる気ない
--->
-<UL>
-<LI>multihoming & renumbering
-	<UL>
-	<LI>router renumbering [HARD]
-	<LI>ingress filter vs source selection [HARD]
-	</UL>
-<LI>DNS
-	<UL>
-	<LI>DNS server discovery [MEDIUM] [DONE]
-	<LI>deployment of EDNS0 [HARD] [ONGOING]
-	</UL>
-<LI>mobile IP6 [HARD] [ONGOING]
-<LI>scoped routing [MEDIUM] [ONGOING]
-<LI>better/enhanced scoped address handling
-<LI>source address selection [HARD?] [ONGOING]
-<LI>architecture (in)dependency [EASY] [DONE]
-	<UL>
-	<LI>64bit, alpha, big endian...
-	</UL>
-<LI>IPsec 
-	<UL>
-	<LI>AES support [EASY] [DONE]
-	<LI>enhance policy engine/API [HARD]
-	<LI>crypto hardware [HARD]
-	<LI>easier-to-use IKE [HARD]
-	<LI>OpenSSL 64bit friendliness [EASY] [DONE]
-        <LI>MIB
-	</UL>
-<LI>IPv6 support on applications [EASY x too many targets]
-	<UL>
-	<LI>Apache2
-	<LI>Python
-	<LI>radius
-	<LI>ucd-snmp(transport)...
-	<LI>X [HARD]
-	<LI>NFS (netbsd: done) [HARD]
-	</UL>
-<LI>multi-thread libinet6 [MEDIUM]
-<LI>multi-threaded faithd [HARD]
-<LI>multicast (routing)
-	<UL>
-	<LI>SSM6 [HARD?]
-	<LI>new MLD6 based on IGMPv3, for SSM6 (MLD6v2?) [MEDIUM]
-	<LI>revise multicast routing table, routing socket API [MEDIUM?]
-        <LI>RSRR (no spec for IPv6 yet) [MEDIUM]
-	</UL>
-<LI>unicast routing
-	<UL>
-	<LI>routing table with multi destination (equal-cost multipath) [MEDIUM] [DONE/netbsd]
-	<LI>efficient/easy-to-understand/whatever lookup (RADISH2)[HARD] [ALMOST DONE]
-		<UL>
-		<LI>high-speed: better algorithm than radix?
-		<LI>simplify: revisit radish?
-			(non-continuous mask necessary for sin6_scope_id)
-		<LI>cisco-like behavior? (!IFF_UP -> route vanishes)
-		</UL>
-	<LI>hardware acceleration (no available hardware?) [HARD]
-	</UL>
-<LI>maintain *BSD merged KAME tree
-	<UL>
-	<LI>keep KAME tree and *BSD tree in sync [MEDIUM x too many (= 4)targets]
-	<LI>merge stabilized technologies into *BSD [MEDIUM x too many targets]
-	</UL>
-<LI>supporting new/advanced hardware
-	<UL>
-	<LI>efficient GbE jumbo frame handling (16K page, over 2k cluster) [MEDIUM?]
-	<LI>hardware forwarding engine (if spec/hardware becomes available) [HARD]
-	</UL>
-<LI>other operating systems (not really KAME issue?)
-	<UL>
-	<LI>linux [-> USAGI]
-	<LI>VmWare [-> third-party]
-	<LI>plan9? [-> MIT]
-	</UL>
-<LI>benchmark [MEDIUM]
-	<UL>
-	<LI>transport layer, i.e. TCP
-	<LI>goto ours [DONE]
-	<LI>smartbits tests
-	<LI>performance tuning
-	</UL>
-<LI>publication
-	<UL>
-	<LI>I-D, RFC (IETF) [MEDIUM x too many targets]
-	<LI>papers [MEDIUM x too many targets]
-        <LI>documentation
-	</UL>
-<LI>RSVP support [MEDIUM]
-<LI>diffserv [MEDIUM]
-	<UL>
-	<LI>including flowlabel, traffic class API
-	</UL>
-<LI>packet filter [MEDIUM]
-	<UL>
-	<LI>relationship with IPsec
-	</UL>
-<LI>other translators [HARD]
-	<UL>
-	<LI>nat-pt, SIIT, DSTM
-	</UL>
-</UL>
-
+<A NAME=goals><A HREF=roadmap-2000.html><H1>Detailed goals for year 2000/4-2002/3</H1></A></A>
+<A HREF=roadmap-2002.html><H1>Detailed goals for year 2002/4-2004/3</H1></A>
 <HR>
 
 <A NAME=release><H1>Releasing Plan</H1></A>
@@ -367,7 +260,7 @@ If you need to contact us, use the following routes:
 <LI>licensing, and other political issues: kame-secretary@kame.net
 </UL>
 
-<PRE>$Id: project-overview.html,v 1.12 2002/04/05 02:37:23 itojun Exp $</PRE>
+<PRE>$Id: project-overview.html,v 1.13 2002/04/17 05:12:05 itojun Exp $</PRE>
 
 </BODY>
 </HTML>
