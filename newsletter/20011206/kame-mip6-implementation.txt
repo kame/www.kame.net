@@ -6,7 +6,7 @@
 
 DRAFT                                                      Keiichi Shima
                                            Internet Initiative Japan Inc.
-                                                        December 6, 2001
+                                                        December 7, 2001
 
 
                     KAME Mobile IPv6 Implementation
@@ -67,20 +67,20 @@ Table of Contents
     2.  KAME/MIP6 implementation note ...................................  3
        2.1.  Subnet in KAME/MIP6 ........................................  3
        2.2.  CoA selection in KAME/MIP6 .................................  4
-            2.2.1.  Comment to the spec .................................  4
+            2.2.1.  Comment about the spec ..............................  4
        2.3.  Movement detaction in KAME/MIP6 ............................  5
        2.4.  One more note about CoA selection ..........................  5
        2.5.  Router Identifier ..........................................  6
-            2.5.1.  Comment to the spec .................................  6
-       2.6.  Security mechanism is not implemented yet ..................  6
+            2.5.1.  Comment about the spec ..............................  6
+       2.6.  The wrong source address in the ICMP error payload .........  6
+            2.6.1.  Comments ............................................  7
+       2.7.  Security mechanism is not implemented yet ..................  7
 
-    3.  Current status ..................................................  6
+    3.  References ......................................................  7
 
-    4.  Author's Address ................................................  8
+    4.  Current status ..................................................  7
 
-
-
-
+    5.  Author's Address ................................................  9
 
 
 
@@ -213,12 +213,12 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
    the next section.
 
 
-2.2.1.  Comment to the spec
+2.2.1.  Comment about the spec
 
-   Since we have no mechanism to invalidate the old prefix.  'Old'
-   means, it has preferred lifetime left but, no advertising router on
-   the current subnet.  This happens when we change the network.  We
-   have no way to determine if we can use the old (in KAME sense,
+   We have no mechanism to invalidate the old prefix.  'Old' means, it
+   has preferred lifetime left but, no advertising router on the current
+   subnet.  This happens when we change the network.  We have no way to
+   determine if we can use the old (in KAME sense, detached) address.
 
 
 
@@ -228,7 +228,7 @@ draft-keiichi-mobileip-kame-implementation-00.txt               [Page 4]
 DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 
-   detached) address.  Should the autoconf spec note about this?
+   Should the autoconf spec note about this?
 
 
 2.3.  Movement detaction in KAME/MIP6
@@ -275,7 +275,7 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
    Subnet S2 (Router R2) (Prefix P2)
 
    Under this condition, if we specify only one prefix as a home prefix,
-   we can't determine that we are home.  In this network, both P1 and P2
+   we can't determine whether we are home or not.  In this network, both
 
 
 
@@ -284,7 +284,8 @@ draft-keiichi-mobileip-kame-implementation-00.txt               [Page 5]
 DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 
-   are valid.  We can use both addresses derived from each prefix.
+   P1 and P2 are valid.  We can use both addresses derived from each
+   prefix.
 
    Now, assume we select P1 as a home prefix.  If we select CoA derived
    from P2, we determine that we are on the foreign network.  But in
@@ -314,24 +315,23 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
    prefix information option processing).
 
 
-2.5.1.  Comment to the spec
+2.5.1.  Comment about the spec
 
    Do we need another identifier other than the link-local address ?
 
 
-2.6.  Security mechanism is not implemented yet
+2.6.  The wrong source address in the ICMP error payload
 
-   We plan to implement some weak authentication mechanisms like bu3way.
-
-
-3.  Current status
-
-   Followings are the todo list and the current status for each
-   functions (MN, HA, CN).  You can always get the latest information
-   from the KAME Project (http://www.kame.net/).
-
-   todo
-
+   In our implementation, the home address and the CoA is exchanged in
+   the destination options header processing routine.  If we encounter
+   some errors after this point, it produces the ICMP error packet with
+   a payload that include the original IPv6 packet with a wrong
+   (excnanged) source address.  To avoid this problem, we consider two
+   different mechanisms.  One is to recover a correct source address at
+   all the points the process are needed.  The other is not to exchange
+   the home address and the CoA in the destination options header
+   processing and remain the CoA in a IPv6 source address field.  We
+   implemented both mechanisms and decided to adopt the former.  In the
 
 
 
@@ -340,54 +340,54 @@ draft-keiichi-mobileip-kame-implementation-00.txt               [Page 6]
 DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 
-   - define the behavior of the socket API for home addresses.
+   former mechanism, the point to recover the original source address is
+   only the function which generates ICMP error packet.  Other parts of
+   the code seems to have no need to restore the source address.  While,
+   the latter mechanism requires tens to a hundred code fixes those
+   refer the IPv6 source address field.
 
-   - security mechanism.
 
-   - mobile prefix advertisement.
+2.6.1.  Comments
 
-   - complete dynamic home agent discovery. (implement user-land
-   daemon?)
+   We select the former mechanism because it require only a small fix of
+   the existing code.  But we should reconsider if the former mechanism
+   is better than the latter mechanism later.  It is natural to keep the
+   IPv6 packet not modified.  If we meet some other situations like
+   ICMP6 error in the future, we must make a code that recover the
+   original source address again as we have done in the current
+   icmp6error routine.  Is it really ad-hoc isn't it?
 
-   - rate limit (many places).
 
-   - homeagent info handling.
+2.7.  Security mechanism is not implemented yet
 
-   - ICMP against tunneled packet handling.
+   We plan to implement some weak authentication mechanisms.  Currently
+   we are investigating which one is the best.
 
-   - registration to the old AR.
 
-   - path mtu discovery when triangle routing.
+3.  References
 
-   - some timeout routines.
+[MIP6]
+     David B. Johnson, Charles Perkins, Mobility Support in IPv6, draft-
+     ietf-mobileip-ipv6-15.txt, Nov 2001
 
-   - other OSes support.
+[RFC2462]
+     S. Thomson, T. Narten, IPv6 Stateless Address Autoconfiguration,
+     RFC2462, Dec 1998
 
-   - draft-13/draft-15 (or newer) full support.
 
-   - may be others.
+4.  Current status
 
-   MN side
+   Followings are the todo list and the current status for each func-
+   tions (MN, HA, CN).  You can always get the latest information from
+   the KAME Project (http://www.kame.net/).
 
-   - movement detection by prefix announce.
+  - todo
 
-   - binding update/home registration.
+    - merge nd_prefix/nd_defrouter structure and mip6_prefix/mip6_ha
+      structure.  merge home address configuration and stateless auto-
+      configuration.
 
-   - dynamic home agent discovery.
 
-   - NA when returning to home.
-
-   CN side
-
-   - recieving binding update.
-
-   - insertion of a routing header.
-
-   - sending binding requests.
-
-   HA side
-
-   - home registration.
 
 
 
@@ -396,12 +396,80 @@ draft-keiichi-mobileip-kame-implementation-00.txt               [Page 7]
 DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 
-   - encapsulate packets destined to MNs.
+      current our implementation defines special prefix and home agent
+      structures for MIP6 code.  These structures are essentially iden-
+      tical to nd_prfix and nd_defrouter structures.  should merge them.
 
-   - dynamic home agent discovery.
+    - define the behavior of the socket API for home addresses.
+
+      we do not implement any MIP6 related socket APIs yet.
+
+    - security mechanism.
+
+      There are many candidates now to secure MIP6 processing.  we are
+      now comparing them.
+
+    - mobile prefix advertisement.
+
+    - complete dynamic home agent discovery. (implement user-land dae-
+      mon?)
+
+    - rate limit (many places).
+
+    - homeagent info handling.
+
+    - ICMP against tunneled packet handling.
+
+    - registration to the old AR.
+
+    - path mtu discovery when triangle routing.
+
+    - some timeout routines.
+
+    - other OSes support.
+
+    - draft-13/draft-15 (or newer) full support.
+
+    - may be others.
+
+  - MN part implemented functions
+
+    - movement detection by the CoA change.
+
+    - binding update/home registration.
+
+    - dynamic home agent discovery.
+
+    - NA when returning to home.
+
+  - CN part implemented functions
 
 
-4.  Author's Address
+
+
+draft-keiichi-mobileip-kame-implementation-00.txt               [Page 8]
+
+DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+
+
+    - receiving binding update.
+
+    - insertion of a routing header.
+
+    - sending binding requests.
+
+  - HA part implemented functions
+
+    - home registration.
+
+    - encapsulate packets destined to MNs.
+
+    - dynamic home agent discovery (partial).
+
+    - dad for the MNs.
+
+
+5.  Author's Address
 
     Keiichi Shima
     Internet Initiative Japan Inc.
@@ -435,17 +503,5 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-draft-keiichi-mobileip-kame-implementation-00.txt               [Page 8]
+draft-keiichi-mobileip-kame-implementation-00.txt               [Page 9]
 

@@ -12,7 +12,7 @@
 .nf
 DRAFT                                                      Keiichi Shima
                                            Internet Initiative Japan Inc.
-                                                        December 6, 2001
+                                                        December 7, 2001
 .sp 2
 .ce 2
 KAME Mobile IPv6 Implementation
@@ -123,13 +123,13 @@ This CoA selection algorithm is the key of the movement detection
 algorithm of the KAME/MIP6.  The movement detection is described in
 the next section.
 .\" --------------------------------------------------------------------
-.N3 "Comment to the spec"
+.N3 "Comment about the spec"
 .LP
-Since we have no mechanism to invalidate the old prefix.  'Old' means,
-it has preferred lifetime left but, no advertising router on the
-current subnet.  This happens when we change the network.  We have no
-way to determine if we can use the old (in KAME sense, detached)
-address.  Should the autoconf spec note about this?
+We have no mechanism to invalidate the old prefix.  'Old' means, it
+has preferred lifetime left but, no advertising router on the current
+subnet.  This happens when we change the network.  We have no way to
+determine if we can use the old (in KAME sense, detached) address.
+Should the autoconf spec note about this?
 .\" --------------------------------------------------------------------
 .N2 "Movement detaction in KAME/MIP6"
 .LP
@@ -202,73 +202,123 @@ First time for finding a global address, second time for grouping
 received prefixes into subnet groups (and also, ordinally prefix
 information option processing).
 .\" --------------------------------------------------------------------
-.N3 "Comment to the spec"
+.N3 "Comment about the spec"
 .LP
 Do we need another identifier other than the link-local address ?
 .\" --------------------------------------------------------------------
+.N2 "The wrong source address in the ICMP error payload"
+.LP
+In our implementation, the home address and the CoA is exchanged in
+the destination options header processing routine.  If we encounter
+some errors after this point, it produces the ICMP error packet with a
+payload that include the original IPv6 packet with a wrong (excnanged)
+source address.  To avoid this problem, we consider two different
+mechanisms.  One is to recover a correct source address at all the
+points the process are needed.  The other is not to exchange the home
+address and the CoA in the destination options header processing and
+remain the CoA in a IPv6 source address field.  We implemented both
+mechanisms and decided to adopt the former.  In the former mechanism,
+the point to recover the original source address is only the function
+which generates ICMP error packet.  Other parts of the code seems to
+have no need to restore the source address.  While, the latter
+mechanism requires tens to a hundred code fixes those refer the IPv6
+source address field.
+.N3 "Comments"
+.LP
+We select the former mechanism because it require only a small fix of
+the existing code.  But we should reconsider if the former mechanism
+is better than the latter mechanism later.  It is natural to keep the
+IPv6 packet not modified.  If we meet some other situations like ICMP6
+error in the future, we must make a code that recover the original
+source address again as we have done in the current icmp6error
+routine.  Is it really ad-hoc isn't it?
+.\" --------------------------------------------------------------------
 .N2 "Security mechanism is not implemented yet"
 .LP
-We plan to implement some weak authentication mechanisms like bu3way.
+We plan to implement some weak authentication mechanisms.  Currently
+we are investigating which one is the best.
+.\" --------------------------------------------------------------------
+.N1 "References"
+.IP "[MIP6]"
+David B. Johnson, Charles Perkins, Mobility Support in IPv6,
+draft-ietf-mobileip-ipv6-15.txt, Nov 2001
+.IP "[RFC2462]
+S. Thomson, T. Narten, IPv6 Stateless Address Autoconfiguration,
+RFC2462, Dec 1998
 .\" --------------------------------------------------------------------
 .N1 "Current status"
 .LP
 Followings are the todo list and the current status for each functions
 (MN, HA, CN).  You can always get the latest information from the KAME
 Project (http://www.kame.net/).
-.LP
+.IP "  -" 4
 todo
-.PP
-- define the behavior of the socket API for home addresses.
-.PP
-- security mechanism.
-.PP
-- mobile prefix advertisement.
-.PP
-- complete dynamic home agent discovery. (implement user-land daemon?)
-.PP
-- rate limit (many places).
-.PP
-- homeagent info handling.
-.PP
-- ICMP against tunneled packet handling.
-.PP
-- registration to the old AR.
-.PP
-- path mtu discovery when triangle routing.
-.PP
-- some timeout routines.
-.PP
-- other OSes support.
-.PP
-- draft-13/draft-15 (or newer) full support.
-.PP
-- may be others.
-.LP
-MN side
-.PP
-- movement detection by prefix announce.
-.PP
-- binding update/home registration.
-.PP
-- dynamic home agent discovery.
-.PP
-- NA when returning to home.
-.LP
-CN side
-.PP
-- recieving binding update.
-.PP
-- insertion of a routing header.
-.PP
-- sending binding requests.
-.LP
-HA side
-.PP
-- home registration.
-.PP
-- encapsulate packets destined to MNs.
-.PP
-- dynamic home agent discovery.
+.IP "    -" 6
+merge nd_prefix/nd_defrouter structure and mip6_prefix/mip6_ha structure.
+merge home address configuration and stateless auto-configuration.
+.IP "" 6
+current our implementation defines special prefix and home agent
+structures for MIP6 code.  These structures are essentially identical
+to nd_prfix and nd_defrouter structures.  should merge them.
+.IP "    -" 6
+define the behavior of the socket API for home addresses.
+.IP "" 6
+we do not implement any MIP6 related socket APIs yet.
+.IP "    -" 6
+security mechanism.
+.IP "" 6
+There are many candidates now to secure MIP6 processing.  we are now
+comparing them.
+.IP "    -" 6
+mobile prefix advertisement.
+.IP "    -" 6
+complete dynamic home agent discovery. (implement user-land daemon?)
+.IP "    -" 6
+rate limit (many places).
+.IP "    -" 6
+homeagent info handling.
+.IP "    -" 6
+ICMP against tunneled packet handling.
+.IP "    -" 6
+registration to the old AR.
+.IP "    -" 6
+path mtu discovery when triangle routing.
+.IP "    -" 6
+some timeout routines.
+.IP "    -" 6
+other OSes support.
+.IP "    -" 6
+draft-13/draft-15 (or newer) full support.
+.IP "    -" 6
+may be others.
+.IP "  -" 4
+MN part implemented functions
+.IP "    -" 6
+movement detection by the CoA change.
+.IP "    -" 6
+binding update/home registration.
+.IP "    -" 6
+dynamic home agent discovery.
+.IP "    -" 6
+NA when returning to home.
+.IP "  -" 4
+CN part implemented functions
+.IP "    -" 6
+receiving binding update.
+.IP "    -" 6
+insertion of a routing header.
+.IP "    -" 6
+sending binding requests.
+.IP "  -" 4
+HA part implemented functions
+.IP "    -" 6
+home registration.
+.IP "    -" 6
+encapsulate packets destined to MNs.
+.IP "    -" 6
+dynamic home agent discovery (partial).
+.IP "    -" 6
+dad for the MNs.
 .\" --------------------------------------------------------------------
 .N1 "Author's Address"
 .DS
