@@ -1,0 +1,6 @@
+Running IPv6 stateless address autoconfiguration on Win2k
+$Id: autoconf.win2k.txt,v 1.1 2001/11/27 07:50:03 itojun Exp $
+
+
+connect the wire, that's all.
+From: Brian Zill
