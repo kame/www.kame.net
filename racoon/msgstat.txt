@@ -501,10 +501,10 @@ x (racoon 472) Re: [PATCH] Fix 'null' encryption in setkey.
 - (racoon 476) Re: [PATCH] Fix 'null' encryption in setkey.
 - (racoon 477) Re: Accounting
 - (racoon 478) Re: fixes for racoonctl
-- (racoon 479) NAT-D Hash calculation in Aggressive mode
+D (racoon 479) NAT-D Hash calculation in Aggressive mode
 - (racoon 480) Sample ipsec.conf, racoon.conf for NAT-T 
-- (racoon 481) Re: NAT-D Hash calculation in Aggressive mode
-- (racoon 482) Re: NAT-D Hash calculation in Aggressive mode
+D (racoon 481) Re: NAT-D Hash calculation in Aggressive mode
+D (racoon 482) Re: NAT-D Hash calculation in Aggressive mode
 - (racoon 483) Troubles with multiple instances of racoon
 - (racoon 490) Troubles with multiple instances of racoon
 D (racoon 484) Attribute Certificates and Racoon
