@@ -205,11 +205,19 @@ mip6control -g
 mip6control -H2001:200:1:1:: -P64 
     </pre>
     <p>
-      Replace '2001:200:1:1::' with your home prefix.  To detect
-      movement, a mobile node need to receive Router Advertisement
-      packets.  The easy way is to invoke <samp>rtsol</samp> command.
-      You may want to run <samp>rtsold</samp> with <samp>-a -m</samp>
-      options to make the node detect its location quicklly.
+      Replace '2001:200:1:1::' with your home prefix.  After prefix
+      setting has finished, enable mobile function using
+      <samp>-m</samp> option.
+    </p>
+    <pre>
+mip6control -m
+    </pre>
+    <p>
+      To detect movement, a mobile node need to receive Router
+      Advertisement packets.  The easy way is to invoke
+      <samp>rtsol</samp> command.  You may want to run
+      <samp>rtsold</samp> with <samp>-a -m</samp> options to make the
+      node detect its location quicklly.
     </p>
 
     <h2>To Do</h2>
@@ -228,7 +236,7 @@ mip6control -H2001:200:1:1:: -P64
     <address><a href="mailto:keiichi@iij.ad.jp">Keiichi SHIMA</a></address>
 <!-- Created: Mon Nov 12 19:08:52 JST 2001 -->
 <!-- hhmts start -->
-Last modified: Fri Nov 30 14:37:35 JST 2001
+Last modified: Fri Nov 30 18:57:11 JST 2001
 <!-- hhmts end -->
   </body>
 </html>
