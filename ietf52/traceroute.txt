@@ -1,0 +1,17 @@
+sheep# traceroute plt6-gate0.iij-america.net 
+traceroute to plt6-gate0.iij-america.net (216.98.98.82), 30 hops max, 40 byte packets
+ 1  1-198-131-12.bellhead.com (12.131.198.1)  0.932 ms  0.818 ms  0.821 ms
+ 2  12.127.106.65 (12.127.106.65)  0.821 ms  0.881 ms  0.842 ms
+ 3  12.122.2.242 (12.122.2.242)  14.454 ms  14.252 ms  13.505 ms
+ 4  gbr3-p80.sffca.ip.att.net (12.122.2.246)  16.147 ms  16.082 ms  16.068 ms
+ 5  ggr1-p360.sffca.ip.att.net (12.123.13.65)  15.898 ms  15.875 ms  16.179 ms
+ 6  192.205.32.146 (192.205.32.146)  17.235 ms  16.853 ms  17.137 ms
+ 7  p7-1.paloalto-nbr2.bbnplanet.net (4.0.6.77)  17.835 ms  17.753 ms  17.101 ms
+ 8  p1-0.paix-bi1.bbnplanet.net (4.0.6.102)  17.744 ms  17.065 ms  17.167 ms
+ 9  p6-0.snjpca1-br1.bbnplanet.net (4.24.7.61)  18.179 ms  19.887 ms  19.574 ms
+10  p1-0.snjpca1-cr1.bbnplanet.net (4.24.9.134)  19.501 ms  17.663 ms  18.270 ms
+11  p2-0.snjpca1-cr2.bbnplanet.net (4.24.9.182)  18.083 ms  17.596 ms  17.980 ms
+12  p1-0.iij3.bbnplanet.net (4.24.234.170)  19.239 ms  19.572 ms  19.671 ms
+13  PaloAlto-bb3.IIJ.Net (216.98.96.189)  19.007 ms  20.339 ms  19.558 ms
+14  PaloAlto00.IIJ.Net (216.98.97.39)  19.992 ms  19.430 ms  19.895 ms
+15  plt6-gate0.iij-america.net (216.98.98.82)  19.538 ms  19.487 ms  19.369 ms

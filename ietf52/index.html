@@ -5,7 +5,7 @@
 <IMG SRC=http://www.ietf.org/images/ietflogo2e.gif ALT="IETF" WIDTH=80 HEIGHT=45></A>
 <H1><A HREF=http://www.ietf.org/meetings/IETF-52.html>IETF52</A> IPv6 network instructions</H1>
 
-<PRE>$Id: index.html,v 1.5 2001/11/30 04:35:56 itojun Exp $</PRE>
+<PRE>$Id: index.html,v 1.6 2001/12/10 00:15:43 itojun Exp $</PRE>
 
 <H2>Basic configuration</H2>
 <DL>
@@ -73,7 +73,6 @@
 
 </DL>
 
-<!--
 <HR>
 <H2>Advanced configuration</H2>
 You can run your laptop IPv6-only and kiss DHCP good bye!
@@ -85,21 +84,22 @@ You can run your laptop IPv6-only and kiss DHCP good bye!
 	You need to change DNS server configuration to use the translator.
 	There is no other special requirements to laptop client side.
 	<UL>
-	<LI>Set your nameserver to 3ffe:507:1ff:1::53, or 135.222.63.249
+	<LI>Set your nameserver to 3ffe:507:1ff:1::53, or 12.131.198.4
 	<LI>Your tcp traffic to 3ffe:507:1ff:ffff::ipv4addr will be relayed
 		to ipv4addr.
-	<LI>Supported ports are: whois pop3 ftp telnet printer icb http https ssh smtp nntp finger
+	<LI>Supported ports are: whois pop3 ftp telnet printer icb http https ssh smtp nntp finger cvspserver imap
 	<LI>Need additional tcp port to be translated?  Contact
 		<A HREF=mailto:ietf52@kame.net>ietf52@kame.net</A>.
 	</UL>
 
+<!--
 <DT><STRONG>DHCPv6 server?</STRONG>
 <DD>	Yes, it is running (draft-ietf-dhc-dhcpv6-15),
 	supplying DNS server address and timezone information only.
 	No address assignment is made by DHCPv6 server
 	(because of this, O bit on router advertisement is turned on).
-</DL>
 -->
+</DL>
 
 <HR>
 <H2>Troubleshooting</H2>
