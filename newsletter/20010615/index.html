@@ -2,7 +2,7 @@
 <head><title>Wish/questions list to router vendors</title></head>
 <h1>Wish/questions list to router vendors</h1>
 Akira Kato, WIDE project
-<pre>$Id: index.html,v 1.5 2001/06/29 00:58:11 itojun Exp $</pre>
+<pre>$Id: index.html,v 1.6 2002/07/09 02:11:20 itojun Exp $</pre>
 
 Here are a set of questions we would like to ask to router vendors,
 when we make purchase decisions <TT>:-)</TT>
@@ -27,15 +27,15 @@ when we make purchase decisions <TT>:-)</TT>
 <LI>acl?  filters?  performance drawbacks if we configure filters?
 <LI>router renumbering support?
 <LI>memory footprint growth?
-<LI>stability?
+<LI>stability when you enable IPv6?  can we ensure SLA agreement for IPv4 while operating the routers in IPv4/v6 dual stack config?
 <LI>support?  no support, special contacts, or normal support contact?
 <LI>when do you going to support IPv6 by default?  do we need a special firmware for IPv6, or is IPv6 integrated to normal firmware?
 <LI>can we operate routers IPv6-only?  can we disable IPv4?
 <LI>performance with tunnels?
-<LI>support for ping6 -w (ICMPv6 node information query)?
+<LI>support for ping6 -w (ICMPv6 node information query, node name)?
 <LI>DNS over IPv6?
-<LI>DNS record types?  (AAAA is fine for us)
-<LI>multicast routing?  which multicast routing protocols?
+<LI>DNS record types?  (AAAA is the way to go)
+<LI>multicast routing?  which multicast routing protocols?  IPv6 PIM dense/sparse is a must, as we will not be putting any DVMRP tunnels for IPv6.
 <LI>can we use the box as site border router?  can we support multiple site routing domains?
 <LI>which IGPs do you support?  RIPng, ISIS, OSPFv3?  (OSPFv3 is important for many Japanese networks)
 <LI>tftp over IPv6?
@@ -44,7 +44,7 @@ when we make purchase decisions <TT>:-)</TT>
 <LI># of IPv6 routes you expect to take?
 <LI># of IPv4 routes you expect to take, when IPv6 is enabled?
 <LI>(ether switch) MLD snooping for multicast flooding optmization
-<LI>(ether switch/wireless basestation) per-port filtering for router advertisements, to prevent malicious routers from showing up
+<LI>(ether switch/wireless basestation) per port/source-MAC-address filtering for router advertisements, to prevent malicious routers from showing up
 <LI>have you carefully check the procurement specification by JGN (Japan Gigabit Network)?  it should be useful for you.
 </UL>
 
