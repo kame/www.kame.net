@@ -1,5 +1,5 @@
-#!/usr/bin/perl
-# $Id: query-pr-summary.cgi,v 1.1 2001/04/17 03:42:56 itojun Exp $
+#!/usr/bin/env perl
+# $Id: query-pr-summary.cgi,v 1.2 2003/05/19 10:22:35 jinmei Exp $
 
 $html_mode     = 1 if $ENV{'DOCUMENT_ROOT'};
 $self_ref      = $ENV{'SCRIPT_NAME'};

@@ -1,5 +1,5 @@
-#!/usr/bin/perl
-# $Id: query-pr.cgi,v 1.1 2001/04/17 03:42:56 itojun Exp $
+#!/usr/bin/env perl
+# $Id: query-pr.cgi,v 1.2 2003/05/19 10:22:35 jinmei Exp $
 
 $ENV{'PATH'} = "/bin:/usr/bin:/usr/sbin:/sbin:/usr/local/bin";
 
