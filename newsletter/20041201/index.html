@@ -12,7 +12,7 @@ How to use ISATAP on KAME
 <p>
 <a href="http://www.kame.net/~suz/">SUZUKI, Shinsuke</a>
 at <a href="http://www.kame.net/">KAME Project</a>
-<pre>$Id: index.html,v 1.1 2004/12/01 05:11:28 suz Exp $</pre>
+<pre>$Id: index.html,v 1.2 2004/12/01 06:39:58 suz Exp $</pre>
 </p>
 
 <ol>
@@ -62,17 +62,13 @@ but can accept Router Solicitation from older draft implementations
 <a name="requirements">
 <li><h2>What you need</h2>
 <ul>
-<li> KAME-snap after Jan 13, 2003
- <p>Due to a bug, ISATAP-ready rtsold does not work on KAME-SNAP between Apr 21, 2003 and Sep 1, 2003.  (Sorry...)</p>
+<li> KAME-snap after Dec 1, 2004
  <ul>
- <li> kernel built with "pseudo-device stf 2" configuration (for ISATAP router/host)
+ <li> kernel built with "pseudo-device ist" configuration (for ISATAP router/host)
  <li> ifconfig in this package (for ISATAP router/host)
  <li> rtadvd in this package (for ISATAP router)
  <li> rtsold in this package (for ISATAP host)
  </ul>
-<p>
-If you'd like to use the pure FreeBSD 4.8-RELEASE (not KAME), please apply <a href="freebsd48-isatap.diff">this patch</a> to the original FreeBSD.
-</p>
 
 <li> IPv4 address (for ISATAP router/host)
  <ul>
@@ -141,7 +137,7 @@ If you'd like to use the pure FreeBSD 4.8-RELEASE (not KAME), please apply <a hr
 If you have 192.168.0.1, then use the following command.
 <blockquote>
 <pre>
-# ifconfig stf1 inet6 fe80::5efe:192.168.0.1 prefixlen 64
+# ifconfig ist0 inet6 fe80::5efe:192.168.0.1 prefixlen 64
 </pre>
 </blockquote>
 </p>
@@ -151,7 +147,7 @@ If you have 192.168.0.1, then use the following command.
 If it's statically defined as "192.168.0.254", then use the following command to configure it.
 <blockquote>
 <pre>
-# ifconfig stf1 isataprtr 192.168.0.254
+# ifconfig ist0 isataprtr 192.168.0.254
 </pre>
 </blockquote>
 </p>
@@ -173,7 +169,7 @@ oldprl=""
 newprl=""
 
 newprl=`${dig} +short +domain=$domain +search $prlname a | grep '^[0-9.]*$'`
-oldprl=`${ifconfig} stf1 | grep isataprtr | awk '{print $2}'`
+oldprl=`${ifconfig} ist0 | grep isataprtr | awk '{print $2}'`
 
 for r in $newprl; do
 # case 1. has already appeared in the new list (i.e. already exists
@@ -192,14 +188,14 @@ for r in $newprl; do
 
 # case 3. otherwise -> write down the new isataprtr and update
 #         the old list and the current list.
-	${ifconfig} stf1 isataprtr $r
+	${ifconfig} ist0 isataprtr $r
 	curprl="$r $curprl"
 	oldprl=`echo $oldprl | sed s/$r//`
 	continue;
 done
 
 for r in $oldprl; do
-        ${ifconfig} stf1 deleteisataprtr $r
+        ${ifconfig} ist0 deleteisataprtr $r
 done
 </pre>
 </blockquote>
@@ -207,7 +203,7 @@ done
 
 <li> Solicite RA periodically.
 <pre>
-	# rtsold stf1
+	# rtsold ist0
 </pre>
 Please take care that "rtsol" is not enough, because the obtained prefix
 will soon be expired since ISATAP router can only send solicited RAs.
@@ -218,19 +214,19 @@ will soon be expired since ISATAP router can only send solicited RAs.
 <ol>
 <li> configure a linklocal address on ISATAP interface using your IPv4 address.
 <pre>
-	# ifconfig stf1 inet6 fe80::5efe:192.168.0.254 prefixlen 64
+	# ifconfig ist0 inet6 fe80::5efe:192.168.0.254 prefixlen 64
 </pre>
 
 <li> configure one or multiple non-linklocal addresses as necessary.
 <br>
 please embed the same IPv4 address as linklocal address.
 <pre>
-	# ifconfig stf1 inet6 3ffe:ffff:ffff:ffff::5efe:192.168.0.254 prefixlen 64 alias
+	# ifconfig ist0 inet6 3ffe:ffff:ffff:ffff::5efe:192.168.0.254 prefixlen 64 alias
 </pre>
 
 <li> Advertise the non-linklocal prefixes by RA
 <pre>
-	# rtadvd stf1
+	# rtadvd ist0
 </pre>
 </ol>
 
@@ -253,7 +249,7 @@ The following configuration has been confirmed to be working.
 
 <hr>
 <a name="xp">
-<h2><li>how to enable ISATAP on Windows-XP</h2>
+<h2><li>c.f.) how to enable ISATAP on Windows-XP</h2>
 <ol>
 <li>
 <p> Register a DNS A-record "isatap" to your DNS server, so that you can ping(IPv4) to your ISATAP router using a hostname "isatap".
