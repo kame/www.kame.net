@@ -36,11 +36,6 @@ implementations without IPR restrictions.
 As of this writing, we notice that the following protocols have IPR 
 restrictions.  We try to resolve IPR problems according to priority.
 
-o TCP bug fixes (draft-ietf-tcpm-tcpsecure-00.txt)
-	Priority: extremely high
-	Implementation: done
-	(probably this is *BSD problem, not KAME problem)
-
 o Source Specific Multicast(SSM)
 	Priority: high
 	Implementation: done
@@ -73,4 +68,10 @@ o NAT Traversal(NAT-T)/UDP-ENCAP
 	Priority: low
 	Implementation: not yet
 
---かず
+----
+
+o TCP bug fixes (draft-ietf-tcpm-tcpsecure-00.txt)
+	Priority: extremely high
+	Implementation: done
+	(probably this is *BSD problem, not KAME problem)
+
