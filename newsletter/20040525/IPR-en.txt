@@ -24,15 +24,15 @@ Concern:
 
 Request:
   Making a contract is a barrier for the deployment of SSM.  We
-  request the IPR claim which doesn't need any contract of a license.
+  request an IPR claim which doesn't need any contract of a license.
 
 Importance: urgent
   This is a big problem, since SSM is supposed to be almost mandatory
   for the deployment of IPv4/IPv6 multicasting.  Especially in IPv6,
   it is much easier to deploy SSM keeping pace with the deployment of
-  IPv6.  Otherwise, we have to deploy SSM after IPv6 is widely
-  deployed, which seems tough task to replace existing all IPv6 nodes
-  with SSM capable nodes.
+  IPv6.  If we failed this, we would end up deploying SSM after IPv6
+  is widely deployed, and it will be tough to replace existing all
+  IPv6 nodes with SSM capable nodes at that stage.
 
 
 ----------------------------------------------------------------------
@@ -47,7 +47,7 @@ Implementation status in KAME:
 Concern:
   - It seems this IPR claim affects all applications which use MODP.
     IKE/IKEv2, which are standard key exchange protocols used in
-    IPsec, also is affected, if it is true.
+    IPsec, are also affected, if this is the case.
   - What does "Certicom will provide a nonexclusive, royalty-free
     patent license, with reasonable terms and conditions" exactly
     mean?  Who should make a contract?
@@ -75,14 +75,14 @@ URL:
 
 Implementation status in KAME:
   - not implemented
-    (c.f.)Nautilus6 project has a NEMO implementation based on KAME
-          (code is not released)
+    (c.f.)The Nautilus6 project has a NEMO implementation based on KAME
+          (the code is not released)
 
 IPR overview:
   Cisco:
     - NEMO users must make a contract with Cisco, if the patent
       submitted by Cisco related to NEMO covers NEMO technology we are
-      going to use.  (The patent is not published yet, BTW)
+      going to use.  (The patent is not published yet, by the way)
     - The license is provided "under reasonable, non-discriminatory
       terms"
   Nokia:
@@ -93,10 +93,10 @@ IPR overview:
 
 Concern:
   Cisco:
-    - Assume that KAME implements NEMO and the NEMO technology is
+    - Assuming that KAME implements NEMO and the NEMO technology is
       covered by the Cisco patent, who should make a contract with
       Cisco?  Only KAME project?  Or all KAME code integrators (such
-      as BSD development team)?  Or all users which use KAME derives
+      as BSD development teams)?  Or all users which use KAME derives
       NEMO code?
     - What does "under reasonable, non-discriminatory terms" exactly
       mean?
@@ -104,8 +104,8 @@ Concern:
     - BSD license is listed as one of compatible licenses with open
       source license.  However the IPR claim is unclear that BSD
       license is acceptable in this particular case.
-    - Assume that BSD license is acceptable by Nokia, how about KAME
-      license?
+    - Assuming that the BSD license is acceptable by Nokia, how about
+      the KAME license?
 
 Request:
   Cisco:
