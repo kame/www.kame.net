@@ -518,12 +518,12 @@ x (racoon 472) Re: [PATCH] Fix 'null' encryption in setkey.
 - (racoon 497) Re: phase1 negotiation failed,  failed to get private
 - (racoon 498) Re: phase1 negotiation failed,  failed to get private key  [SOLVED]
 - (racoon 501) Problems with Win2k-Client
-- (racoon 503) Printing ISAKMP packets
-- (racoon 508) Re: Printing ISAKMP packets
-- (racoon 504) Re: Printing ISAKMP packets
-- (racoon 506) Re: Printing ISAKMP packets
+D (racoon 503) Printing ISAKMP packets
+D (racoon 508) Re: Printing ISAKMP packets
+D (racoon 504) Re: Printing ISAKMP packets
+D (racoon 506) Re: Printing ISAKMP packets
 - (racoon 507) racoon <---> freeswan  +  ipcomp
-- (racoon 509) Re: Printing ISAKMP packets
+D (racoon 509) Re: Printing ISAKMP packets
 - (racoon 511) racoon (ipv6, kernel 2.6) host unreachable
 - (racoon 518) Re: racoon (ipv6, kernel 2.6) host unreachable
 - (racoon 519) Re: racoon (ipv6, kernel 2.6) host unreachable
