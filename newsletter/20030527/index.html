@@ -4,7 +4,7 @@
 <H1>getnameinfo(3) and access controls</H1>
 <A HREF=http://www.itojun.org/>Jun-ichiro itojun Hagino</A>,
 <A HREF=http://www.kame.net/>KAME Project</A>
-<PRE>$Id: index.html,v 1.1 2003/05/27 03:37:08 itojun Exp $</PRE>
+<PRE>$Id: index.html,v 1.2 2003/05/27 07:27:45 jinmei Exp $</PRE>
 
 This is a little warning on the use of getnameinfo(3) in the context of
 access control.
@@ -81,6 +81,14 @@ has to be verified in "hasptr == 1" case.
 
 Also, with hasptr == 1 case you may want to verified it
 by usual double-reverse lookup for integrity.
+
+<p>
+Note: In any event, the result of reverse lookup is not very
+trustworthy, and thus it is not advisable to rely on the result for
+access control purposes.
+The simplest and safest way would be to allow only numeric addresses
+in the ACL list, and to specify NI_NUMERICHOST for genameinfo(3),
+which should be called just once.
 
 <!--#include virtual="../index.inc" -->
 </BODY>
