@@ -1,4 +1,4 @@
-# $Id: kame-supfile,v 1.1 2001/04/17 03:42:13 itojun Exp $
+# $Id: kame-supfile,v 1.2 2003/05/20 10:22:58 keiichi Exp $
 #
 # This file contains all of the "CVSup collections" that make up the
 # hydrangea-bsdi source tree.
@@ -46,8 +46,6 @@
 #	---			---		----------
 #	kame			(HEAD only)	all tree
 #	kame-netbsd		(HEAD only)	netbsd user's
-#	kame-freebsd2		(HEAD only)	freebsd2 user's
-#	kame-freebsd3		(HEAD only)	freebsd3 user's
 #	kame-freebsd4		(HEAD only)	freebsd4 user's
 #	kame-openbsd		(HEAD only)	openbsd user's
 
@@ -71,7 +69,5 @@ kame
 # If you want one of them, use one of the following.
 # These are for each platform.
 #kame-netbsd
-#kame-freebsd2
-#kame-freebsd3
 #kame-freebsd4
 #kame-openbsd
