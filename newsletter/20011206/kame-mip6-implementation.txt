@@ -57,7 +57,7 @@ Status of this Memo
 
 draft-keiichi-mobileip-kame-implementation-00.txt               [Page 1]
 
-DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
 
 Table of Contents
@@ -113,7 +113,7 @@ Table of Contents
 
 draft-keiichi-mobileip-kame-implementation-00.txt               [Page 2]
 
-DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
 
 1.  Overview
@@ -169,7 +169,7 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 draft-keiichi-mobileip-kame-implementation-00.txt               [Page 3]
 
-DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
 
    as different ones, even if they are physically on the same wire.
@@ -225,7 +225,7 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 draft-keiichi-mobileip-kame-implementation-00.txt               [Page 4]
 
-DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
 
    Should the autoconf spec note about this?
@@ -281,7 +281,7 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 draft-keiichi-mobileip-kame-implementation-00.txt               [Page 5]
 
-DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
 
    P1 and P2 are valid.  We can use both addresses derived from each
@@ -337,7 +337,7 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 draft-keiichi-mobileip-kame-implementation-00.txt               [Page 6]
 
-DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
 
    former mechanism, the point to recover the original source address is
@@ -393,7 +393,7 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 draft-keiichi-mobileip-kame-implementation-00.txt               [Page 7]
 
-DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
 
       current our implementation defines special prefix and home agent
@@ -449,7 +449,7 @@ DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
 
 draft-keiichi-mobileip-kame-implementation-00.txt               [Page 8]
 
-DRAFT                KAME Mobile IPv6 Implementation        Dec. X, 2001
+DRAFT                KAME Mobile IPv6 Implementation        Dec. 7, 2001
 
 
     - receiving binding update.

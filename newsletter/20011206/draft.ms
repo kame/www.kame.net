@@ -5,7 +5,7 @@
 .\"
 .ds LH DRAFT
 .ds CH KAME Mobile IPv6 Implementation
-.ds RH Dec. X, 2001
+.ds RH Dec. 7, 2001
 .\"
 .hy 0			\" don't hyphenate I-Ds
 .ad l
