@@ -1,0 +1,373 @@
+<HTML>
+<HEAD><TITLE>Overview of KAME Project</TITLE></HEAD>
+<BODY>
+
+<A NAME=overview>
+<H1>Overview of KAME Project</H1>
+</A>
+KAME Project is a joint effort to create single solid software set,
+especially targeted at IPv6/IPsec.  Talented researchers from several
+Japanese major companies joined the project.  This joint effort will
+avoid unnecessary duplicated development in same area, and effectively
+provides high quality, advanced featured package. 
+
+<P>
+
+KAME Project aims to provide FREE reference implementations of
+
+<UL>
+<LI> IPv6
+<LI> IPsec (for both IPv4 and IPv6)
+<LI> advanced internetworking such as advanced packet queuing,
+ATM, mobility, and whatever interesting
+</UL>
+
+on BSD variants.
+
+<P>
+
+Currently several BSD variants are being developed including FreeBSD,
+NetBSD, OpenBSD, and BSDI as commercial product.  They are
+developing/improving network code (<TT>sys/netinet</TT> tree) separately.
+
+<P>
+
+Heterogeneity is important, but currently we do not have single shared
+reference code for networking.  In IPv4 days we had good reference
+code, such as UCB Network Releases.  When consider to use IPv6, there
+are several choices already. The problem here is, even if *BSD
+projects choose a single IPv6 stack to merge into them,
+the code will be maintained by
+each project separately and these code likely to be quite different on
+each project tree.
+
+<P>
+
+We thus formed a project to implement and maintain the best
+available code for IPv4/IPv6/IPsec/whatever, which will be the basis
+of advanced internetworking in the 21st century.
+
+<P>
+
+KAME project was started as a 2-year project (April 1998 - March 2000).
+It has got extension for 2 years, so will be until March 2002 at this moment.
+Core researchers are from the following companies (in alphabetical order):
+<UL>
+<LI><A HREF="http://www.fujitsu.co.jp/">Fujitsu Limited</A>
+<LI><A HREF="http://www.hitachi.co.jp/">Hitachi, Ltd.</A>
+<LI><A HREF="http://www.iijlab.net/">IIJ Research Laboratory</A>
+<LI><A HREF="http://www.nec.co.jp/">NEC Corporation</A>
+<LI><A HREF="http://www.toshiba.co.jp/">Toshiba Corporation</A>
+<LI><A HREF="http://www.ydc.co.jp/">YDC Corporation</A>
+<LI><A HREF="http://www.yokogawa.co.jp/">Yokogawa Electric Corporation</A>
+</UL>
+Core researchers have
+committed to work on the IPv6 stack more than 3 days per week, in
+full-time manner.  Therefore, the project is the primary task for the
+core researchers (it is not a hobby for us).  The primary task for
+them is to implement the best networking code possible, under BSD
+copyright. Also note that we provide the achievement as Free software,
+we're much interested in usage of this stack in many ways. 
+Thus stability is one of the very important goal for us.
+
+<P>
+
+KAME's code is based on WIDE <I>Hydrangea</I> IPv6/IPsec stack. We are now
+merging several other codes provided by above researchers,
+implementing and improving the software.
+
+<HR>
+
+<A NAME=status><H1>Current status</H1></A>
+
+<H2>kernel:</H2>
+
+<UL>
+<LI>IPv6: rock-solid and working fine
+<LI>IPsec: ready and working well for both IPv4 and IPv6,
+	good coverage of algorithms on RFC,
+	attended couple of test events and known to interoperate well
+<LI>IKE: home-brew IKE daemon "racoon" is ready,
+	attended couple of test events and known to interoperate well,
+	cert support may need some stabilization
+<LI>IPComp: ready
+<LI>ATM PVC:
+	ready for IPv4/IPv6, heavily tested on Japanese ATM leased line services
+<LI>"FAITH" IPv4-IPv6 TCP relay for border routers: ready and working well
+<LI>IPv4-IPv6 header translator: work ongoing
+<LI><A HREF=http://www.csl.sony.co.jp/person/kjc/software.html>ALTQ</A>
+	alternate queueing framework: 
+	integrated and working well
+<LI>Rock solid and most-spec-conformant IPv6 neighbor discovery
+<LI>mobile host support in NDP: working fine
+<LI>laptop: <A HREF=http://jaz.jp.freebsd.org/~hosokawa/FreeBSD/PAO/>PAO</A>/
+	<A HREF=http://www.foretune.co.jp/wildboar/>wildboar</A> ready 
+	(wildboar is BSDI pccard support code, it is also from 
+	<A HREF="http://www.wide.ad.jp">WIDE project</A>)
+<LI>In-kernel NAT-PT IPv4/v6 header translator: testing
+<LI>ECN friendly behavior for tunnels
+<LI>6to4 IPv6 packet encapsulation
+<LI>more to come
+</UL>
+
+<H2>Userland and others:</H2>
+
+<UL>
+<LI>SMTP over IPv6: ready and working well
+<LI>POP over IPv6: ready
+<LI>ftp over IPv6: ready and working well
+<LI>tftp over IPv6: ready and working well
+<LI>telnet over IPv6: ready and working well
+<LI>ssh over IPv6: ready and working well, supplied as pkgsrc/ports.
+	now openssh is IPv6-ready by default
+<LI>PPP (FreeBSD2/NetBSD/BSDI): ready and working well, with multiprotocol support
+<LI>apache6: ready, works as proxy too (both 1.2.x and 1.3.x)
+<LI>v4/v6 nameserver: ready and working well,
+	as <A HREF=http://www.sfc.wide.ad.jp/~doi/softs/>"newbie"</A> project
+	and bind8 patch
+<LI>v4/v6 resolver: ready and working well
+<LI>Multicast DNS resolver: testing
+<LI>IPv6 dhcp: testing
+<LI>Practical v6 net:
+	<UL>
+	<LI>multihoming: ready and working
+	<LI>autoconfig: working well for long time
+	<LI>IPv6 filter: ready on some of platforms
+	<LI>NAT6: we are trying to avoid this
+	</UL>
+<LI>mozilla6: ready and testing
+<LI>routing daemons: following are ready
+	<UL>
+	<LI>route6d: simple and easy ripng daemon
+	<LI>hroute6d: highly configurable ripng daemon
+	<LI>bgpd: highly configurable bgp/ripng daemon
+	<LI>pim6dd: IPv6 PIM dense mode daemon
+	<LI>pim6sd: IPv6 PIM sparse mode daemon
+	<LI><A HREF=http://www.merit.edu/net-research/mrt/html/>mrt</A>:
+		Multi-threaded routing toolkit from
+		<A HREF=http://www.merit.edu/>merit</A>
+	<LI><A HREF=http://www.zebra.org/>Zebra</A> routing protocol server
+	<LI><A HREF=http://www.merit.edu/>merit</A> gated
+	</UL>
+<LI>what others?
+	<UL>
+	<LI>X11 over IPv6: ready but not tested
+	<LI>IPv6-ready boot floppy for installation over v6 net:
+		now testing for FreeBSD and NetBSD
+	<LI>NFS6: planned (NetBSD 1.5 has this)
+	<LI>perl5: ready as <TT>Socket6.pm</TT> module
+	<LI>snmp MIB for IPv6: ready with patched
+		<A HREF=http://ucd-snmp.ucdavis.edu/>ucd-snmp</A>
+	<LI>multicast tools:
+		vic, vat, <A HREF=http://www.icecast.org/>icecast</A>
+		(modified for UDP4/6 multicast streaming) are ready
+	</UL>
+</UL>
+
+<A NAME=goals><H1>Detailed goals for year 2000-2002</H1></A>
+
+<!--
+EASY  1ヶ月以内に終る
+MEDIUM: 半年以内に終る
+HARD: それ以上 or 測定不能 or やる気ない
+-->
+<UL>
+<LI>multihoming & renumbering
+	<UL>
+	<LI>router renumbering [HARD]
+	<LI>ingress filter vs source selection [HARD]
+	</UL>
+<LI>DNS
+	<UL>
+	<LI>DNS server discovery [MEDIUM]
+	<LI>deployment of EDNS0 [HARD]
+	</UL>
+<LI>mobile IP6 [HARD]
+<LI>scoped routing [MEDIUM]
+<LI>better/enhanced scoped address handling
+<LI>source address selection [HARD?]
+<LI>architecture (in)dependency [EASY]
+	<UL>
+	<LI>64bit, alpha, big endian...
+	</UL>
+<LI>IPsec 
+	<UL>
+	<LI>AES support [EASY]
+	<LI>enhance policy engine/API [HARD]
+	<LI>crypto hardware [HARD]
+	<LI>easier-to-use IKE [HARD]
+	<LI>OpenSSL 64bit friendliness [EASY]
+        <LI>MIB
+	</UL>
+<LI>IPv6 support on applications [EASY x too many targets]
+	<UL>
+	<LI>Apache2
+	<LI>Python
+	<LI>radius
+	<LI>ucd-snmp(transport)...
+	<LI>X [HARD]
+	<LI>NFS (netbsd: done) [HARD]
+	</UL>
+<LI>multi-thread libinet6 [MEDIUM]
+<LI>multi-threaded faithd [HARD]
+<LI>multicast (routing)
+	<UL>
+	<LI>SSM6 [HARD?]
+	<LI>new MLD6 based on IGMPv3, for SSM6 (MLD6v2?) [MEDIUM]
+	<LI>revise multicast routing table, routing socket API [MEDIUM?]
+        <LI>RSRR (no spec for IPv6 yet) [MEDIUM]
+	</UL>
+<LI>unicast routing
+	<UL>
+	<LI>routing table with multi destination (equal-cost multipath) [MEDIUM]
+	<LI>efficient/easy-to-understand/whatever lookup (RADISH2)[HARD]
+		<UL>
+		<LI>high-speed: better algorithm than radix?
+		<LI>simplify: revisit radish?
+			(non-continuous mask necessary for sin6_scope_id)
+		<LI>cisco-like behavior? (!IFF_UP -> route vanishes)
+		</UL>
+	<LI>hardware acceleration (no available hardware?) [HARD]
+	</UL>
+<LI>maintain *BSD merged KAME tree
+	<UL>
+	<LI>keep KAME tree and *BSD tree in sync [MEDIUM x too many (= 4)targets]
+	<LI>merge stabilized technologies into *BSD [MEDIUM x too many targets]
+	</UL>
+<LI>supporting new/advanced hardware
+	<UL>
+	<LI>efficient GbE jumbo frame handling (16K page, over 2k cluster) [MEDIUM?]
+	<LI>hardware forwarding engine (if spec/hardware becomes available) [HARD]
+	</UL>
+<LI>other operating systems (not really KAME issue?)
+	<UL>
+	<LI>linux [-> USAGI]
+	<LI>VmWare [-> third-party]
+	<LI>plan9?
+	</UL>
+<LI>benchmark [MEDIUM]
+	<UL>
+	<LI>transport layer, i.e. TCP
+	<LI>goto ours
+	<LI>smartbits tests
+	<LI>performance tuning
+	</UL>
+<LI>publication
+	<UL>
+	<LI>I-D、RFC (IETF) [MEDIUM x too many targets]
+	<LI>papers [MEDIUM x too many targets]
+        <LI>documentation
+	</UL>
+<LI>RSVP support [MEDIUM]
+<LI>diffserv [MEDIUM]
+	<UL>
+	<LI>including flowlabel, traffic class API
+	</UL>
+<LI>packet filter [MEDIUM]
+	<UL>
+	<LI>relationship with IPsec
+	</UL>
+<LI>other translators [HARD]
+	<UL>
+	<LI>nat-pt, SIIT, DSTM
+	</UL>
+</UL>
+
+<HR>
+
+<A NAME=release><H1>Releasing Plan</H1></A>
+
+We plan to release KAME kit in two ways:
+
+<DL>
+<DT><I><A HREF="/snap-users/">SNAP</I></A> is for hackers/researchers.
+<DD>	Will be released once a week (every Monday).
+	It will include whole bunch of experimental items.
+	It may or may not be stable.
+
+	We develop KAME code on top of 4 BSD variants, and 6 different versions:
+	<UL>
+	<LI>BSD/OS 3.1 and 4.2
+	<LI>FreeBSD 2.2.8 and 4.2
+	<LI>NetBSD 1.5
+	<LI>OpenBSD 2.8
+	</UL>
+
+	We share most of IPv6/IPsec code among *BSD platforms,
+	so they are in-sync in most cases.
+
+<DT><I>Integrated *BSD source code tree</I>
+<DD>	For normal users.
+	You just need to install official releases from *BSD projects.
+
+	The following official releases integrates KAME kit:
+	<UL>
+	<LI><A HREF=http://www.freebsd.org/>FreeBSD</A> 4.0 and beyond
+	<LI><A HREF=http://www.netbsd.org/>NetBSD</A> 1.5 and beyond
+	<LI><A HREF=http://www.openbsd.org/>OpenBSD</A> 2.7 and beyond
+	<LI><A HREF=http://www.bsdi.com/>BSD/OS</A> 4.2 and beyond
+	</UL>
+
+</DL>
+
+<P>
+
+The difference between KAME SNAP kit and *BSD releses would be like below:
+<OL>
+<LI>KAME SNAP kit comes with more experimental protocols/APIs support and
+	userland programs.
+	This would attract researchers more, as not everything in
+	KAME tree will be merged into *BSD tree (due to discussions, spec
+	maturity, and other reasons).
+<LI>KAME kit will always be based on public release version of *BSD, so you
+	can enjoy latest IPv6 tree on top of stable *BSD platforms.
+	This would be nice feature to have when your goal is to do IPv6
+	experiment, not to chase *BSD-current.
+<LI>The merged *BSD releases will give tightly integrated IPv6-ready operating
+	system.
+	KAME kit is supplied as diffs to *BSD release versions,
+	so it has less integrated feeling (we are trying our best, though).
+</OL>
+In other words, even if *BSD group ships KAME-integrated official releases,
+we will continue our work and ship KAME kit for them.
+<P>
+
+A document named
+<A HREF=http://www.kame.net/dev/cvsweb.cgi/kame/COVERAGE>COVERAGE</A>
+is supplied with KAME kits, and gives gory details about differences
+between KAME/*BSD and *BSD official releases.
+
+<P>
+
+In the past we had KAME STABLE and KAME RELEASE kits.
+<A HREF=ftp://ftp.kame.net/pub/mail-list/snap-users/3306>
+They were discontinued</A>.
+
+<HR>
+
+<A NAME=urls><H1>URLs of Interest</H1></A>
+
+<DL>
+<DT>KAME project: <A HREF=http://www.kame.net/>http://www.kame.net/</A>
+<DT>WIDE project: <A HREF=http://www.wide.ad.jp/>http://www.wide.ad.jp/</A>
+<DT>more about KAME kit: <A HREF=http://www.v6.wide.ad.jp/Products/kame.html>http://www.v6.wide.ad.jp/Products/kame.html</A>
+</DL>
+
+<HR>
+
+<A NAME=contacts><H1>Contacts</H1></A>
+
+If you need to contact us, use the following routes:
+<UL>
+<LI>public comments/suggetions (preferred):
+	<A HREF=/snap-users/>snap-users mailing list</A>
+<LI>bug reports: <A HREF=http://www.kame.net/dev/send-pr.html>
+	form-based bug report submission page</A>
+<LI>private comments/suggetions (less preferred): core@kame.net
+<LI>licensing, and other political issues: kame-secretary@kame.net
+</UL>
+
+<PRE>$Id: project-overview.html,v 1.1 2001/04/17 03:41:42 itojun Exp $</PRE>
+
+</BODY>
+</HTML>

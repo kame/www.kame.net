@@ -1,0 +1,26 @@
+KAME plush toys status
+$Id: kamenui.txt,v 1.1 2001/04/17 03:43:28 itojun Exp $
+
+
+$12 a piece
+
+reservations (check "sold" when done)
+
+direct
+rsvd	sold
+1	1	Gregory Neil Shapiro <gshapiro@FreeBSD.org>
+1	1	Ken Hornstein <kenh@cmf.nrl.navy.mil>
+1	1	Bill Sommerfeld <sommerfeld@orchard.arlington.ma.us>
+2	1	Jason R Thorpe <thorpej@zembu.com>
+3		"Christian E . Hopps" <chopps@nexthop.com>
+
+via someone else
+1		christos@zoulas.com (Christos Zoulas), via perry@netbsd.org
+1	1	"Charles M. Hannum" <root@ihack.net>, via jhawk@netbsd.org
+2?		Alistair Crooks <agc@pkgsrc.org>
+
+
+kame (increase "sold" if sold)
+
+bring	sold
+20	7	itojun

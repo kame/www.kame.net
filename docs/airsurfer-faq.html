@@ -1,0 +1,165 @@
+<HTML>
+Netwave Airsurfer FAQ <BR>
+
+$Id: airsurfer-faq.html,v 1.1 2001/04/17 03:41:50 itojun Exp $
+
+<HEAD>
+<TITLE> Netwave AirSurfer FAQ</TITLE>
+</HEAD>
+
+<BODY>
+<PRE>
+新しい情報や、間違いのレポートはsumikawa@kame.netまで
+
+今、とっても知りたいこと
+	無印に必要な免許って具体的に何ですか？
+		どうすればとれますか？
+</PRE>
+
+<HR>
+<H2> What's New? </H2>
+
+<UL>
+<LI> 1998/07/15: お値段関係に文章追加
+<LI> 1998/06/16: Bay NetworksがNetwave Technology社を<A HREF=http://www.netwave-wireless.com/news/press_rel/bay.htm>買収</A>したそうです。
+<LI> 1998/05/30: さらにAirSurfer以外の無線LAN情報追加
+</UL>
+
+<HR>
+<PRE>
+Q: Netwave AirSurferってなんですか?
+	PCカードスロットに刺す無線Ethernetのカードおよび、その基地局のこ
+	とです。ホームページはここ。
+		<A HREF=http://www.netwave-wireless.com/>http://www.netwave-wireless.com/</A>
+
+Q: 種類がいっぱいあってよく分かんないんですけど
+A:	以下の5種類があります
+		Xircom Netwave
+		Netwave AirSurfer
+		Netwave AirSurfer Plus
+		Netwave AirSurfer Plus JP
+		Netwave AirSurfer PRO(未発売？)
+	それぞれカードと基地局(Access Point)があります。
+
+	基地局がなくてもP-to-Pモードでカード同士の通信できます。
+
+Q: どう違うの？
+A:	Xircom Netwave と Netwave AirSurfer は全く同じものです。
+	途中で別会社になったので、同じものが2種類存在します
+	(以下この二つをまとめて"無印"と表記)。
+
+	PlusはIEEE802.11に準拠していますので、802.11をサポートしている
+	他メーカの製品とも通信できます。
+
+	Air SuferのJPある無しの違いですが、ソフト的な設定で物理的な違
+	いは無いとUS側のエンジニアは言っています。特に、Plusについては、
+	802.11準拠であり、海外モデルもへったくれも無いとのたまっており
+	ます。
+
+Q: それぞれの相互接続性ってあるの？
+
+	現在、判明している動く組合せ。JP周りは上記問題と矛盾してます。
+	ドライバの問題？
+
+</PRE>
+
+<CENTER>
+<TABLE BORDER=2>
+<TR><TD>                </TD><TD>       </TD><TD COLSPAN=4>カード              </TD></TR>
+<TR><TD>                </TD><TD>       </TD><TD>無印</TD><TD>PRO </TD><TD>Plus</TD><TD>Plus JP</TD></TR>
+<TR><TD ROWSPAN=4>カード</TD><TD>無印   </TD><TD> ○ </TD><TD> ？ </TD><TD> ○ </TD><TD> ？ </TD></TR>
+<TR>                         <TD>PRO    </TD><TD> ー </TD><TD> ○ </TD><TD> ？ </TD><TD> ？ </TD></TR>
+<TR>                         <TD>Plus   </TD><TD> ー </TD><TD> ー </TD><TD> ○ </TD><TD> ？ </TD></TR>
+<TR>                         <TD>Plus JP</TD><TD> ー </TD><TD> ー </TD><TD> ー </TD><TD> ○ </TD></TR>
+<TR><TD ROWSPAN=4>基地局</TD><TD>無印   </TD><TD> ○ </TD><TD> ？ </TD><TD> ○ </TD><TD> × </TD></TR>
+<TR>                         <TD>PRO    </TD><TD> ？ </TD><TD> ○ </TD><TD> ？ </TD><TD> ？ </TD></TR>
+<TR>                         <TD>Plus   </TD><TD> ○ </TD><TD> ？ </TD><TD> ○ </TD><TD> ？ </TD></TR>
+<TR>                         <TD>Plus JP</TD><TD> × </TD><TD> ？ </TD><TD> ？ </TD><TD> ○ </TD></TR>
+</TABLE>
+</CENTER>
+
+<PRE>
+
+Q: 使うのに免許っているの？
+A:	無印は必要
+A:	Plusは技術適合認定がおりました。NTTエレクトロニクスから購入する
+	と認定番号シールが貼られているものが手に入ります。ただし、現在は
+	「技術基準適合証明費用」なるものが余計にかかります(ある見積り
+	では約26万円)
+
+	物によっては「スプリアス雑音」が既定値を越えてしまうらしく、
+	Plusが全部が合法かというわけでもないらしい。
+
+	包括認定が6月に完了するという噂があるので、それ以降なら「技術
+	基準適合証明費用」はかからないと思われる。
+
+Q: 各種PC-UNIXのドライバ対応状況は？
+A:	現在、判明している動作状況は以下の通り
+		無印   BSD/OS FreeBSD(PAO) NetBSD Linux
+		Plus   BSD/OS 3.1で開発中 <A HREF="http://ipoint.vlsi.uiuc.edu/wireless/asplus.html">Linuxのパッチあり</A>
+		PlusJP 
+		PRO  
+
+Q: どこで買えますか？
+A:	通販
+		<A HREF=http://www.sparco.com/>http://www.sparco.com/</A> 
+		netwaveで検索してみよう。
+A:	イージーネット
+		biz@eni.co.jp        イージーネット営業部
+		maeda@eni.co.jp      イージーネット営業部  前田
+		hiraoka@eni.co.jp    イージーネット営業部  平岡
+		ただし商品が非常に特殊なので常時在庫していません(納期
+		は2週間から1か月以上)。また、免許問題があるので場合に
+		よって販売できない可能性もあります。
+A:	NTTエレクトロニクス
+		技術適合認定のおりたPlusが買えます。ただし、現在は「技
+		術基準適合証明費用」なるものが余計にかかります(ある見
+		積りでは約26万円)
+
+Q: 値段は？
+A:	円安のあおりもあって一定しないし、企業努力で日々値段が下がる可
+	能性もあるので、あえて載せていません。見積りを取って確認するの
+	をおすすめします。なお、<A HREF=http://www.sparco.com/>http://www.sparco.com/</A>で現地価
+	格が分かるので、値引き交渉に使えるかも知れません:-)
+
+Q: ドライバを手に入れたいんですが
+A:	Windows用のドライバはここにあります
+		<A HREF=http://www.netwave-wireless.com/support/driver.htm>http://www.netwave-wireless.com/support/driver.htm</A>
+
+Q: 基地局のドメインの変更方法は?
+	WindowsのDOS窓(英語モード)でしか動かない専用アプリケーションが
+	あります。
+		<A HREF=http://www.netwave-wireless.com/download/aputils.exe>http://www.netwave-wireless.com/download/aputils.exe</A>
+	設定用アプリケーションは基地局と IPX プロトコルを使って通信を
+	するので、Windows で IPX プロトコルが使えるようになっている必
+	要があります。基地局と設定用 PC は有線で同じ HUB につなげばよ
+	いようです。
+
+Q: スイッチハブに基地局を接続すると相性によってはうまく動かないことが
+   あると聞きました。動作確認のとれているスイッチハブを教えてください
+A:	動作確認済
+A:	不動作確認済
+		NetGearと基地局を直接つなぐと1k以上のパケットが通らない
+
+Q: 他の無線LANシステムは何がありますか？
+A:	<A HREF=http://www.proxim.com/products/mobility/rl802/802new.shtml>RangeLAN 802</A>
+		販売してるのは<A HREF=http://www.iijnet.or.jp/ntt-it>NTT-IT</A>, 関西電気
+A:	WaveLAN
+A:	<A HREF=http://www.com-tec.co.jp/>コンピュータテクニカ</A> LANSAT
+A:	愛三のカタログ: <A HREF=http://www.aisan.co.jp/products/a5-9-1.html>赤外線</A>/<A HREF=http://www.aisan.co.jp/products/a5-9-2.html>無線</A>
+</PRE>
+
+Q: what is WEP?
+A:	<A HREF=http://www.isaac.cs.berkeley.edu/isaac/wep-faq.html>http://www.isaac.cs.berkeley.edu/isaac/wep-faq.html</A>
+<HR>
+
+<PRE>
+編集	すみかわ むねちか &lt;sumikawa@kame.net&gt;
+協力	kato@wide.ad.jp, suna@wide.ad.jp, taiji-k@is.aist-nara.ac.jp
+	kazu-k@soft.kusa.ac.jp, kuma@isid.co.jp, motonori@econ.kyoto-u.ac.jp
+	shichi@piyo.race.u-tokyo.ac.jp, yuo@nui.org, utashiro@iij.ad.jp
+	yoshiki@nc.kyushu-u.ac.jp, jinmei@isl.rdc.toshiba.co.jp
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,226 @@
+<HTML>
+<TITLE>Translating IPv4 and IPv6 connections</TITLE>
+<BODY>
+
+<H2>Translating IPv4 and IPv6 connections</H2>
+
+Yoshinobu Inoue and Jun-ichiro itojun Itoh,
+<A HREF="http://www.kame.net/">KAME Project</A>
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:42:18 itojun Exp $</PRE>
+
+<FONT COLOR=#ff0000><STRONG>THE DOCUMENT IS VERY OBSOLETE.</STRONG></FONT>
+<HR>
+
+IPv6 specification clearly states that, in the early stage of IPv6 transition,
+an IPv6 host must speak IPv4 as well.
+However, one might want to setup IPv6-only subnets,
+because of the shortage of IPv4 addresses or pure curiosity<TT>:-)</TT>.
+In this case, you will need to configure a IPv4-v6 translating gateway
+so that you can access your IPv4 mail servers via POP protocol,
+or IPv4 web servers such as <A HREF=http://www.yahoo.com/>yahoo</A>.
+<P>
+
+This newsletter tries to describe what kind of technologies are available
+with KAME stack, to help communication between IPv6 hosts and IPv4 hosts.
+
+<H2>Taxonomy of IPv4-v6 translators</H2>
+There are several kind of IPv4-v6 translators possible.
+<UL>
+<LI><STRONG>IP header translator:</STRONG>
+	This technology works in IP layer,
+	and replaces IPv4 header by IPv6 header.
+	IP header translator is similar to famous (and infamous) NAT,
+	Network Address Translator.
+
+<LI><STRONG>TCP relay:</STRONG>
+	This technology works in TCP layer, and relays IPv4 TCP connection
+	to IPv6 TCP connection, and vice versa, regardless of the
+	application protocol used over TCP.
+	TCP connection is terimnated at the TCP relaying gateway host.
+	This technology is similar to SOCKS.
+
+<LI><STRONG>Application gateway:</STRONG>
+	This technology works in application protocol layer (such as HTTP),
+	and uses application protocol-specific mechanism. 
+</UL>
+
+KAME kit comes with several translation tools.
+At this moment KAME kit does not include IPv4-v6 header translation code.
+As for TCP relay, we provide <A HREF=ftp://ftp.kame.net/pub/kame/misc/>
+SOCKS64</A>, an IPv4/v6 capable version of SOCKS5.
+As for application gateway, we provide IPv6-capable
+<A HREF=http://www.apache.org/>apache</A> web server,
+which can be used as http proxy server.
+<P>
+
+KAME kit also include (our home-brew) IPv6-to-IPv4 translator called
+<STRONG>FAITH</STRONG>.
+FAITH can be regarded as an mixture of TCP relay and application gateway
+(FAITH translates any TCP connection, however, it has some knowledge of
+application protocols such as <TT>ftp</TT>).
+In the following section we describe how to configure FAITH translator.
+
+<H2>What FAITH provides</H2>
+
+From here, please assume the following network configuration.
+<PRE>
+four.kame.net
+  |
+==+=======+== IPv4 network
+	  |
+	dual.kame.net
+	  |
+	==+=======+== IPv6 network
+		  |
+		six.kame.net
+</PRE>
+<TT>four.kame.net</TT> is an IPv4-only host, and <TT>six.kame.net</TT>
+is an IPv6-only host, as the hostname suggests.
+<TT>dual.kame.net</TT> is IPv4-v6 capable router, and on this host
+FAITH translator will be executed.
+Actually, <TT>dual.kame.net</TT> need not have two network interfaces.
+It can perform translation with single interface, as below:
+<PRE>
+four.kame.net		six.kame.net
+  |			  |
+==+=======+===============+== IPv4/v6 network
+	  |
+	dual.kame.net
+</PRE>
+
+What FAITH provide is an translation service for connection originating
+from IPv6 host (<TT>six.kame.net</TT>) to IPv4 host (<TT>four.kame.net</TT>).
+<P>
+
+FAITH reserves an IPv6 prefix from your IPv6 address space.
+Suppose this to be <TT>3ffe:0501:9999:ffff::/64</TT>
+(NOTE: prefix must be grabbed from the IPv6 address pool assigned to your
+organization/laboratory).
+If there is an TCP connection request from <TT>six.kame.net</TT> toward
+<TT>3ffe:0501:9999:ffff::&lt;IPv4 address of four.kame.net&gt;</TT>,
+it will get translated into IPv4 TCP connection toward
+<TT>four.kame.net</TT>.
+FAITH daemon on <TT>dual.kame.net</TT> will make two TCP connection,
+as below, and transfers data between those.
+<UL>
+<LI>IPv6 TCP connection between <TT>six.kame.net</TT>
+	and <TT>3ffe:0501:9999:ffff::&lt;IPv4 address of four.kame.net&gt;</TT>.
+	This connection is actually made between <TT>six.kame.net</TT> and
+	<TT>dual.kame.net</TT>.
+<LI>IPv4 TCP connection between <TT>dual.kame.net</TT>
+	and <TT>four.kame.net</TT>.
+</UL>
+
+<H2>Configuring FAITH</H2>
+Most configurations must be made on <TT>dual.kame.net</TT>.
+There will be almost no configuration required on <TT>six.kame.net</TT>.
+<OL>
+<LI>First and foremost, IPv6 packets from <TT>six.kame.net</TT> must go
+	through <TT>dual.kame.net</TT>.
+	If not, please configure <TT>six.kame.net</TT> so that it will
+	throw packets to <TT>dual.kame.net</TT>.
+	You may find <TT>rtadvd</TT>, router advertisement daemon,
+	useful for this purpose.
+
+<LI>Confirm that you have no IPv6 network daemon working on
+	<TT>dual.kame.net</TT> for the translated port.
+	If you are willing to translate IPv6 telnet request into IPv4
+	telnet request, you must comment out <TT>telnet</TT> in
+	<TT>/usr/local/v6/etc/inet6d.conf</TT>.
+	Do not forget to do <TT>kill -HUP &lt;inet6d's pid&gt;</TT>.
+
+<LI>Set FAITH-reserved prefix, by using <TT>faith</TT> command.
+<PRE>
+# faith -e -p 3ffe:0501:9999:ffff::
+</PRE>
+	<TT>-e</TT> is for enabling kernel code to help FAITH daemon.
+	By this configuration, all the IPv6 TCP toward FAITH-reserved IPv6
+	prefix will be tossed up to the application layer.
+	To make sure, confirm that <TT>sysctl</TT> MIB
+	<TT>net.inet6.ip6.keepfaith</TT> is 1.
+	If not, set it to 1 by using <TT>sysctl</TT> command:
+<PRE>
+# sysctl -w net.inet6.ip6.keepfaith=1
+</PRE>
+
+<LI>Start <TT>faithd</TT> daemon on <TT>dual.kame.net</TT>.
+	To translate <TT>telnet</TT> connection, please invoke:
+<PRE>
+# /usr/local/v6/sbin/faithd telnet /usr/local/v6/libexec/telnetd telnetd
+</PRE>
+	<TT>faithd</TT> must be invoked for each of the services you need,
+	so you may want to start multiple <TT>faithd</TT>.
+	Refer to the manpage of <TT>faithd</TT> for details.
+
+<LI>Try a <TT>telnet</TT> session from <TT>six.kame.net</TT> to
+	<TT>3ffe:0501:9999:ffff::&lt;IPv4 address of four.kame.net&gt;</TT>.
+	The connection request will be captured by <TT>dual.kame.net</TT>
+	since the address matches the FAITH-reserved prefix.
+	<TT>faithd</TT> will accept the IPv6 TCP connection, and makes a
+	IPv4 TCP connection toward <TT>four.kame.net</TT>.
+</OL>
+
+<H2>Advanced configuration</H2>
+You will find it irritating to specify
+<TT>3ffe:0501:9999:ffff::&lt;IPv4 address of four.kame.net&gt;</TT>
+every time you want a translation service.
+<P>
+
+For address conversion, there are two major ways to do it.
+The first way is to use a home-brew DNS server, called <TT>newbie</TT>,
+which is implemented by Yusuke Doi of WIDE project.
+It includes the address conversion function.<BR>
+The next way is to have an entry in <TT>/etc/hosts</TT>.
+<P>
+<UL>
+<LI><STRONG><TT>newbie</TT> case:</STRONG><BR>
+	You can configure <TT>newbie</TT> nameserver on <TT>dual.kame.net</TT>,
+	with FAITH-friendly function enabled by the following directive:
+<PRE>
+faith 3ffe:0501:9999:ffff::
+</PRE>
+	Then, configure <TT>/etc/resolv.conf</TT> in <TT>six.kame.net</TT> to
+	use <TT>dual.kame.net</TT> as its nameserver.
+<PRE>
+nameserver &lt;numeric IPv6 address of dual.kame.net&gt;
+</PRE>
+<P>
+
+On name queries to IPv4 hosts, <TT>newbie</TT> will return IPv6 address,
+<TT>3ffe:0501:9999:ffff::ipv4-address</TT>.
+<P>
+
+<LI>Have lines like follows, in <TT>/etc/hosts</TT>.
+
+<PRE>
+3ffe:501:9999:ffff::123.4.5.6	mymachine.mydomain.com
+</PRE>
+
+</UL>
+
+<H2>Some notice</H2>
+By using <TT>FAITH</TT> translator, IPv4 TCP connection will be made
+between a host running <TT>faithd</TT> (<TT>dual.kame.net</TT> in the example)
+and the target host (<TT>four.kame.net</TT>).
+As you can imagine, if a daemon on <TT>four.kame.net</TT> invokes <TT>getpeername()</TT>
+system call, it will return <TT>dual.kame.net</TT>, not <TT>six.kame.net</TT>.
+Therefore, you may have some trouble logging/authenticating the connection on
+<TT>four.kame.net</TT>.
+For example, if you use <TT>.rhosts</TT> or <TT>known_hosts</TT> used by <TT>ssh</TT>,
+thre may be some strange behavior.
+Also, the hostname shown by <TT>wtmp</TT> will be <TT>dual.kame.net</TT>
+(not <TT>six.kame.net</TT>).
+This is because you are using TCP relay technology.
+Every TCP relay or NAT technology has this problem.
+There is no good way to avoid this.
+
+<H2>Further readings</H2>
+<A HREF=http://www.v6.wide.ad.jp/Papers/yamamoto/>
+INET98 paper by Kazu</A> may provide you additional information.
+<A HREF=http://playground.iijlab.net/paper/kazu-inet98-presen/>
+Presentation foil is also available</A>.
+
+<!--#include virtual="../index.inc" -->
+
+</BODY>
+</HTML>

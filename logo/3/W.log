@@ -1,0 +1,7 @@
+/usr/local/bin/webcopy -v -t0 -r5 http://www.imasy.or.jp/~kiyoshi/images/kamsq.jpg
+date Tue, 12 Jan 1999 09:41:33 GMT
+server www.imasy.or.jp port 80 (/~kiyoshi/images/)
+reference /~kiyoshi/images/kamsq.jpg accept
+getting http://www.imasy.or.jp:80/~kiyoshi/images/kamsq.jpg 200 OK
+storing /kamsq.jpg
+end

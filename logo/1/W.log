@@ -1,0 +1,22 @@
+/usr/local/bin/webcopy -v -t0 -r5 http://www.imasy.or.jp/~ume/kame.old/
+date Tue, 12 Jan 1999 09:42:54 GMT
+server www.imasy.or.jp port 80 (/~ume/kame.old/)
+reference /~ume/kame.old/ accept
+getting http://www.imasy.or.jp:80/~ume/kame.old/ 200 OK
+parsing /index.html
+reference images/kame.jpg accept
+reference images/kame2.jpg accept
+reference images/kame3.gif accept
+reference images/kame4.gif accept
+reference images/kame5.gif accept
+getting http://www.imasy.or.jp:80/~ume/kame.old/images/kame.jpg 200 OK
+storing /images/kame.jpg
+getting http://www.imasy.or.jp:80/~ume/kame.old/images/kame2.jpg 200 OK
+storing /images/kame2.jpg
+getting http://www.imasy.or.jp:80/~ume/kame.old/images/kame3.gif 200 OK
+storing /images/kame3.gif
+getting http://www.imasy.or.jp:80/~ume/kame.old/images/kame4.gif 200 OK
+storing /images/kame4.gif
+getting http://www.imasy.or.jp:80/~ume/kame.old/images/kame5.gif 200 OK
+storing /images/kame5.gif
+end

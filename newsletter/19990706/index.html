@@ -1,0 +1,96 @@
+<HTML>
+<HEAD><TITLE>Security gateway and 6bone connection</TITLE></HEAD>
+<BODY>
+<H1>Security gateway and 6bone connection</H1>
+<A HREF=http://www.itojun.org/>Jun-ichiro itojun Hagino (Itoh)</A>,
+<A HREF=http://www.kame.net/>KAME Project</A>
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:42:20 itojun Exp $</PRE>
+
+<HR>
+
+Recently we got several emails about how you can hook your site up to 6bone, 
+when you have security gateway (packet filters) on your IPv4 router.
+<P>
+
+The configuration for Checkpoint Firewall-1 is provided by Mr. Tetsuhiro Nakane.
+Thanks!
+
+<HR>
+
+<H2>Basics</H2>
+
+Most of 6bone connetion is done by RFC1933 IPv6-to-IPv4 tunnel.
+The packet will look like this:
+<PRE>
+15:49:28.631199 203.178.136.188 > 210.160.95.99: 2010:836b:4179:2:260:8ff:febf:b622 > 3ffe:501:410:0:240:5ff:fea0:8e08: icmp6: echo request (encap)
+                         4500 0064 f5bf 0000 13<STRONG><FONT COLOR=#ff0000>29</FONT></STRONG> 2b3f cbb2 88bc
+                         d2a0 5f63 6000 0000 0028 3af6 2010 836b
+                         4179 0002 0260 08ff febf b622 3ffe 0501
+                         0410 0000 0240 05ff fea0 8e08 8000 a7d3
+                         001e a9d7 6162 6364 6566 6768 696a 6b6c
+                         6d6e 6f70 7172 7374 7576 7761 6263 6465
+                         6667 6869
+</PRE>
+
+All you need to do is to let the packet go through the firewall gateway.
+The packet has IPv4 protocol number field (<TT>ip->ip_p</TT>) of 41
+(0x29), which is marked with red color on the above packet dump.
+You may also want to restrict IPv4 source address and destination address,
+to make sure that no malicious IPv6 tunnels can be established.
+
+<HR>
+
+<H2>Configuring Checkpoint Firewall-1</H2>
+Suppose you have
+<A HREF=http://www.checkpoint.com/>Checkpoint</A> Firewall-1 (FW-1)
+between your tunnel endpoint (A) and the peer (B).
+<PRE>
+A ==== FW-1 ==== B		IPv6-over-IPv4 tunnel between A and B
+</PRE>
+To allow IPv6-over-IPv4 tunnel to go through FW-1, please take the
+following steps:
+<OL>
+<LI>Create new srevice called "IPv6-over-IPv4", with service type "Other".
+<LI>Add "Match" with "ip_p = 41".
+<LI>Now you have this configuration, which allows packets with IPv4 protocol
+	type of 41 to go through, but no others.
+<PRE>
+rule    Src     Dst    Service         Action
+----------------------------------------------
+1       A,B     B,A    IPv6-over-IPv4  Accept
+2       A,B     B,A    Any             Reject
+</PRE>
+</OL>
+
+If you can make it more loose, you can allow any packet between A and
+B to go through, like:
+<PRE>
+rule    Src     Dst     Service Action
+--------------------------------------
+1       A,B      B,A    Any     Accept
+</PRE>
+
+<HR>
+
+<H2>Securing 6bone connection</H2>
+
+While 6bone is still a small network, it is good to be cautious.
+You may want to implement IPv6 packet filters onto your 6bone connection.
+KAME for FreeBSD228 and FreeBSD32 includes <TT>ip6fw</TT>,
+which is capable of filtering IPv6 packet.
+You may want to configure this into your inbound IPv6 router.
+<P>
+
+Also, KAME kit includes ports/pkgsrc directory for IPv6-ready fwtk,
+Coutesy of Mr. Hajime Umemoto.
+You would like to have tcp relay, this is the answer.
+But if you implement fwtk, you cannot enjoy direct IPv6 connection from
+your end node to outside.
+<P>
+
+Please note that NAT provides no security at all,
+so there will be no IPv6-to-IPv6 NAT.
+
+<!--#include virtual="../index.inc" -->
+</BODY>
+</HTML>

@@ -1,0 +1,204 @@
+<html>
+<head><title>The PKIX certificate with racoon</title></head>
+<body>
+<h1>The PKIX certificate with racoon</h1>
+<a href="http://www.wide.ydc.co.jp/~sakane/">Shoichi Sakane</a>,
+<a href="http://www.kame.net/">KAME Project</a>
+<pre>$Id: index.html,v 1.1 2001/04/17 03:42:25 itojun Exp $</pre>
+
+<font color=red><b>
+This document is obsoleted by the newer one.  You must refer to the following:
+<a href="http://www.kame.net/newsletter/20001119b/">http://www.kame.net/newsletter/20001119b/</a>
+</b></font>.
+<hr>
+
+<h2>
+Introduction
+</h2>
+
+This document is described how to use the PKIX certificate with racoon,
+IKE daemon.
+IKE allows to use several certificate for encryption and authentication.
+At the moment, racoon only supports RSA signature authentication method
+in all modes of phase 1 exchanges.
+
+For example, the certificates are exchanged by 5th and 6th messages
+in the case of the main mode.  Both the initiator and the responder have to
+prepare own certificate before sending it.  The certificate is placed to
+the certificate repository in PEM format.
+Racoon can get it from the local file system at the moment.
+SCEP may be supported in the future.
+
+<br>
+Racoon version is required <tt>kame-20000904-*-snap</tt> or later.  But it is
+recommended to use latest version of KAME stack.
+Racoon leave all cryptographic algorithm with libcrypto.a of OpenSSL.
+The version is required <u>OpenSSL0.9.5a</u> or later is required.
+We don't support OpenSSL0.9.4.
+There are some trouble about X.509v3 certificate handling in OpenSSL0.9.4.
+
+<h2>What can racoon do ?</h2>
+
+<ul>
+<li>Main/Aggressive/Base mode with RSA signature authentication.
+<li>X.509v3 certificate in PEM format.
+<li>Sending the certificate or not.
+<li>Getting peer's certificate in the local file system.
+<li>Verify the subjectName or the subjectAltName as the identifier.
+<li>Verify the issuer's chain or not.
+</ul>
+
+<h2>
+Configuration
+</h2>
+
+To use RSA signature authentication method, you have to define the following
+directives in a configuration file of racoon.
+
+For example, negotiation the IPsec keys with 194.100.55.1 (isakmp-test.ssh.fi),
+with UserFQDN "sakane@kame.net" as subjectAltNameas.
+
+<pre>
+	<b>path certificate "/usr/local/openssl/certs";</b>
+	remote 194.100.55.1
+	{
+		exchange_mode main;
+		<b>certificate_type x509 "sakane@kame.net.cert" "sakane@kame.net.priv";</b>
+		<b>identifier certname;</b>
+		proposal {
+			encryption_algorithm des;
+			hash_algorithm md5;
+			<b>authentication_method rsasig;</b>
+			dh_group modp768;
+		}
+	}
+</pre>
+
+The first line specifies the directory as the certificate repository
+to put all certificates.  You have to put your certificate,
+your private key and all of issuer's certificate.
+In the following description, the directory is called "CERT directory"
+for convenience.
+<br>
+"certificate_type" directive specifies the type of certificate, and
+the both file name of own certificate/private key.  You have to put them
+into CERT directory.
+<br>
+"identifier" directive specifies the ID value.  It is carried onto the peer
+by ID payload.  The peer may compare between the value and the subjectName
+(subjectAltName) in the certificate.
+<br>
+"authentication_method" direcivie specifies the authentication method in use.
+When you use a certificate, you have to define "rsasig".
+<br>
+If the peer don't send any certificate, you can get the certificate from your
+local disk.  "peers_certfile" directive can allow it.
+If you don't want to verify the certificate, you have to set "no" into "verify_cert"
+directive.
+If you don't want to send the certificate, you have to set "no" into "send_cert"
+directive.
+
+<pre>
+	path certificate "/usr/local/openssl/certs";
+	remote 194.100.55.1
+	{
+		exchange_mode main;
+		certificate_type x509 "sakane@kame.net.cert" "sakane@kame.net.priv";
+		<b>peers_certfile "isakmp-test@ssh.fi.cert";</b>
+		<b>identifier certname;</b>
+		<b>verify_cert no; </b>
+		<b>send_cert no;</b>
+		proposal {
+			encryption_algorithm des;
+			hash_algorithm md5;
+			authentication_method rsasig;
+			dh_group modp768;
+		}
+	}
+</pre>
+
+<h2>
+To get your cert
+</h2>
+
+This section is described how to get a certificate by OpenSSL0.9.5a.
+
+<ol>
+<li>Make a new private/public key pair.  For example, 1024bits private key
+  can be generated and stored into privkey.pem in PEM format by the following
+  command:
+
+<pre>
+  % openssl genrsa -out privkey.pem 1024
+</pre>
+
+<li>Make a PKCS#10 request, which is to be signed by your public key.
+  The following example uses SHA1 as signature algorithm, RSA with 1024bits
+  and stored into request.pem in PEM format.
+
+<pre>
+  % openssl req -new -nodes -newkey rsa:1024 -sha1 -keyform PEM -keyout privkey.pem -outform PEM -out request.pem
+  Using configuration from /usr/local/openssl/openssl.cnf
+  Generating a 1024 bit RSA private key
+  .........................+++++
+  ........+++++
+  writing new private key to 'privkey.pem'
+  -----
+  You are about to be asked to enter information that will be incorporated
+  into your certificate request.
+  What you are about to enter is what is called a Distinguished Name or a DN.
+  There are quite a few fields but you can leave some blank
+  For some fields there will be a default value,
+  If you enter '.', the field will be left blank.
+  -----
+  Country Name (2 letter code) [AU]:JP
+  State or Province Name (full name) [Some-State]:Kanagawa
+  Locality Name (eg, city) []:Fujisawa
+  Organization Name (eg, company) [Internet Widgits Pty Ltd]:WIDE Project
+  Organizational Unit Name (eg, section) []:KAME Project
+  Common Name (eg, YOUR name) []:Shoichi Sakane
+  Email Address []:sakane@ydc.co.jp
+  
+  Please enter the following 'extra' attributes
+  to be sent with your certificate request
+  A challenge password []:
+  An optional company name []:
+</pre>
+
+<li>Send the PKCS#10 request to the CA.  Then retrieve your authorized
+  certificate and stored into CERT directory.
+  For example to use ssh certificate testing site.  Connect to below URL.
+
+<pre>
+	http://isakmp-test.ssh.fi/cgi-bin/nph-real-cert/cert.pem
+</pre>
+
+  And paste the content of request.pem.
+  Don't forget to input your subjectAltName.
+
+<li>Alternatively, you can sign your certificate by yourself.
+  For example, request.pem is a PKCS#10 request file in PEM format.
+
+<pre>
+  % openssl x509 -req -in request.pem -signkey privkey.pem -out cert.pem
+</pre>
+
+</ol>
+
+<h2>
+Issuer's certificate
+</h2>
+
+You have to put some issuer's certificates into CERT directory.
+It is a unique method to save them in OpenSSL.
+
+For example, the filename of the certificate is ssh-ca1.pem.
+You have to type the following magic word after changing CERT directory.
+
+<pre>
+  % ln -s ssh-ca1.pem `openssl x509 -noout -hash -in ssh-ca1.pem`.0
+</pre>
+
+<!--#include virtual="../index.inc" -->
+</doby>
+</html>

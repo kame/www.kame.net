@@ -1,0 +1,110 @@
+head	1.4;
+access;
+symbols;
+locks
+	sumikawa:1.4; strict;
+comment	@# @;
+
+
+1.4
+date	98.07.29.08.32.02;	author sumikawa;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.07.29.07.27.35;	author sumikawa;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.07.29.06.44.23;	author sumikawa;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.07.29.06.38.01;	author sumikawa;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@added tomato
+@
+text
+@<HTML>
+<TITLE>1998/06/30 kazu's home at Nagatuda</TITLE>
+<BODY>
+$B;22C<T(B: kazu, atarashi, sumikawa<BR>
+$BNAM}(B: $B%b%C%D%!%l%i$H%H%^%H$N%5%i%@@!"%+%k%\%J!<%i(B $B%7%'%U$N5$$^$0$lIw!"$=$iF&$H%U%l%C%7%e%H%^%H$N%9%Q%2%F%#(B $B$=$iF&$L$-!#%J%9$H%H%^%H$N%9%Q%2%C%F%#!"%W%l!<%s%*%`%l%D!"%4%k%4%s%>!<%i!&%A!<%:(B<BR>
+<HR>
+$B%o%$%s(B 1$BK\L\(B<BR>
+BEAUNE-TOUSSAINTS, 1989<BR>
+LOUIS JADOT, France<BR>
+$BI>2A(B: $B$&$[$[!"(B89$BG/$@@$h$s!#$&!A$s!"AG@@2$i$7$$!#(B
+$B%U%i%s%9$N%7%c%k%k!&%I!&%4!<%k6u9A$NGdE9$K$F9XF~(B<BR>
+<A HREF=dsc00011.jpg><IMG SRC=dsc00011.gif></A>
+<A HREF=dsc00013.jpg><IMG SRC=dsc00013.gif></A>
+<HR>
+$B%o%$%s(B 2$BK\L\(B<BR>
+Pessac-Leognan, 1993<BR>
+Chateau Haut Bailly, France<BR>
+$BI>2A(B: $BLnJk$C$?$$!#(B
+$B%0%i%9$r$V$s$V$s2s$7$F$d$C$H0{$a$k46$8!#(B
+$B$+$J$j%P%i%s%90-$7!#(B
+$B%U%i%s%9$N%7%c%k%k!&%I!&%4!<%k6u9A$NGdE9$K$F9XF~(B<BR>
+<A HREF=dsc00017.jpg><IMG SRC=dsc00017.gif></A>
+<A HREF=dsc00020.jpg><IMG SRC=dsc00020.gif></A>
+<BR>
+<HR>
+sumikawa@@kame.net<BR>
+$Id: index.html,v,v 1.1 2001/04/17 03:42:29 itojun Exp $
+</BODY>
+</HTML>
+@
+
+
+1.3
+log
+@hoge
+@
+text
+@d5 1
+a5 1
+$BNAM}(B: $B%b%C%D%!%l%i$H%H%^%H$N%5%i%@@!"%+%k%\%J!<%i(B $B%7%'%U$N5$$^$0$lIw!"%J%9$H%H%^%H$N%9%Q%2%C%F%#!"%W%l!<%s%*%`%l%D!"%4%k%4%s%>!<%i!&%A!<%:(B<BR>
+d10 2
+d18 4
+d24 1
+d27 1
+a27 1
+$Id: index.html,v,v 1.1 2001/04/17 03:42:29 itojun Exp $
+@
+
+
+1.2
+log
+@.
+@
+text
+@d4 6
+d12 4
+d20 1
+a20 1
+$Id: index.html,v,v 1.1 2001/04/17 03:42:29 itojun Exp $
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d2 1
+a2 1
+<TITLE></TITLE>
+d4 2
+@

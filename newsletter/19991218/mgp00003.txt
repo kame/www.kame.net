@@ -1,0 +1,19 @@
+
+最近のトピック(1)
+
+プロジェクト延長
+もう2年おかわり! (- 2002年3月)
+仕様coverage増強、新実装、応用、メンテ
+IPv6 deployment的にこの2年が鍵
+基本合意、微調整中
+
+*BSD merge
+INRIA、NRL、KAME -> メンテ問題などからKAMEでgo
+
+KAME入りPC from ぷらっとホーム
+なんか、結構売れてるらしい。 http://www.plathome.co.jp/
+
+WIDEの激しいIPv6実験
+DV中継(30Mbps x N over IPv6 multicast)
+マルチキャストのむしとり
+

@@ -1,0 +1,97 @@
+/usr/local/bin/webcopy -v -t0 -r5 http://www.imasy.or.jp/~ume/kame/
+date Tue, 12 Jan 1999 09:41:42 GMT
+server www.imasy.or.jp port 80 (/~ume/kame/)
+reference /~ume/kame/ accept
+getting http://www.imasy.or.jp:80/~ume/kame/ 200 OK
+parsing /index.html
+reference images/kame24.jpg accept
+reference images/kame25.jpg accept
+reference images/kame26.jpg accept
+reference images/kame27.jpg accept
+reference images/kame28.jpg accept
+reference images/kame13.jpg accept
+reference images/kame15.jpg accept
+reference images/kame14.jpg accept
+reference images/kame16.jpg accept
+reference images/kame17.jpg accept
+reference images/kame18.jpg accept
+reference images/kame19.jpg accept
+reference images/kame20.jpg accept
+reference images/kame21.jpg accept
+reference images/kamesq1.jpg accept
+reference images/kamesq2.jpg accept
+reference images/kamesq3.jpg accept
+reference images/kame.jpg accept
+reference images/kame2.jpg accept
+reference images/kame3.gif accept
+reference images/kame4.gif accept
+reference images/kame5.gif accept
+reference images/kame6.jpg accept
+reference images/kame7.jpg accept
+reference images/kame8.jpg accept
+reference images/kame9.jpg accept
+reference images/kame11.jpg accept
+reference images/kame12.jpg accept
+reference images/kamesq4.jpg accept
+reference images/kamesq5.jpg accept
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame24.jpg 200 OK
+storing /images/kame24.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame25.jpg 200 OK
+storing /images/kame25.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame26.jpg 200 OK
+storing /images/kame26.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame27.jpg 200 OK
+storing /images/kame27.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame28.jpg 200 OK
+storing /images/kame28.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame13.jpg 200 OK
+storing /images/kame13.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame15.jpg 200 OK
+storing /images/kame15.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame14.jpg 200 OK
+storing /images/kame14.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame16.jpg 200 OK
+storing /images/kame16.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame17.jpg 200 OK
+storing /images/kame17.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame18.jpg 200 OK
+storing /images/kame18.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame19.jpg 200 OK
+storing /images/kame19.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame20.jpg 200 OK
+storing /images/kame20.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame21.jpg 200 OK
+storing /images/kame21.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kamesq1.jpg 200 OK
+storing /images/kamesq1.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kamesq2.jpg 200 OK
+storing /images/kamesq2.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kamesq3.jpg 200 OK
+storing /images/kamesq3.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame.jpg 200 OK
+storing /images/kame.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame2.jpg 200 OK
+storing /images/kame2.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame3.gif 200 OK
+storing /images/kame3.gif
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame4.gif 200 OK
+storing /images/kame4.gif
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame5.gif 200 OK
+storing /images/kame5.gif
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame6.jpg 200 OK
+storing /images/kame6.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame7.jpg 200 OK
+storing /images/kame7.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame8.jpg 200 OK
+storing /images/kame8.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame9.jpg 200 OK
+storing /images/kame9.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame11.jpg 200 OK
+storing /images/kame11.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kame12.jpg 200 OK
+storing /images/kame12.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kamesq4.jpg 200 OK
+storing /images/kamesq4.jpg
+getting http://www.imasy.or.jp:80/~ume/kame/images/kamesq5.jpg 200 OK
+storing /images/kamesq5.jpg
+end

@@ -1,0 +1,20 @@
+--- midway.c.orig	Wed Jul  1 16:13:34 1998
++++ midway.c	Wed Jul  1 16:12:38 1998
+@@ -3613,7 +3613,16 @@
+ 			if (25000000/pre_div[pre]/64 <= pcr)
+ 				break;
+ 		div = pre_div[pre]*(pcr);
++#if 1
++		/*
++		 * the shaper value should be rounded down,
++		 * instead of rounded up.
++		 * (which means "res" should be rounded up.)
++		 */
++		res = (25000000 + div -1)/div - 1;
++#else
+ 		res = 25000000/div-1;
++#endif
+ 		if (res < 0)
+ 			res = 0;
+ 		if (res > 63)
+

@@ -1,0 +1,37 @@
+Return-Path: <itojun@itojun.org>
+Received: from orange.kame.net (orange.kame.net [203.178.141.194])
+	by coconut.itojun.org (8.9.3+3.2W/3.7W) with ESMTP id OAA15327
+	for <itojun@itojun.org>; Fri, 2 Apr 1999 14:46:34 +0900 (JST)
+Received: from itojun.org (root@kame206.kame.net [203.178.141.206])
+	by orange.kame.net (8.9.1+3.1W/3.7W/smtpfeed 0.89) with ESMTP id OAA02588
+	for <core@kame.net>; Fri, 2 Apr 1999 14:46:24 +0900 (JST)
+Received: from kiwi.itojun.org (itojun@localhost [127.0.0.1])
+	by itojun.org (8.8.5/3.7W) with ESMTP id OAA06803;
+	Fri, 2 Apr 1999 14:16:14 +0900 (JST)
+To: core@kame.net
+Subject: sotetsu line to shonandai
+X-Template-Reply-To: itojun@itojun.org
+X-Template-Return-Receipt-To: itojun@itojun.org
+X-PGP-Fingerprint: F8 24 B4 2C 8C 98 57 FD  90 5F B4 60 79 54 16 E2
+cc: itojun@itojun.org
+From: Jun-ichiro itojun Hagino <itojun@iijlab.net>
+X-Mailer: comp (MHng project) version 1998/02/23 14:27:23, by Jun-ichiro Itoh
+MIME-Version: 1.0
+Content-type: text/plain; charset=iso-2022-jp
+Content-transfer-encoding: 7bit
+Content-ID: <top.923030174.6795@cardamom.itojun.org>
+Date: Fri, 02 Apr 1999 14:16:14 +0900
+Message-ID: <6800.923030174@cardamom.itojun.org>
+Sender: itojun@itojun.org
+X-Filter: mailagent [version 3.0 PL56] for itojun@itojun.org
+
+	湘南台行きの相鉄線に乗ってみました。
+	横浜から湘南台まで340円、乗車時間は30分程度です。
+	慶応行きのバス停のすぐ近くに地下道出口があるので、雨のときは
+	快適と思います。
+
+	帰りの横浜行き終電は23:30頃のようです。それ以降は二俣川止まり。
+
+	もうふた駅くらい伸ばして大学まで行ってくれればいいのにねえ。
+
+itojun

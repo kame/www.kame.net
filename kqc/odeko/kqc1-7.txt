@@ -1,0 +1,93 @@
+Return-Path: sakane@mist.wide.ydc.co.jp
+Received: from orange.kame.net by galilei.v6.hitachi.co.jp (8.8.5/3.4W-EBINA) id MAA10353 for <sumikawa@v6.hitachi.co.jp>; Fri, 28 Aug 1998 12:41:40 +0900 (JST)
+Received: from mist.wide.ydc.co.jp (mach117.xnet.com [207.227.19.117])	by orange.kame.net (8.8.8+3.0Wbeta13/3.6W/smtpfeed 0.63) with ESMTP id MAA02040	for <core@kame.net>; Fri, 28 Aug 1998 12:41:38 +0900 (JST)
+Received: (from sakane@localhost)	by mist.wide.ydc.co.jp (8.8.8/3.6Wbeta7) id MAA00399;	Fri, 28 Aug 1998 12:39:49 +0900 (JST)
+Date: Fri, 28 Aug 1998 12:39:49 +0900 (JST)
+Message-Id: <199808280339.MAA00399@mist.wide.ydc.co.jp>
+From: Ne <sakane@parasite.yokogawa.co.jp>
+To: itojun@iijlab.net
+Cc: onoe@sm.sony.co.jp, sumikawa@ebina.hitachi.co.jp, core@kame.net,
+        itojun@itojun.org
+Subject: Re: KQC 
+In-Reply-To: Your message of "Fri, 28 Aug 1998 09:59:18 JST".	<346.904265958@turmeric.itojun.org>
+Mime-Version: 1.0
+X-Mailer: mnews [version 1.21PL3] 1998-04/12(Sun)
+X-UIDL: beed814df629c33ba24a0ee0f592aa1f
+Content-Type: text/plain; charset=ISO-2022-JP
+
+:>>  2) 同様に、nを用いて一般解を求めなさい
+:>	2*n-3 (n >= 2 の場合)
+:>	全員の記憶を集めるのに最低 (n-1) 回必要
+:>	この時点で全部保持している人は 2人
+:>	残り (n-2) 人は記憶が欠落しているので、充当するのに (n-2) 回必要
+:>	合計 (n-1) + (n-2) = 2*n-3
+:
+:	6人の場合、以下のようにすると8回(2 * n - 4)でいけます。
+
+4回の様な気も。まちがったらごめんなさい？
+
+A(1)	0
+A(2)	1
+A(3)	a b c -> ab ab c -> ab abc abc -> abc abc abc
+        A(3)
+
+A(4)	a b -> ab ab -> abcd abcd
+	c d    ab ab    abcd abcd
+        A(4) -> A(2) -> A(1)
+
+A(5)	a b   -> ab ab   -> abcd abcd   -> abcd abcd        -> abcde abcde
+	c d e    cd cd e    abcd abcd e	   abcd abcde abcde    abcd abcde abcde
+
+	-> abcde abcde
+	   abcde abcde abcde
+
+A(6)	a b c -> ad be cf -> abde abde cf -> abde abdecf abdecf
+	d e f    ad be cf    abde abde cf    abde abdecf abdecf
+        A(6)  -> A(3)
+
+	-> abdecf abdecf abdecf
+	   abdecf abdecf abdecf
+
+A(7)	a b c   -> ad be cf   -> abde abde cf   -> abde abdecf abdecf
+	d e f g    ad be cf g    abde abde cf g    abde abdecf abdecf g
+
+	-> abdecf abdecf abdecf   -> .. -> .. -> ..
+	   abdecf abdecf abdecf g
+
+A(8)	a b c d -> ae bf cg dh -> aebf aebf cgdh cgdh -> aebfcgdh aebfcgdh ...
+	e f g h    ae bf cg dh    aebf aebf cgdh cgdh    aebfcgdh aebfcgdh ...
+        A(8)    -> A(4)        -> A(2)                -> (1)
+
+A(10)	a b c d e -> ag bh ci dj ek -> agbh agbh cidj cidj ek
+	g h i j k    ag bh ci dj ek    agbh agbh cidj cidj ek
+                     A(5)
+	-> agbhcidj agbhcidj agbhcidj agbhcidj ek -> .. -> ..
+	   agbhcidj agbhcidj agbhcidj agbhcidj ek
+
+A(12)	a b c d e f -> ag bh ci dj ek fl -> agbh agbh cidj cidj ekfl ekfl
+	g h i j k l    ag bh ci dj ek fl    agbh agbh cidj cidj ekfl ekfl
+                       A(6)              -> A(3)
+
+        -> agbhcidj abdhcidj agbhcidj agbhcidj ekfl ekfl
+           agbhcidj abdhcidj agbhcidj agbhcidj ekfl ekfl
+
+	-> .. -> ..
+
+n&1==0	a
+0	0
+2	1
+4	2
+6	4
+8	3
+10	6
+12	5
+:	:
+
+n&1==1	a
+1	0
+3	3
+5	5
+7	7
+:	:
+n	n
+

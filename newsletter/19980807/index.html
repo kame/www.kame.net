@@ -1,0 +1,64 @@
+<HTML>
+<TITLE>
+NAT is NOT necessary for IPv6 security
+</TITLE>
+<BODY>
+
+<H2>NAT is NOT necessary for IPv6 security</H2>
+
+Kazu, <A HREF="http://www.kame.net/">KAME Project</A>, 07/08/98
+
+<HR>
+
+Many people believe that NAT(network address translator) is
+necessary for IP security. This is completely wrong.
+
+<P>
+
+Recently, many sites install firewall to protect their security.
+In many cases, NAT is used combined with firewall. This probably lets
+people misunderstand that NAT is essencial for firewall.
+
+<P>
+
+The main purpose of NAT is to save the IP space assigned to site.
+As you know, the current assign policy of IPv4 is really severe. 
+Many sites can't get enough IPv4 space. So, they are drived to use
+private IPv4 addresses.
+
+<P>
+
+To communicate a host with a private address in a site and a host with
+a global address in the Internet, address conversion is
+necessary. This convertion makes one-way connection. That is,
+outgoing connections are OK but incoming connections are rejected.
+
+<P>
+
+This feature is considered useful to protect site security. 
+But it can be accomplished by other technologies. A good example is
+filtering. Again, the point is that NAT is not essential for firewall.
+
+<P>
+
+By the way, one of the biggest advantages in IPv6 is its huge address
+space. Each and every site can get enough IPv6 addresses(by default,
+16bit subnets, each subnet has 64bit identifiers). So, we don't have to
+save IPv6 address space. This means that NAT is completely unnecessary.
+
+<P>
+
+To implement one-way connection for IPv6 site, you can make use of
+filtering. If you want two-way connection environment, just use IPv6
+without filtering. You should understand that the two-way connection
+environment cannot be implemented with IPv4, where NAT is required.
+
+<P>
+
+NAT is necessary evil for IPv4. But NAT is evil itself for IPv6. 
+IPv6 is desired to eliminate any and all NATs in the Internet.
+
+<!--#include virtual="../index.inc" -->
+
+</BODY>
+</HTML>

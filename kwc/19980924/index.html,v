@@ -1,0 +1,114 @@
+head	1.4;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.4
+date	98.10.24.10.58.27;	author sumikawa;	state Exp;
+branches;
+next	1.3;
+
+1.3
+date	98.10.14.19.56.48;	author sumikawa;	state Exp;
+branches;
+next	1.2;
+
+1.2
+date	98.10.14.19.56.22;	author sumikawa;	state Exp;
+branches;
+next	1.1;
+
+1.1
+date	98.10.14.19.52.29;	author sumikawa;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@hoge
+@
+text
+@<HTML>
+<HEAD>
+<TITLE>1998/09/24 KAME's party</TITLE>
+</HEAD>
+<BODY>
+$B;22C<T(B: kazu, sakane, shin, sumikawa<BR>
+$BNAM}(B: $B0l8}%+%D!"@@8%O%`!">F$-D;!"%-%c%Y%D!"(B<BR>
+<HR>
+$B%o%$%s(B 1$BK\L\(B<BR>
+CH$B%i%H%e!<%k(B $B%I%e%S%#(B '94<BR>
+$BI>2A(B:<BR>
+$B%t%#%N%9$d$^$6$-$K$F9XF~!#(B2180$B1_!#(B<BR>
+<BR>
+<A HREF=dsc00265.jpg><IMG SRC=dsc00265.gif></A>
+<A HREF=dsc00266.jpg><IMG SRC=dsc00266.gif></A>
+<HR>
+$B%o%$%s(B 2$BK\L\(B<BR>
+CH$B%b!<%l%k(B $B%U%)%s%5%i%I(B $B%-%e%Y(B $B%U%)%s%5%i%I(B<BR>
+$BI>2A(B:<BR>
+$B%t%#%N%9$d$^$6$-$K$F9XF~!#(B1980$B1_!#(B<BR>
+<A HREF=dsc00268.jpg><IMG SRC=dsc00268.gif></A>
+<A HREF=dsc00267.jpg><IMG SRC=dsc00267.gif></A>
+<HR>
+sumikawa@@kame.net<BR>
+$Id: index.html,v,v 1.1 2001/04/17 03:42:35 itojun Exp $
+</BODY>
+</HTML>
+@
+
+
+1.3
+log
+@hoge
+@
+text
+@d11 1
+a11 1
+$BI>2A(B:
+d19 1
+a19 1
+$BI>2A(B:
+d25 1
+a25 1
+$Id: index.html,v,v 1.1 2001/04/17 03:42:35 itojun Exp $
+@
+
+
+1.2
+log
+@drafts
+@
+text
+@d17 1
+a17 1
+$B%o%$%s(B 1$BK\L\(B<BR>
+d25 1
+a25 1
+$Id: index.html,v,v 1.1 2001/04/17 03:42:35 itojun Exp $
+@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@d3 1
+a3 1
+<TITLE></TITLE>
+d6 8
+d16 6
+a22 1
+<A HREF=dsc00268.jpg><IMG SRC=dsc00268.gif></A>
+d25 1
+a25 1
+$Id: index.html,v,v 1.1 2001/04/17 03:42:35 itojun Exp $
+@

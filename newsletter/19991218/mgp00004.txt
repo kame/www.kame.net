@@ -1,0 +1,20 @@
+
+最近のトピック(2)
+
+NetBSD-current merge (-> 1.5)
+6月末: IPv6 + IPsecマージ完了
+12月頭: IPv6部分だけ最近版にバージョンアップ
+
+OpenBSD-current merge (-> 2.7/3.0)
+12月頭: IPv6マージほぼ完了
+トンネル関係整理中、IPv6 IPsec作業中(OpenBSD IPsec)
+
+FreeBSD-current merge (-> 4.0)
+11月〜: IPv6 + IPsecマージ作業中
+
+BSD/OS merge
+まだ
+
+committers
+freebsd x 3, netbsd x 1, openbsd x 1
+

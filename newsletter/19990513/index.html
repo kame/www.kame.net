@@ -1,0 +1,249 @@
+<HTML>
+<HEAD><TITLE>Connecting to 6bone, with dynamic IPv4 address</TITLE></HEAD>
+<BODY>
+<H1>Connecting to 6bone, with dynamic IPv4 address</H1>
+<A HREF=http://www.itojun.org/>Jun-ichiro itojun Hagino (Itoh)</A>,
+<A HREF=http://www.kame.net/>KAME Project</A>
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:42:19 itojun Exp $</PRE>
+
+<HR>
+<H2>Introduction</H2>
+
+In the <A HREF=../19981224/>previous newsletter</A>,
+we have described how you can connect to the world 6bone
+(worldwide IPv6 experimental network).
+However, the previous newsletter talks mostly about the case where
+you have fixed IPv4 global address.
+This time, we would like to talk about the cases wheree you have
+dynamic IPv4 address, usually assigned dynamically on IPv4 dialup ppp
+connection, from your ISP.
+
+<HR>
+
+<H2>Dynamic IPv4 address and RFC1933 IPv6-over-IPv4 configured tunnel</H2>
+
+<A HREF=ftp://ftp.iij.ad.jp/pub/rfc/rfc1933.txt>RFC1933</A> describes
+IPv6-over-IPv4 configured tunnel, which is the most widely deployed
+mechanism to connect to the world 6bone.
+This uses IPv4 as underlying medium, and establish IPv6-over-IPv4 tunnel
+between two fixed IPv4 global address.
+<P>
+
+There are problems with RFC1933 tunnel,
+for commodity IPv4 users who use IPv4 dialup ppp connection:
+<UL>
+<LI>IPv4 address needs to be fixed for both end of the tunnel.
+	For IPv4 dialup ppp user, it is very hard to get a "fixed" IPv4 address.
+<LI>IPv4 dialup ppp users tend to use NAT router box, to connect multiple
+	nodes in her home using single IPv4 global address given from the ISP.
+	For RFC1933 tunnel, IPv4 address needs to be "global" IPv4 address,
+	not the private IPv4 address (used behind NAT boxes).
+	So, the tunnel endpoint cannot be placed behind the NAT box.
+</UL>
+
+There are several techniques to go around the first problem,
+and few techniques to go around the second problem.
+For the following sections, we first assume that you have IPv4 global address
+assigned to your IPv4/v6 dual stack box (which will become the tunnel endpoint
+and the IPv6 border router for your home).
+In the last section of the document we'll give some hint for NAT box users.
+
+<HR>
+
+<H2>freenet6.net and tunnel broker</H2>
+
+<A HREF=http://www.freenet6.net/>freenet6.net</A>
+and CSELT provides a dynamic tunnel configuration service,
+by using IPv4-accessible webpage.
+When you sign up, they will assign you a fixed IPv6 subnet address to you.
+You can ask them (by using web interface) to establish a
+RFC1933 tunnel dynamically, to your current IPv4 global address.
+<PRE>
+your ISP
+  |
+  | phone line
+  |
+  | IPv4-global-address
+dual stack box
+  | 192.168.0.1
+==+=======================+== 192.168.0.0/24
+  | 192.168.0.2		  | 192.168.0.x
+random other boxes	random other boxes
+</PRE>
+
+This works like this:
+<UL>
+<LI>First, you click the freenet6.net webpage, to sign up for fixed IPv6
+	subnet address.
+	You can use the IPv6 address for your home network,
+	even when you are not connected to the outside.
+	They will even delegate you a domain name (if you are in Japan,
+	it will be like <TT>yourname.jp.freenet6.net</TT>)
+	so that you can publish a IPv6 web server to 6bone.
+<LI>When you wish to connect to outside IPv6 network:
+	<OL>
+	<LI>You will be connecting to your IPv4 ISP.
+		You get a IPv4 global address assigned to you.
+	<LI>Click the webpage to tell your current IPv4 global address to
+		freenet6.net server.
+	<LI>They will configure RFC1933 tunnel toward you, and gives you a
+		shell script for configuration on your side.
+	<LI>Run the shell script on your dual stack box, to configure RFC1933
+		tunnel on your side.
+	</OL>
+</UL>
+
+Consult <A HREF=http://www.freenet6.net/>freenet6.net</A> for more details.
+
+<HR>
+
+<H2>Trumpet dynamic tunnel configuration protocol</H2>
+
+KAME kit includes two programs, <TT>dtcps</TT> and <TT>dtcpc</TT>,
+in <TT>kit/src/dtcp</TT>.
+Installed programs will be placed in <TT>/usr/local/v6/sbin</TT>.
+This implements "Dynamic Tunnel Configuration Protocol", proposed by
+Trumpet.
+The protocol is described in
+<A HREF=http://jazz-1.trumpet.com.au/ipv6-draft/dtcp-draft-prt-13-may-1999.htm>
+this document</A>.
+Those programs implement APOP-like authentication protocol for establishing
+RFC1933 tunnel between two end.
+If you can ask your 6bone upstream to provide dtcp server, you may be
+able to use this.
+<P>
+
+You'll first need to setup a password (shared secret) on the upstream
+so that you can authenticate yourself to the upstream.
+dtcps awaits IPv4 TCP connection from dtcpc, just like pop server awaits
+connection from mailers.
+When connection is made, dtcps will throw a challenge
+(random hexadecimal string).
+dtcpc asks you the password locally, and throw a response
+(keyed MD5 result from challenge and the password).
+dtcps throws the configuration parameter and RFC1933 tunnel will be established.
+<PRE>
+dual stack router	upstream
+(dtcpc)			(dtcps)
+	   --------------->
+		IPv4 TCP connection
+	   <---------------
+		challenge
+	   --------------->
+		response
+	   <---------------
+		the configuration parameter
+	   <-------------->
+		tunnel established
+</PRE>
+
+Current implementation simply configures the tunnel between two end.
+To actually use this, global IPv6 address assignment has to be
+performed offline.
+Also, both end needs to perform routing information exchange.
+<P>
+
+dtcps and dtcpc are written in Ruby scripting language
+(with IPv6 modification), and Ruby needs to be installed beforehand.
+Please use <TT>kit/ports/ruby</TT> for easy installation.
+Manpages are available in KAME kit so consult these for details.
+
+<HR>
+
+<H2>v6tun: IPv6 tunnel over ssh</H2>
+
+For KAME/FreeBSD, you can use v6tun (in <TT>kit/ports/v6tun</TT>).
+This automates "IPv6 tunnel over ssh" configuration toward your 6bone upstream.
+This is not based on RFC1933, but it uses FreeBSD <TT>tun</TT>
+tunnelling device.
+In this case, you'll need an ssh login account on your 6bone upstream.
+Also, you'll need <TT>tun</TT> tunnelling device configured in your kernel.
+<P>
+
+When you use v6tun, v6tun will login to your upstream tunnel endpoint
+using ssh.
+Then, it  will configure IPv6 tunnel over ssh link, like this.
+<PRE>
+dual stack router			upstream
+	   ------------------------------->
+		ssh login
+	   <------------------------------>
+		IPv6 tunnel over ssh
+
+outgoing packet /dev/tun0 ---ssh---> /dev/tun0	
+  v		  ^			v
+tun0 device ------+		     kernel
+</PRE>
+
+<HR>
+
+<H2>Special configuration for NAT box</H2>
+
+If you use NAT box to connect to your IPv4 ISP, your home network is
+something like this:
+<PRE>
+your ISP
+  |
+  | phone line
+  |
+  | IPv4-global-address
+NAT router box
+  | 192.168.0.1
+==+=======================+== 192.168.0.0/24
+  | 192.168.0.2		  | 192.168.0.x
+dual stack box		random other nodes
+</PRE>
+
+Here, you would like to somehow hook the dual stack box (192.168.0.2) to
+the world 6bone, by using RFC1933 tunnel.
+Here are very few possibilities:
+<OL>
+<LI>Replace NAT box with dual stack box.
+<LI>Configure NAT box to statically route IP protocol type 41, to 192.168.0.2
+</OL>
+
+The simplest solution is to dump NAT box, and make dual stack box perform
+both IPv4 NAT and IPv6 router.
+I recommend this because NAT box does too many tricky things
+we cannot even imagine.
+Recent PC UNIX families implement NAT in the kernel.
+KAME kit (for FreeBSD2.2.8 and BSDI3.1) also includes
+home-brew NAT code as well.
+<PRE>
+your ISP
+  |
+  | phone line
+  |
+  | IPv4-global-address
+dual stack box
+  | 192.168.0.1
+==+=======================+== 192.168.0.0/24
+  | 192.168.0.2		  | 192.168.0.x
+			random other nodes
+</PRE>
+For IPv4, you'll be configuring dual stack box to perform NAT for
+network in your home (192.168.0.0/24).
+This is out of the scope of the document so please refer to
+OS-specific documents.
+You'll be configuring RFC1933 tunnel by using your dual stack box,
+and route IPv6 packet for the network in your home.
+<P>
+
+Next solution is to configure your NAT box to statically route IP packet
+with protocol number 41, to your dual stack box (192.168.0.2).
+RFC1933 tunnel uses protocol number 41.
+In this case, you will need other tricky configurations.
+This depends on your network configuration, your NAT box implementation,
+and your IPv6 upstream, so I cannot discuss this in a generic way.
+
+<HR>
+
+<H2>For more information...</H2>
+
+Please consult <A HREF=../19981224/>previous newsletter</A>,
+<A HREF=http://www.ipv6.org/>www.ipv6.org</A>, and
+<A HREF=http://www.freenet6.net/>www.freenet6.net</A> for more details.
+
+<!--#include virtual="../index.inc" -->
+</BODY>
+</HTML>

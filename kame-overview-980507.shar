@@ -1,0 +1,265 @@
+#!/bin/sh
+# This is a shell archive (produced by GNU sharutils 4.2).
+# To extract the files from this archive, save it to some FILE, remove
+# everything before the `!/bin/sh' line above, then type `sh FILE'.
+#
+# Made on 1998-05-13 16:41 JST by <itojun@cardamom.itojun.org>.
+# Source directory was `/usr/home/itojun/paper/9805.msmith-kame'.
+#
+# Existing files will *not* be overwritten unless `-c' is specified.
+#
+# This shar contains:
+# length mode       name
+# ------ ---------- ------------------------------------------
+#    473 -rw-r--r-- default.mgp
+#   3608 -rw-r--r-- kame.mgp
+#
+save_IFS="${IFS}"
+IFS="${IFS}:"
+gettext_dir=FAILED
+locale_dir=FAILED
+first_param="$1"
+for dir in $PATH
+do
+  if test "$gettext_dir" = FAILED && test -f $dir/gettext \
+     && ($dir/gettext --version >/dev/null 2>&1)
+  then
+    set `$dir/gettext --version 2>&1`
+    if test "$3" = GNU
+    then
+      gettext_dir=$dir
+    fi
+  fi
+  if test "$locale_dir" = FAILED && test -f $dir/shar \
+     && ($dir/shar --print-text-domain-dir >/dev/null 2>&1)
+  then
+    locale_dir=`$dir/shar --print-text-domain-dir`
+  fi
+done
+IFS="$save_IFS"
+if test "$locale_dir" = FAILED || test "$gettext_dir" = FAILED
+then
+  echo=echo
+else
+  TEXTDOMAINDIR=$locale_dir
+  export TEXTDOMAINDIR
+  TEXTDOMAIN=sharutils
+  export TEXTDOMAIN
+  echo="$gettext_dir/gettext -s"
+fi
+touch -am 1231235999 $$.touch >/dev/null 2>&1
+if test ! -f 1231235999 && test -f $$.touch; then
+  shar_touch=touch
+else
+  shar_touch=:
+  echo
+  $echo 'WARNING: not restoring timestamps.  Consider getting and'
+  $echo "installing GNU \`touch', distributed in GNU File Utilities..."
+  echo
+fi
+rm -f 1231235999 $$.touch
+#
+if mkdir _sh03489; then
+  $echo 'x -' 'creating lock directory'
+else
+  $echo 'failed to create lock directory'
+  exit 1
+fi
+# ============= default.mgp ==============
+if test -f 'default.mgp' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'default.mgp' '(file already exists)'
+else
+  $echo 'x -' extracting 'default.mgp' '(text)'
+  sed 's/^X//' << 'SHAR_EOF' > 'default.mgp' &&
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%default 1 leftfill, size 2, fore "white", back "black", vfont goth, xfont times-medium-i
+%default 2 size 7, vgap 20, prefix " "
+%default 3 size 2, bar gray70, vgap 10
+%default 4 size 4, fore "white", vgap 30, prefix " "
+%tab 1 size 5, vgap 40, prefix "  ", icon box green 50
+%tab 2 size 4, vgap 40, prefix "      ", icon arc yellow 50
+%tab 3 size 3, vgap 40, prefix "            ", icon arc white 40
+SHAR_EOF
+  $shar_touch -am 0506234398 'default.mgp' &&
+  chmod 0644 'default.mgp' ||
+  $echo 'restore of' 'default.mgp' 'failed'
+  if ( md5sum --help 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'default.mgp:' 'MD5 check failed'
+df442d7d639e7d256523eb514eac0ec4  default.mgp
+SHAR_EOF
+  else
+    shar_count="`LC_ALL= LC_CTYPE= LANG= wc -c < 'default.mgp'`"
+    test 473 -eq "$shar_count" ||
+    $echo 'default.mgp:' 'original size' '473,' 'current size' "$shar_count!"
+  fi
+fi
+# ============= kame.mgp ==============
+if test -f 'kame.mgp' && test "$first_param" != -c; then
+  $echo 'x -' SKIPPING 'kame.mgp' '(file already exists)'
+else
+  $echo 'x -' extracting 'kame.mgp' '(text)'
+  sed 's/^X//' << 'SHAR_EOF' > 'kame.mgp' &&
+%include "default.mgp"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+%nodefault
+%size 7, xfont times-medium-i, vfont min, fore "white", vgap 20
+X
+%center
+X
+X
+KAME Project
+and
+KAME advanced networking kit
+X
+X
+%size 4
+Jun-ichiro "itojun" Itoh
+%xfont "courier", size 3
+itojun@{itojun.org,iijlab.net,kame.net}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+X
+Current situations
+X
+X	*BSD are working on network code separately
+X
+X	In IPv4 days, there was single reference code: Berkeley's BSD
+X	In IPv6/IPsec days:
+X		No reference code, merge is almost impossible
+X
+X	IPv6 stacks from NRL/INRIA:
+X		Snapshot release twice a year - too long
+X		Each *BSD needs to merge by themselves
+X		Each *BSD needs to maintain v6 code separately
+X
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+X
+KAME Project's goals
+X
+%center
+"Revamp sys/net*"
+X
+%leftfill
+X	To provide FREE IPv6 platform for research/commercial use,
+X		Yes, under BSD copyright
+X	To provide FREE IPsec to the world,
+X		Crypto export from Japan is legal
+X	To provide the FREE reference code for advanced internetworking
+X		Advanced queueing, ATM (advanced?), mobility, whatever interesting
+X
+X	Basically, subproject of WIDE
+X
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+X
+Project participants
+X
+X	2 years project (maybe longer)
+X
+X	Core researchers are from:
+X		Fujitsu / Hitachi / IIJlab / NEC / Toshiba / YDC(Yokogawa Digital Computer) / Yokogawa
+X
+X	KAME is the primary job for core researchers
+X		(must work more than 3days/week)
+X	No obligation to employers, just hack away!
+X
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+X
+Platforms
+X
+X	Main platform: FreeBSD 2.2.6-RELEASE
+X		Very nice for daily use
+X		"ports" is important for making IPv6 apps available
+X	Supports: BSDI 3.0 and NetBSD 1.3
+X
+X	Porting to: FreeBSD 3.0-SNAP-980311, and 3.0-current
+X		would like to merge into FreeBSD repository
+X		(otherwise too hard to keep track)
+X
+X	"KAME" was called "hydrangea" until mar98
+X
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+X
+Advantages, disadvantages
+X
+X	NRL:
+X		NRL has newer PF_KEY? (fixed soon)
+X		US export control
+X	INRIA:
+X		INRIA has some userland apps - KAME does too
+X			(thanks to bsd.port.mk)
+X		French export control
+X	KAME:
+X		Kernel code much easier to read (IMHO)
+X		Extensive laptop support
+X		No legal barrier for export from Japan
+X		Implementers are closer to *BSD community
+X
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+X
+Status 1 - implementation
+X
+X	IPv6: stable for more than years
+X	IPsec: transport ready, tunnel being worked
+X	IKE: preliminary version ready, being worked
+X	ATM leased line: okay for v4/v6
+X	v4-v6 translator: ready
+X	ALTQ: trying to merge in
+X	mobile ip: planned
+X	laptop: PAO/wildboar ready
+X	more to come
+X
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+X
+Status 2 - "life on IPv6"
+X
+X	SMTP over IPv6: ready and working well
+X	POP over IPv6: ready
+X	apache6: ready, works as proxy too
+X	nameserver/resolver: ongoing
+X	Practical v6 net:
+X		multihoming: ready and working
+X		autoconfig: working well for long time
+X		filter6: planned
+X		NAT6: we are trying to avoid this
+X	netscape6: planned
+X	what others?
+X		X11 over IPv6?
+X
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+X
+Releasing plans
+X
+X	SNAP: for hackers, once a week
+X	STABLE: for more broader public, twice a month
+X	RELEASE: official (for boss), twice a year
+X
+X	merge: to *BSD, if they permits
+X		We can maintain for FreeBSD (and other *BSD if time allows)
+SHAR_EOF
+  $shar_touch -am 0507134898 'kame.mgp' &&
+  chmod 0644 'kame.mgp' ||
+  $echo 'restore of' 'kame.mgp' 'failed'
+  if ( md5sum --help 2>&1 | grep 'sage: md5sum \[' ) >/dev/null 2>&1 \
+  && ( md5sum --version 2>&1 | grep -v 'textutils 1.12' ) >/dev/null; then
+    md5sum -c << SHAR_EOF >/dev/null 2>&1 \
+    || $echo 'kame.mgp:' 'MD5 check failed'
+b740577b0a315494f69917f74267c0f0  kame.mgp
+SHAR_EOF
+  else
+    shar_count="`LC_ALL= LC_CTYPE= LANG= wc -c < 'kame.mgp'`"
+    test 3608 -eq "$shar_count" ||
+    $echo 'kame.mgp:' 'original size' '3608,' 'current size' "$shar_count!"
+  fi
+fi
+rm -fr _sh03489
+exit 0

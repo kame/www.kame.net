@@ -1,0 +1,69 @@
+<HTML>
+<HEAD><TITLE>Which address to put onto DNS database?</TITLE></HEAD>
+<BODY>
+<H1>Which address to put onto DNS database?</H1>
+<A HREF=http://www.itojun.org/>Jun-ichiro itojun Hagino (Itoh)</A>,
+<A HREF=http://www.kame.net/>KAME Project</A>
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:42:24 itojun Exp $</PRE>
+
+<HR>
+
+There are way too many kinds of IPv6 addresses exist in IPv6 specifications.
+Some of them are not intended to be listed into global address
+resolution table, like DNS.
+The document tries to summarize those.
+NOTE: this note just summarizes personal view and suggestions.
+Corrections, different opinions are welcome.
+<P>
+
+<DL>
+<DT>Loopback (::1)
+<DD>	Okay to put it in any place as you like.  Usually referred to as
+	"localhost." or "localhost.mycompany.com.".
+<DT>Unspecified (::)
+<DD>	Don't put it into global database.
+<DT>Link-local address (fe80::/10, like fe80::1)
+<DD>	This address is local to single link.  This has no global reachability.
+<DD>	MUST NOT put it into global DNS database.
+<DD>	SHOULD NOT put it into intranet DNS database (only exception is
+	when your intranet has only single link, which is usually untrue).
+<DD>	MAY put it into /etc/hosts.
+<DT>Site-local address (fec0::/10, like fec0::1)
+<DD>	This address is local to single site (i.e. intranet).  Note that
+	specifications are still rather vague about this one.
+<DD>	MUST NOT put it into global DNS database.
+<DD>	MAY put it into intranet DNS database.  Note that you may have trouble
+	handling it if you have connectivity to multiple sites.
+<DD>	MAY put it into /etc/hosts.
+<DT>Global address (2000::/3)
+<DD>	Fine.  Put it anywhere you want.
+<DT>Multicast (ff00::/8)
+<DD>	No opinion, but I would rather not put AAAA records into
+	DNS database (reverse records are okay for me).
+<DD>	Scoped multicast (like node-local, link-local or site-local)
+	does not have global reachability and they MUST NOT be in global
+	DNS database.
+<DT>Anycast
+<DD>	Since anycast addresses are indistinguishable from normal unicast
+	addresses, putting this into DNS raise troubles if client tries to
+	connect to it.  For example, if you have anycast AAAA record for your
+	MX, MTAs may try to connect to your anycast address and fail badly.
+	I would rather not put it into DNS database.
+<DT>IPv4 mapped address (::ffff:0.0.0.0/96, like ::ffff:10.1.1.1)
+<DD>	This address is internal notation for IPv4 connection on top of
+	AF_INET6 socket.  Resolvers will translate A records (or IPv4
+	entries in /etc/host) as necessary into this form.
+<DD>	MUST NOT put it into global DNS, intranet DNS nor /etc/hosts as
+	IPv6 entry (like AAAA record).  Doing this causes lots of trouble.
+<DT>IPv4 compatible address (::0.0.0.0/96, like ::10.1.1.1)
+<DD>	This one is used for IPv6-over-IPv4 automatic tunnelling, as RFC1933
+	specifies.  Because this address is not routable on top of IPv6 cloud
+	(a node MUST directly connect to the address by itself) this one is
+	very special.  I would like to suggest do not use it at all.
+	If you want this feature, use 6to4.
+</DL>
+
+
+<!--#include virtual="../index.inc" -->
+</BODY>
+</HTML>

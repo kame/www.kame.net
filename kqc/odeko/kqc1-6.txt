@@ -1,0 +1,29 @@
+Return-Path: onoe@sm.sony.co.jp
+Received: from orange.kame.net by galilei.v6.hitachi.co.jp (8.8.5/3.4W-EBINA) id LAA10159 for <sumikawa@v6.hitachi.co.jp>; Fri, 28 Aug 1998 11:26:33 +0900 (JST)
+Received: from onoe2.sm.sony.co.jp (root@onoe2.sm.sony.co.jp [133.138.10.2])	by orange.kame.net (8.8.8+3.0Wbeta13/3.6W/smtpfeed 0.63) with ESMTP id LAA01822	for <core@kame.net>; Fri, 28 Aug 1998 11:26:33 +0900 (JST)
+Received: from duplo.sm.sony.co.jp (duplo.sm.sony.co.jp [133.138.10.36]) by onoe2.sm.sony.co.jp (8.9.0/Sony6.1MX) with ESMTP id LAA05475; Fri, 28 Aug 1998 11:26:27 +0900 (JST)
+Received: (from onoe@localhost) by duplo.sm.sony.co.jp (8.8.8/8.8.8) id LAA11706; Fri, 28 Aug 1998 11:26:18 +0900 (JST)
+Date: Fri, 28 Aug 1998 11:26:18 +0900 (JST)
+From: Atsushi Onoe <onoe@sm.sony.co.jp>
+Message-Id: <199808280226.LAA11706@duplo.sm.sony.co.jp>
+To: itojun@iijlab.net
+Cc: sumikawa@ebina.hitachi.co.jp, core@kame.net, itojun@itojun.org
+Subject: Re: KQC 
+In-Reply-To: Your message of "Fri, 28 Aug 1998 09:59:18 +0900"	<346.904265958@turmeric.itojun.org>
+References: <346.904265958@turmeric.itojun.org>
+X-Mailer: Cue version 0.2 (980810-1527/onoe)
+Mime-Version: 1.0
+X-UIDL: d7a436589167479c4705461d632d36b1
+Status: U
+Content-Type: Text/Plain; charset=iso-2022-jp
+Content-Transfer-Encoding: 7bit
+
+> >>  2) 同様に、nを用いて一般解を求めなさい
+> >	2*n-3 (n >= 2 の場合)
+> 	6人の場合、以下のようにすると8回(2 * n - 4)でいけます。
+
+さすが計算機工学科!
+これって実は最悪条件での sort 問題だったりする?
+
+尾上@電気工学科
+

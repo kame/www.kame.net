@@ -1,0 +1,76 @@
+<HTML>
+<TITLE>Configuring KAME with IPsec: automated keying</TITLE>
+<BODY>
+
+<H2>Configuring KAME with IPsec: automated keying</H2>
+
+Jun-ichiro itojun Itoh,
+<A HREF="http://www.kame.net/">KAME Project</A>
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:42:18 itojun Exp $</PRE>
+
+<HR>
+
+<STRONG>CAVEAT:</STRONG>
+<TT>racoon</TT> IKE daemon needs further stabilization.
+
+<HR>
+
+<H2>Configuration step-by-step</H2>
+<OL>
+<LI>Get two machines to play with. 
+	Let us call them <TT>alice.kame.net</TT> and <TT>bob.kame.net</TT>.
+
+<LI>Install latest KAME SNAP kit into those two machines.
+
+<LI>invoke the following in <TT>kit/src/racoon</TT>:
+<PRE>
+	% ./configure
+	% make
+	# make install
+</PRE>
+Copy <TT>racoon</TT> configuration file into <TT>/etc</TT>, and make it
+readable only to <TT>root</TT> (i.e. <TT>chmod 600 /etc/foo.conf</TT>).
+
+<LI>Configure the following <TT>sysctl</TT> MIBs:
+<PRE>
+	sysctl -w net.inet.ipsec.def_policy=2
+	sysctl -w net.inet.ipsec.esp_trans_deflev=3
+	sysctl -w net.inet.ipsec.ah_trans_deflev=3
+</PRE>
+If you would like an IPv6 IPsec, configure the following too:
+<PRE>
+	sysctl -w net.inet6.ipsec6.def_policy=2
+	sysctl -w net.inet6.ipsec6.esp_trans_deflev=3
+	sysctl -w net.inet6.ipsec6.ah_trans_deflev=3
+</PRE>
+
+<LI>Invoke <TT>racoon</TT> on both side:
+<PRE>
+	# racoon -f ibm.conf			(daemon)
+	# racoon -f ibm.conf -d 0xffffffff	(debug mode, foreground)
+</PRE>
+NOTE: <TT>racoon</TT> dislikes signals, and you cannot move <TT>racoon</TT>
+to the background using ctrl-Z.
+
+<LI>
+
+片方のホストで:
+5. SAをつくらせる
+	# ping -A machineB.kame.net	(AHだけ)
+	# ping -E machineB.kame.net	(ESPだけ)
+	# ping -EA machineB.kame.net	(ESP/AH両方欲しいとき)
+6. しばらく待つとSAが設定される(はず)。
+   racoonをdebug modeであげてる場合わかりやすい。
+	# setkey -D
+7. telnet machineB.kame.netとかやるとひねって出て行く
+	ポリシ設定が3(IFAVAIL)なので、「SAがあれば使う」
+8. SAの寿命がきたときに通信していると、ちょっと刺さるかもしれないけど、
+   自動更新されるはず
+
+えんじょい。
+
+itojun
+<!--#include virtual="../index.inc" -->
+
+</BODY>
+</HTML>

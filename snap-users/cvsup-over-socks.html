@@ -1,0 +1,56 @@
+<HTML>
+<HEAD><TITLE>cvsup over socks</TITLE></HEAD>
+<BODY>
+<H1>cvsup over socks</H1>
+
+<PRE>$Id: cvsup-over-socks.html,v 1.1 2001/04/17 03:42:13 itojun Exp $</PRE>
+
+Contributed by Tomomi Suzuki, translated by Jun-ichiro itojun Itoh
+
+<HR>
+
+<H2>Setting up a socks server</H2>
+Ask your firewall administrator, to let tcp port 5999 go through
+via socks server.
+
+<H2>Installing client software</H2>
+perform <TT>pkg_add</TT> on your FreeBSD box for the following binary
+distribution packages:
+<UL>
+<LI><TT>devel/cvsup-15.3.tgz</TT>
+<LI><TT>lang/modula-3-lib-3.6.tgz</TT>
+<LI><TT>lang/modula-3-socks-1.0.tgz</TT>
+</UL>
+
+<H2>Configuring client software</H2>
+Make sure that your hostname is resolvable.
+For example, add host name and IP addrses for your host into
+<TT>/etc/hosts</TT>, configure DNS servers, and so forth.
+If <TT>gethostbyaddr</TT> fails it won't work.
+<P>
+
+Write <TT>/usr/local/etc/m3socks.conf</TT>, as below:
+<PRE>
+	domain your.domain.com
+	nameserver ip.address.for.external-dns-server
+	findserver No
+	direct *.your.domain.com
+	sockd @=ip.address.for.socks-server 0.0.0.0 0.0.0.0
+</PRE>
+see manpage for <TT>m3socks.conf</TT> for detail.
+
+<H2>Sync your source tree</H2>
+Perform the following command:
+<PRE>
+% m3socks cvsup -g -L 2 kame-freebsd-supfile
+</PRE>
+
+<HR>
+
+Comments should be shared among
+<A HREF=mailto:snap-users@kame.net>snap-users@kame.net</A>.<BR>
+Contacting developers:
+<A HREF=mailto:snap-admin@kame.net>snap-admin@kame.net</A>.
+
+</BODY>
+</HTML>

@@ -1,0 +1,166 @@
+<HTML>
+<HEAD><TITLE>KAME-snap hacker's guide</TITLE></HEAD>
+<BODY>
+<H1>KAME-snap hacker's guide</H1>
+
+<PRE>$Id: hack.html,v 1.1 2001/04/17 03:42:13 itojun Exp $</PRE>
+
+<HR>
+<H2>Scope of the document</H2>
+This document describes how you can:
+<UL>
+<LI>obtain releases,
+<LI>getting commit notifications
+<LI>getting buildlab failure results
+<LI>browse source code repository,
+<LI>contribute the KAME project, and 
+</UL>
+
+<HR>
+<H2>obtaining releases</H2>
+
+There are severay ways to obtain KAME snapshot kit.
+
+<H2><A NAME=ftp>ftp</A></H2>
+(SNAP kit generated once a week, on mondays)<BR>
+visit <A HREF=ftp://ftp.kame.net/pub/kame/snap/><TT>
+ftp://ftp.kame.net/pub/kame/snap/</TT></A>.
+
+<H2><A NAME=anoncvs>anonymous CVS</A></H2>
+(always you can fetch the latest)<BR>
+You can make your working directory in sync
+with the master repository, by using cvs with anonymous "pserver" connection.
+See the following files for complete description.
+<UL>
+<LI>All platforms: <A HREF=http://www.kame.net/dev/cvsweb.cgi/kame/INSTALL.anoncvs?cvsroot=kame>kame/INSTALL.anoncvs</A>
+</UL>
+
+There are mirror servers available:
+<UL>
+<LI><A HREF=http://www.pasta.cs.uit.no/Pasta/virtual.html><TT>http://www.pasta.cs.uit.no/Pasta/virtual.html</TT></A>
+</UL>
+
+<H2><A NAME=cvsup>cvsup</A></H2>
+(always you can fetch the latest)<BR>
+You can make your working directory in sync
+with the master repository, by using cvsup.
+<P>
+
+Install "cvsup" by using FreeBSD packages (binary package installation kit).
+Use the configuration file below, with some <TT>#</TT> sign edits:
+<UL>
+<LI>All platforms (gets everything we have, except BSDI):
+	<A HREF=kame-supfile><TT>kame-supfile</TT></A>
+</UL>
+
+<P>
+
+To obtain the current snapshot, perform the following command:
+<PRE>
+% cvsup -g -L 2 kame-supfile
+</PRE>
+You can safely invoke the command from <TT>cron</TT> and
+similar tools.
+<P>
+
+For cvsup over socks, please <A HREF=cvsup-over-socks.html>
+see the separate page</A>.
+
+There are mirror servers available:
+<UL>
+<LI><A HREF=http://www.pasta.cs.uit.no/Pasta/virtual.html><TT>http://www.pasta.cs.uit.no/Pasta/virtual.html</TT></A>
+</UL>
+
+<H2><A NAME=cvsweb>cvsweb</A></H2>
+You can browse KAME source code tree by using cvsweb interface.
+It is available at the following locations.
+<UL>
+<LI><A HREF=http://www.kame.net/dev/cvsweb.cgi><TT>http://www.kame.net/dev/cvsweb.cgi</TT></A> (primary)
+<LI><A HREF=http://www.pasta.cs.uit.no/Pasta/virtual.html><TT>http://www.pasta.cs.uit.no/Pasta/virtual.html</TT></A>
+<LI><A HREF=http://cvsup.imasy.or.jp/cgi-bin/cvsweb.cgi/><TT>http://cvsup.imasy.or.jp/cgi-bin/cvsweb.cgi/</TT></A>
+</UL>
+
+<HR>
+<H2>getting commit notifications</H2>
+You can get commit notification emails by contacting
+<A HREF=mailto:majordomo@kame.net>majordomo@kame.net</A>,
+with the following email content:
+<UL>
+<LI><STRONG>subscribe cvs-kame</STRONG>:
+	KAME change notifications for all platforms.
+</UL>
+
+Please DO NOT raise discussions on the above mailing lists.
+Discussions must be raised on snap-users mailing list, or on
+<A HREF=http://www.kame.net/dev/query-pr-summary.cgi>our bug database</A>.
+
+<HR>
+<H2>getting buildlab failure results</H2>
+KAME project runs a facility called "build lab".
+At build lab, we compile KAME tree on various platforms, every 3 hours or so.
+You can get failure result notification by contacting
+<A HREF=mailto:majordomo@kame.net>majordomo@kame.net</A>,
+with the following email content:
+<UL>
+<LI><STRONG>subscribe buildlab</STRONG>:
+	KAME buildlab failure results
+</UL>
+
+Please DO NOT raise discussions on the above mailing lists.
+Discussions must be raised on snap-users mailing list, or on
+<A HREF=http://www.kame.net/dev/query-pr-summary.cgi>our bug database</A>.
+
+<HR>
+<H2>web resources to track the development</H2>
+
+<UL>
+<LI>cvsweb: <A HREF=http://www.kame.net/dev/cvsweb.cgi>
+	<TT>http://www.kame.net/dev/cvsweb.cgi</TT></A>.
+<LI>browse GNATS bug database:
+	<A HREF=http://www.kame.net/dev/query-pr-summary.cgi>
+	<TT>http://www.kame.net/dev/query-pr-summary.cgi</TT></A>
+<LI>submit GNATS bug report:
+	<A HREF=http://www.kame.net/dev/send-pr.html>
+	<TT>http://www.kame.net/dev/send-pr.html</TT></A><BR>
+	<STRONG>Be sure to
+	<A HREF=http://www.kame.net/dev/query-pr-summary.cgi>browse the
+	existing reports</A> before submitting one!
+	</STRONG>
+</UL>
+
+<HR>
+<H2>contributing the KAME project</H2>
+
+<DL>
+<DT><STRONG>Supplying bugfix patches.</STRONG>
+<DT><STRONG>Contributing new code modules.</STRONG>
+<DD>	To avoid legal matters, your source must obey the
+	<A HREF=http://www.kame.net/dev/cvsweb.cgi/kame/COPYRIGHT>WIDE copyright notice</A>,
+	or more or less the same form such as Berkeley's, or maybe GPL2.
+
+<DT><STRONG>Making software packages into v6-ready form.</STRONG>
+<DD>	We are trying to collect v6-ready applications.
+	It is recommended that you submit v6-ready application as a style of
+	<A HREF=http://www.freebsd.org/>FreeBSD</A>-ports.
+<DD>	For example, you can see <TT>kit/ports/sendmail6</TT> in
+	the current distribution kit.
+
+<DT><STRONG>Making drivers ready for IPv6 support.</STRONG>
+<DD>	Network interface card drivers need a small patch to become IPv6-ready.
+	You can contribute by making the patch.
+
+<DT><STRONG>Provide developers with necessery hardwares.</STRONG>
+<DT>let developers use your hardware for a while.
+
+<DT><STRONG>Give developers a feast (free lunch/dinner).</STRONG>
+</DL>
+
+<HR>
+
+Comments should be shared among
+<A HREF=mailto:snap-users@kame.net>snap-users@kame.net</A>.<BR>
+Contacting developers:
+<A HREF=mailto:snap-admin@kame.net>snap-admin@kame.net</A>.
+
+</BODY>
+</HTML>

@@ -1,0 +1,36 @@
+<HTML>
+<BODY>
+<H1>unified-ipv6 issues</H1>
+Jun-ichiro itojun Hagino, KAME project
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:42:21 itojun Exp $</PRE>
+
+<HR>
+There has been unified-ipv6 project underway, since winter 1998 (IIRC).
+This project aims to make a "take the best part" IPv6 implementation from
+NRL, INRIA and KAME implementation.
+This was needed because if we have 3 IPv6 implementations and 4 *BSD operating
+systems we will get 12 different IPv6-ready operating systems, which is a 
+huge mess and it raises big portability problem.
+<P>
+
+After half year of struggle on manpower and design issues
+(apparently 3 IPv6 code are based on very different designs),
+the situation changed a bit.
+<UL>
+<LI>NRL decided to concentrate onto IPsec.
+<LI>INRIA will be doing their researches on top of KAME code.
+<LI>KAME will be adding necessary knobs to support INRIA's experiment.
+</UL>
+
+So, KAME will be producing KAME snapshots, and we label it as
+"unified-ipv6" snapshot.
+This will happen when KAME supports OpenBSD and BSDI4
+(expected to happen in September).
+<P>
+
+We hope to ship unified-ipv6 kit (basically KAME kit), and merge code to
+*BSD platforms sooner.
+
+<!--#include virtual="../index.inc" -->
+</BODY>
+</HTML>

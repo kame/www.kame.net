@@ -1,0 +1,52 @@
+Return-Path: onoe@sm.sony.co.jp
+Received: from orange.kame.net by galilei.v6.hitachi.co.jp (8.8.5/3.4W-EBINA) id JAA09819 for <sumikawa@v6.hitachi.co.jp>; Fri, 28 Aug 1998 09:35:53 +0900 (JST)
+Received: from onoe2.sm.sony.co.jp (root@onoe2.sm.sony.co.jp [133.138.10.2])	by orange.kame.net (8.8.8+3.0Wbeta13/3.6W/smtpfeed 0.63) with ESMTP id JAA01564	for <core@kame.net>; Fri, 28 Aug 1998 09:35:52 +0900 (JST)
+Received: from duplo.sm.sony.co.jp (duplo.sm.sony.co.jp [133.138.10.221] (may be forged)) by onoe2.sm.sony.co.jp (8.9.0/Sony6.1MX) with ESMTP id JAA04693; Fri, 28 Aug 1998 09:35:45 +0900 (JST)
+Received: (from onoe@localhost) by duplo.sm.sony.co.jp (8.8.8/8.8.8) id JAA11555; Fri, 28 Aug 1998 09:35:35 +0900 (JST)
+Date: Fri, 28 Aug 1998 09:35:35 +0900 (JST)
+From: Atsushi Onoe <onoe@sm.sony.co.jp>
+Message-Id: <199808280035.JAA11555@duplo.sm.sony.co.jp>
+To: sumikawa@ebina.hitachi.co.jp
+Cc: core@kame.net
+Subject: Re: KQC
+In-Reply-To: Your message of "Fri, 28 Aug 1998 07:07:27 +0900 (JST)"	<19980828070727X.sumikawa@ebina.hitachi.co.jp>
+References: <19980828070727X.sumikawa@ebina.hitachi.co.jp>
+X-Mailer: Cue version 0.2 (980810-1527/onoe)
+Mime-Version: 1.0
+X-UIDL: 2a8fa924172c2fa275c69c68bbc581e0
+Content-Type: Text/Plain; charset=iso-2022-jp
+Content-Transfer-Encoding: 7bit
+
+> かりごめクイズ倶楽部 第一問。itojunおでこ問題。
+> 
+> itojunのコピーロボットがn-1人いるとします。本人を含めて、n人のitojunは
+> おでこをくっつけることによって、記憶を共有します。さて、ここで全員が全
+> 員の記憶を共有したいといます。
+> 
+>  1) n=5 のとき、最低何回おでこをくっつないといけないでしょうか？
+> 
+>  2) 同様に、nを用いて一般解を求めなさい
+
+	2*n-3 (n >= 2 の場合)
+
+	全員の記憶を集めるのに最低 (n-1) 回必要
+	この時点で全部保持している人は 2人
+	残り (n-2) 人は記憶が欠落しているので、充当するのに (n-2) 回必要
+	合計 (n-1) + (n-2) = 2*n-3
+
+ 3) 記憶は段々薄れるので孫記憶(2回伝達したもの)が限界とします。この場合
+    何回必要ですか? またどうやって伝達すれば良いですか?
+
+	うーん、つまらん。
+	2) と同じ
+	元祖(じゃなくてもいいけど)itojun が走り回ればよろしい。
+
+ 4) 他に sumikawa ロボットが m人いるとします。sumikawa ロボットは一回に
+    2人分の記憶しか伝達することができません。つまり 2人分もらって 2人分
+    渡すのが限界になります。このとき n、m を用いておでこをくっつける回数
+    の一般解を求めなさい
+
+	# ごめん、答わからん。
+
+尾上
+

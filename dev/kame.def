@@ -1,0 +1,39 @@
+#	$Id: kame.def,v 1.1 2001/04/17 03:42:56 itojun Exp $
+#
+# Perl definitions!
+#
+$gnhow='mail';
+$gnemail='kame-bugs@kame.net';
+$gnsubmitter='net';
+@gncategory=("sys", "kit", "bsdi", "fbsd2", "fbsd3", "netbsd", "openbsd");
+$gnrelease="www-send-pr: 1.0";
+#  when $gnhow != 'mail'
+$gnroot="/usr/local/libexec/gnats";
+$gnbin="/usr/local/bin";
+#
+# Definition of parts of the page.
+#
+#  $gnsp - sendpr page
+#
+$gnsptitle="Submit a problem report to the FreeBSD Project";
+#$gnspbody="bgcolor=FFFFFF";
+$gnspfirst="freebsdsp.first";
+$gnsplast="freebsdsp.last";
+$gnspsubmit="Submit Problem Report";
+$gnspreset="Reset";
+$gnspaskenv="Environment (output of \"uname -a\" on the problem machine)";
+$gnspaskrel="Which FreeBSD Release You Are Using ";
+#$gnspdescription = "";
+$gnsptacols = "72";
+$gnsptarows = "6";
+#
+#
+#  $gnsprep - sendpr reply page from dosendpr.cgi
+#
+$gnspreptitle = "Thank You for the problem report";
+#$gnsprepbody= "bgcolor=FFFFFF";
+$gnspreppage = "freebsdsp.res";
+
+
+# return value;
+1;

@@ -1,0 +1,12 @@
+traceroute to plt6-gate0.iij-america.net (216.98.98.82), 30 hops max, 40 byte packets
+ 1  147.73.128.2 (147.73.128.2)  2.262 ms
+ 2  nss5-ietf-a8-0-4.psc.net (192.88.115.157)  2.199 ms
+ 3  atm0-0-3.pit-bb1.cerf.net (134.24.137.21)  4.079 ms
+ 4  s2-2.phl-bb2.cerf.net (134.24.33.34)  8.535 ms
+ 5  pos4-0-0-155M.nj-bb1.cerf.net (134.24.46.169)  9.800 ms
+ 6  sprint-nap.iij.net (192.157.69.65)  9.628 ms
+ 7  NewYork-bb0.IIJ.Net (216.98.96.245)  12.216 ms
+ 8  NewYork-bb1.IIJ.Net (216.98.97.2)  13.252 ms
+ 9  PaloAlto-bb0.IIJ.Net (202.232.0.237)  78.047 ms
+10  PaloAlto00.IIJ.Net (202.232.1.82)  77.229 ms
+11  plt6-gate0.iij-america.net (216.98.98.82)  77.211 ms

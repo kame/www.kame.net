@@ -1,0 +1,10 @@
+redirect /~kazu http://orange.kame.net/~kazu
+redirect /~fujisawa http://orange.kame.net/~fujisawa
+redirect /~sakane http://orange.kame.net/~sakane
+redirect /~itojun http://oragne.kame.net/~itojun
+redirect /~shin http://orange.kame.net/~shin
+redirect /~jinmei http://orange.kame.net/~jinmei
+redirect /~sumikawa http://orange.kame.net/~sumikawa
+redirect /~k-sugyou http://orange.kame.net/~k-sugyou
+
+AddType application/x-httpd-cgi .cgi

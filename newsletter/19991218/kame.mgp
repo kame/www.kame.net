@@ -1,0 +1,257 @@
+%%%%%%%%%%INCLUDE default.mgp
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% "tfont" defs in this part is for those who have downloaded Microsoft
+%% TrueType fonts (or those who mounting Windows partition from your UNIX
+%% partiton).
+%% those are available at: http://microsoft.com/typography/fontpack/default.htm
+%% and they require Windows lisence to extract the archive.
+%%
+%% If you got Computer Modern fonts in TrueType format, you may want to
+%% use the following settings:
+%%	"cmss10.ttf" for standard, "cmssbx10.ttf" for thick,
+%%	"cmtt10.ttf" for typewriter
+%% CM fonts are avaiable at CTAN mirros, pub/CTAN/fonts/cm/ps-type1/bakoma/ttf.
+%% unlike MS ones, it does not require Windows license!
+%%
+%% see README.fonts{,.jp} for more detailed milage you take.
+%%
+%deffont "standard" xfont "helvetica-medium-r", vfont "goth", tfont "arial.ttf"
+%deffont "thick" xfont "helvetica-bold-r", vfont "goth", tfont "arialbd.ttf"
+%deffont "typewriter" xfont "courier-medium-r", vfont "goth", tfont "courbd.ttf"
+%deffont "example" xfont "courier-medium-r", vfont "goth", tfont "courbd.ttf", size 4
+%%
+%% Default settings per each line numbers.
+%%
+%default 1 leftfill, size 2, fore "white", font "thick", back "black"
+%default 2 size 7, vgap 10, prefix " "
+%default 3 size 2, bar "gray70", vgap 10
+%default 4 size 5, fore "black", vgap 30, prefix " ", font "standard"
+%%
+%% Default settings that are applied to TAB-indented lines.
+%%
+%tab 1 size 5, vgap 40, prefix "  ", icon box "green" 50, fore "white"
+%tab 2 size 4, vgap 40, prefix "      ", icon arc "yellow" 50, fore "white"
+%tab 3 size 3, vgap 40, prefix "                  ", icon arc "white" 40, fore "white"
+%%%%%%%%%%INCLUDE-END default.mgp
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+%nodefault
+%size 7, font "standard", vgap 20, fore "black", back "white"
+
+
+
+%center, font "thick"
+KAMEプロジェクト近況報告
+%newimage "EMBEDDIR/kame-anime-big.jpg"
+
+%size 4, font "standard"
+萩野純一郎
+%font "typewriter"
+itojun@{iijlab.net,kame.net}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+
+KAMEプロジェクトとは?
+
+	*BSDに、BSD licenseでIPv6/IPsecを実装しよう
+	WIDEのネットワーク研究コードベース
+
+	WIDE+7社のコンソーシアム
+	8人のcoreメンバ、数多くのおにいさん達
+			kazu sumikawa sakane itojun fujisawa k-sugyou jinmei shin (時計まわり)
+
+	1998年4月 - 2000年3月(当初予定)
+
+	http://www.kame.net/
+
+	サポートしてるプラットフォーム
+		bsdi3 bsdi4 netbsd141 openbsd26 freebsd228 freebsd33
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+
+最近のトピック(1)
+
+	プロジェクト延長
+		もう2年おかわり! (- 2002年3月)
+			仕様coverage増強、新実装、応用、メンテ
+			IPv6 deployment的にこの2年が鍵
+		基本合意、微調整中
+
+	ぷらっとホーム KAME/{Free,Net}BSD入りPC
+		なんか、結構売れてるらしい。 http://www.plathome.co.jp/
+
+	WIDEの激しいIPv6実験
+		DV中継(30Mbps x N over IPv6 multicast)
+		マルチキャストのむしとり、安定化
+
+	*BSD merge
+		INRIA、NRL、KAME -> メンテ問題などからKAMEでgo
+		バグ情報の行き来、大変だけど嬉しい
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+
+merge
+
+	NetBSD-current merge (-> 1.5)
+		6月末: IPv6 + IPsecマージ完了
+		12月頭: IPv6部分だけ最近版にバージョンアップ
+
+	OpenBSD-current merge (-> 2.7/3.0)
+		12月頭: IPv6マージほぼ完了
+		トンネル関係整理中、IPv6 IPsec作業中(OpenBSD IPsec)
+
+	FreeBSD-current merge (-> 4.0)
+		11月〜: IPv6 + IPsecマージ作業中
+
+	BSD/OS merge
+		まだ、4.1後?
+
+	committers
+		freebsd x 3, netbsd x 1, openbsd x 1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+
+そのほかお知らせ
+
+	古いSNAP/STABLE usersのみなさんへ
+		たくさん虫とってます(incl. API/security)
+		なるべく最新の方が幸せ
+
+	IPv6/v4対応アプリケーション書き方/改造しかた講座
+		jus主催、www.jus.or.jp
+		2/17(木)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%page
+
+コンタクト
+
+	snap-users@kame.net (英語)
+	http://www.kame.net/ - send-pr interface(英語)
+	core@kame.net
+		*内緒の場合のみ* 開発者(日本語/英語)
+	secretary@kame.net
+		license questions、press(日本語/英語)
+
+	「emacsがうまく動きません」
+		http://www.hogebsd.org/
+	「6boneに繋ぎたいんですけど」
+		http://www.v6.wide.ad.jp/ -> 6bone-jp
+	その他IPv6一般
+		http://www.ipv6.org/
+	それっぽいひとの居るところ
+		6bone-jp@wide.ad.jp, ipv6-jp@jp.freebsd.org等 (日本語/英語)
+		tech-net@netbsd.org, tech@openbsd.org等 (英語)
+
+%embed "kame-anime-big.jpg"
+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
+IHH`****`"BBB@`HHHH`****`"BBB@`HHHH`****`"BBB@`HHHH`__]FB
+`
+%endembed

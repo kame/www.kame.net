@@ -1,0 +1,18 @@
+KAME plush toys status
+$Id: kamenui.txt,v 1.1 2001/04/17 03:43:28 itojun Exp $
+
+
+$12 a piece
+
+total: total # of kame a person will bring into San Diego
+sold: total # of kame actually sold already
+rsvd: # of kame reserved for sale
+left: kame available for sale (not reserved, not sold)
+
+
+total	sold	rsvd	left
+---	---	---	---	---			---
+10	10	10	0	itojun (Sheraton)	fink marc(7) francis(2)
+10	10	0	0	jinmei (RR)		sold out
+12	0	0	12	ayaya/yuo (Sheraton)
+13	1	0	12	kawano (Sheraton)

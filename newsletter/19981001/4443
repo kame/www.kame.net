@@ -1,0 +1,53 @@
+Return-Path: <shin@nd.net.fujitsu.co.jp>
+Received: from orange.kame.net (orange.kame.net [203.178.141.194])
+	by coconut.itojun.org (8.8.8+3.0Wbeta12/3.6W) with ESMTP id TAA05469
+	for <itojun@itojun.org>; Wed, 30 Sep 1998 19:27:54 +0900 (JST)
+Received: from localhost.nd.net.fujitsu.co.jp (kame214.kame.net [203.178.141.214])
+	by orange.kame.net (8.8.8+3.0Wbeta13/3.6W/smtpfeed 0.63) with ESMTP id TAA17831
+	for <core@kame.net>; Wed, 30 Sep 1998 19:27:52 +0900 (JST)
+Received: from localhost (localhost.kame.net [127.0.0.1])
+	by localhost.nd.net.fujitsu.co.jp (8.8.8/3.6W) with ESMTP id TAA18387;
+	Wed, 30 Sep 1998 19:27:38 +0900 (JST)
+To: core@kame.net
+Cc: bergamo@CSELT.IT, ipv6_faq@v6.sfc.wide.ad.jp
+Subject: Re: KAME faith 
+In-Reply-To: Your message of "Wed, 30 Sep 1998 19:11:27 +0900"
+	<5034.907150287@coconut.itojun.org>
+References: <5034.907150287@coconut.itojun.org>
+X-Mailer: Mew version 1.93b38 on Emacs 19.28 / Mule 2.3 (SUETSUMUHANA)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <19980930192738J.shin@nd.net.fujitsu.co.jp>
+Date: Wed, 30 Sep 1998 19:27:38 +0900
+From: Yoshinobu Inoue (=?ISO-2022-JP?B?GyRCMGY+ZU5JPy4bKEI=?=) 
+	<shin@nd.net.fujitsu.co.jp>
+X-Dispatcher: imput version 980905(IM100)
+Lines: 25
+X-Filter: mailagent [version 3.0 PL56] for itojun@itojun.org
+
+Hello, sergio,
+
+Thanks for trying KAME.
+
+> >"IPv6 packets destined to the IPv6 address block are tossed up to TCP
+> >stack by KAME if 'keepfaith' is on".
+> >What is and where is "keepfaith"?
+
+That is one of sysctl variable which controls system configurations in
+KAME, dynamically, and it decides if faith functionality is enabled or
+not.
+
+> 	Try
+> 	# sysctl -w net.inet6.ip6.keepfaity=1
+
+There is small typo, at end of valiable name.
+The following should be right.
+
+ 	# sysctl -w net.inet6.ip6.keepfaith=1
+
+> 	as root.
+> 
+> itojun
+
+Yoshinobu Inoue

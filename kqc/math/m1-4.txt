@@ -1,0 +1,55 @@
+Received: from tsbgw.wide.toshiba.co.jp (tsbgw.wide.toshiba.co.jp [202.249.10.123])
+	by shuttle.wide.toshiba.co.jp (8.9.1+3.1W/8.9.1) with ESMTP id LAA19152
+	for <jinmei@shuttle.wide.toshiba.co.jp>; Mon, 17 Jul 2000 11:24:21 +0900 (JST)
+Received: from maltese.wide.toshiba.co.jp (maltese.wide.toshiba.co.jp [202.249.10.99])
+	by tsbgw.wide.toshiba.co.jp (8.9.3/8.9.1) with ESMTP id LAA01871
+	for <jinmei@shuttle.wide.toshiba.co.jp>; Mon, 17 Jul 2000 11:39:18 +0900 (JST)
+Received: from isl.rdc.toshiba.co.jp (spiffy.isl.rdc.toshiba.co.jp [133.196.10.10])
+	by maltese.wide.toshiba.co.jp (8.9.1/8.9.1) with ESMTP id LAA26870
+	for <jinmei@shuttle.wide.toshiba.co.jp>; Mon, 17 Jul 2000 11:39:18 +0900 (JST)
+Received: from maltese.wide.toshiba.co.jp ([202.249.10.99])
+	by isl.rdc.toshiba.co.jp (8.9.3/8.9.3/8.4) with ESMTP id LAA28288
+	for <jinmei@isl.rdc.toshiba.co.jp>; Mon, 17 Jul 2000 11:39:17 +0900 (JST)
+Received: from tsbgw.wide.toshiba.co.jp (tsbgw.wide.toshiba.co.jp [202.249.10.123])
+	by maltese.wide.toshiba.co.jp (8.9.1/8.9.1) with ESMTP id LAA26866
+	for <jinmei@isl.rdc.toshiba.co.jp>; Mon, 17 Jul 2000 11:39:15 +0900 (JST)
+Received: from orange.kame.net (orange.kame.net [203.178.141.194])
+	by tsbgw.wide.toshiba.co.jp (8.9.3/8.9.1) with ESMTP id LAA01867
+	for <jinmei@isl.rdc.toshiba.co.jp>; Mon, 17 Jul 2000 11:39:15 +0900 (JST)
+Received: from mgo.iij.ad.jp (root@mgo.iij.ad.jp [202.232.15.6])
+	by orange.kame.net (8.9.3+3.2W/3.7W/smtpfeed 1.06) with ESMTP id LAA73062
+	for <core@kame.net>; Mon, 17 Jul 2000 11:39:09 +0900 (JST)
+Received: from ns.iij.ad.jp (root@ns.iij.ad.jp [192.168.2.8])
+	by mgo.iij.ad.jp (8.8.8/MGO1.0) with ESMTP id LAA22180
+	for <core@kame.net>; Mon, 17 Jul 2000 11:39:09 +0900 (JST)
+Received: from fs.iij.ad.jp (root@fs.iij.ad.jp [192.168.2.9]) by ns.iij.ad.jp (8.8.5/3.5Wpl7) with ESMTP id LAA15746 for <core@kame.net>; Mon, 17 Jul 2000 11:39:07 +0900 (JST)
+Received: from localhost (mine.iij.ad.jp [192.168.4.209]) by fs.iij.ad.jp (8.8.5/3.5Wpl7) with ESMTP id LAA20670 for <core@kame.net>; Mon, 17 Jul 2000 11:39:07 +0900 (JST)
+Date: Mon, 17 Jul 2000 11:38:18 +0900 (JST)
+Message-Id: <20000717.113818.85379605.kazu@Mew.org>
+To: core@kame.net
+Subject: Re: [KQC]
+From: Kazu Yamamoto (=?iso-2022-jp?B?GyRCOzNLXE9CSScbKEI=?=)
+ <kazu@iijlab.net>
+In-Reply-To: <y7vg0pa85yb.wl@condor.isl.rdc.toshiba.co.jp>
+References: <y7vn1ji8fp7.wl@condor.isl.rdc.toshiba.co.jp>
+	<20000716.234546.74718191.kazu@Mew.org>
+	<y7vg0pa85yb.wl@condor.isl.rdc.toshiba.co.jp>
+X-Mailer: Mew version 1.95b47 on Emacs 20.6 / Mule 4.0 (HANANOEN)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-2022-jp
+Content-Transfer-Encoding: 7bit
+X-UIDL: m(a!!8@m!!Vfl"!G13"!
+
+From: JINMEI Tatuya / 神明達哉 <jinmei@isl.rdc.toshiba.co.jp>
+Subject: Re: [KQC]
+
+> No. 実数onlyです。
+
+うーむ。オイラーじゃだめか。
+
+すると、パイ乗すると中身がでる根とか定義していいの？
+
+そんなじゃなくて、もっと綺麗な解？
+
+--かず
+

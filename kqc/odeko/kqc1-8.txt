@@ -1,0 +1,30 @@
+Return-Path: sakane@mist.wide.ydc.co.jp
+Received: from orange.kame.net by galilei.v6.hitachi.co.jp (8.8.5/3.4W-EBINA) id MAA10390 for <sumikawa@v6.hitachi.co.jp>; Fri, 28 Aug 1998 12:49:35 +0900 (JST)
+Received: from mist.wide.ydc.co.jp (mach117.xnet.com [207.227.19.117])	by orange.kame.net (8.8.8+3.0Wbeta13/3.6W/smtpfeed 0.63) with ESMTP id MAA02047	for <core@kame.net>; Fri, 28 Aug 1998 12:49:25 +0900 (JST)
+Received: (from sakane@localhost)	by mist.wide.ydc.co.jp (8.8.8/3.6Wbeta7) id MAA00422;	Fri, 28 Aug 1998 12:47:58 +0900 (JST)
+Date: Fri, 28 Aug 1998 12:47:58 +0900 (JST)
+Message-Id: <199808280347.MAA00422@mist.wide.ydc.co.jp>
+From: Ne <sakane@parasite.yokogawa.co.jp>
+To: sakane@parasite.yokogawa.co.jp
+Cc: itojun@iijlab.net, onoe@sm.sony.co.jp, sumikawa@ebina.hitachi.co.jp,
+        core@kame.net, itojun@itojun.org
+Subject: Re: KQC 
+In-Reply-To: Your message of "Fri, 28 Aug 1998 12:39:49 JST".	<199808280339.MAA00399@mist.wide.ydc.co.jp>
+Mime-Version: 1.0
+X-Mailer: mnews [version 1.21PL3] 1998-04/12(Sun)
+X-UIDL: af900675d62db62e3abebc0312fdd6bc
+Content-Type: text/plain; charset=ISO-2022-JP
+
+::>>  2) 同様に、nを用いて一般解を求めなさい
+::>	2*n-3 (n >= 2 の場合)
+::>	全員の記憶を集めるのに最低 (n-1) 回必要
+::>	この時点で全部保持している人は 2人
+::>	残り (n-2) 人は記憶が欠落しているので、充当するのに (n-2) 回必要
+::>	合計 (n-1) + (n-2) = 2*n-3
+::	6人の場合、以下のようにすると8回(2 * n - 4)でいけます。
+:4回の様な気も。まちがったらごめんなさい？
+
+ごめんなさい。忘れて下さい。
+------------
+ね
+

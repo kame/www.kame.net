@@ -1,0 +1,238 @@
+<HTML>
+<HEAD><TITLE>Configuring KAME for IPsec: manual keying</TITLE></HEAD>
+<BODY>
+<H1>Configuring KAME for IPsec: manual keying</H1>
+<A HREF=http://www.itojun.org/>Jun-ichiro itojun Itoh</A>,
+<A HREF=http://www.kame.net/>KAME Project</A>
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:42:16 itojun Exp $</PRE>
+
+<HR>
+Update note:
+We used sysctl MIBs for controlling host-wide IPsec policy in the past.
+Now it is preferred to configure SPD entries by using <TT>spdadd</TT>
+subcommand, than using sysctl MIBs, to control security policy
+for outbound packets.
+The following examples use SPD entries.
+<P>
+
+<HR>
+<H2>Introduction</H2>
+
+KAME advanced networking kit is ready for performing IPsec operation.
+However, IPsec requires careful configuration, as it is related to the
+security policy of the host/site/organization/whatever.
+<P>
+
+This document tries to describe how you can configure IPsec connection
+between two hosts, or two organizations.
+<P>
+
+<STRONG>NOTE:</STRONG> To use IPsec part of KAME stack, please
+use very recent KAME kit as they are frequently updated.
+Please report any bugs to our <A HREF=/snap-users/>mailing list</A>
+or our <A HREF=/dev/send-pr.html>bug database</A>.
+<P>
+
+If you find any mistakes, please let the author know.
+The document will be updated right away.
+Thank you!
+
+<HR>
+<H2>IPsec primer</H2>
+IPsec stands for "IP security protocol".
+IPsec consists of two protocol:
+ESP (Encapsulated Security Payload) and AH (Authentication Header).
+ESP provides encryption of the IP packet, to protect packets from being
+peeped by bad guys.
+AH provides authentication of the IP packet, to prevent packets to be
+modified in transit.
+<P>
+
+There are two operation modes for IPsec: transport mode and tunnel mode.
+Transport mode is for endhosts.
+Endhosts will use transport mode to encrypt/authenticate
+packets sent from the host itself.
+Tunnel mode is for security gateways.
+Security gateways can encrypt/authenticate packets for other hosts in the site.
+In other word, tunnel mode is for VPN-like configuration.
+<P>
+
+An accompanying protocol, IKE (Internet Key Exchange protocol)
+is used for automatic encryption key exchange.
+This document does not speak about automatic keying, so we do not mention
+about IKE.
+(NOTE: IKE was called ISAKMP/Oakley in the past)
+
+<HR>
+<H2>What to configure</H2>
+To configure IPsec connection, you must configure the following items
+for each of the participating hosts:
+<UL>
+<LI><STRONG>SAD:</STRONG>
+	SAD stands for "Security Association Database", and
+	SAD is vital for performing IPsec connection.
+	They provide encryption key, IP src/dst address
+	(or addres range) to be handled by IPsec, encryption algorithm,
+	encryption mode (transport or tunnel), and so forth.
+	SAD entry is identified by an integer number called
+	SPI (Security Parameter Index).
+<LI><STRONG>SPD:</STRONG>
+	SPD stands for "Security Policy Database". 
+	SPD configures how you should encrypt/authenticate packets toward
+	some other hosts (it defines "security policy" in this context).
+	If SPD suggests encryption or authentication, SAD entry will be
+	looked up and used.
+</UL>
+Too many acronyms...
+
+<HR>
+<H2>Configuring IPsec between endhosts</H2>
+Suppose you have KAME-ready laptop (host A),
+and would like to make a IPsec connection with your KAME-ready desktop
+in your home (host B).
+Also assume that you would like to allow non-IPsec connetion to other hosts.
+If you do not allow this, you will not be able to resolve DNS query
+(because you must talk with DNS server using non-IPsec connection).
+We determine whether to use IPsec or not,
+based on IP address for the IP packet.
+KAME kit implements per-socket control of policy as well, but for simplicity
+this example does not use that.
+<P>
+
+Let us assume that host A is on <TT>10.1.1.1</TT>, and host B is on
+<TT>10.2.2.2</TT>.
+First, set up SAD by using <TT>setkey</TT> as below, for both hosts:
+<PRE>
+# setkey -c &lt;&lt;EOF
+add 10.1.1.1 10.2.2.2 esp 9998 -E des-cbc "hogehoge" ;
+add 10.2.2.2 10.1.1.1 esp 9999 -E des-cbc "hogehoge" ;
+EOF
+</PRE>
+<TT>9998</TT> and <TT>9999</TT> are SPI that identifies SAD.
+This example uses ESP with DES CBC mode, with encryption key "hogehoge"
+(If you are curious: "hogehoge" is Japanese word for "foobaa").
+<P>
+
+Next, you must configure SPD, again by using <TT>setkey</TT>.
+On 10.1.1.1, you will do the following:
+<PRE>
+# setkey -c &lt;&lt;EOF
+spdadd 10.1.1.1 10.2.2.2 any -P out ipsec esp/transport//use;
+EOF
+</PRE>
+On the other end, you'll do the similar:
+<PRE>
+# setkey -c &lt;&lt;EOF
+spdadd 10.2.2.2 10.1.1.1 any -P out ipsec esp/transport//use;
+EOF
+</PRE>
+
+The above <TT>spdadd</TT> lines configure security policy to be
+used when communicdating with the other end.
+<TT>ipsec esp/transport//use</TT> suggests to encrypt packet with transport mode, whenever key is found.
+The key is manually configured so they are readily available.
+<P>
+
+Under this configuration, all packets from host A to host B will be
+encrypted using ESP, with DES CBC mode.
+All other packets will not be encrypted, and sent as standard IP packet.
+Special programs may control its own policy by using <TT>setsockopt()</TT>
+system call.
+KAME <TT>ping</TT> has extra command line option to specify temporary
+security policy.
+Also, for inbound traffic, <TT>inetd</TT> has special support for IPsec.
+
+<HR>
+<H2>Proxy ESPing in internet-reachable environment</H2>
+Next example talks about making secure connection between two sites
+(organization).
+Two sites are internet-reachable (not firewalled) in this example.
+You would like to encrypt traffic between site A and B, not others.
+Other traffic must be carried by unencrypted IP packets, as usual.
+<PRE>
+[[[site A]]] ------- host a ===== host b ------- [[[site B]]]
+	     bare IP	    IPsec	 bare IP
+</PRE>
+
+Suppose you have KAME-ready desktops in each of the site: host a and host b,
+in site A and site B.
+We will configure IPsec secure tunnel between host a and b.
+Any IP traffic that goes through host a and b will be encrypted
+by using tunnel-mode ESP.
+<PRE>
+endhost	endhost			endhost	endhost
+  |	  |			  |	  |
+==+=======+== site A		==+=======+== site B
+  |				  |
+host a				host b
+  |				  |
+  +...............................+
+</PRE>
+Please note that host a and b can be the outgoing router for the sites,
+but it is not mandatory; if endhosts point the host a/b as its default router,
+it should be okay.
+In the following figure, endhost X must point host a as default router.
+(Note that, however, to run this configuration you need to turn off
+ICMP redirects on each subnet to keep routing setups on endhost X).
+<PRE>
+host a	endhost X		host b	endhost Y
+  |	  |			  |	  |
+==+=======+== site A		==+=======+== site B
+  |				  |
+router				router
+  |				  |
+  +...............................+
+</PRE>
+
+Let us assume that host a is on <TT>10.1.1.1</TT>, and host b is on
+<TT>10.2.2.2</TT>.
+Site A and B spans over <TT>10.1.1.0/24</TT> and <TT>10.2.2.0/24</TT>.
+First, set up SAD by using <TT>setkey</TT> as below, for both hosts:
+<PRE>
+# setkey -c &lt;&lt;EOF
+add 10.1.1.1 10.2.2.2 esp 9998 -E des-cbc "hogehoge" ; <FONT COLOR=#FF0000><STRONG>(**)</STRONG></FONT>
+add 10.2.2.2 10.1.1.1 esp 9999 -E des-cbc "hogehoge" ; <FONT COLOR=#FF0000><STRONG>(**)</STRONG></FONT>
+EOF
+</PRE>
+The address after SPI (<TT>10.2.2.2</TT> in the first line) shows the
+endpoint for IPsec tunnel.
+First line means the following:
+<UL>
+<LI>Packet from 10.1.1.0/24 to 10.2.2.0/24 must be encrypted
+	by using tunnel mode ESP.
+<LI>SPI must be 9998 and DES CBC algorithm must be used.
+<LI>Tunnel endpoint is 10.2.2.2 (host b).
+</UL>
+
+Next, you must configure SPD using <TT>setkey</TT>.
+On 10.1.1.1:
+<PRE>
+# setkey -c &lt;&lt;EOF
+spdadd 10.1.1.0/24 10.2.2.0/24 any -P ipsec esp/tunnel/10.1.1.1-10.2.2.2/use;
+EOF
+</PRE>
+On the other end:
+<PRE>
+# setkey -c &lt;&lt;EOF
+spdadd 10.2.2.0/24 10.1.1.0/24 any -P ipsec esp/tunnel/10.2.2.2-10.1.1.1/use;
+EOF
+</PRE>
+
+<TT>ipsec esp/tunnel/10.1.1.1-10.2.2.2/use</TT> suggests to use tunnel mode IPsec to
+throw packets toward the other network.
+<P>
+
+This is because we are configuring tunnel mode ESP, not transport mode ESP.
+<TT>net.inet.ip.forwarding</TT> is important, as host a will act as gateway
+for hosts in site A.
+<P>
+
+<HR>
+<H2>KAME kit restrictions</H2>
+Currently, KAME project is trying to stabilize/improve our IPsec stack.
+There are some functionalities that are yet to be implemented.
+Please check <TT>kit/IMPLEMENTATION</TT> for more details.
+
+<!--#include virtual="../index.inc" -->
+</BODY>
+</HTML>

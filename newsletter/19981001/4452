@@ -1,0 +1,149 @@
+Return-Path: <shin@nd.net.fujitsu.co.jp>
+Received: from orange.kame.net (orange.kame.net [203.178.141.194])
+	by coconut.itojun.org (8.8.8+3.0Wbeta12/3.6W) with ESMTP id DAA12194
+	for <itojun@itojun.org>; Thu, 1 Oct 1998 03:07:14 +0900 (JST)
+Received: from localhost.nd.net.fujitsu.co.jp (kame214.kame.net [203.178.141.214])
+	by orange.kame.net (8.8.8+3.0Wbeta13/3.6W/smtpfeed 0.63) with ESMTP id DAA19792
+	for <core@kame.net>; Thu, 1 Oct 1998 03:07:13 +0900 (JST)
+Received: from localhost (localhost.kame.net [127.0.0.1])
+	by localhost.nd.net.fujitsu.co.jp (8.8.8/3.6W) with ESMTP id DAA19021;
+	Thu, 1 Oct 1998 03:07:00 +0900 (JST)
+To: anna.bergamo@cselt.it
+Cc: core@kame.net
+Subject: Re: kame faith :2
+In-Reply-To: Your message of "Wed, 30 Sep 1998 15:42:33 +0200"
+	<36123549.337A7CC8@cselt.it>
+References: <36123549.337A7CC8@cselt.it>
+X-Mailer: Mew version 1.93b38 on Emacs 19.28 / Mule 2.3 (SUETSUMUHANA)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Message-Id: <19981001030700U.shin@nd.net.fujitsu.co.jp>
+Date: Thu, 01 Oct 1998 03:07:00 +0900
+From: Yoshinobu Inoue (=?ISO-2022-JP?B?GyRCMGY+ZU5JPy4bKEI=?=) 
+	<shin@nd.net.fujitsu.co.jp>
+X-Dispatcher: imput version 980905(IM100)
+Lines: 121
+X-Filter: mailagent [version 3.0 PL56] for itojun@itojun.org
+
+> HI,
+
+Hi, anna
+
+> I tried to set on keepfaith. After
+> > # sysctl -w net.inet6.ip6.keepfaith=1
+> I red
+>  > # net.inet6.ip6.keepfaith 1->1.
+> 
+> and my host IPv6 still doesn't communicate with the IPv4-only host.
+
+OK, I found that there are several important things.
+At first, did you started "faithd" on your translating router?
+
+When you setup net.inet6.ip6.keepfaith, then IPv6 packets are tossed
+up to application layer, but there must be translating daemon who
+receives those packets and convert them to IPv4 packets and resend
+them. That is faithd. Faithd is similar to inet6d, and invoke other
+daemon of translated applications.
+
+So for example, if you would like telnet to be translated, you need to
+do following things.
+
+(1) disable telnetd to be invoked from inet6d
+
+  You need to comment out telnet from /usr/local/v6/etc/inet6d.conf.
+  Initially there should be following entry for telnet.
+
+telnet stream  tcp     nowait  root    /usr/local/v6/libexec/telnetd   telnetd
+
+  You need to comment out the line as following.
+
+#telnet stream  tcp     nowait  root    /usr/local/v6/libexec/telnetd   telnetd
+
+  And after that you need to "kill and restart your inet6d"
+  or "send HUP signal to your inet6d".
+
+(2) start faithd
+
+   Please start faithd as following.
+
+   /usr/local/v6/sbin/faithd telnet /usr/local/v6/libexec/telnetd telnetd
+
+   Then a faithd to tlanslate telnet will emerge. Several faithd can
+   be started for each translating application.
+
+
+And next point is faith prefix. You didn't show your IPv4 embedded
+IPv6 address format in your host's /etc/hosts file. If your IPv6
+address has some non-zero prefix for faith translation, then you will
+need to setup the prefix by faith command on your translating router.
+
+For example, if your IPv4 embedded IPv6 address is like following, 
+
+3ffe:501:4819:ffff::10.0.0.1
+
+then, the faith prefix is 3ffe:501:4819:ffff::,
+So you need to do following on your translating router.
+
+/usr/local/v6/sbin/faith -e -p 3ffe:501:4819:ffff::
+
+by this command, faith prefix is set to 3ffe:501:4819:ffff:: in your
+router, and faith function is enabled.  "faith -e" and "sysctl -w
+net.inet6.ip6.keepfaith=1" has completely same effect, so if you use
+faith command, you don't need to use
+"sysctl -w net.inet6.ip6.keepfaith=1". The redunduncy is just a result
+of historical change and update.
+
+
+And last point is routing. When you send packets whose destination is
+IPv4 embedded IPv6 address, then it must be routed to the translating
+router. Most easy way is let the router announce IPv6 default route,
+or add IPv6 default route which points to the translating router on
+your host.
+
+One typical way to accomplish it is that, let start rtadvd on your
+translating router, and execute rtsol command on your host.
+For example, if your network configuration is like following,
+
+   +---------------+			   +-------------+
+   |your IPv6 host |			   | your trans  |	   your 
+   |		   |			   | router	 |	  IPv4 hosts
+   +---------------+			   +-------------+
+           |de0				ep0  |        | ep1
+    -------+---------------------------------+--     -+---------------
+
+You should do following on your router.
+
+ /usr/local/v6/sbin/rtadvd ep0
+
+And after that, you should do following on your host.
+
+ /usr/local/v6/sbin/rtsol de0
+
+Then an default route which points to the router will be installed on
+your host, and all IPv6 packets from host will be routed to the router.
+
+
+By the way, please remind that all of above commands need to be
+executed by root user.
+
+Also I recommend you to read manual of faith and faithd.  You will be
+able to read them as following.
+
+man -M /usr/local/v6/man faith
+man -M /usr/local/v6/man faithd
+
+> Thanks in advance.
+>  Anna.
+> 
+> Please, reply to anna.bergamo@cselt.it
+
+I wonder that your From address is Sergio.Palumbo@CSELT.IT, which is
+different from anna.bergamo@cselt.it. Do each of those account are
+read by you?
+
+
+Good Luck,
+
+Yoshinobu Inoue
+shin@kame.net

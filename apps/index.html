@@ -1,0 +1,101 @@
+<HTML>
+<HEAD><TITLE>KAME IPv6-patched applications</TITLE></HEAD>
+<BODY>
+<H1>KAME IPv6-patched applications</H1>
+
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:42:53 itojun Exp $</PRE>
+
+We KAME group make many patchkits for making popular applications IPv6-ready.
+Our collection includes famous mozilla, apache, cvs, python, perl, ucd-snmp,
+and other random applications, you-name-it.
+<P>
+
+Application patches can be found at
+<A HREF=ftp://ftp.kame.net/pub/kame/misc/><TT>ftp://ftp.kame.net/pub/kame/misc/
+</TT></A> and its <A HREF=../snap-users/>mirrors</A>.
+<P>
+
+<HR>
+
+<H2>Accessing cvs repository</H2>
+
+We work on these patches on temporary working area in our cvs repository.
+If you are in hurry, or you would like to keep track of those changes easily,
+you may want to use anonymous CVS, rather than the finished patch kit.
+Please, however, notice the following facts:
+<UL>
+<LI><STRONG>Code in the repository is an unfinished work.</STRONG><BR>
+	Please do not route questions about the content of the
+	repository, if you are unsure about the status.
+	When reporting bugs, please check finished patchkit in
+	<A HREF=ftp://ftp.kame.net/pub/kame/misc/><TT>
+	ftp://ftp.kame.net/pub/kame/misc/</TT></A>.
+	If we do not issue patchkit, that means we do not have a working
+	version for that.
+
+<LI><STRONG>Content on the repository are not supposed to work in many cases.
+	</STRONG><BR>
+	For example, in case we imported third-party applications into
+	repository but had no time to tackle, the repository will not do
+	much help.
+<LI><STRONG>Sometimes they are obsolete.</STRONG><BR>
+	We try to submit these patchkit to the original author as possible,
+	so that it will be merged into the main distribution.
+	We do not maintain patchkit after the merge, and in this case
+	content of repository will be obsolete (and left as is),
+<LI><STRONG>They may not be based on the most recent version.</STRONG><BR>
+	We try to base our patchkit on the most recent "released" version
+	of a third-party software.
+	Because of this, we do not usually try to hack alpha versions.
+<LI><STRONG>Please be sure to join snap-users mailing list</STRONG><BR>
+	For announcements and updates.
+	<A HREF=../snap-users/>Click here</A> for details.
+</UL>
+
+<P>
+
+Okay, enough said.
+Here's how you can access our cvs repository for application patches:
+<PRE>
+% cvs -d :pserver:anoncvs@cvs.kame.net:/cvsroot/apps login
+(enter "anoncvs" to "password:" prompt)
+% cvs -d :pserver:anoncvs@cvs.kame.net:/cvsroot/apps co -P apache13
+</PRE>
+
+For checking module name (like <TT>apache13</TT> in the above), please use
+<A HREF=../dev/cvsweb.cgi>cvsweb source code browser</A>.
+
+<HR>
+<H2>getting commit notifications</H2>
+You can get commit notification emails for
+KAME application repository, by contacting
+<A HREF=mailto:majordomo@kame.net>majordomo@kame.net</A>,
+with the following email content:
+<UL>
+<LI><STRONG>subscribe cvs-apps</STRONG>
+</UL>
+
+Please DO NOT raise discussions on the above mailing lists.
+Discussions must be raised on snap-users mailing list, or on
+<A HREF=http://www2.kame.net/dev/query-pr-summary.cgi>our bug database</A>.
+
+<HR>
+
+<UL>
+<LI><A HREF=../snap-users/hack.html>SNAP-users hacking guide</A>
+<LI><A HREF=/faq/>FAQ-O-Matic</A>
+<LI><A HREF=http://faq.v6.wide.ad.jp/>Alternative FAQ</A>
+<LI><A HREF=../dev/query-pr-summary.cgi>Browse existing problem reports</A>
+<LI><A HREF=../dev/send-pr.html>Submit problem reports</A>
+<LI><A HREF=../dev/cvsweb.cgi>Browse source code tree</A>
+</UL>
+
+<HR>
+
+Comments should be shared among
+<A HREF=mailto:snap-users@kame.net>snap-users@kame.net</A>.<BR>
+Contacting developers:
+<A HREF=mailto:snap-admin@kame.net>snap-admin@kame.net</A>.
+
+</BODY>
+</HTML>

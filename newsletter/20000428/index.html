@@ -1,0 +1,416 @@
+<html>
+<head><title>Simple Configuration Sample of IPsec/Racoon</title></head>
+<h1>Simple Configuration Sample of IPsec/Racoon</h1>
+<a href="http://www.wide.ydc.co.jp/~sakane/">Shoichi Sakane</a>,
+<a href="http://www.kame.net/">KAME Project</a>
+<pre>$Id: index.html,v 1.1 2001/04/17 03:42:25 itojun Exp $</pre>
+
+<font color=red><b>
+This document is obsoleted by the newer one.  You must refer to the following:
+<a href="http://www.kame.net/newsletter/20001119/">http://www.kame.net/newsletter/20001119/</a>
+</b></font>.
+
+<h2>
+Abstract
+</h2>
+This document describes how to configure to establish IPsec-SA automatically
+on KAME stack.
+<br>
+To understand configuration for several environment requires the reader
+to be familiar with IPsec architecture.
+Because many items must be specified in order to establish IPsec-SA
+automatically.
+This document gives priority to run racoon,
+by giving simple example of the environment,
+and by putting configuration items to a minimum.
+<br>
+The reader is required to know about IPsec architecture,
+but is not always familiar with it.
+<p>
+Note that this document refers to racoon included in KAME snap 20000501
+or later.
+The kits before 20000501 are not suitable to them.
+Also not KAME stable 20000425.
+
+<h2>
+Introduction
+</h2>
+If you want IPsec to communicate with somebody, It is required to establish
+the Security Association(IPsec-SA) between you and the peer before that.
+There are two way to establish it.
+One is by using manual configuration.
+Another way is automated configuration.
+In our implementation, we have a daemon named "racoon" for latter case.
+<p>
+Several parameters(Key) must be exchanged between you and peer
+in order to establish the IPsec-SA.
+Racoon exchange them by using IKE.
+IKE establish own SA by myself while exchanging Key, don't use IPsec-SA.
+There are two phase in IKE.
+One is the phase to establish SA for own communication (IKE-SA).
+Another is the phase to establish IPsec-SA.
+I say Phase 1 and Phase 2 respectively.
+The initiator to begin IKE proposes multiple parameters to the responder,
+and the responder choices one of them or rejects them in each phases.
+Also racoon has some parameter for the management of exchanging.
+So that there are many items to configure racoon.
+<br>
+It is not easy for public users to understand all of them.
+This document explains how to configure racoon briefly.
+The complex configuration is not described.
+Also to use certificate is out of scope in this document.
+
+<hr>
+<h2>
+Basic mechanism
+</h2>
+
+Kernel maintains two database to use IPsec.
+One is the Security Policy Database(SPD).
+Kernel refers to SPD in order to decide whether to apply IPsec
+to a packet or not.
+Also SPD entries specify which/how IPsec-SA is applied.
+
+Another one is the Security Association Database(SAD).
+SAD entries contain Key of each IPsec-SA.
+
+<p>
+The following figure specifies a flow
+until kernel applies IPsec-SA to a packet.
+
+<pre>
+	 setkey                racoon  <-------(IKE)-------> somebody
+	   |                    ^  |      (5)
+	   |                    |  |(6)
+	   |(1)           +-----+  +---+
+	   |           (4)|            |
+	   v              |            v
+	+-----+  (2)      |    (3)  +-----+
+	| SPD |<----- kernel ------>| SAD |
+	+-----+         |           +-----+
+                        |(7)
+                        v
+</pre>
+
+<p>
+(1)The administrator sets a policy to SPD by using setkey.<br>
+(2)Kernel refers to SPD in order to make a decision of applying IPsec to a packet.<br>
+(3)If IPsec is required, then kernel get the Key for IPsec-SA from SAD.<br>
+(4)If it is failed, then kernel send a request to get the Key to racoon.<br>
+(5)racoon exchange the Key by using IKE with the other to be established IPsec-SA.<br>
+(6)racoon put the Key into SAD.<br>
+(7)Kernel can send a packet applied IPsec.<br>
+
+<p>
+So that the administrator must configure SPD entries by using setkey command,
+and must configure racoon.
+Also it must be required to run racoon or else on the other side.
+
+<hr>
+<h2>
+Starting racoon
+</h2>
+
+It is required root privilege to start racoon.
+Because racoon use a port 500 of UDP,
+also open /var/log/racoon.log as log file.
+<br>
+Racoon has a few options.  This section explains only typical options.
+
+<dl>
+<dt>-<b>f</b> <i>configfile</i>
+<dd>Specify alternate configuration file.
+<dd><tt>/usr/local/v6/etc/racoon.conf</tt> as default.
+
+<dt>-<b>l</b> <i>logfile</i>
+<dd>Specify alternate log file.
+<dd><tt>/var/log/racoon.log</tt> as default.
+
+<dt>-<b>d</b> <i>dlevel</i>
+<dd>Set debugging level of hexadecimal.
+<dd>As below, racoon outputs many information onto standard output and log file.
+<pre>
+	# racoon -d 0xffffffff
+</pre>
+</dl>
+
+<h2>
+Simple Configuration Sample of Racoon
+</h2>
+
+The following description is the one of most simple configuration.
+This section explains this sample step by step.
+
+<pre>
+	# cat case1.conf
+	<b>path pre_shared_key</b> "/usr/local/v6/etc/psk.txt" ;
+	<b>identifier user_fqdn</b> "sakane@kame.net" ;
+	<b>identifier fqdn</b> "mine.kame.net" ;
+
+	<b>remote</b> anonymous
+	{
+		<b>exchange_mode</b> aggressive ;
+		<b>identifier</b> user_fqdn ;
+		<b>lifetime</b> time 24 hour ;
+		<b>lifetime</b> byte 100 MB ;
+		<b>proposal</b> {
+			<b>encryption_algorithm</b> 3des;
+			<b>hash_algorithm</b> sha1;
+			<b>authentication_method</b> pre_shared_key ;
+			<b>dh_group</b> 2 ;
+		}
+	}
+
+	<b>sainfo</b> anonymous
+	{
+		<b>pfs_group</b> 1;
+		<b>lifetime time</b> 12 hour ;
+		<b>lifetime byte</b> 50 MB ;
+		<b>encryption_algorithm</b> 3des, rc5, cast128, blowfish, des ;
+		<b>authentication_algorithm</b> hmac_sha1, hmac_md5 ;
+		<b>compression_algorithm</b> deflate ;
+	}
+</pre>
+
+<p>
+<ul>
+<li><b>path pre_shared_key</b> directive specifies the file which is defined pre-shared keys.  This is used to authenticate the peer on phase 1.
+If you don't use the pre-shared key authentication method,
+you don't need to define it.
+The format is like hosts(4).
+For each key
+A single line for each key must be present with the following
+<pre>
+	identifier1	key1
+	identifier2	key2
+</pre>
+Items are separated by any number of blanks and/or tab characters.
+
+<li><b>identifier user_fqdn</b> and <b>identifier fqdn</b> are
+specify the identifier which is used the authentication of peer on phase 1.
+You can use either IP4/6 address, User-FQDN and FQDN.
+There is no special different between User-FQDN and FQDN.
+These must be closed Double-Quotation.
+You can use any word because there is no strict check for FQDN.
+</ul>
+
+<h3>remote directive</h3>
+<ul>
+<li><b>remote</b> directive specifies about Phase 1.
+anonymous means to match any peer.
+You can limit exchanging each peer, but the document does not describes it.
+
+<li><b>exchange_mode</b> directive specifies the exchange mode on Phase 1
+<i>aggressive</i> means to exchange by aggressive mode.
+You can use <i>main</i> as main mode and <i>base</i> as base mode.
+If a peer start to exchange by the mode which is not specified here,
+racoon will reject it.
+Although racoon can accept three mode, this document does not describe this way.
+
+<li><b>identifier</b> directive in <b>remote</b> specifies what own identifier
+is used.
+The identifier will send to the peer, and the peer will use as one of the information of authentication.
+In the case of above sample, <b>identifier</b> in <b>remote</b> is
+<i>user_fqdn</i>,
+so "sakane@kame.net" defined in <b>identifier user_fqdn</b> is applied.
+
+<li><b>lifetime time</b> and <b>lifetime byte</b> specify the lifetime of IKE-SA.
+These are by time and by bytes respectively.
+You can use <i>sec</i>, <i>min</i> and <i>hour</i> as the unit of lifetime by time.
+And you can use <i>B</i>, <i>KB</i>, <i>MB</i> and <i>TB</i> as the unit of lifetime by bytes.
+
+<li><b>proposal</b> directive specifies a proposal on Phase 1.
+Although you can specify multiple proposals, this is the out of scope in this document.
+
+<li><b>encryption_algorithm</b> directive specifies encryption algorithm on Phase 1.
+racoon can use DES, 3DES, RC5, IDEA, CAST, BLOWFISH as encryption algorithm.
+You must specify <i>des</i>, <i>3des</i>, <i>rc5</i>, <i>idea</i>, <i>cast</i>, <i>blowfish</i> respectively.
+You can specify one of them in a proposal for Phase 1.
+
+<li><b>hash_algorithm</b> directive specifies hash algorithm.
+racoon can use MD5 and SHA1 as hash algorithm.
+You must specify <i>md5</i> and <i>sha1</i> respectively.
+You can specify one of them in a proposal for Phase 1.
+
+<li><b>authentication_method</b> directive specifies the authentication method on Phase 1.
+In the case of above sample, it means to use Pre-shared Key as authentication method.
+Racoon can use RSA Signature authentication method, but this is the out of scope in this document.
+
+<li><b>dh_group</b> directive specifies a group for Diffie-Hellman Key Exchange.
+Racoon can use 1, 2 and 5 as this group.
+You must specify <i>1</i>, <i>2</i> and <i>5</i> respectively.
+</ul>
+
+<h3>sainfo directive</h3>
+<ul>
+<li><b>sainfo</b> directive specifies some parameters about Phase 2.
+anonymous means to match any peer.
+You can limit exchanging peer by each, but the document does not describes it.
+
+<li><b>pfs_group</b> directive specifies a group for Diffie-Hellman Key Exchange on Phase 2.
+Racoon can use 1, 2 and 5 as this group.
+You must specify <i>1</i>, <i>2</i> and <i>5</i> respectively.
+
+<li><b>lifetime time</b> and <b>lifetime byte</b> specify the lifetime of IPsec-SA.
+These are by time and by bytes respectively.
+You can use <i>sec</i>, <i>min</i> and <i>hour</i> as the unit of lifetime by time.
+And you can use <i>B</i>, <i>KB</i>, <i>MB</i> and <i>TB</i> as the unit of lifetime by bytes.
+
+<li><b>encryption_algorithm</b> directive specifies the proposal of encryption algorithm for ESP.
+racoon can use DES, 3DES, RC5, CAST, BLOWFISH, NULL as encryption algorithm for ESP.
+You must specify <i>des</i>, <i>3des</i>, <i>rc5</i>, <i>cast</i>, <i>blowfish</i> and <i>null_enc</i> respectively.
+
+<li><b>authentication_algorithm</b> directive specifies the proposal of authentication algorithm for both ESP and AH.
+racoon can use HMAC-SHA1, HMAC-MD5 and Keyed-MD5 as authentication algorithm.
+You must specify <i>hmac_sha1</i>, <i>hmac_md5</i> and <i>kpdk</i> respectively.
+
+<li><b>compression_algorithm</b> directive specifies the proposal of compression algorithm for IPCOMP.
+racoon can use DEFLATE at the moment.
+You must specify <i>deflate</i>.
+</ul>
+
+<p>
+The above sample can accept to exchange both Phase 1 and Phase 2, only if you specify appropriate Pre-shared Key before exchange.
+Racoon can restrict to exchange with the peer each phases.
+But this document does not describe the way.
+
+<hr>
+<h2>
+Sample Configuration of SPD
+</h2>
+
+<h3>
+Case 1
+</h3>
+Security protocol is <b><i>ESP</i></b>.
+Encapsulation mode is <b><i>Transport</i></b>.
+
+<pre>
+	   Host-A                        Host-B
+	  fec0::1 ---------------------- fec0::2
+</pre>
+
+<br>
+Configuration at Host-A:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd <b>fec0::1</b> <b>fec0::2</b> any -P <b>out</b> ipsec
+		esp/transport//require ;
+	spdadd <b>fec0::2</b> <b>fec0::1</b> any -P <b>in</b> ipsec
+		esp/transport//require ;
+	EOF
+</pre>
+
+Note that IP address and direction.
+First IP address means source of IP header.
+Next IP address means destination of IP header.
+<b>out</b> means a packet goes out.
+<b>in</b> means a packet comes in.
+
+<p>
+At Host-B:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd <b>fec0::2</b> <b>fec0::1</b> any -P <b>out</b> ipsec
+		esp/transport//require ;
+	spdadd <b>fec0::1</b> <b>fec0::2</b> any -P <b>in</b> ipsec
+		esp/transport//require ;
+	EOF
+</pre>
+
+<h3>
+Case 2
+</h3>
+<b><i>ESP</i></b> <b><i>Transport</b></i> mode applied first
+and <b><i>AH</i></b> <b><i>Transport</b></i> mode next.<br>
+It means that kernel makes a packet to be [IP|AH|ESP|ULP].
+</pre>
+
+<pre>
+	   Host-A                        Host-B
+	  fec0::1 ---------------------- fec0::2
+</pre>
+
+Configuration at Host-A:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd fec0::1 fec0::2 any -P <b>out</b> ipsec
+		<b>esp</b>/transport//require
+		<b>ah</b>/transport//require ;
+	spdadd fec0::2 fec0::1 any -P <b>in</b> ipsec
+		<b>esp</b>/transport//require
+		<b>ah</b>/transport//require ;
+	EOF
+</pre>
+
+Note that the ordering of security protocol.
+In outgoing case defined <b>out</b>,
+it specifies the sequence of security protocol which kernel apply to the packet.
+In incoming case defined <b>in</b>,
+it specifies the sequence of security protocol to be applied to the packet.
+The above case means that ESP transport mode is first,
+and the next is AH transport mode.
+<p>
+At Host-B:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd fec0::2 fec0::1 any -P out ipsec
+		esp/transport//require
+		ah/transport//require ;
+	spdadd fec0::1 fec0::2 any -P in ipsec
+		esp/transport//require
+		ah/transport//require ;
+	EOF
+</pre>
+
+Note IP addresses as case 1.
+
+<h3>
+Case 3
+</h3>
+<b><i>ESP</i></b> <b><i>Tunnel</i></b> for VPN.
+
+<pre>
+			       ======= ESP =======
+			       |                 |
+	   Network-A       Gateway-A         Gateway-B        Network-B
+	  10.0.1.0/24 ---- 172.16.0.1 ------ 172.16.0.2 ---- 10.0.2.0/24
+</pre>
+
+<br>
+Configuration at Gateway-A:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd 10.0.1.0/24 10.0.2.0/24 any -P out ipsec
+		esp/tunnel/<b>172.16.0.1-172.16.0.2</b>/require ;
+	spdadd 10.0.2.0/24 10.0.1.0/24 any -P in ipsec
+		esp/tunnel/<b>172.16.0.2-172.16.0.1</b>/require ;
+</pre>
+
+Tunnel end points must be defined.
+
+<p>
+and at Gateway-B:
+<pre>
+	# setkey -c &lt;&lt;EOF
+	spdadd 10.0.2.0/24 10.0.1.0/24 any -P out ipsec
+		esp/tunnel/<b>172.16.0.2-172.16.0.1</b>/require ;
+	spdadd 10.0.1.0/24 10.0.2.0/24 any -P in ipsec
+		esp/tunnel/<b>172.16.0.1-172.16.0.2</b>/require ;
+</pre>
+
+<hr>
+<h2>
+Conclusion
+</h2>
+This document describes how to configure to establish IPsec-SA automatically
+in each typical IPsec environment with simple configuration sample of racoon.
+This document explains basic mechanism to establish IPsec-SA automatically.
+It is necessary to know many parameters if you want complex configuration
+of racoon.
+But this document figures a outline of establishing IPsec-SA automatically.
+The other document will explain about detail configuration.
+
+<!--#include virtual="../index.inc" -->
+</doby>
+</html>

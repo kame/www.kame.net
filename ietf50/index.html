@@ -1,0 +1,303 @@
+<HTML>
+<HEAD><TITLE>IETF50 IPv6 network instructions</TITLE></HEAD>
+<BODY>
+<A HREF="http://www.ietf.org/">
+<IMG SRC=http://www.ietf.org/images/ietflogo2e.gif ALT="IETF" WIDTH=80 HEIGHT=45></A>
+<H1><A HREF=http://www.ietf.org/meetings/IETF-50.html>IETF50</A> IPv6 network instructions</H1>
+
+<!-- 
+revision 1.29 was printed on paper and distributed to participants.
+we cannot make too much changes (addition is okay)
+-->
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:43:28 itojun Exp $</PRE>
+
+IETF50 has finished.
+Thank you to all IPv6 users and Lucent NOC team!
+
+<H2>Statistics</H2>
+<UL>
+<LI>	<A HREF=http://www.kame.net/ietf50/numhosts.png># of IPv6 hosts on links</A>
+	(host count = those responds to link-local ping6)<BR>
+	note that there were 900+ IPv4 users (as told in plenary session),
+	so nearly 8% of the machines understands IPv6 ping.
+<LI>	<A HREF=http://eden.omnisci.co.jp/eden/>traffic</A> by <A HREF=http://www.omnisci.co.jp/>Omnisci</A> Eden
+	(user: ietf50 password: ietf50)
+<LI>	# of connections went through TCP translator.
+	"# of clients" suggests the number of IPv6-only users, who have
+	configured their laptop as described in "advanced configuration" section.
+	<TABLE BORDER=1>
+	<TR><TD><BR><TH>3/17 Sat
+		<TH>3/18 <FONT COLOR=#ff0000>Sun</A>
+		<TH>3/19 Mon
+		<TH>3/20 Tue
+		<TH>3/21 Wed
+		<TH>3/22 Thu
+		<TH>3/23 Fri
+	<TR><TH>http<TD ALIGN=right>367
+		<TD ALIGN=right>671
+		<TD ALIGN=right>1462
+		<TD ALIGN=right>681
+		<TD ALIGN=right>1151
+		<TD ALIGN=right>2775
+		<TD ALIGN=right>664
+	<TR><TH>ssh<TD ALIGN=right>62
+		<TD ALIGN=right>90
+		<TD ALIGN=right>127
+		<TD ALIGN=right>149
+		<TD ALIGN=right>212
+		<TD ALIGN=right>126
+		<TD ALIGN=right>8
+	<TR><TH>pop3<TD ALIGN=right>30
+		<TD ALIGN=right>13
+		<TD ALIGN=right>12
+		<TD ALIGN=right>17
+		<TD ALIGN=right>21
+		<TD ALIGN=right>15
+		<TD ALIGN=right>3
+	<TR><TH>smtp<TD ALIGN=right>27
+		<TD ALIGN=right>91
+		<TD ALIGN=right>44
+		<TD ALIGN=right>62
+		<TD ALIGN=right>239
+		<TD ALIGN=right>222
+		<TD ALIGN=right>37
+	<TR><TH>https<TD ALIGN=right>0
+		<TD ALIGN=right>74
+		<TD ALIGN=right>30
+		<TD ALIGN=right>19
+		<TD ALIGN=right>0
+		<TD ALIGN=right>13
+		<TD ALIGN=right>1
+	<TR><TH>telnet<TD ALIGN=right>4
+		<TD ALIGN=right>0
+		<TD ALIGN=right>0
+		<TD ALIGN=right>4
+		<TD ALIGN=right>1
+		<TD ALIGN=right>0
+		<TD ALIGN=right>0
+	<TR><TH>ftp<TD ALIGN=right>4
+		<TD ALIGN=right>19
+		<TD ALIGN=right>3
+		<TD ALIGN=right>3
+		<TD ALIGN=right>9
+		<TD ALIGN=right>6
+		<TD ALIGN=right>0
+	<TR><TH>finger<TD ALIGN=right>0
+		<TD ALIGN=right>0
+		<TD ALIGN=right>1
+		<TD ALIGN=right>0
+		<TD ALIGN=right>0
+		<TD ALIGN=right>0
+		<TD ALIGN=right>0
+	<TR><TH>icb<TD ALIGN=right>0
+		<TD ALIGN=right>3
+		<TD ALIGN=right>0
+		<TD ALIGN=right>0
+		<TD ALIGN=right>3
+		<TD ALIGN=right>0
+		<TD ALIGN=right>0
+	<TR><TH>whois<TD ALIGN=right>0
+		<TD ALIGN=right>0
+		<TD ALIGN=right>4
+		<TD ALIGN=right>3
+		<TD ALIGN=right>0
+		<TD ALIGN=right>0
+		<TD ALIGN=right>0
+	<TR><TH># of clients<TD ALIGN=right>4
+		<TD ALIGN=right>10
+		<TD ALIGN=right>13
+		<TD ALIGN=right>19
+		<TD ALIGN=right>15
+		<TD ALIGN=right>13
+		<TD ALIGN=right>3
+	</TABLE>
+</UL>
+
+<HR>
+<H2>Basic configuration</H2>
+<DL>
+<DT><STRONG>Which network segments are IPv6 ready?</STRONG>
+<DD>	Laptop term room, and 802.11 wireless segment.
+
+<DT><STRONG>IPv6 global address prefix?</STRONG>
+<DD>	3ffe:0507:01ff:0001::/64 (ethernet in laptop term room)
+<DD>	3ffe:0507:01ff:0002::/64 (802.11 wireless)
+
+<DT><STRONG>How to configure my notebook PC?</STRONG>
+<DD>	Use IPv6 stateless address autoconfiguration
+	(<A HREF=http://www.normos.org/ietf/rfc/rfc2462.txt>RFC2462</A>).
+<DD>	Quick autoconf howto:
+	<A HREF=autoconf.kame.txt>NetBSD</A>
+	<A HREF=autoconf.kame.txt>OpenBSD</A>
+	<A HREF=autoconf.kame.txt>FreeBSD</A>
+	<A HREF=autoconf.kame.txt>BSD/OS</A>
+	<A HREF=autoconf.win2k.txt>Win2k</A>
+	<A HREF=autoconf.linux.txt>Linux</A>
+
+<DT><STRONG>How do I get static IPv6 address?</STRONG>
+<DD>	We do not do that.  Autoconfigure it.
+
+<DT><STRONG>IPv6 transport-ready nameservers?</STRONG>
+<DD>	3ffe:501:4819::42
+<DD>	3ffe:0:1::c620:242, 198.32.2.66 (z.ip6.int)
+<DD>	3ffe:50e::1 (y.ip6.int)
+
+<DT><STRONG>Service time?</STRONG>
+<DD>	Whenever terminal cluster is running.
+	Hopefully 24hours, starting from Saturday and
+	terminating around Friday noon.
+
+<DT><STRONG>How to obtain IPv6 stacks and make my laptop IPv6 ready?</STRONG>
+<DL>
+<DT>In general: <A HREF=http://www.ipv6.org/impl/index.html>http://www.ipv6.org/impl/index.html</A>
+<DT>BSDs:
+	<A HREF=http://www.openbsd.org/>OpenBSD</A> 2.7,
+	<A HREF=http://www.netbsd.org/>NetBSD</A> 1.5,
+	<A HREF=http://www.bsdi.com/>BSD/OS</A> 4.0,
+	<A HREF=http://www.freebsd.org/>FreeBSD</A> 4.0 or later have
+	IPv6 stack integrated.
+<DT>Linux
+<DD>	depends on the distribution you are using.
+	See <A HREF=http://www.bieringer.de/linux/IPv6/status/IPv6+Linux-status-distributions.html>distribution status page</A> and
+	<A HREF=http://www.linux-ipv6.org/tahitest/summary-index.html>conformance test comparison page</A>.
+<DD>	<A HREF=http://www.bieringer.de/linux/IPv6/>http://www.bieringer.de/linux/IPv6/</A> and
+	<A HREF=http://www.linux-ipv6.org/>http://www.linux-ipv6.org/</A>
+	have more info.
+<DT>Win2K: <A HREF=http://www.research.microsoft.com/msripv6/>
+	IPv6 research releases from MS research</A>
+<DT>Win95/98: <A HREF=http://www.trumpet.com.au/ipv6.htm>
+	Trumpet IPv6</A> or
+	<A HREF=http://www.hitachi.co.jp/Prod/comp/network/pexv6-e.htm>
+	Hitachi Toolnet6</A>
+<DT><A HREF=http://www.sun.com/solaris/>Sun Solaris</A>:
+	Solaris 8 has IPv6 stack integrated.
+	<A HREF=http://www.sun.com/solaris/ipv6/>more info</A>
+</DL>
+
+<DT><STRONG>Any other questions?</STRONG>
+<DD>	Do not hesitate to contact
+	<A HREF=mailto:ietf50@kame.net>ietf50@kame.net</A>.
+
+</DL>
+
+<HR>
+<H2>Advanced configuration</H2>
+You can run your laptop IPv6-only and kiss DHCP good bye!
+<DL>
+<DT><STRONG>IPv6-to-IPv4 translators?</STRONG>
+<DD>	We have installed <A HREF=http://www.normos.org/ietf/draft/draft-ietf-ngtrans-tcpudp-relay-02.txt>a TCP relay translator</A>
+	(<A HREF=http://www.kame.net/>KAME</A> faith implementation), for
+	popular TCP ports.
+	You need to change DNS server configuration to use the translator.
+	There is no other special requirements to laptop client side.
+	<UL>
+	<LI>Set your nameserver to 3ffe:507:1ff:1::53, or 135.222.63.249
+	<LI>Your tcp traffic to 3ffe:507:1ff:ffff::ipv4addr will be relayed
+		to ipv4addr.
+	<LI>Supported ports are: whois pop3 ftp telnet printer icb http https ssh smtp nntp finger
+	<LI>Need additional tcp port to be translated?  Contact
+		<A HREF=mailto:ietf50@kame.net>ietf50@kame.net</A>.
+	</UL>
+
+<DT><STRONG>DHCPv6 server?</STRONG>
+<DD>	Yes, it is running (draft-ietf-dhc-dhcpv6-15),
+	supplying DNS server address and timezone information only.
+	No address assignment is made by DHCPv6 server
+	(because of this, O bit on router advertisement is turned on).
+</DL>
+
+<HR>
+<H2>Troubleshooting</H2>
+<DL>
+<DT><STRONG>I'm on wireless, no basestation visible</STRONG>
+<DD>	Did you configure 802.11 SSID (network name) to "IETF"?
+
+<DT><STRONG>I'm on wireless, IPv4 goes fine but IPv6 does not.</STRONG>
+<DD>	Maybe there's some problem with the basestation you are connected with
+	(ethernet layer multicast turned off, preventing all IPv6 neighbor
+	discovery process).  Take note of wireless basestation ID (BSSID),
+	and talk with NOC guys.
+<DD>	If you cannot get replies to ping6 ff02::1 from anyone (except yourself), it is a sign of
+	this problem.
+<DD>	List of wireless basestation that has the problem (overstriked ones were already corrected, thanks!):
+	<UL>
+	<LI><S>BSSID 00:02:2d:1c:f4:04, @ 3F near Director's room #3</S>
+	<LI><S>BSSID 00:60:1d:f6:b4:28, @ 3F near big ballroom D</S>
+	<LI><S>BSSID 00:60:1d:1e:ee:91, @ 3F near big ballroom D</S>
+	<LI><S>BSSID 00:60:1d:21:7c:2e, @ 3F near big ballroom E/F</S>
+	<LI><S>BSSID 00:02:2d:08:5c:cc, @ 3F near big ballroom B</S>
+	<LI><S>BSSID 00:02:2d:0f:08:15, @ 3F near Salon C</S>
+	<LI><S>BSSID 00:60:1d:f6:b4:1c, @ 3F near Salon A</S>
+	</UL>
+<DD>	Another problem we are seeing is that, even though it is announced that
+	WEP is supported as an optional feature, some of the baesstations
+	do not take WEP-enabled packets from laptops.
+	You may try turning WEP off.
+
+	<!-- talk with John M Richey about this.  jmrichey@lucent.com -->
+</DL>
+
+<HR>
+<H2>Details of configuration</H2>
+<DL>
+<DT><STRONG>Connectivity to the outside world?</STRONG>
+<DD>	<A HREF=http://www.normos.org/ietf/rfc/rfc1933.txt>RFC1933</A>/
+	<A HREF=http://www.normos.org/ietf/rfc/rfc2893.txt>RFC2893</A>
+	configured IPv6-over-IPv4 tunnel to
+	<A HREF=http://www.iij.com/>IIJ</A> equipment
+	in Palo Alto, California (<A HREF=http://www.paix.net/>PAIX</A>).
+	<A HREF=traceroute.txt>IPv4 traceroute for tunnel section</A>.
+<DD>
+<PRE>
+IIJ router in PAIX
+  |
+  | IPv6 over IPv4 tunnel
+  |
+venue IPv6 router
+  |        |
+==+==    ==+==
+wireless laptop term room
+</PRE>
+
+<DT><STRONG>Router equipment?</STRONG>
+<DD>	<A HREF=http://www.netbsd.org/>NetBSD</A>-current
+	(1.5S, <A HREF=http://www.kame.net/>KAME</A> IPv6 stack intergrated)
+	running on top of
+	<A HREF=http://www.wildlab.com/>Wildlab LAMB</A>.
+	Baasically, LAMB is used as a plain 486 PC with two 10Base-T ethernet
+	interfaces.
+
+</DL>
+
+<HR>
+<H2>Misc.</H2>
+<DL>
+<DT><STRONG>Stuffed "KAME" turtles?</STRONG>
+<DD>	We will be distributing a limited number of
+	<A HREF=http://www.sfc.wide.ad.jp/~funya/diary/photo/20000826/>
+	stuffed "KAME" turtles</A>.
+	$12/turtle.
+	Contact itojun, or KAME guys, for details.
+</DL>
+
+<HR>
+<A HREF=http://www.kame.net/>
+<IMG SRC=kame3.png ALT="KAME"></A>
+<A HREF=http://www.iij.com/>
+<IMG SRC=iij-logo.png ALT="IIJ"></A>
+<A HREF=http://www.iijlab.net/>
+[IIJ research laboratory]</A>
+<A HREF=http://www.ietf.org/meetings/IETF-50.html>[IETF50]</A>
+<A HREF=http://www.lucent-ietf.com/>[IETF50 term room/social]</A>
+<table border="0" bgcolor="#3366CC">
+<TR><td align="right" valign="center">
+<A HREF=http://www.omnisci.co.jp/ ALT="Omnisci Eden">
+<img border="0" src="OmnisciLogoS.gif" width="306" height="32">
+<img border="0" src="EdenLogo24On3366CC.gif" width="50" height="24"></A>
+</TD></TR></TABLE> 
+
+<BR>
+<!--#include virtual="../v6p.cgi" -->
+
+</BODY>
+</HTML>

@@ -1,0 +1,71 @@
+<HTML>
+<HEAD><TITLE>IETF48 IPv6 network instructions</TITLE></HEAD>
+<BODY>
+<A HREF="http://www.ietf.org/">
+<IMG SRC=http://www.ietf.org/images/ietflogo2e.gif ALT="IETF" WIDTH=80 HEIGHT=45></A>
+<H1>IETF48 IPv6 network instructions</H1>
+
+<DL>
+<DT><STRONG>IPv6 global address prefix?</STRONG>
+<DD>	2001:0240:00ff:0000::/64 (wired ethernet)
+<DD>	2001:0240:00ff:0001::/64 (802.11 wireless)
+
+<DT><STRONG>How to configure my notebook PC?</STRONG>
+<DD>	Use IPv6 stateless address autoconfiguration (RFC2462).
+	DHCPv6 server is not provided at this moment.
+
+<DT><STRONG>How do I get static IPv6 address?</STRONG>
+<DD>	We do not do that.  Autoconfigure it.
+
+<DT><STRONG>IPv6 transport-ready nameservers?</STRONG>
+<DD>	3ffe:501:4819::42
+
+<DT><STRONG>IPv6-to-IPv4 translators?</STRONG>
+<DD>
+	<UL>
+	<LI>set your nameserver to 2001:0240:00ff:0000::42, or 147.73.128.19.
+	<LI>Your tcp traffic to 2001:0240:00ff:ffff::ipv4addr will be relayed
+		to ipv4addr.
+	<LI>Supported ports are: telnet ftp ssh pop3 http icb printer smtp.
+	<LI>Need additional tcp port to be translated?  Contact
+		<A HREF=mailto:ietf48@kame.net>ietf48@kame.net</A>.
+	</UL>
+
+<DT><STRONG>Which network segments are IPv6 ready?</STRONG>
+<DD>	Ethernet segment, and 802.11 wireless segment
+	(there only are two segments at the venue).
+
+<DT><STRONG>Service time?</STRONG>
+<DD>	Whenever terminal cluster is running.
+	Hopefully 24hours, starting from Saturday and
+	terminating around Friday noon.
+
+<DT><STRONG>Connectivity to the outside world?</STRONG>
+<DD>	RFC1933 tunnel to <A HREF=http://www.iij.com/>IIJ</A> equipment
+	in Palo Alto, California (<A HREF=http://www.paix.net/>PAIX</A>).
+	<A HREF=tunnel.txt>IPv4 traceroute for tunnelled portion.</A>
+
+<DT><STRONG>Router equipment?</STRONG>
+<DD>	The latest <A HREF=http://www.kame.net/>KAME</A> stack,
+	running on top of <A HREF=http://www.bsdi.com/>BSDI</A> BSD/OS 3.1.
+	Hardware: Digital HiNote Ultra II LTS5150.
+
+<DT><STRONG>Any other questions?</STRONG>
+<DD>	Do not hesitate to contact
+	<A HREF=mailto:ietf48@kame.net>ietf48@kame.net</A>.
+
+</DL>
+
+<HR>
+<A HREF=http://www.kame.net/>
+<IMG SRC=http://www.kame.net/logo/1/images/kame3.png ALT="KAME"></A>
+<A HREF=http://www.iij.com/>
+<IMG SRC=iij-logo.png ALT="IIJ"></A>
+<A HREF=http://www.iijlab.net/>
+[IIJ research laboratory]</A>
+
+<BR>
+<!--#include virtual="../v6p.cgi" -->
+
+</BODY>
+</HTML>

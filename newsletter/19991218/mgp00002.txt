@@ -1,0 +1,16 @@
+
+KAMEプロジェクトとは?
+
+*BSDに、BSD licenseでIPv6/IPsecを実装しよう
+WIDEのネットワーク研究コードベース
+
+WIDE+7社のコンソーシアム
+8人のcoreメンバ、数多くのおにいさん達
+
+1998年4月 - 2000年3月(当初予定)
+
+http://www.kame.net/
+
+サポートしてるプラットフォーム
+bsdi[34] netbsd141 openbsd26 freebsd228 freebsd33
+

@@ -1,0 +1,435 @@
+<HTML>
+<HEAD><TITLE>Implementing AF-independent application</TITLE></HEAD>
+<BODY>
+<H1>Implementing AF-independent application</H1>
+<A HREF=http://www.itojun.org/>Jun-ichiro itojun Itoh</A>,
+<A HREF=http://www.kame.net/>KAME Project</A>
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:42:15 itojun Exp $</PRE>
+
+<HR>
+<H2>Introduction</H2>
+
+By deployment of Internet Protocol Version 6 (IPv6), the application
+programmers has to cope with socket connection with multiple address families,
+i.e. <TT>AF_INET</TT> and <TT>AF_INET6</TT>.
+The document describes how a programmer can 
+handle those multiple address families at ease.
+<P>
+
+This document assumes that you are familiar with <TT>AF_INET</TT>
+socket programming.
+You may want to refer <A HREF=ftp://ftp.iij.ad.jp/pub/RFC/rfc2553.txt>
+RFC2553</A> and <A HREF=ftp://ftp.iij.ad.jp/pub/RFC/rfc2292.txt>RFC2292</A>.
+<P>
+
+If you find any mistakes, please let the author know.
+The document will be updated right away.
+Thank you!
+
+<HR>
+<H2>struct sockaddr_storage</H2>
+
+<TT>RFC2553</TT> proposes
+<TT>struct sockaddr_storage</TT>.
+This is a placeholder for all <TT>sockaddr</TT>-variant structures.
+This is implemented like follows:
+<PRE>
+	struct sockaddr_storage {
+		u_char ss_len;
+		u_char ss_family;
+		u_char padding[128 - 2];
+	};
+</PRE>
+You should use this structure to hold any of <TT>sockaddr</TT>-variant
+structures.
+
+<H2>union sockunion</H2>
+
+Alternatively, you may want to implement <TT>sockunion.h</TT>,
+with the following content:
+
+<PRE>
+	union sockunion {
+		struct sockinet {
+			u_char si_len;
+			u_char si_family;
+		} su_si;
+		struct sockaddr_in  su_sin;
+		struct sockaddr_in6 su_sin6;
+	};
+	#define su_len        su_si.si_len
+	#define su_family     su_si.si_family
+</PRE>
+
+NOTE: For better portability, <TT>struct sockaddr_storage</TT> should be used.
+<TT>union sockunion</TT> is okay, but is not really portable enough
+due to structure alignment twists.
+
+<HR>
+<H2>Rules of thumb</H2>
+
+<H3>1. avoid struct in_addr and struct in6_addr.</H3>
+
+Since we are trying to implement AF-independent programs, all of the
+memory structures that handle network address have to be AF-independent.
+In that sense, we should avoid <TT>struct in_addr</TT> and <TT>in6_addr</TT>,
+since they have no room to hold AF information.  Suppose you pass
+an network address to some function, <TT>foo()</TT>.
+If you use <TT>struct in_addr</TT>
+or <TT>struct in6_addr</TT>, you will end up with extra parameter to indicate
+address family, as below:
+<PRE>
+	struct in_addr in4addr;
+	struct in6_addr in6addr;
+	/* IPv4 case */
+	foo(&in4addr, AF_INET);
+	/* IPv6 case */
+	foo(&in6addr, AF_INET6);
+</PRE>
+This way the network address and address family is will not live together,
+and leads to bunch of if/switch statement and mistakes in programming.
+Why don't we just use <TT>struct sockaddr_storage</TT> like below?
+<PRE>
+	struct sockaddr_storage ss;
+	/* AF independent! */
+	foo(&ss);
+</PRE>
+
+
+Also, by near-future update to IPv6 basic socket API
+(<A HREF=ftp://ftp.iij.ad.jp/pub/RFC/rfc2553.txt>RFC2553</A>),
+<TT>sockaddr_in6</TT> will include interface index for link-local
+scoped address, as well as site index for site-local scoped address.
+Therefore, if your application needs to handle scoped addresses,
+avoiding <TT>in6_addr</TT> (and using <TT>sockaddr_in6</TT>)
+is a critical requirement.
+
+
+<H3>2. use getaddrinfo() and getnameinfo() everywhere.</H3>
+
+<TT>getaddrinfo()</TT> and <TT>getnameinfo()</TT> are new address independent
+variant that
+hides every gory detail in name-to-address translation, or vice versa.
+It implements functionalities for the following functions:
+<PRE>
+	gethostbyname()
+	gethostbyaddr()
+	inet_ntop()
+	inet_pton()
+	getservbyname()
+	getservbyport()
+</PRE>
+These can perform DNS/hostname table lookup, though it can be turned off
+if you want.
+<TT>getaddrinfo()</TT> can return multiple addresses, if a host have
+multiple address with multiple address families, as below:
+<PRE>
+	localhost.	IN A	127.0.0.1
+			IN AAAA	::1
+</PRE>
+It can query hostname as well as service name/port at once.
+Therefore, we can bury all the gory details about initializing sockaddr
+structure into library function.
+<P>
+
+Anyway.  <TT>inet_aton()</TT> can be written as follows:
+<PRE>
+	int error;
+	char *name;
+	struct sockaddr_storage ss;
+	struct sockaddr *sa;
+	struct addrinfo hints;
+	struct addrinfo *res;
+
+	/*
+	 * inet_aton() case.
+	 * This cannot handle IPv6 addresses.  Also, it cannot return
+	 * multiple addresses.
+	 */
+	if (!inet_aton(name, &((struct sockaddr_in *)&ss)->sin_addr))
+		perror("inet_aton");
+
+	/* getaddrinfo() case.  It can handle multiple addresses. */
+	memset(&hints, 0, sizeof(hints));
+	/* set-up hints structure */
+	hints.ai_family = PF_UNSPEC;
+	error = getaddrinfo(name, NULL, &hints, &res);
+	if (error)
+		perror(gai_strerror(error));
+	else {
+		while (res) {
+			sa = res->ai_addr;
+			/* do what you want */
+			res = res->ai_next;
+		}
+	}
+</PRE>
+
+<TT>inet_ntoa()</TT> can be written as follows:
+<PRE>
+	int error;
+	char *name;
+	char namebuf[BUFSIZ];
+	struct sockaddr_storage ss;
+
+	/*
+	 * inet_ntoa() case. This cannot handle IPv6 addresses.
+	 * No way to pass the error status.
+	 */
+	name = inet_ntoa(((struct sockaddr_in *)&ss)->sin_addr);
+
+	/* getnameinfo() case. NI_NUMERICHOST avoids DNS lookup. */
+	error = getnameinfo((struct sockaddr *)&ss. ss.ss_len,
+		namebuf, sizeof(namebuf), NULL, 0, NI_NUMERICHOST);
+	if (error)
+		perror("getnameinfo");
+	name = namebuf;
+</PRE>
+
+<TT>gethostbyname()</TT> can be written as follows:
+<PRE>
+	struct sockaddr *sa;
+	struct hostent *hp;
+	char *name;
+	int af;
+	struct addrinfo hints;
+	struct addrinfo *res;
+
+	/* gethostbyname() case.  It is just for single AF denoted by "af". */
+	hp = gethostbyname2(name, af);
+
+	/*
+	 * getaddrinfo() case.  You can get IPv6 address and IPv4 address
+	 * at the same time.
+	 */
+	memset(&hints, 0, sizeof(hints));
+	/* set-up hints structure */
+	hints.ai_family = PF_UNSPEC;
+	error = getaddrinfo(name, NULL, &hints, &res);
+	if (error)
+		perror(gai_strerror(error));
+	else {
+		while (res) {
+			sa = (struct sockaddr *)res->ai_addr;
+			/* do what you want */
+			res = res->ai_next;
+		}
+	}
+</PRE>
+
+Now, <TT>gethostbyaddr()</TT> can be written as follows:
+<PRE>
+	struct sockaddr_storage ss;
+	struct sockaddr_in *sin;
+	struct sockaddr_in6 *sin6;
+	struct hostent *hp;
+	char *name;
+
+	/* gethostbyaddr() case. */
+	switch (ss.ss_family) {
+	case AF_INET:
+		sin = (struct sockaddr_in *)&ss;
+		hp = gethostbyaddr(&sin->sin_addr, sizeof(sin->sin_addr),
+			ss.ss_family);
+		break;
+	case AF_INET6:
+		sin6 = (struct sockaddr_in6 *)&ss;
+		hp = gethostbyaddr(&sin6->sin6_addr, sizeof(sin6->sin6_addr),
+			ss.ss_family);
+		break;
+	}
+	name = hp->h_name;
+
+	/* getnameinfo() case. NI_NUMERICHOST avoids DNS lookup. */
+	error = getnameinfo((struct sockadddr *)&ss, ss.ss_len,
+		namebuf, sizeof(namebuf), NULL, 0, 0);
+	if (error)
+		perror("getnameinfo");
+	name = namebuf;
+</PRE>
+
+
+<HR>
+<H2>Modifying servers called from inetd</H2>
+
+To port your server that is called via inetd (for example, pop server),
+you must rewrite the following portions:
+<OL>
+<LI>all <TT>struct sockaddr_in</TT> has to be changed into
+	<TT>struct sockaddr_storage</TT>.
+	Be sure to update cast operators and sizeof operations as well.
+	Pointers should be changed into <TT>struct sockaddr *</TT>.
+<LI>rewrite struct/union field names.
+<LI><TT>inet_aton()</TT> and <TT>inet_ntoa()</TT> has to be changed to
+	<TT>getaddrinfo()</TT> and <TT>getnameinfo()</TT>.
+<LI><TT>gethostbyname()</TT> and <TT>gethostbyaddr()</TT> has to be
+	changed to <TT>getnameinfo()</TT> and <TT>getaddrinfo()</TT>.
+</OL>
+
+The simplest server has no sockaddr-related code inside, it will just
+use standard input.
+However, most servers has logging functionality, which requires the address
+for the peer.
+It will be obtained by using <TT>getpeername()</TT>.
+Therefore, you must rewrite address-to-name translation part for
+peer address.
+<P>
+
+Use great care on sizeof operation to sockaddr.
+This kind of code is very popular:
+<PRE>
+	int slen;
+	struct sockaddr_in sin;
+
+	slen = sizeof(struct sockaddr_in);
+	getsockname(s, (struct sockaddr *)&sin, &slen);
+</PRE>
+
+If we simply modify the type of <TT>sin</TT>, we're doomed.
+You'll need to change <TT>sizeof</TT> operation as well, like:
+<PRE>
+	int slen;
+	struct sockaddr_storeage ss;
+
+	slen = sizeof(ss);
+	getsockname(s, (struct sockaddr *)&ss, &slen);
+</PRE>
+
+
+<HR>
+<H2>Modifying daemons</H2>
+IPv4 daemons usually bind to IN_ADDR_ANY, that is, <TT>0.0.0.0</TT>.
+To obtain this kind of address in a AF-independent manner, you can use
+<TT>AI_PASSIVE</TT> flag for <TT>getaddrinfo()</TT>.
+Mutliprotocol daemon may want to <TT>bind()</TT> to all the addresses
+returned from <TT>getaddrinfo()</TT>.
+<PRE>
+	struct addrinfo hints;
+	struct addrinfo *res;
+	char *myservice;
+
+	memset(&hints, 0, sizeof(hints));
+	/* set-up hints structure */
+	hints.ai_family = PF_UNSPEC;
+	hints.ai_flags = AI_PASSIVE;
+	hints.ai_socktype = SOCK_STREAM;
+	error = getaddrinfo(NULL, myservice, &hints, &res);
+	if (error)
+		perror(gai_strerror(error));
+	else {
+		/*
+		 * "res" has a chain of addrinfo structure filled with
+		 * 0.0.0.0 (for IPv4), 0:0:0:0:0:0:0:0 (for IPv6) and alike,
+		 * with port filled for "myservice".
+		 */
+		while (res) {
+			/* bind() and listen() to res->ai_addr */
+		}
+	}
+</PRE>
+
+<HR>
+<H2>Modifying clients</H2>
+Client side program may want to connect to all resolved addresses,
+as telnet program does
+(telnet tries to connect to all resolved addresses, sequentially until
+connection is established).
+<PRE>
+	struct addrinfo hints;
+	struct addrinfo *res;
+	char *server;
+	char *hisservice;
+
+	memset(&hints, 0, sizeof(hints));
+	/* set-up hints structure */
+	hints.ai_family = PF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	error = getaddrinfo(server, hisservice, &hints, &res);
+	if (error)
+		perror(gai_strerror(error));
+	else {
+		while (res) {
+			/* try to connect() to res->ai_addr */
+			if (success)
+				break;
+		}
+	}
+
+	/* whatever you would like to perform */
+</PRE>
+
+<HR>
+<H2>What about inet_ntop() and inet_pton()?</H2>
+In previous sections, we talked almost nothing about the usage of
+<TT>inet_ntop()</TT> and inet_pton()</TT>.
+This is because they are not very AF independent.
+Since <TT>inet_ntoa()</TT> and <TT>inet_aton()</TT> are just for IPv4 addresses,
+<TT>inet_ntop()</TT> and <TT>inet_pton()</TT> are described as replacement,
+in <A HREF=ftp://ftp.iij.ad.jp/pub/RFC/rfc2553.txt>RFC2553</A>.
+They are defined as follows:
+<PRE>
+	int inet_pton(int af, const char *src, void *dst);
+
+	const char *inet_ntop(int af, const void *src,
+		char *dst, size_t size);
+</PRE>
+
+<TT>inet_pton()</TT> and <TT>inet_ntop()</TT> assumes <TT>in_addr</TT> or
+<TT>in6_addr</TT> for handling addresses,
+that are, as I wrote, something we would like to avoid.
+If you got a some <TT>sockaddr</TT>-ish structure, you can get
+printable form of address by the following statements.
+<PRE>
+	struct sockaddr_storage ss;
+	char buf[BUFLEN];
+	switch (ss.ss_family) {
+	case AF_INET:
+		inet_ntop(ss.ss_family,
+			&((struct sockaddr_in *)&ss)->sin_addr, buf, BUFLEN);
+		break;
+	case AF_INET6:
+		inet_ntop(ss.ss_family,
+			&((struct sockaddr_in6 *)&ss)->sin6_addr, buf, BUFLEN);
+		break;
+	}
+</PRE>
+This requires extra conditional statement, since <TT>inet_ntop()</TT>
+is not written for <TT>sockaddr</TT> structures.
+Worse, for converting printable form into address, you need to konw the
+address family, prior to the call to <TT>inet_pton()</TT>.
+You can perform error-and-retly loop but it is not a very clean way of
+dealing with it.
+<PRE>
+	struct sockaddr_storage ss;
+	struct sockaddr_in *sin;
+	struct sockaddr_in6 *sin6;
+	char *printable;
+
+	switch (ss.ss_family) {
+	case AF_INET:
+		sin = (struct sockaddr_in *)&ss;
+		inet_pton(af, printable, &sin->sin_addr));
+		break;
+	case AF_INET6:
+		inet_pton(af, printable, &sin6->sin6_addr);
+		break;
+	}
+</PRE>
+
+Answer: You should use <TT>getnameinfo</TT> whereever possible.
+
+<HR>
+<H2>update history</H2>
+<UL>
+<LI>November 1998: document <TT>struct sockaddr_storage</TT>.
+<LI>December 1998: replace <TT>union sockunion</TT> into
+	<TT>struct sockaddr_storage</TT>, as <TT>struct sockaddr_storage</TT>
+	is recommended.
+<LI>July 1999: comment out most of <TT>union sockunion</TT> part.
+	Thank Mr. Adam M. Costello for comment.
+<LI>November 2000: update draft #.
+</UL>
+
+<!--#include virtual="../index.inc" -->
+</BODY>
+</HTML>

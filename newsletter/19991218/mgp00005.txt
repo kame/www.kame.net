@@ -1,0 +1,18 @@
+
+コンタクト
+
+snap-users@kame.net
+(英語)
+http://www.kame.net/
+send-pr interface(英語)
+core@kame.net
+*内緒の場合のみ* 開発者(日本語/英語)
+secretary@kame.net
+license questions、press(日本語/英語)
+
+それっぽいひとの居るところ(no guarantee!)
+6bone-jp@wide.ad.jp (日本語/英語)
+ipv6-jp@jp.freebsd.org (日本語/英語)
+tech-net@netbsd.org (英語)
+tech@openbsd.org (英語)
+

@@ -1,0 +1,185 @@
+<HTML>
+<HEAD><TITLE>Connecting to 6bone</TITLE></HEAD>
+<BODY>
+<H1>Connecting to 6bone</H1>
+<A HREF=http://www.itojun.org/>Jun-ichiro itojun Hagino (Itoh)</A>,
+<A HREF=http://www.kame.net/>KAME Project</A>
+<PRE>$Id: index.html,v 1.1 2001/04/17 03:42:19 itojun Exp $</PRE>
+
+<HR>
+<H2>Introduction</H2>
+
+If you wish to use IPv6 to connect to outside, you may want to
+connect your host to <A HREF=http://www.6bone.net/>6bone</A>,
+experimental worldwide IPv6 network.
+This newsletter describes how you can connect your local network to 6bone.
+<P>
+
+<STRONG>UPDATES:</STRONG>
+The document talks about the case where you have permanent IPv4 connection
+to the outside.
+If you only have dialup IPv4 connection (dyanmically-assigned IPv4 address),
+you may want to visit <A HREF=http://www.freenet6.net/>freenet6.net</A>.
+freenet6.net will allow you to dynamically configure IPv6-over-IPv4 tunnel
+by using web interface, and allows you to have permanent IPv6 address
+on top of dialup IPv4 connection (confusing, eh?).
+
+<HR>
+<H2>What is 6bone?</H2>
+
+<A HREF=http://www.6bone.net/>6bone</A> is an experimental worldwide
+IPv6 network.
+It is used for IPv6 interoperability tests, nailing down routing issues
+and address allocation issues in IPv6, and so forth.
+More detailed discussions can be found in
+<A HREF=http://www.6bone.net/about_6bone.html>About 6bone</A> page.
+<P>
+
+Please note that 6bone is experimental network.
+There can be frequent routing troubles that makes some hosts unreachable
+from your hosts.
+There can always be service interruptions.
+
+<HR>
+<H2>How can I connect my network to 6bone?</H2>
+
+6bone is constructed to form tree-like structure.
+"World 6bone" is devided into several "core 6bone sites"
+(usually represent a nation or an ISP),
+then devided into "leaf 6bone sites".
+You will need to contact some of core 6bone sites to get IPv6 network prefix
+assigned to your network, and get your IPv6 network connected to the
+upstream.
+
+<H3>Network medium toward upstream</H3>
+
+You'll need some IPv6-ready network connection to the 6bone connection point.
+There are various choices for network medium to connect to upstream.
+<UL>
+<LI><STRONG>IPv6 native PPP</STRONG>:
+	You'll need a dedicated phone line (maybe leased line)
+	for IPv6 connection.
+	You'll need some serial port, maybe CSU and DSU.
+<LI><STRONG>ATM link</STRONG>:
+	In "6bone JP" (subset of 6bone in Japan) we use widearea ATM
+	services for backbone in PVC mode, and KAME supports ATM PVC link.
+	You'll need some ATM NIC, and possibly ATM switch.
+<LI><STRONG>IPv6-over-IPv4 tunnel</STRONG>:
+	I believe this is the easiest one.
+	You and upstream will have "configured tunnel" toward the peer.
+	Configured tunnel is implemented in KAME as <TT>gif</TT> pseudo
+	network interface.
+	Your dual-stack router will encapsulate IPv6 packet into IPv4 packet,
+	like this:
+<PRE>
+IPv6 endhost
+   |
+===+================= your network
+   |			<I>must encapsulate and send</I>
+dual stack router	<I>IPv6 packet to your network</I>
+   | <I>IPv6 traffic from your site,</I>
+   | <I>encapsulated into IPv4 packet</I>
+   v
+upstream
+</PRE>
+	This packet will be sent to a dual-stack router in upstream, and
+	decapsulated.
+	You'll need to have fixed IPv4 address, and permanent IPv4 connectivity.
+	NOTE: Some of cablemodem-based IPv4 connectivity may not qualify.
+<LI>what others?
+</UL>
+
+Of course you must choose some medium that is supported by the upstream.
+<P>
+
+If you are willing to use IPv6-over-IPv4 tunnel, you'll need a dual-stack
+router on your IPv4 network.
+Of course, you can use KAME box as dual-stack router.
+Note that the dual-stack router will route packet between native IPv6 network,
+and tunnelled IPv6 network.
+Therefore:
+<UL>
+<LI>the dual-stack router can be the router for IPv4 network,
+	or a host in IPv4-network point of view.
+<LI>the dual-stack router may be operated with single ethernet interface.
+</UL>
+<PRE>
+  | <I>v4 connection</I>	  | <I>v4 connection</I>
+dual stack router	v4 router
+  |			  |
+==+============		==+=======================+====
+  |			  |			  |
+endhost			dual stack router	endhost
+</PRE>
+
+<H3>Asking for connection</H3>
+
+Now you will have to ask for connection to an upstream.
+Find the nearest upstream from <A HREF=http://www.6bone.net/>6bone webpage</A>,
+and contact them with necessary information, such as:
+<UL>
+<LI>Contact person's name and email addess
+<LI>Name of your site
+<LI>How many IPv6 networks do you plan to use?
+<LI>Network medium to connect to the upstream
+</UL>
+
+If you are willing to make a IPv6-over-IPv4 tunnel,
+we have prepared some <A HREF=6bone-connect.cgi>script</A> to ease this step.
+NOTE: due to the lack of database, we only able to help people in Japan
+and France at this moment.
+If you provide 6bone connetion, please drop me information about
+your IPv6 network connectivity services.
+
+<H3>Wait for reply from upstream</H3>
+
+Nothing to do here <TT>:-)</TT>
+
+<H3>Configuring your dual-stack router</H3>
+
+Now, you'll need to configure your dual-stack router.
+If you are using KAME box, you will be configuring like this.
+IPv6 address prefix <TT>3ffe:gggg:gggg::</TT> is assigned to your network.
+<PRE>
+# sysctl -w net.inet6.ip6.forwarding=1
+# /usr/local/v6/sbin/gifconfig gif0 my-router-v4 upstream-router-v4
+# /usr/local/v6/sbin/prefix eth0 3ffe:gggg:gggg:: prefixlen 64
+# /usr/local/v6/sbin/route6d -A 3ffe:gggg:gggg::/48,gif0 -O 3ffe:gggg:gggg::/48,gif0
+</PRE>
+You may want to run <TT>rtadvd</TT> on the router, so that hosts on ethernet
+can obtain information about the network address prefix.
+<P>
+
+To check if the tunnel is established, use the following command:
+<PRE>
+# /usr/local/v6/sbin/ping6 -I gif0 ff02::1
+# /usr/local/v6/sbin/ping6 -I gif0 ff02::9
+</PRE>
+<TT>ff02::1</TT> is link-local all-node multicast address, and this should
+reach the upstream router.
+<TT>ff02::9</TT> is link-local router multicast address, which must be
+replied by all routers.
+<P>
+
+<HR>
+<H2>What is the future of 6bone?</H2>
+
+As described in
+<A HREF=http://www.csl.sony.co.jp/cgi-bin/hyperrfc?2450>RFC2450</A>,
+IPv6 network address assignment will be started soon 
+for real (non-experimental) IPv6 network.
+In 1999, many vendors will ship IPv6-ready routers/hosts/whatever by default.
+<A HREF=http://www.6ren.net/>6REN</A>, an initiative of research-and-education 
+groups to promote IPv6, is now started.
+<P>
+
+I believe, starting from 1999,
+we'll see more and more IPv6 installations in various sites,
+and many real use of IPv6 network.
+<P>
+
+Have a happy christmas holidays!
+
+<!--#include virtual="../index.inc" -->
+</BODY>
+</HTML>

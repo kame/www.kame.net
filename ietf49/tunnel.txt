@@ -1,0 +1,15 @@
+traceroute to plt6-gate0.iij-america.net (216.98.98.82), 30 hops max, 40 byte packets
+ 1  207.137.72.3 (207.137.72.3)  1.274 ms
+ 2  207.137.82.2 (207.137.82.2)  0.920 ms
+ 3  10.137.82.22 (10.137.82.22)  1.730 ms
+ 4  border3.s6-5.qualcomm-1.sdg.pnap.net (63.251.125.33)  1.807 ms
+ 5  core2.fe0-0-bbnet1.sdg.pnap.net (63.251.127.2)  2.793 ms
+ 6  Serial4-1-1.GW1.SDG1.ALTER.NET (157.130.233.133)  3.828 ms
+ 7  144.ATM3-0.XR1.LAX2.ALTER.NET (146.188.249.66)  6.313 ms
+ 8  195.ATM2-0.TR1.LAX2.ALTER.NET (146.188.248.114)  6.353 ms
+ 9  111.at-6-1-0.TR3.SCL1.ALTER.NET (152.63.3.178)  14.042 ms
+10  399.ATM7-0.XR1.SJC1.ALTER.NET (152.63.48.189)  13.348 ms
+11  193.ATM1-0-0.SAN-JOSE9-GW.ALTER.NET (146.188.144.129)  18.535 ms
+12  137.39.91.66 (137.39.91.66)  14.761 ms
+13  PaloAlto00.IIJ.Net (216.98.97.55)  19.719 ms
+14  plt6-gate0.iij-america.net (216.98.98.82)  15.894 ms

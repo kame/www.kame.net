@@ -1,0 +1,66 @@
+Return-Path: itojun@itojun.org
+Received: from newton.ebina.hitachi.co.jp by galilei.v6.hitachi.co.jp (8.8.5/3.4W-EBINA) id KAA09933 for <sumikawa@galilei.ebina.hitachi.co.jp>; Fri, 28 Aug 1998 10:00:13 +0900 (JST)
+Received: from hitpro.hitachi.co.jp (root@hitpro.hitachi.co.jp [133.145.224.7])	by newton.ebina.hitachi.co.jp (8.9.0/3.7W-EBINA) with ESMTP id KAA24292	for <sumikawa@ebina.hitachi.co.jp>; Fri, 28 Aug 1998 10:00:11 +0900 (JST)
+Received: from turmeric.itojun.org by hitpro.hitachi.co.jp (8.9.1a/3.7W-hitpro) id JAA02457; Fri, 28 Aug 1998 09:55:30 +0900 (JST)
+Received: from localhost (localhost [127.0.0.1]) by turmeric.itojun.org (8.8.5/3.3W3) with ESMTP id JAA00349; Fri, 28 Aug 1998 09:59:19 +0900 (JST)
+To: Atsushi Onoe <onoe@sm.sony.co.jp>
+cc: sumikawa@ebina.hitachi.co.jp, core@kame.net
+In-reply-to: onoe's message of Fri, 28 Aug 98 09:35:35 JST.      <199808280035.JAA11555@duplo.sm.sony.co.jp> 
+X-Template-Reply-To: itojun@itojun.org
+X-Template-Return-Receipt-To: itojun@itojun.org
+X-PGP-Fingerprint: F8 24 B4 2C 8C 98 57 FD  90 5F B4 60 79 54 16 E2
+Subject: Re: KQC 
+cc: itojun@itojun.org
+From: Jun-ichiro itojun Itoh <itojun@iijlab.net>
+Date: Fri, 28 Aug 1998 09:59:18 +0900
+Message-ID: <346.904265958@turmeric.itojun.org>
+Sender: itojun@itojun.org
+X-UIDL: 0b61e37dbb4aa95a7cd9f98b475e97d8
+
+>>  2) 同様に、nを用いて一般解を求めなさい
+>	2*n-3 (n >= 2 の場合)
+>	全員の記憶を集めるのに最低 (n-1) 回必要
+>	この時点で全部保持している人は 2人
+>	残り (n-2) 人は記憶が欠落しているので、充当するのに (n-2) 回必要
+>	合計 (n-1) + (n-2) = 2*n-3
+
+	6人の場合、以下のようにすると8回(2 * n - 4)でいけます。
+
+0: a b c d e f
+1: (a,b) ab ab c d e f
+2: (a,c) abc ab abc d e f
+3: (d,e) abc ab abc de de f
+4: (d,f) abc ab abc def de def
+5: (a,d) abcdef ab abcdef abcdef de def
+6: (c,f) abcdef ab abcdef abcdef de abcdef
+7: (*,b) abcdef abcdef abcdef abcdef de abcdef
+8: (*,e) abcdef abcdef abcdef abcdef abcdef abcdef
+
+	5人の場合は6回(2 * n - 4)。
+
+0: a b c d e
+1: (a,b) ab ab c d e
+2: (c,d) ab ab cd cd e
+3: (c,e) ab ab cde cd cde
+4: (a,c) abcde ab abcde cd cde
+5: (b,e) abcde abcde abcde cd abcde
+6: (*,d) abcde abcde abcde abcde abcde
+
+	7人の場合は10回(2 * n - 4)。
+
+0: a b c d e f g
+1: ab ab c d e f g
+2: abc ab abc d e f g
+3: abc ab abc de de f g
+4: abc ab abc def de def g
+5: abc ab abc defg de def defg
+6: abcdefg ab abc abcdefg de def defg
+7: abcdefg ab abcdefg abcdefg de def abcdefg
+8: abcdefg abcdefg abcdefg abcdefg de def abcdefg
+9: abcdefg abcdefg abcdefg abcdefg abcdefg def abcdefg
+10: abcdefg abcdefg abcdefg abcdefg abcdefg abcdefg abcdefg
+
+	これが最小かといわれると自信ないですが、後半戦の無駄を防ぐのがカギかな。
+
+itojun
+
