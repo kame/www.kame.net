@@ -513,10 +513,10 @@ x (racoon 472) Re: [PATCH] Fix 'null' encryption in setkey.
 - (racoon 486) Re: Attribute Certificates and Racoon 
 - (racoon 487) racoon and SecurID authentication
 - (racoon 489) Re: racoon and SecurID authentication
-- (racoon 495) phase1 negotiation failed,  failed to get private key
-- (racoon 496) Re: phase1 negotiation failed,  failed to get private key
-- (racoon 497) Re: phase1 negotiation failed,  failed to get private
-- (racoon 498) Re: phase1 negotiation failed,  failed to get private key  [SOLVED]
+D (racoon 495) phase1 negotiation failed,  failed to get private key
+D (racoon 496) Re: phase1 negotiation failed,  failed to get private key
+D (racoon 497) Re: phase1 negotiation failed,  failed to get private
+D (racoon 498) Re: phase1 negotiation failed,  failed to get private key  [SOLVED]
 - (racoon 501) Problems with Win2k-Client
 D (racoon 503) Printing ISAKMP packets
 D (racoon 508) Re: Printing ISAKMP packets
