@@ -1,0 +1,1146 @@
+<HTML>
+<HEAD><TITLE>Guidelines of network programming in the IPv6 age</TITLE></HEAD>
+
+<H2>IPv6時代のネットワークプログラミング</H2>
+
+株式会社東芝 研究開発センター<BR>
+神明達哉<BR>
+
+<hr>
+
+<h3><b>この記事の内容</b></h3><br>
+
+2000年はBSDのIPv6対応という点で大きな進展のある年であった。
+この一年ですべてのBSDが標準でIPv6に対応し、IPv6ユーザの裾野も広がっている。
+基盤となる環境が揃ったいま、今後はIPv6対応のアプリケーションがどれだけ
+出てくるかが問題である。
+
+<p>
+
+そこで、本記事では、移植性と一般性に重点をおいて、
+IPv6時代のアプリケーションプログラミングの基本スタイルを紹介する。
+ここで、「一般性」とは、たとえばIPv6など、特定のプロトコルに依存
+しないスタイルを意味する。一般性のあるプログラミングによって、
+既存のIPv4アプリケーションのIPv6対応はもちろん、
+将来の新しいプロトコルにも対応しやすいプログラムになることを
+実例を挙げて示す。
+
+<p>
+
+プログラミング言語としてはC言語を、システム(OS)としては各BSDの
+最新リリース(執筆時点でBSD/OS 4.2、FreeBSD 4.4、NetBSD 1.5.2、OpenBSD
+3.0)を対象とする。
+また、IPv6の基本仕様と、従来のIP(IPv4)アプリケーションのプログラミング
+についての知識を仮定する。
+記述内容は、できる限りBSD以外のシステムについても移植性を保てるよう
+心掛けるが、現状ではまだ仕様に曖昧な点が残っていることもあり、
+BSD以外のシステムでは必ずしも本記事の通りに動作しない内容が
+含まれることをお断りしておく。
+
+<p>
+
+なお、以下では、慣習に従い、システムコールをconnect(2)のように(2)付きで、
+ライブラリ関数をprintf(3)のように(3)付きで表わして区別する。
+また、その他の関数はfoo()のように数字抜きで表記する。
+
+<p>
+<hr>
+<h3>BSD系システムにおけるIPv6プログラミング環境</h3><br>
+前述の通り、各BSDの最新版にはすでにIPv6の基本機能が含まれており、
+それはプログラミング環境についてもあてはまる。
+すなわち、標準のプログラミングインタフェース(API)を使うための
+ヘッダファイルやライブラリはシステムのインストール時点から揃っている。
+
+<p>
+
+<hr>
+<h3>IPv6プログラミングの基本</h3><br>
+IPのバージョンが上がり、IPv6になったからといって
+ネットワークプログラミングの手法が一変するわけではない。
+一般のアプリケーションにとっての直接のインタフェース
+となるソケット層や、さらにその下位層のTCPやUDPについては、
+ネットワーク層のプロトコルがIPv6であってもIPv4であっても
+ほとんど違いがないからだ。
+<p>
+
+すなわち、ソケットを開き、必要ならホスト名からアドレスを解決し、
+TCPであればコネクションを確立した後、該当のソケットを通じて
+データを送受信すればよい。
+
+<p>
+
+<h4>一般性のあるネットワークプログラミング</h4>
+
+<p>
+
+IPv6にも対応できる、一般性のあるプログラミングの雰囲気をつかむために、
+TCPクライアントのコネクション確立を例に、IPv4専用のプログラムと
+一般性のあるプログラムを比較してみよう。
+
+<p>
+
+リスト1に示したtcp_connect4()がIPv4専用の関数である(注: 見通しを
+良くするためにヘッダファイルやエラー処理は省略した。
+また移植性にも配慮していない。)。
+一見して、sockaddr_in, AF_INET, gethostbyname(3)(注:
+gethostbyname(3)をIPv6に対応させるオプションも存在するが、使いにくい。)
+のような、IPv4に特有のデータ構造やライブラリを使っていることがわかる。
+
+<p>
+
+<pre>
+  1:   int
+  2:   tcp_connect4(hostname, port)
+  3:           const char *hostname, *port;
+  4:   {
+  5:           struct hostent *hp;
+  6:           struct sockaddr_in sin;
+  7:           int s, i;
+  8:   
+  9:           s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+ 10:   
+ 11:           hp = gethostbyname(hostname);
+ 12:           for (i = 0; hp->h_addr_list[i] != NULL; i++) {
+ 13:                   memset(&sin, 0, sizeof(sin));
+ 14:                   sin.sin_family = AF_INET;
+ 15:                   sin.sin_port = htons(atoi(port));
+ 16:                   memcpy(&sin.sin_addr, hp->h_addr_list[i], hp->h_length);
+ 17:   
+ 18:                   if (connect(s, (struct sockaddr *)&sin, sizeof(sin)) == 0)
+ 19:                           break;
+ 20:           }
+ 21:   
+ 22:           return(s);
+ 23:   }
+</pre>
+リスト1: tcp_connect4()関数
+
+<p>
+
+一方、同じ処理をより一般的に書き、その結果としてIPv6にも対応させた例が
+リスト2のtcp_connect()である。
+この関数では、IPv4はもちろん、IPv6に依存した構造も使っていない。
+後で示すサーバ用のプログラムでも同様である。
+このように一般性のあるプログラムにすることで、IPv4とIPv6の両方を同時に
+扱えるだけでなく、たとえばIPv4のみしかサポートしていないシステム上でも
+正常に動き、さらには将来の新しいプロトコルにもアプリケーション
+を修正せずに対応できるという利点が得られる。
+
+<p>
+
+<pre>
+  1:   #include <sys/types.h>                /* FreeBSD and NetBSD need this */
+  2:   #include <sys/socket.h>
+  3:   
+  4:   #include <netinet/in.h>
+  5:   
+  6:   #include <stdio.h>
+  7:   #include <unistd.h>
+  8:   #include <netdb.h>
+  9:   
+ 10:   int
+ 11:   tcp_connect(hostname, port)
+ 12:           const char *hostname, *port;
+ 13:   {
+ 14:           int s, gai_error;
+ 15:           struct addrinfo hints, *res, *ai;
+ 16:   
+ 17:           memset(&hints, 0, sizeof(hints));
+ 18:           hints.ai_family = AF_UNSPEC;
+ 19:           hints.ai_socktype = SOCK_STREAM;
+ 20:           hints.ai_protocol = IPPROTO_TCP;
+ 21:   
+ 22:           if ((gai_error = getaddrinfo(hostname, port, &hints, &res)) != 0) {
+ 23:                   fprintf(stderr, "getaddrinfo for %s failed: %s\n",
+ 24:                           hostname, gai_strerror(gai_error));
+ 25:                   return(-1);
+ 26:           }
+ 27:           
+ 28:           for (ai = res; ai != NULL; ai = ai->ai_next) {
+ 29:                   s = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
+ 30:                   if (s < 0)
+ 31:                           continue;
+ 32:   
+ 33:                   if (connect(s, ai->ai_addr, ai->ai_addrlen) == 0)
+ 34:                           break;
+ 35:   
+ 36:                   close(s);
+ 37:           }
+ 38:           if (res != NULL)
+ 39:                   freeaddrinfo(res);
+ 40:   
+ 41:           if (ai == NULL)
+ 42:                   return(-1);
+ 43:   
+ 44:           return(s);
+ 45:   }
+</pre>
+リスト2: tcp_connect()関数
+
+<p>
+
+これ以後、一般性という点にとくに注意しながら、必要なデータ構造と
+ライブラリ関数を紹介し、プログラムの詳細を解説する。
+
+<p>
+
+<h4>sockaddr_in6構造体</h4>
+
+<p>
+
+ソケットによるプログラミングでは、アドレスファミリー、
+すなわち通信プロトコルごとに定義されるソケットアドレス構造体
+を用いる。IPv6用にはsockaddr_in6という構造体(図1)が定義されている。
+
+<p>
+
+<pre>
+struct sockaddr_in6 {
+        u_int8_t        sin6_len;
+        u_int8_t        sin6_family;
+        u_int16_t       sin6_port;
+        u_int32_t       sin6_flowinfo;
+        struct in6_addr sin6_addr;
+        u_int32_t       sin6_scope_id;
+};
+</pre>
+図1: sockaddr_in6構造体(NetBSDの定義)
+
+<p>
+
+はじめの2つのメンバは、どのアドレスファミリー用のソケットアドレス
+構造体にも共通で、前者は構造体の長さを、後者はアドレスファミリー
+を表わす。IPv6のアドレスファミリーとして、AF_INET6というマクロが定義
+されている。
+
+<p>
+
+sockaddr_in6構造体は固定長で、sin6_lenの値は常に
+sizeof(struct sockaddr_in6)になる。
+ただし、システムによっては、sin6_lenのような、
+構造体の長さを示すメンバがソケットアドレス構造体に
+含まれない場合もある。
+たとえば、LinuxやSolarisなど、4.3BSD由来のソケットAPIを実装した
+システムのソケットアドレス構造体には
+このようなメンバは存在しない。この差は移植性を考える上では
+重要であり、本記事のプログラム例でもこの点に留意している。
+
+<p>
+
+sin6_portメンバはTCPやUDPのポート番号を表わし、sockaddr_in構造体の
+sin_portメンバと同様の役割を持つ。
+
+<p>
+
+sin6_addrメンバが128ビット(16バイト)のIPv6アドレスを表わす。
+その型であるin6_addr構造体の詳細にはここでは触れない。
+一般性のあるプログラミングのためには、
+特定のファミリー(この場合はAF_INET6)特有の
+機能の詳細はかえって足枷となるからである。
+また、本記事のプログラム例からもわかるように、in6_addr構造体
+の実現法を知らなくてもアプリケーションは十分に
+作成できる。
+
+<p>
+
+IPv4専用のアプリケーションの中には、IPv4アドレス用のin_addr構造体
+を関数間で直接やり取りしたり、さらには、IPv4アドレスが32ビットで
+あることからlong型の整数としてやり取りしているものがある。
+とくに後者はlong型が32ビット整数と一致しないアーキテクチャの上では
+問題になるし、前者も一般性の観点からは望ましくない。
+たとえ特定のアドレスファミリーのみを意識したアプリケーションであっても、
+可能な限りソケットアドレス構造体全体を利用し、個々のアドレスファミリー
+に依存したメンバを直接利用しないようにすべきである。
+
+<p>
+
+sin6_flowinfoとsin6_scope_idの各メンバは、
+特殊用途のアプリケーションでのみ利用される。本記事の範囲で扱う
+「一般のアプリケーション」作成においては、これらのメンバは
+無視してよい。
+
+<p>
+
+<h4>sockaddr_storage構造体</h4>
+
+<p>
+
+ネットワーク関連のシステムコールは個々のプロトコルから
+独立して設計されており、一般のソケットアドレスを表わす
+sockaddr構造体を引数に取ることが多い。
+そのため、プログラムの中で、sockaddr_in6のようなアドレスファミリー
+固有の構造体へのポインタを
+sockaddr構造体へのポインタにキャストする操作、およびその逆のキャスト
+操作がしばしば現れる。
+ところが、多くのシステムにおいて、sockaddr構造体のサイズは
+sockaddr_in6構造体のそれよりも小さいため、
+リスト3に示す例のようなバグが生じやすい。
+
+<p>
+
+<pre>
+	struct sockaddr sa;
+	struct sockaddr_in6 *sa6;
+
+	sa6 = (struct sockaddr_in6 *)&sa;
+	memset(sa6, 0, sizeof(*sa6));
+</pre>
+
+  リスト3: ソケットアドレス構造体の長さの違いによるバグ
+
+<p>
+
+この例では、実際にメモリ上に確保されているのはsockaddr構造体のサイズ
+だけであるにもかかわらず、それを超える長さを初期化しているため、
+メモリの一部が破壊されてしまう。
+NULLポインタ参照などと違い、この類いのバグは直接の原因とは離れた個所
+で問題を引き起こすことが普通であり、
+一度バグ入りのプログラムを書いてしまうとデバッグに長時間苦しむ結果となる。
+
+<p>
+
+このようなバグを防ぐためには、sockaddr_storage構造体を利用するとよい。
+この構造体は、各システム上でサポートするすべてのアドレスファミリー用の
+ソケットアドレス構造体を収容できるサイズを持つ。
+したがって、sockaddr_storage構造体を実体としてメモリ上に確保した後は、サイズを
+気にせずにそのポインタを任意のアドレスファミリー依存ソケットアドレス構造体への
+ポインタにキャストできる。
+リスト3に示したバグを、sockaddr_storage構造体を用いて
+修正したプログラムがリスト4である。
+
+<p>
+
+<pre>
+	struct sockaddr_storage ss;
+	struct sockaddr_in6 *sa6;
+
+	sa6 = (struct sockaddr_in6 *)&ss;
+	memset(sa6, 0, sizeof(*sa6));
+</pre>
+  リスト4 リスト3のバグをsockaddr_storage構造体を用いて修正した例
+
+<p>
+
+一般に、sockaddr構造体を実体として利用するのは危険である。実体には
+常にsockaddr_storage構造体を用い、sockaddr構造体はポインタとしてのみ利用する
+という方針を徹底することで、よりバグの少ない、安全なプログラムとなる。
+IPv6対応アプリケーションのプログラミング時には、この原則を
+貫くことをお勧めする。
+
+<p>
+
+<h4>IPアドレスとホスト名の解決: getaddrinfo(3)とgetnameinfo(3)</h4>
+
+<p>
+
+経路制御のアプリケーションや診断用のツールは別として、
+通常のネットワークアプリケーションはIPアドレスをユーザからの
+入力として直接受け取ることはない。
+ユーザは"www.kame.net"といったホスト名をアプリケーションに
+渡し、アプリケーションがそれをIPアドレスに変換する。
+また、IPアドレス自体が与えられた場合でも、
+最終的には文字列としての表記からソケットアドレス構造体に格納する
+バイナリ形式に変換する必要がある。
+
+<p>
+
+逆に、たとえばアクセスの記録を取るなどの目的で、
+バイナリ形式のアドレスから文字列としてのアドレス表記へ、さらには
+対応するホスト名への変換が必要になる場合もある。
+
+<p>
+
+これらの機能を提供するライブラリ関数はいくつか定義されているが、
+ここでは、IPv6への対応、さらには一般性のあるプログラミングを
+考えたときに最も強力で使いやすい2つを紹介する。
+ホスト名をアドレスに変換するgetaddrinfo(3)と、アドレスをホスト名に
+変換するgetnameinfo(3)である。
+
+<p>
+
+getaddrinfo(3)のプロトタイプを図2に示す。
+
+<pre>
+      int getaddrinfo(const char *nodename, const char *servname,
+                      const struct addrinfo *hints, struct addrinfo **res);
+</pre>
+  図2: getaddrinfo(3)関数
+
+
+<p>
+
+nodenameがホスト名、servnameは"http"のようなサービス名、または"80"
+のようなポート番号文字列である。
+さらに、IPv4、IPv6といったネットワークプロトコルや、
+TCP、UDPのようなトランスポートプロトコルを指定するための付加情報として
+hintsという引数が与えられる。hintsの型であるaddrinfo構造体を図3に示す。
+
+<pre>
+  struct	addrinfo {
+  	int		ai_flags;
+	int		ai_family;
+	int		ai_socktype;
+	int		ai_protocol;
+	size_t		ai_addrlen;
+	char		*ai_canonname;
+	struct sockaddr	*ai_addr;
+	struct addrinfo	*ai_next;
+  };
+</pre>
+  図3: addrinfo構造体
+
+<p>
+
+hintsで指定するのは、通常、ai_family, ai_socktype, ai_protocolの3つである。
+それぞれ、ネットワークプロトコル、ストリーム型かデータグラム型かの
+ソケット種別、トランスポートプロトコルを表わす。
+また、用途によってはai_flagsにさらに情報を追加する場合もある。
+
+<p>
+
+getaddrinfo(3)は、変換に成功したかどうかを返り値とし、成功した場合には
+resにaddrinfo構造体のリストを格納する。リストの各要素のai_addrメンバ
+が、与えられた情報に対応するソケットアドレス構造体を指す。
+
+<p>
+
+getaddrinfo(3)の第2引数hintsのai_familyメンバにAF_UNSPECを指定すれば、
+IPv4とIPv6の両方のアドレスを同時に要求できる。
+(注: 仕様上はIP以外のプロトコルも含まれるが、BSDの実装上はIPv4とIPv6
+のみ対応している。また現状のネットワーク環境においては、実際上もそれで
+十分であろう。)
+たとえば、"www.kame.net"というホスト名に対して、
+DNS上には実際に2つのIPv6アドレスと1つのIPv4アドレスが
+登録されている。したがって、このホスト名をnodenameとし、
+AF_UNSPECをhintsのai_familyに指定してgetaddrinfo(3)を呼び出せば、
+少なくとも3つの要素からなるリストがresとして返る(図4)。
+
+<p>
+
+<pre>
+  res
+   -> {
+        ai_family=AF_INET6
+        ai_addr=3ffe:501:4819:2000:5054:ff:fedc:50d2
+	ai_next }
+         +-> {
+               ai_family=AF_INET6
+	       ai_addr=2001:200:0:4819:5054:ff:fedc:50d2
+               ai_next }
+                +-> {
+		      ai_family=AF_INET
+                      ai_addr=203.178.141.212
+                      ai_next }
+                        +-> NULL
+</pre>
+図4: www.kame.netに対するgetaddrinfo(3)の結果
+
+<p>
+
+getaddrinfo(3)の逆に相当する関数がgetnameinfo(3)である。そのプロトタイプを
+図5に示す。
+
+<pre>
+   int getnameinfo(const struct sockaddr *sa, socklen_t salen,
+                   char *host, size_t hostlen,
+                   char *serv, size_t servlen,
+                   int flags);
+</pre>
+  図5: getnameinfo(3)関数
+
+
+<p>
+
+getnameinfo(3)は、ソケットアドレス構造体を入力として受け取り、対応する
+ホスト名とサービス名を文字列として返す働きをする。
+
+<p>
+
+getaddrinfo(3)およびgetnameinfo(3)の最大の特徴は、アドレスファミリーに
+依存しない設計になっていることである。
+たとえば、getaddrinfo(3)が返すaddrinfo構造体には一般の
+ソケットアドレス構造体が格納されており、これはそのままconnect(2)や
+sendto(2)といったシステムコールの引数として利用できる。
+すなわち、各々のアプリケーションがsockaddr_in6構造体の各メンバを埋める
+必要はない。
+
+<p>
+
+getnameinfo(3)についても同様であり、引数には
+アドレスファミリーに依存した情報がない。アプリケーションとしては、
+与えられたソケットアドレス構造体のアドレスファミリーを気にせずに、
+そのホスト名やサービス名に対応する文字列を得られる。
+
+<p>
+
+アドレスファミリーに依存しない、一般性のあるプログラミングのために、
+これらのライブラリをうまく使う必要がある。
+
+<p>
+
+<h4>サーバ・クライアント型モデルにおけるコネクション確立の例</h4>
+
+<p>
+
+ここでは、サーバ・クライアント型モデルにおける
+コネクション確立を想定して、IPv6を用いたネットワークプログラムの実例を示す。
+以下の例では、そのまま雛形として使えるように、
+エラー処理も見通しを損なわない範囲で正確を期した。
+
+<p>
+
+まず、リスト2で示したクライアント側プログラムtcp_connect()について
+説明する。
+この関数は、ホスト名とポート番号を受け取ってTCPコネクションを確立し、
+対応するソケットを呼び出し元に返す働きをする。
+
+<p>
+
+17-26行で、getaddrinfo(3)を用いてホスト名からIPアドレスを解決する。
+18行目で、hints.ai_familyにAF_UNSPECを指定する点が重要である。
+これにより、IPv4とIPv6を単一のプログラムで同時に扱える。
+
+<p>
+
+アドレス解決に成功したら、
+getaddrinfo(3)が返したリストを順にたぐってソケットを開き(29行)、
+connect(2)を試みる(33行)。
+ここで、connect(2)の第3引数としてai->ai_addrlenを利用している点に
+注意してほしい。
+BSD系のシステムであれば、ここでai->ai_addr->sa_lenを利用しても同じ結果が
+得られるが、ソケットアドレス構造体にsa_lenメンバを持たないシステムに対する
+移植性が損なわれてしまう。
+
+<p>
+
+connect(2)に成功すればループを抜け(34行)、接続したソケットを呼び出し元に返す。
+一方、経路が不安定な場合など、何らかの理由によりconnect(2)
+に失敗した場合には、そのソケットを閉じて(36行)、次のアドレスでの
+接続を試みる。図5の例では、まず3ffe...のIPv6アドレスに対して接続を
+試みる。もしこれが時間切れになれば、次に2001...のIPv6アドレス、
+最後に203.178.141.212のIPv4アドレスという順で接続しようとする。
+このように、接続先の候補として異なるファミリーのアドレスが混ざっていても、
+プログラム上でそれを意識する必要はない。getaddrinfo(3)がそれを吸収して
+一般のソケットアドレス構造体として渡してくれるからである。
+なお、36行で、失敗したソケットを閉じてからループを続けている
+点は重要である。これを忘れると不必要なソケットが開いたままで
+放置されてしまう。
+
+<p>
+
+getaddrinfo(3)はaddrinfo構造体のリストを動的に生成するので、
+必要な処理を終えた後でfreeaddrinfo(3)を用いてリストを解放する
+必要がある(39行)。なお、freeaddrinfo(3)にNULLポインタを渡したときの
+挙動は定義されていないため、事前に引数がNULLポインタでないことを
+確認する方が安全である(38行)。
+(注: tcp_connect()においては、getaddrinfo(3)
+が成功したとき、すなわちリストが空でないときにしかfreeaddrinfo(3)が
+利用されないため、この例においてはこの確認は冗長である。)
+
+<p>
+
+次に、サーバ側の典型的な動作である、コネクション受付処理のプログラムを
+示す。その中心となるのがリスト5のtcp_accept()で、
+これは与えられたサービス名またはポート番号でクライアントからの
+コネクション要求を待ち、確立したコネクションのソケットを呼び出し元に返す。
+また、その際に、クライアントのアドレスとポート番号を標準出力に表示する。
+
+<p>
+
+<pre>
+  1:   #include <sys/types.h>                /* FreeBSD and NetBSD need this */
+  2:   #include <sys/socket.h>
+  3:   #include <sys/select.h>
+  4:   
+  5:   #include <netinet/in.h>
+  6:   
+  7:   #include <stdio.h>
+  8:   #include <stdlib.h>
+  9:   #include <unistd.h>
+ 10:   #include <netdb.h>
+ 11:   
+ 12:   static char *sa2str __P((struct sockaddr *, socklen_t));
+ 13:   
+ 14:   struct conntable {
+ 15:           struct conntable *next;
+ 16:           int soc;
+ 17:   };
+ 18:   
+ 19:   int
+ 20:   tcp_accept(port)
+ 21:           const char *port;
+ 22:   {
+ 23:           int s, maxsoc = -1, ret = -1;
+ 24:           size_t masks;
+ 25:           struct conntable *ct_top = NULL, *ct, **ctp = &ct_top, *ct_next;
+ 26:           struct addrinfo hints, *res, *ai;
+ 27:           fd_set *mask = NULL;
+ 28:           struct sockaddr_storage ss;
+ 29:           struct sockaddr *sa = (struct sockaddr *)&ss;
+ 30:           socklen_t fromlen;
+ 31:   
+ 32:           memset(&ss, 0, sizeof(ss));
+ 33:   
+ 34:           memset(&hints, 0, sizeof(hints));
+ 35:           hints.ai_family = AF_UNSPEC;
+ 36:           hints.ai_socktype = SOCK_STREAM;
+ 37:           hints.ai_protocol = IPPROTO_TCP;
+ 38:           hints.ai_flags = AI_PASSIVE;
+ 39:   
+ 40:           if (getaddrinfo(NULL, port, &hints, &res) != 0)
+ 41:                   return(-1);
+ 42:   
+ 43:           for (ai = res; ai != NULL; ai = ai->ai_next) {
+ 44:                   if ((s = socket(ai->ai_family, ai->ai_socktype,
+ 45:                                   ai->ai_protocol)) < 0)
+ 46:                           continue;
+ 47:                   if (bind(s, ai->ai_addr, ai->ai_addrlen) < 0) {
+ 48:                           close(s);
+ 49:                           continue;
+ 50:                   }
+ 51:                   if (listen(s, 1) < 0) {
+ 52:                           close(s);
+ 53:                           continue;
+ 54:                   }
+ 55:                   if (s > maxsoc)
+ 56:                           maxsoc = s;
+ 57:                   if ((ct = (struct conntable *)malloc(sizeof(*ct))) == NULL) {
+ 58:                           close(s);
+ 59:                           continue;
+ 60:                   }
+ 61:                   memset(ct, 0, sizeof(*ct));
+ 62:                   ct->soc = s;
+ 63:   
+ 64:                   *ctp = ct;
+ 65:                   ctp = &ct->next;
+ 66:           }
+ 67:           if (maxsoc < 0)
+ 68:                   goto cleanup;
+ 69:   
+ 70:           masks = howmany(maxsoc + 1, NFDBITS) * sizeof(fd_mask);
+ 71:           if ((mask = (fd_set *)malloc(masks)) == NULL)
+ 72:                   goto cleanup;
+ 73:           memset(mask, 0, masks);
+ 74:           for (ct = ct_top; ct != NULL; ct = ct->next)
+ 75:                   FD_SET(ct->soc, mask);
+ 76:   
+ 77:           if (select(maxsoc + 1, mask, NULL, NULL, NULL) <= 0)
+ 78:                   goto cleanup;
+ 79:   
+ 80:           for (ct = ct_top; ct != NULL; ct = ct->next) {
+ 81:                   if (FD_ISSET(ct->soc, mask)) {
+ 82:                           fromlen = sizeof(ss);
+ 83:                           ret = accept(ct->soc, sa, &fromlen);
+ 84:                           if (ret != -1) {
+ 85:                                   printf("Accepted a TCP connection from %s\n",
+ 86:                                          sa2str(sa, fromlen));
+ 87:                                   break;
+ 88:                           }
+ 89:                   }
+ 90:           }
+ 91:   
+ 92:     cleanup:
+ 93:           if (res != NULL)
+ 94:                   freeaddrinfo(res);
+ 95:           if (mask != NULL)
+ 96:                   free(mask);
+ 97:           for (ct = ct_top; ct != NULL; ct = ct_next) {
+ 98:                   ct_next = ct->next;
+ 99:                   close(ct->soc);
+100:                   free(ct);
+101:           }
+102:   
+103:           return(ret);
+104:   }
+105:   
+106:   static char *
+107:   sa2str(sa, salen)
+108:           struct sockaddr *sa;
+109:           socklen_t salen;
+110:   {
+111:           static char retbuf[NI_MAXHOST + NI_MAXSERV + 3];
+112:           char hbuf[NI_MAXHOST], sbuf[NI_MAXSERV];
+113:   
+114:           if (getnameinfo(sa, salen, hbuf, sizeof(hbuf), sbuf, sizeof(sbuf),
+115:                           NI_NUMERICHOST | NI_NUMERICSERV) != 0)
+116:                   return("???");
+117:   
+118:           sprintf(retbuf, "[%s]:%s", hbuf, sbuf);
+119:           return(retbuf);
+120:   }
+</pre>
+リスト5: TCPサーバのコネクション受け付け処理
+
+<p>
+
+一般性のあるプログラミングのため、
+tcp_accept()は少し複雑になる。
+大まかに言えば、この関数は受け付ける可能性のあるすべての
+プロトコルに対応するソケットを開き、
+select(2)を使ってすべてのソケットに対するコネクション要求を
+同時に待つ。最初の要求に対してコネクションを確立し、
+そのソケットを呼び出し元に返して終了する。
+
+<p>
+
+14-17行では、複数のソケットに対するコネクション要求待ちを管理するための
+リスト構造を定義している。必要なソケットの数は事前にはわからないので、
+要素の数を動的に伸長できるリスト構造がこの場合には適している。
+
+<p>
+
+次にtcp_accept()を説明する。
+内部変数の中で、ソケットアドレス構造体に関係する28-30行が重要である。
+すなわち、実体としてはsockaddr_storage構造体ssを定義し、
+そのポインタを一般のソケットアドレス構造体へのポインタにキャストして
+変数saに格納する。
+また、後のaccept(2)の際に、
+変数fromlenに実体の長さであるsizeof(ss)を代入する(82行)。
+これらは先に述べた原則にしたがっており、これ以後の部分で
+ソケットアドレス構造体のサイズによるバグが回避される。
+
+<p>
+
+tcp_accept()は、まずbind(2)で利用するソケットアドレス構造体を得るため
+のgetaddrinfo(3)を呼び出す(34-41行)。38行でai_flagsメンバにAI_PASSIVE
+を指定し、getaddrinfo(3)のホスト名(第1引数)としてNULLを渡している(40行)
+点がtcp_connect()と異なる。この場合、IPv4については0.0.0.0、
+IPv6については::(すべてのビットが0のアドレス)をアドレスとして
+用いる。これによって、各ソケットを「ワイルドカードアドレス」でbind(2)
+できる。
+
+<p>
+
+43-66行では、getaddrinfo(3)が返した各ソケットアドレス構造体に対して
+ソケットを開いてbind(2)を呼び出し、listen(2)によって
+ソケットをコネクション受け付け可能な状態にする。
+移植性を高めるために、bind(2)の第3引数でもai->ai_addrlenを使っている。
+ソケットの準備ができたら、後のselect(2)のためにリスト構造を作り、
+開いたソケットの番号を記録する(57-65行)。
+tcp_connect()の場合と同様、ソケットを開いた後にエラーが起きた場合
+には、そのソケットを閉じてからループを続けている点に注意が必要である。
+
+<p>
+
+すべてのソケットについて準備ができたら、select(2)で接続要求待ち
+に入る。まず70-75行でselect(2)に必要な読み出しソケットのマスクを
+生成する。ここでは、ソケット番号の最大値がどれだけ大きくなっても
+安全なように、マスクに必要なサイズをあらかじめ計算し、マスク用の
+バッファを動的に確保している。
+
+<p>
+
+77行でselect(2)を呼び出す。なお、今回は、プログラムを簡単にするために
+select(2)が失敗したら即座に関数を終了している(78行)が、
+実際のサーバアプリケーションではここでエラーからの復帰を試みるべきでる。
+
+<p>
+
+select(2)が成功すると80行からのループに入る。コネクション要求待ち
+をしていた各ソケットについて実際に要求があったかどうかを調べ(81行)、
+あればaccept(2)で要求を受け入れる。accept(2)に成功したらクライアントの
+アドレスとポート番号を表示して(85-86行)、ループを抜ける。
+表示に利用したsa2str()については後述する。
+ここでのaccept(2)に失敗することは通常考えられないが、万一失敗した
+場合には一通りループを続け、他に接続要求があればその処理を試みる。
+
+<p>
+
+tcp_accept()は動的に確保した内部資源を持って動くため、終了前に
+それらを解放する必要がある。内部資源としては、
+getaddrinfo(3)が返すaddrinfo構造体のリスト、
+コネクション要求受け付け用のソケット、およびそれを管理するリスト、
+さらにselect(2)用のマスクがある。93-101行で、必要に応じてこれらを
+解放している。この解放処理は、tcp_accept()の途中で回復不能な
+エラーが起きた場合にも必要になるため、92行に"cleanup"というラベルを
+設けて、エラーが起きたらこのラベルに飛ぶようにしてある。
+
+<p>
+
+sa2str()はソケットアドレス構造体を受け取って、
+"[アドレス]:ポート番号"の形の文字列を返す補助関数である。
+ソケットアドレス構造体がsa_lenメンバを持たないシステムにおける移植性
+を確保するために、構造体の長さを表わす引数salenを別途設けている。
+
+<p>
+
+sa2str()はgetnameinfo(3)をバックエンドとして利用する。112行目の
+hbufとsbufが、getnameinfo(3)が値を返すバッファである。各々の長さとして
+指定されているNI_MAXHOST、NI_MAXSERVはgetnameinfo(3)専用の定数であり、
+常にこの値を利用するとよい。
+getnameinfo(3)のフラグにはNI_NUMERICHOSTとNI_NUMERICSERVを指定した。
+これらはそれぞれ、ホスト名としては"www.kame.net"のようなホスト名ではなく
+アドレスのテキスト表現を用いること、サービス名としては"http"のような
+「名前」ではなく、"80"のようなポート番号文字列を用いることを指定している。
+
+<p>
+
+tcp_connect()と同様、tcp_accept()もアドレスファミリーに依存していない
+点に注目してほしい。実際、tcp_accept()自身でも、補助的に利用した
+sa2str()でも、特定のアドレスファミリーに依存する定数や構造体は
+一切使っていない。これにより、tcp_connect()と同様の利点がここでも得られる
+わけである。
+
+<p>
+
+<h4>コネクションを確立した後の処理</h4>
+
+<p>
+
+一度TCPのコネクションが確立されれば、IPv6に特化した処理は必要ない。
+IPv4専用アプリケーションと同様、
+データの受信にはread(2)やrecv(2)を、送信にはwrite(2)やsend(2)を
+使えばよい。
+
+<p>
+
+必要な通信が終わればclose(2)でコネクションを切断して終了である。
+
+<p>
+
+<h4>射影アドレスと移植性の問題</h4>
+
+<p>
+
+tcp_accept()の例からわかるように、アドレスファミリーに依存しない形の
+コネクション受け入れ処理はやや複雑である。とくに、conntableのようなリスト
+を用いて複数のソケットを管理し、select(2)で受信待ちをする部分が煩雑
+だと感じるかもしれない。
+
+<p>
+
+IPv4とIPv6という2つのネットワークプロトコルに限ってこの処理を
+簡潔にしようとして、「IPv4射影(mapped)IPv6アドレス(以後、単に
+射影アドレスと呼ぶ)」を利用したAPIが定義されている。
+射影アドレスの構造を図6に示す。このAPIにおいては、あるIPv4アドレス
+は、下位32ビットがそのIPv4アドレスになるような射影アドレスと等価である
+と定義される。
+
+<p>
+
+<pre>
+   |                80 bits               | 16 |      32 bits        |
+   +--------------------------------------+--------------------------+
+   |0000..............................0000|FFFF|    IPv4 address     |
+   +--------------------------------------+----+---------------------+
+</pre>
+  図6: IPv4射影IPv6アドレスの構造
+
+
+<p>
+
+また、とくにこの射影アドレスを意識して、IPv6アドレスの下位32ビットを
+IPv4アドレスと同様のドット表記で表現する記法が定義されている。
+以上の定義を用いると、たとえば203.178.141.212というIPv4アドレスは
+::ffff:203.178.141.212という射影アドレスと等価だということになる。
+
+<p>
+
+射影アドレスを用いたAPIでは、IPv4の通信でも、AF_INET6を
+アドレスファミリーとするソケットを用いる。その際、通信の両端のIPv4
+アドレスは射影アドレスとして表現する。
+
+<p>
+
+tcp_accept()と同等の処理を、射影アドレス利用を前提として
+AF_INET6ソケットのみを使って書いた関数tcp_accept_mapped()を
+リスト6に示す。ソケットを用いたIPv4プログラミングになじみの
+ある方なら、tcp_accept_mapped()のような形式には見覚えがあるだろう。
+実際、この関数は、IPv4の典型的なサーバアプリケーションのプログラムを、
+最も単純にIPv6対応させた例だと言える。
+
+<p>
+
+<pre>
+  1:   #include <sys/types.h>                /* FreeBSD and NetBSD need this */
+  2:   #include <sys/socket.h>
+  3:   
+  4:   #include <netinet/in.h>
+  5:   
+  6:   #include <stdio.h>
+  7:   #include <stdlib.h>
+  8:   #include <unistd.h>
+  9:   #include <netdb.h>
+ 10:   
+ 11:   static char *sa2str __P((struct sockaddr *, socklen_t));
+ 12:   
+ 13:   int
+ 14:   tcp_accept_mapped(port)
+ 15:           const char *port;
+ 16:   {
+ 17:           int s = -1, ret = -1;
+ 18:           struct sockaddr_in6 sa6;
+ 19:           socklen_t fromlen = sizeof(sa6);
+ 20:   
+ 21:           if ((s = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP)) < 0)
+ 22:                   return(-1);
+ 23:   
+ 24:   #ifdef __NetBSD__
+ 25:            {
+ 26:                   int off = 0;
+ 27:                   if (setsockopt(s, IPPROTO_IPV6, IPV6_BINDV6ONLY, &off,
+ 28:                                  sizeof(off)) < 0)
+ 29:                           return(-1);
+ 30:            }
+ 31:   #endif
+ 32:   
+ 33:           memset(&sa6, 0, sizeof(sa6));
+ 34:           sa6.sin6_family = AF_INET6;
+ 35:           sa6.sin6_len = sizeof(sa6); /* XXX: portability */
+ 36:           sa6.sin6_port = htons(atoi(port));
+ 37:           if (bind(s, (struct sockaddr *)&sa6, sizeof(sa6)) < 0)
+ 38:                   goto cleanup;
+ 39:   
+ 40:           if (listen(s, 1) < 0)
+ 41:                   goto cleanup;
+ 42:   
+ 43:           ret = accept(s, (struct sockaddr *)&sa6, &fromlen);
+ 44:           if (ret != -1) {
+ 45:                   printf("Accepted a TCP connection from %s\n",
+ 46:                          sa2str((struct sockaddr *)&sa6, fromlen));
+ 47:           }
+ 48:   
+ 49:     cleanup:
+ 50:           if (s != -1)
+ 51:                   close(s);
+ 52:   
+ 53:           return(ret);
+ 54:   }
+ 55:   
+ 56:   static char *
+ 57:   sa2str(sa, salen)
+ 58:           struct sockaddr *sa;
+ 59:           socklen_t salen;
+ 60:   {
+ 61:           static char retbuf[NI_MAXHOST + NI_MAXSERV + 3];
+ 62:           char hbuf[NI_MAXHOST], sbuf[NI_MAXSERV];
+ 63:   
+ 64:           if (getnameinfo(sa, salen, hbuf, sizeof(hbuf), sbuf, sizeof(sbuf),
+ 65:                           NI_NUMERICHOST | NI_NUMERICSERV) != 0)
+ 66:                   return("???");
+ 67:   
+ 68:           sprintf(retbuf, "[%s]:%s", hbuf, sbuf);
+ 69:           return(retbuf);
+ 70:   }
+</pre>
+リスト6: tcp_accept_mapped()関数
+
+<p>
+
+tcp_accept_mapped()を使ったサーバアプリケーションに、実際にIPv6と
+IPv4のそれぞれを利用して接続したときの出力を図7に示す。
+一行目がIPv6での接続、二行目がIPv4での接続である。
+IPv4で接続した場合には、サーバアプリケーションはクライアントの
+アドレスを射影アドレスとして認識していることがわかる。
+
+<p>
+
+<pre>
+   Accepted a TCP connection from [2001:200:0:4819:dc17:24bc:70b6:aa7f]:1546
+   Accepted a TCP connection from [::ffff:203.178.141.212]:1545
+</pre>
+   図7: tcp_accept_mapped()の出力例
+
+<p>
+
+さて、tcp_accept_mapped()と、既存のIPv4専用アプリケーションプログラムとの
+類似性から、とくに既存アプリケーションをIPv6対応させる際には
+射影アドレスを利用すると簡単だと思われるかもしれない。
+しかし、射影アドレスの利用には少なくとも2つの落とし穴がある。
+一つはセキュリティ上の問題、もう一つは移植性の問題だ。
+
+<p>
+
+セキュリティ上の問題とは、
+アドレスによるアクセス制御が複雑になることである。
+たとえば、リスト7のような関数access_deny()を考える。この関数は、
+あるIPアドレスがアクセス制御リストの要素と一致したら
+アクセスを拒否する、という動作を意図している
+(注: リスト7では一部の構造体やマクロを未定義のまま使っている)。
+ここで、射影アドレスによるAPIを用いる場合には、たとえば制御リストに
+10.0.0.1というIPv4アドレスと同時に、::ffff:10.0.0.1という射影アドレス
+もなければアクセス制御が緩くなってしまう。
+このようなことが続くと、「セキュリティのためにはIPv6に対応しない方が
+よい」ということにもなりかねない。
+
+<p>
+
+<pre>
+  1:   int
+  2:   access_ok(sa)
+  3:           struct sockaddr *sa;
+  4:   {
+  5:           struct aclist *acl;
+  6:           struct sockaddr_in *sin, *sin_ac;
+  7:           struct sockaddr_in6 *sin6, *sin6_ac;
+  8:   
+  9:           for (acl = acl_top; acl != NULL; acl = acl->next) {
+ 10:                   if (sa->sa_family != acl->sa->sa_family)
+ 11:                           continue;
+ 12:                   switch(sa->sa_family) {
+ 13:                   case AF_INET:
+ 14:                           sin = (struct sockaddr_in *)sa;
+ 15:                           sin_ac = (struct sockaddr_in *)acl->sa;
+ 16:                           if (sin->sin_addr.s_addr == sin_ac->sin_addr.s_addr)
+ 17:                                   return(1);
+ 18:                           break;
+ 19:                   case AF_INET6:
+ 20:                           sin6 = (struct sockaddr_in6 *)sa;
+ 21:                           sin6_ac = (struct sockaddr_in6 *)acl->sa;
+ 22:                           if (IN6_ARE_ADDR_EQUAL(&sin6->sin6_addr,
+ 23:                                                  &sin6_ac->sin6_addr))
+ 24:                                   return(1);
+ 25:                           break;
+ 26:                   }
+ 27:           }
+ 28:   
+ 29:           return(0);
+ 30:   }
+</pre>
+リスト7: アクセス制御判定関数
+<p>
+
+次に移植性の問題がある。
+一つにはこうしたセキュリティ上の懸念から、またもう一つには
+APIの仕様に対する解釈の違いから、一部のシステムでは射影アドレス
+のAPIをサポートしていない。たとえばOpenBSDやSolaris 8、winsock 2000は
+射影アドレスのAPIを一切サポートしない。また、NetBSDで射影アドレスのAPI
+を有効にするためには専用の非標準ソケットオプションが必要である
+(リスト6の24-31行参照)。
+
+<p>
+
+それなら、多少ソースコードの量が増えるのは我慢して、tcp_accept()の
+ように常に複数のソケットを開いてselect(2)で待てば移植性を保てるのかというと、
+実はそういうわけにもいかない。このやり方では、IPv4とIPv6の
+両方のワイルドカードアドレスを同一のポート番号にbind(2)する
+必要があるが、そのようなbind(2)の使い方を許さないシステムが
+存在するからだ。BSD/OSやLinux、CompaqのTru64がその代表例である。
+
+<p>
+
+現状では、どのシステムに対しても移植性があり、かつ簡潔な
+プログラミングスタイルは残念ながら存在しない。
+ただし、たとえIPv6とIPv4両方のワイルドカードアドレスに対するbind(2)
+が許されないシステム上でも、tcp_accept()だけで足りる場合もある。
+たとえば、getaddrinfo(3)がIPv4とIPv6の両方のアドレスを返す際に
+必ずIPv6がリストの先に現れるようになっている場合
+(注: 図4がそのようなリストの例である。)である。
+BSD/OSのgetaddrinfo(3)はAI_PASSIVEフラグが指定された場合には
+この条件を満たすので、tcp_accept()はBSD/OSの上でも動作する。
+ただし、その場合には、AF_INETソケットでのbind(2)が失敗することと、
+AF_INET6ソケットで射影アドレスAPIを用いてIPv4パケットを受信する
+可能性があることを念頭においてプログラムを書く必要がある。
+
+<p>
+
+結論として、少なくとも現状では、移植性に関する上記のような問題に
+留意した上で、tcp_accept()のように複数ソケットを用いるスタイル
+をお勧めしたい。
+将来的にも、セキュリティに対するポリシーの違いから、
+上記のようなシステム間の差異は残ると筆者は考えている。
+つまり、完全に移植性のあるAPIは今後も期待できそうにない。
+getaddrinfo(3)の挙動を統一し、
+複数ソケットを用いるプログラムがシステム間の差異によらず動作するように
+保証する、という方向が現在考えられる最善の形であろう。
+
+<p>
+
+<h4>UDPアプリケーション</h4>
+
+<p>
+
+UDPアプリケーションのIPv6対応も、基本はTCPと同じである。
+すなわち、データグラムの送信時にはgetaddrinfo(3)でIPアドレスを解決した後に
+sendto(2)を呼び出せばよい。getaddrinfo(3)のhintsとして、ai_socktypeには
+SOCK_DGRAMを、ai_protocolにはIPPROTO_UDPを指定する点だけが異なる。
+受信時もIPv4アプリケーションと同様、recvfrom(2)が使える。
+ただし、recvfrom(2)に渡すソケットアドレス構造体の実体には、
+tcp_accept()でのaccept(2)と同様、sockaddr_storage構造体を使う方が
+安全である。
+
+<p>
+
+<hr>
+<h3>文献</h3><br>
+筆者の知る限り、IPv6のプログラミングに関するまとまった文献はまだ
+少ない。
+また、API仕様の一部はまだ改訂中であり、存在している文献についても
+必ずしも記述内容が実際と一致していない場合もある。
+
+<p>
+
+APIの仕様については、getaddrinfo(3)をはじめとする「基本(basic)API」を定義した
+RFC 2553が公式の文書としては最も実情に近いと思われる。
+ただし、このRFCには後継(注: 執筆時点での最新版はdraft-ietf-ipngwg-rfc2553bis-04.txt)
+があり、わずかながら仕様の変更・追加があるので今後に注意が必要である。
+
+<p>
+
+RFC 2553と対をなす形でRFC 2292というAPI仕様がある。RFC 2292は、
+IPv6拡張ヘッダの使用法やraw IPv6ソケットの仕様を定義しており、
+「拡張(advanced)API」と呼ばれている。
+このRFCにも後継(注: 執筆時点での最新版はdraft-ietf-ipngwg-rfc2292bis-03.txt)
+があり、
+こちらはかなりの部分でRFC 2292との互換性を失っている。
+また、実装上もシステムによってRFC 2292に準拠していたり、後継(の一バージョン)
+に準拠していたり、まったくサポートしていなかったりとまちまちで、
+プログラマ泣かせの状況である。今後、仕様としては後継
+バージョンに収束すると考えられるが、実装の上ではしばらくの間混乱が
+続くであろう。BSD系のシステムでは、BSD/OS以外はRFC 2292に準拠している。
+BSD/OSのみ後継バージョン準拠である。
+
+<p>
+
+これらの文書は、たとえばIETFのwebページ
+<a href="http://www.ietf.org/rfc.html">http://www.ietf.org/rfc.html</a>,
+<a href="http://www.ietf.org/ID.html">http://www.ietf.org/ID.html</a>
+から入手可能である。
+
+<p>
+
+ネットワークのプログラミングについてのバイブルとも言える本として、
+Richard Stevensの"UNIX Network Programming"シリーズがある。
+この第2版の一巻にはIPv6のAPIについて解説があり、邦訳も出ている。
+しかし、残念なことに内容が古く、とくにrawソケットまわりの扱いが現実の
+仕様および実装とまったく異なっているため、注意が必要だ。
+ソースコード例も含めて、IPv6 APIについての記述は参考にしない方が安全である。
+
+<p>
+
+<hr>
+<h3>おわりに</h3><br>
+ここまで、IPv6環境におけるプログラミングの実例を、
+とくに移植性と一般性を重視しながら説明してきた。
+最も基本的で、かつ需要が高いと思われるTCPの
+アプリケーションプログラミングについては、本記事の内容だけでも
+かなりの部分を尽くしていると自負している。
+
+<p>
+
+一方で、重要ながら紙数の都合上割愛せざるを得なかった事項も多い。
+たとえば、IPv6独自の機能である拡張ヘッダの利用法や
+マルチキャストアプリケーションのAPI、経路制御プロトコルを実装
+する上での注意点などである。
+これらについては、機会があれば改めてご説明したい。
+
+<p>
+
+BSDはもちろん、多くのシステムがすでに標準でIPv6に対応しており、
+これからはアプリケーションの対応がIPv6普及の鍵となる。
+愛用のアプリケーションがまだIPv6化していないようであれば、
+本記事を参考にぜひ対応させてみていただきたい。
+また、当面はIPv4のみを想定して開発するという場合でも、一般性のある
+プログラミングを心掛けることで、将来IPv6に本格的に対応する際の
+作業量がずっと少なくなるはずである。
+その結果として、今後優れたIPv6アプリケーションが次々と生まれるように
+願っている。
+
+<hr>
+<ADDRESS> 
+Email: jinmei@isl.rdc.toshiba.co.jp<BR>
+<A HREF="http://www.jinmei.org/">URL: http://www.jinmei.org/</A><BR>
+</ADDRESS>
+
+</BODY>
+</HTML>
