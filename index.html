@@ -136,9 +136,15 @@ stack for BSD variants to the world.<BR>
 <LI><A HREF="logo/">KAME Logo Collection</A>
 <LI><A HREF="office/index.html">Our office</A>
 </UL>
-<UL>
-<LI><A HREF="index-j.html">Japanese homepage (not official)</A><BR>
-</UL>
+
+<form method=GET action="http://www.google.co.jp/search">
+<a href="http://www.google.co.jp/">
+<img src="http://www.google.com/logos/Logo_40wht.gif" width="64" height="26" border="0" alt="Google" align="middle"></a>
+<input type=text name=q size=15 maxlength=255 value="">
+<input type=hidden name=hl value="ja">
+<input type=submit name=btnG value="Google">
+<input type=hidden name=domains value="www.kame.net" checked><input type=hidden name=sitesearch value="www.kame.net" checked>
+</form>
 </TD>
 
 <TD VALIGN=top WIDTH="50%">
@@ -178,8 +184,9 @@ stack for BSD variants to the world.<BR>
 	<LI><A HREF="http://www.cvshome.com/">CVS</A>:
 		our favorite version controlling system
 	<LI><A HREF="http://www.gilc.org/crypto/">GLIC: Global Internet Liberty Campaign</A>
-	<LI><A HREF="http://www.momonga.org/">Atelier Momonga
-		<IMG SRC="http://www.momonga.org/icon/momo-b2.gif"
+	<LI><A HREF="http://www.momonga.org/">Atelier Momonga</A> 
+		<A HREF="http://www.momonga.org/">
+		  <IMG SRC="http://www.momonga.org/icon/momo-b2.gif"
 		 ALT="atelier momonga" WIDTH="88" HEIGHT="31"></A> 
 	<LI><A HREF="http://www.sfc.wide.ad.jp/DVTS/">
 		Digital Video stream over IPv6 multicast</A>
@@ -189,39 +196,27 @@ stack for BSD variants to the world.<BR>
 		<LI><A HREF="http://openlab.plathome.co.jp/ipv6/index.html">
 			Ready-to-install KAME CD-ROM images</A>
 		</UL>
-	<LI><A HREF="http://www.vpnc.org/">VPNC</A> IPsec/IKE conformance test suite <BR>
-		- uses KAME/racoon and openbsd/isakmpd <BR>
-		as reference code <BR>
-		<A HREF="http://www.vpnc.org/conformance.html">
-		<IMG SRC="img/vpnc-test-partner.gif" ALT="VPNC">
-		</A>
+	<LI><A HREF="http://www.vpnc.org/">VPNC</A>: IPsec/IKE conformance test suite
+		<UL>
+		<LI><IMG SRC="img/vpnc-test-partner.gif" ALIGN="right" ALT="VPNC">
+			uses KAME/racoon and openbsd/isakmpd as reference code
+		</UL>
 	<LI><a href="http://btobsearch.barnesandnoble.com/booksearch/results.asp?WRD=ipv6">
 		Search Barnes &amp; Noble bookstore for "IPv6"</a>
 	</UL>
 </UL>
+<UL>
+<LI><A HREF="index-j.html">Japanese homepage (not official)</A><BR>
+</UL>
 </TD>
 </TR>
 
-<TR>
-<TD>
-<form method=GET action="http://www.google.co.jp/search">
-<a href="http://www.google.co.jp/">
-<img src="http://www.google.com/logos/Logo_40wht.gif" width="64" height="26" border="0" alt="Google" align="middle"></a>
-<input type=text name=q size=15 maxlength=255 value="">
-<input type=hidden name=hl value="ja">
-<input type=submit name=btnG value="Google">
-<input type=hidden name=domains value="www.kame.net" checked><input type=hidden name=sitesearch value="www.kame.net" checked>
-</form>
-</TD>
-<TD>
-</TD>
-</TR>
 </TABLE>
 
 <HR>
 
 <IMG SRC="http://www.kame.net/logo/1/images/kame3.png" ALIGN=right ALT="KAME banner">
-<FONT SIZE=-2>$Date: 2005/01/08 22:33:59 $</FONT><BR>
+<FONT SIZE=-2>$Date: 2005/01/08 22:47:01 $</FONT><BR>
 <!--#include virtual="v6p.cgi" -->
 <BR>
 <!--#include virtual="inode.cgi" -->
