@@ -501,3 +501,35 @@ x (racoon 472) Re: [PATCH] Fix 'null' encryption in setkey.
 - (racoon 476) Re: [PATCH] Fix 'null' encryption in setkey.
 - (racoon 477) Re: Accounting
 - (racoon 478) Re: fixes for racoonctl
+- (racoon 479) NAT-D Hash calculation in Aggressive mode
+- (racoon 480) Sample ipsec.conf, racoon.conf for NAT-T 
+- (racoon 481) Re: NAT-D Hash calculation in Aggressive mode
+- (racoon 482) Re: NAT-D Hash calculation in Aggressive mode
+- (racoon 483) Troubles with multiple instances of racoon
+- (racoon 490) Troubles with multiple instances of racoon
+- (racoon 484) Attribute Certificates and Racoon
+- (racoon 488) Re: Troubles with multiple instances of racoon
+- (racoon 485) Re: Troubles with multiple instances of racoon 
+- (racoon 486) Re: Attribute Certificates and Racoon 
+- (racoon 487) racoon and SecurID authentication
+- (racoon 489) Re: racoon and SecurID authentication
+- (racoon 495) phase1 negotiation failed,  failed to get private key
+- (racoon 496) Re: phase1 negotiation failed,  failed to get private key
+- (racoon 497) Re: phase1 negotiation failed,  failed to get private
+- (racoon 498) Re: phase1 negotiation failed,  failed to get private key  [SOLVED]
+- (racoon 501) Problems with Win2k-Client
+- (racoon 503) Printing ISAKMP packets
+- (racoon 508) Re: Printing ISAKMP packets
+- (racoon 504) Re: Printing ISAKMP packets
+- (racoon 506) Re: Printing ISAKMP packets
+- (racoon 507) racoon <---> freeswan  +  ipcomp
+- (racoon 509) Re: Printing ISAKMP packets
+- (racoon 511) racoon (ipv6, kernel 2.6) host unreachable
+- (racoon 518) Re: racoon (ipv6, kernel 2.6) host unreachable
+- (racoon 519) Re: racoon (ipv6, kernel 2.6) host unreachable
+- (racoon 520) Re: racoon (ipv6, kernel 2.6) host unreachable
+- (racoon 521) Re: racoon (ipv6, kernel 2.6) host unreachable
+- (racoon 524) protecting wireless communication using IPsec
+- (racoon 525) backupsa
+- (racoon 526) generate_policy option / phase1/2 identifier
+- (racoon 527) Re: [Ipsec-tools-devel] host unreachable problem - possible solution
