@@ -1,6 +1,6 @@
 #!/usr/pkg/bin/perl
 
-$url = 'http://inode-srv.kame.net/';
+$url = 'http://inode-srv.kame.net/e/';
 #$fetch = '/usr/bin/fetch -q -o -';	# FreeBSD
 $fetch = '/usr/bin/ftp -V -o -';	# NetBSD
 
@@ -10,10 +10,10 @@ $r = 0;
 $t = 0;
 open(IN, "$fetch $url |");
 while (<IN>) {
-	if (/^åªç›íl:/) {
+	if (/^Current Data:/) {
 		$r = 1;
 		next;
-	} elsif (/^çXêVéûçè:/) {
+	} elsif (/^Last update:/) {
 		$t = 1;
 		next;
 	}
