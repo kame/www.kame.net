@@ -10,11 +10,10 @@ DRAFT                                                      Keiichi Shima
 
 
                     KAME Mobile IPv6 Implementation
-          <draft-keiichi-mobileip-kame-implementation-00.txt>
 
 
 
-Abstract
+                                Abstract
 
    The KAME Project is now developping Mobile IPv6 stack on its IPv6
    stack.  We will describe our implementation design and some comments
@@ -24,6 +23,7 @@ Status of this Memo
 
    This document is a supplemental reference for those implementing
    MIP6.
+
 
 
 

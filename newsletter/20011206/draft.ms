@@ -16,7 +16,6 @@ DRAFT                                                      Keiichi Shima
 .sp 2
 .ce 2
 KAME Mobile IPv6 Implementation
-<draft-keiichi-mobileip-kame-implementation-00.txt>
 .fi
 .sp 2
 .SH
