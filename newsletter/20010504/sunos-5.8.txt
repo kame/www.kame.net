@@ -1,82 +1,153 @@
+ bindtest.c,v 1.47 2001/06/28 01:51:25 itojun Exp 
 starting tests, socktype = SOCK_DGRAM
 	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
-wild4:	x	o	x	o	x	x	?2	?2
-wild6:	o	x	o	x	o	o	?2	?2
-loop4:	x	o	x	o	x	x	?2	?2
-loop6:	o	x	o	x	o	o	?2	?2
-wildm:	x	o	x	o	x	x	?2	?2
-loopm:	x	o	x	o	x	x	?2	?2
-onem:	?1	?1	?1	?1	?1	?1	?1	?1
-one4:	?1	?1	?1	?1	?1	?1	?1	?1
+wild4:	x	o[--11]	x	o[-211]	x	x	?2(126)	?2(126)
+wild6:	o[--22]	x	o[-211]	x	o[-222]	o[-211]	?2(126)	?2(126)
+loop4:	x	o[1-22]	x	o[1200]	x	x	?2(126)	?2(126)
+loop6:	o[1-22]	x	o[1200]	x	o[1222]	o[1200]	?2(126)	?2(126)
+wildm:	x	o[1-11]	x	o[1211]	x	x	?2(126)	?2(126)
+loopm:	x	o[1-22]	x	o[1200]	x	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
 starting tests, socktype = SOCK_DGRAM, SO_REUSEADDR
 	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
-wild4:	o	o	o	o	o	o	?2	?2
-wild6:	o	o	o	o	o	o	?2	?2
-loop4:	o	o	o	o	o	o	?2	?2
-loop6:	o	o	o	o	o	o	?2	?2
-wildm:	o	o	o	o	o	o	?2	?2
-loopm:	o	o	o	o	o	o	?2	?2
-onem:	?1	?1	?1	?1	?1	?1	?1	?1
-one4:	?1	?1	?1	?1	?1	?1	?1	?1
-starting tests, socktype = SOCK_DGRAM, SO_REUSEPORT
-	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
-wild4:	x	o	x	o	x	x	?2	?2
-wild6:	o	x	o	x	o	o	?2	?2
-loop4:	x	o	x	o	x	x	?2	?2
-loop6:	o	x	o	x	o	o	?2	?2
-wildm:	x	o	x	o	x	x	?2	?2
-loopm:	x	o	x	o	x	x	?2	?2
-onem:	?1	?1	?1	?1	?1	?1	?1	?1
-one4:	?1	?1	?1	?1	?1	?1	?1	?1
-starting tests, socktype = SOCK_DGRAM, SO_REUSEADDR, SO_REUSEPORT
-	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
-wild4:	o	o	o	o	o	o	?2	?2
-wild6:	o	o	o	o	o	o	?2	?2
-loop4:	o	o	o	o	o	o	?2	?2
-loop6:	o	o	o	o	o	o	?2	?2
-wildm:	o	o	o	o	o	o	?2	?2
-loopm:	o	o	o	o	o	o	?2	?2
-onem:	?1	?1	?1	?1	?1	?1	?1	?1
-one4:	?1	?1	?1	?1	?1	?1	?1	?1
+wild4:	o[--11]	o[--11]	o[-211]	o[-211]	o[-111]	o[-211]	?2(126)	?2(126)
+wild6:	o[--22]	o[--11]	o[-211]	o[-211]	o[-222]	o[-211]	?2(126)	?2(126)
+loop4:	o[1-22]	o[1-22]	o[2200]	o[1200]	o[1122]	o[2200]	?2(126)	?2(126)
+loop6:	o[1-22]	o[1-22]	o[1200]	o[2200]	o[1222]	o[1200]	?2(126)	?2(126)
+wildm:	o[1-11]	o[1-11]	o[2211]	o[1211]	o[1111]	o[2211]	?2(126)	?2(126)
+loopm:	o[1-22]	o[1-22]	o[2200]	o[1200]	o[1122]	o[2200]	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
 starting tests, socktype = SOCK_STREAM
 	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
-wild4:	x	o	x	o	x	x	?2	?2
-wild6:	o	x	o	x	o	o	?2	?2
-loop4:	x	o	x	o	x	x	?2	?2
-loop6:	o	x	o	x	o	o	?2	?2
-wildm:	x	o	x	o	x	x	?2	?2
-loopm:	x	o	x	o	x	x	?2	?2
-onem:	?1	?1	?1	?1	?1	?1	?1	?1
-one4:	?1	?1	?1	?1	?1	?1	?1	?1
-starting tests, socktype = SOCK_STREAM, SO_REUSEADDR
+wild4:	x	o[]	x	o[]	x	x	?2(126)	?2(126)
+wild6:	o[]	x	o[]	x	o[]	o[]	?2(126)	?2(126)
+loop4:	x	o[]	x	o[]	x	x	?2(126)	?2(126)
+loop6:	o[]	x	o[]	x	o[]	o[]	?2(126)	?2(126)
+wildm:	x	o[]	x	o[]	x	x	?2(126)	?2(126)
+loopm:	x	o[]	x	o[]	x	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to 1st
 	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
-wild4:	x	o	o	o	x	o	?2	?2
-wild6:	o	x	o	o	o	o	?2	?2
-loop4:	o	o	x	o	o	x	?2	?2
-loop6:	o	o	o	x	o	o	?2	?2
-wildm:	x	o	o	o	x	o	?2	?2
-loopm:	o	o	x	o	o	x	?2	?2
-onem:	?1	?1	?1	?1	?1	?1	?1	?1
-one4:	?1	?1	?1	?1	?1	?1	?1	?1
-starting tests, socktype = SOCK_STREAM, SO_REUSEPORT
+wild4:	x	o[----]	o[----]	o[----]	x	o[----]	?2(126)	?2(126)
+wild6:	o[----]	x	o[----]	o[----]	o[----]	o[----]	?2(126)	?2(126)
+loop4:	o[1---]	o[1---]	x	o[1---]	o[1---]	x	?2(126)	?2(126)
+loop6:	o[1---]	o[1---]	o[1---]	x	o[1---]	o[1---]	?2(126)	?2(126)
+wildm:	x	o[1---]	o[2---]	o[1---]	x	o[2---]	?2(126)	?2(126)
+loopm:	o[1---]	o[1---]	x	o[1---]	o[1---]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to 1st, delayed listen
 	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
-wild4:	x	o	x	o	x	x	?2	?2
-wild6:	o	x	o	x	o	o	?2	?2
-loop4:	x	o	x	o	x	x	?2	?2
-loop6:	o	x	o	x	o	o	?2	?2
-wildm:	x	o	x	o	x	x	?2	?2
-loopm:	x	o	x	o	x	x	?2	?2
-onem:	?1	?1	?1	?1	?1	?1	?1	?1
-one4:	?1	?1	?1	?1	?1	?1	?1	?1
-starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, SO_REUSEPORT
+wild4:	x	o[----]	o[----]	o[----]	x	o[----]	?2(126)	?2(126)
+wild6:	o[----]	x	o[----]	o[----]	o[----]	o[----]	?2(126)	?2(126)
+loop4:	o[1---]	o[1---]	x	o[1---]	o[1---]	x	?2(126)	?2(126)
+loop6:	o[1---]	o[1---]	o[1---]	x	o[1---]	o[1---]	?2(126)	?2(126)
+wildm:	x	o[1---]	o[2---]	o[1---]	x	o[2---]	?2(126)	?2(126)
+loopm:	o[1---]	o[1---]	x	o[1---]	o[1---]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to other
 	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
-wild4:	x	o	o	o	x	o	?2	?2
-wild6:	o	x	o	o	o	o	?2	?2
-loop4:	o	o	x	o	o	x	?2	?2
-loop6:	o	o	o	x	o	o	?2	?2
-wildm:	x	o	o	o	x	o	?2	?2
-loopm:	o	o	x	o	o	x	?2	?2
-onem:	?1	?1	?1	?1	?1	?1	?1	?1
-one4:	?1	?1	?1	?1	?1	?1	?1	?1
+wild4:	x	o[--1-]	o[--1-]	o[--1-]	x	o[--1-]	?2(126)	?2(126)
+wild6:	o[--2-]	x	o[--1-]	o[--1-]	o[--2-]	o[--1-]	?2(126)	?2(126)
+loop4:	o[--2-]	o[--2-]	x	o[--c-]	o[--2-]	x	?2(126)	?2(126)
+loop6:	o[--2-]	o[--2-]	o[--c-]	x	o[--2-]	o[--c-]	?2(126)	?2(126)
+wildm:	x	o[--1-]	o[--1-]	o[--1-]	x	o[--1-]	?2(126)	?2(126)
+loopm:	o[--2-]	o[--2-]	x	o[--c-]	o[--2-]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to other6
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	o[---1]	o[---1]	o[---1]	x	o[---1]	?2(126)	?2(126)
+wild6:	o[---2]	x	o[---1]	o[---1]	o[---2]	o[---1]	?2(126)	?2(126)
+loop4:	o[---2]	o[---2]	x	o[---c]	o[---2]	x	?2(126)	?2(126)
+loop6:	o[---2]	o[---2]	o[---c]	x	o[---2]	o[---c]	?2(126)	?2(126)
+wildm:	x	o[---1]	o[---1]	o[---1]	x	o[---1]	?2(126)	?2(126)
+loopm:	o[---2]	o[---2]	x	o[---c]	o[---2]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to other, delayed listen
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	o[--1-]	o[--1-]	o[--1-]	x	o[--1-]	?2(126)	?2(126)
+wild6:	o[--2-]	x	o[--1-]	o[--1-]	o[--2-]	o[--1-]	?2(126)	?2(126)
+loop4:	o[--2-]	o[--2-]	x	o[--c-]	o[--2-]	x	?2(126)	?2(126)
+loop6:	o[--2-]	o[--2-]	o[--c-]	x	o[--2-]	o[--c-]	?2(126)	?2(126)
+wildm:	x	o[--1-]	o[--1-]	o[--1-]	x	o[--1-]	?2(126)	?2(126)
+loopm:	o[--2-]	o[--2-]	x	o[--c-]	o[--2-]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to other6, delayed listen
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	o[---1]	o[---1]	o[---1]	x	o[---1]	?2(126)	?2(126)
+wild6:	o[---2]	x	o[---1]	o[---1]	o[---2]	o[---1]	?2(126)	?2(126)
+loop4:	o[---2]	o[---2]	x	o[---c]	o[---2]	x	?2(126)	?2(126)
+loop6:	o[---2]	o[---2]	o[---c]	x	o[---2]	o[---c]	?2(126)	?2(126)
+wildm:	x	o[---1]	o[---1]	o[---1]	x	o[---1]	?2(126)	?2(126)
+loopm:	o[---2]	o[---2]	x	o[---c]	o[---2]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to 2nd
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	o[----]	o[-2--]	o[-2--]	x	o[-2--]	?2(126)	?2(126)
+wild6:	o[----]	x	o[-2--]	o[-2--]	o[-2--]	o[-2--]	?2(126)	?2(126)
+loop4:	o[----]	o[----]	x	o[-2--]	o[-1--]	x	?2(126)	?2(126)
+loop6:	o[----]	o[----]	o[-2--]	x	o[-2--]	o[-2--]	?2(126)	?2(126)
+wildm:	x	o[----]	o[-2--]	o[-2--]	x	o[-2--]	?2(126)	?2(126)
+loopm:	o[----]	o[----]	x	o[-2--]	o[-1--]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to 2nd, delayed listen
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	o[----]	o[-2--]	o[-2--]	x	o[-2--]	?2(126)	?2(126)
+wild6:	o[----]	x	o[-2--]	o[-2--]	o[-2--]	o[-2--]	?2(126)	?2(126)
+loop4:	o[----]	o[----]	x	o[-2--]	o[-1--]	x	?2(126)	?2(126)
+loop6:	o[----]	o[----]	o[-2--]	x	o[-2--]	o[-2--]	?2(126)	?2(126)
+wildm:	x	o[----]	o[-2--]	o[-2--]	x	o[-2--]	?2(126)	?2(126)
+loopm:	o[----]	o[----]	x	o[-2--]	o[-1--]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to other
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	o[--1-]	o[--1-]	o[--1-]	x	o[--1-]	?2(126)	?2(126)
+wild6:	o[--2-]	x	o[--1-]	o[--1-]	o[--2-]	o[--1-]	?2(126)	?2(126)
+loop4:	o[--2-]	o[--2-]	x	o[--c-]	o[--2-]	x	?2(126)	?2(126)
+loop6:	o[--2-]	o[--2-]	o[--c-]	x	o[--2-]	o[--c-]	?2(126)	?2(126)
+wildm:	x	o[--1-]	o[--1-]	o[--1-]	x	o[--1-]	?2(126)	?2(126)
+loopm:	o[--2-]	o[--2-]	x	o[--c-]	o[--2-]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to other6
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	o[---1]	o[---1]	o[---1]	x	o[---1]	?2(126)	?2(126)
+wild6:	o[---2]	x	o[---1]	o[---1]	o[---2]	o[---1]	?2(126)	?2(126)
+loop4:	o[---2]	o[---2]	x	o[---c]	o[---2]	x	?2(126)	?2(126)
+loop6:	o[---2]	o[---2]	o[---c]	x	o[---2]	o[---c]	?2(126)	?2(126)
+wildm:	x	o[---1]	o[---1]	o[---1]	x	o[---1]	?2(126)	?2(126)
+loopm:	o[---2]	o[---2]	x	o[---c]	o[---2]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to other, delayed listen
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	o[--1-]	o[--1-]	o[--1-]	x	o[--1-]	?2(126)	?2(126)
+wild6:	o[--2-]	x	o[--1-]	o[--1-]	o[--2-]	o[--1-]	?2(126)	?2(126)
+loop4:	o[--2-]	o[--2-]	x	o[--c-]	o[--2-]	x	?2(126)	?2(126)
+loop6:	o[--2-]	o[--2-]	o[--c-]	x	o[--2-]	o[--c-]	?2(126)	?2(126)
+wildm:	x	o[--1-]	o[--1-]	o[--1-]	x	o[--1-]	?2(126)	?2(126)
+loopm:	o[--2-]	o[--2-]	x	o[--c-]	o[--2-]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+starting tests, socktype = SOCK_STREAM, SO_REUSEADDR, connect to other6, delayed listen
+	wild4	wild6	loop4	loop6	wildm	loopm	onem	one4
+wild4:	x	o[---1]	o[---1]	o[---1]	x	o[---1]	?2(126)	?2(126)
+wild6:	o[---2]	x	o[---1]	o[---1]	o[---2]	o[---1]	?2(126)	?2(126)
+loop4:	o[---2]	o[---2]	x	o[---c]	o[---2]	x	?2(126)	?2(126)
+loop6:	o[---2]	o[---2]	o[---c]	x	o[---2]	o[---c]	?2(126)	?2(126)
+wildm:	x	o[---1]	o[---1]	o[---1]	x	o[---1]	?2(126)	?2(126)
+loopm:	o[---2]	o[---2]	x	o[---c]	o[---2]	x	?2(126)	?2(126)
+onem:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
+one4:	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)	?1(126)
 
-SunOS berta 5.8 Generic_108528-04 sun4u sparc SUNW,Ultra-1
+SunOS obelix 5.8 Generic_108529-05 i86pc i386 i86pc
