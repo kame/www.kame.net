@@ -513,6 +513,7 @@ D (racoon 484) Attribute Certificates and Racoon
 D (racoon 486) Re: Attribute Certificates and Racoon 
 D (racoon 487) racoon and SecurID authentication
 D (racoon 489) Re: racoon and SecurID authentication
+- (racoon 490) Troubles with multiple instances of racoon
 D (racoon 495) phase1 negotiation failed,  failed to get private key
 D (racoon 496) Re: phase1 negotiation failed,  failed to get private key
 D (racoon 497) Re: phase1 negotiation failed,  failed to get private
