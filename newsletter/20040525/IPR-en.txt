@@ -1,0 +1,262 @@
+(1) SSM
+
+URL:
+  http://www.ietf.org/ietf/IPR/APPLE-SSM.txt
+
+Implementation status in KAME:
+  done
+
+IPR claim overview:
+  Once SSM becomes standard:
+
+    "licenses will be available to any party on reasonable,
+    nondiscriminatory terms, on condition of reciprocity and defensive
+    use, for a compliant implementation of the protocol."
+
+Concern:
+  It is unclear for us who should make a contract with Apple.  The IPR
+  claim says, Apple will issue a license to "a compliant
+  implementation of the protocol".  What does "a compliant
+  implementation of the protocol" exactly mean?  Does it mean the code
+  distributed from KAME project?  Or does it mean all implementations
+  which use KAME SSM code?  Or does it mean all users who are using
+  KAME SSM code?
+
+Request:
+  Making a contract is a barrier for the deployment of SSM.  We
+  request the IPR claim which doesn't need any contract of a license.
+
+Importance: urgent
+  This is a big problem, since SSM is supposed to be almost mandatory
+  for the deployment of IPv4/IPv6 multicasting.  Especially in IPv6,
+  it is much easier to deploy SSM keeping pace with the deployment of
+  IPv6.  Otherwise, we have to deploy SSM after IPv6 is widely
+  deployed, which seems tough task to replace existing all IPv6 nodes
+  with SSM capable nodes.
+
+
+----------------------------------------------------------------------
+(2) MODP
+
+URL:
+  http://www.ietf.org/ietf/IPR/certicom-ipr-rfc3526-rfc2409-ikev2.txt
+
+Implementation status in KAME:
+  done
+
+Concern:
+  - It seems this IPR claim affects all applications which use MODP.
+    IKE/IKEv2, which are standard key exchange protocols used in
+    IPsec, also is affected, if it is true.
+  - What does "Certicom will provide a nonexclusive, royalty-free
+    patent license, with reasonable terms and conditions" exactly
+    mean?  Who should make a contract?
+
+Request:
+  - We request them to provide MODP group1 and group2, which are used
+    in IKE/IKEv2, with no license.
+  - A key exchange mechanism is necessary to deploy IPsec.  Posing
+    contract of a license to use key exchange mechanisms will make a
+    hurdle for IPsec deployment.
+
+Importance: urgent
+  It is a big problem, since there is no other replacement for
+  IKE/IKEv2 for now.
+
+
+----------------------------------------------------------------------
+(3) NEMO
+
+URL:
+  Cisco:
+    http://www.ietf.org/ietf/IPR/cisco-ipr-draft-ietf-nemo-basic-support.txt
+  Nokia:
+    http://www.ietf.org/ietf/IPR/nokia-ipr-draft-ietf-nemo-basic-support.txt
+
+Implementation status in KAME:
+  - not implemented
+    (c.f.)Nautilus6 project has a NEMO implementation based on KAME
+          (code is not released)
+
+IPR overview:
+  Cisco:
+    - NEMO users must make a contract with Cisco, if the patent
+      submitted by Cisco related to NEMO covers NEMO technology we are
+      going to use.  (The patent is not published yet, BTW)
+    - The license is provided "under reasonable, non-discriminatory
+      terms"
+  Nokia:
+    - NEMO implementors who are using technologies covered by the
+      Nokia patents (US10/295014、WO03/043226) must use
+      GPL(http://www.fsf.org/copyleft/gpl.html) or open source license
+      (http://www.opensource.org/osd.html).
+
+Concern:
+  Cisco:
+    - Assume that KAME implements NEMO and the NEMO technology is
+      covered by the Cisco patent, who should make a contract with
+      Cisco?  Only KAME project?  Or all KAME code integrators (such
+      as BSD development team)?  Or all users which use KAME derives
+      NEMO code?
+    - What does "under reasonable, non-discriminatory terms" exactly
+      mean?
+  Nokia:
+    - BSD license is listed as one of compatible licenses with open
+      source license.  However the IPR claim is unclear that BSD
+      license is acceptable in this particular case.
+    - Assume that BSD license is acceptable by Nokia, how about KAME
+      license?
+
+Request:
+  Cisco:
+    - We request IPR claim which doesn't require any contract of a
+      license.
+  Nokia:
+    - We request Nokia to accept KAME license to distribute NEMO
+      technologies, if the technologies are covered by their patents.
+
+Importance: urgent
+  Deployment of network mobility is a key aspect of deployment of the
+  whole mobility technologies.  We strongly want to distribute NEMO
+  implementation to accelerate deployment of mobility.
+
+----------------------------------------------------------------------
+(4) IKEv2
+
+URL:
+  http://www.ietf.org/ietf/IPR/microsoft-ipr-draft-ietf-ipsec-ikev2.txt
+
+Implementation status in KAME:
+  ongoing
+
+Concern:
+  - Microsoft says they have patents with regard to IKEv2.  However it
+    is unclear which part of the specification is covered by their
+    patents.
+  - Posing contract of a license ("Reasonable and Non-Discriminatory
+    License to All Implementers with Possible Royalty/Fee") will make
+    a hurdle for deployment of IKEv2.
+
+Request:
+  - We at least need clarification which part is affected by their
+    patents
+
+Importance: urgent
+  We don't have alternative key exchange mechanism other than IKE/IKEv2.
+  It is very important for us to deploy IKE/IKEv2.
+
+
+----------------------------------------------------------------------
+(5) ISATAP
+
+URL:
+  http://www.ietf.org/ietf/IPR/sri-ipr-draft-ietf-ngtrans-isatap.txt
+
+Implementation status in KAME:
+  done.  However, the code has been removed.
+
+Concern:
+  - What does "Royalty-Free, Reasonable and Non-Discriminatory License
+    to All Implementers" exactly mean?
+    * Who should make a contract?  Only KAME?  Or implementors who use
+      KAME derived codes (e.g. FreeBSD)?
+    * The licensing terms requested by SRI is unknown.  We cannot
+      check if the license is compatible with our license.
+  - We got no reply from Peter Marcotullio(the contact person of this IPR)
+  - Fred Templin(the author of the patent and ISATAP specification)
+    said, he can do nothing because this patent was submitted before he
+    changed his company.
+
+Importance: important
+  ISATAP is tend to be used as a transition mechanism especially in
+  enterprise networks.  KAME project received questions frequently,
+  why did we removed the technology.  We want to provide ISATAP as one
+  of transition mechanisms.
+
+Note: The same discussion can be applied to Teredo.
+
+
+----------------------------------------------------------------------
+(6) VRRP
+
+URL:
+  http://www.ietf.org/ietf/IPR/NAT-VRRP-IBM
+  http://www.ietf.org/ietf/IPR/VRRP-CISCO
+  http://www.ietf.org/ietf/IPR/cisco-ipr-draft-ietf-vrrp-ipv6-spec.txt
+
+Implementation status in KAME:
+  done.  However, the code has been removed.
+
+Concern:
+  The validity of the IPR claim
+    The patent which is referred by this IPR claim is for HSRP, not
+    for VRRP.  Can it be applied to VRRP also?  One
+    expert(mcbride@openbsd.org) mentioned that VRRP is not affected by
+    the HSRP patents.
+
+Request:
+  - Posing contract of a license will be a hurdle for deployment of
+    VRRP.  We need a royalty free license which doesn't require any
+    contract.
+
+Importance: normal
+  We don't have any urgent needs to distribute VRRP for IPv6 for now.
+
+
+----------------------------------------------------------------------
+(7) SEND IPR:
+
+URL:
+  http://www.ietf.org/ietf/IPR/ericsson-send-ipsec.txt
+  http://www.ietf.org/ietf/IPR/microsoft-ipr-draft-ietf-send-cga.txt
+  http://www.ietf.org/ietf/IPR/microsoft-ipr-draft-ietf-send-ipsec.txt
+
+Implementation status in KAME:
+  not yet
+  (note: we received a request from the chair of SEND
+  WG(kempf@docomolabs.com) to implement SEND)
+
+IPR claim overview:
+  SEND plan to use CGA technology.
+  - Ericsson says, everyone can use their patent as long as he doesn't
+    attack Ericsson by his patent.
+  - Microsoft says, implementers must get a license from Microsoft.
+
+Concern:
+  (Ericsson) KAME will not provide any code which has some conditions
+    to distribute.  In this case, "as long as he doesn't attack
+    Ericsson..." doesn't match KAME IPR policy.
+  (Common) It is unclear who should make a contract.  That is, who is
+    "a compliant implementation of the protocol"?  Is it OK if KAME
+    project make a contract?  Or do they need all KAME derived code
+    (e.g. *BSD) to make contracts with them?  Or all *BSD users should
+    make contracts with them?
+  Posing contract of a license will be a hurdle for deployment of
+  SEND.  We need a royalty free license which doesn't require any
+  contract.
+
+Importance: not urgent
+  We are not sure SEND is a correct way.  We will follow the IETF
+  discussion of SEND.
+
+----------------------------------------------------------------------
+(8) NAT-T/UDP-ENCAP
+
+URL:
+  http://www.ietf.org/ietf/IPR/MICROSOFT-NAT-Traversal.txt
+  http://www.ietf.org/ietf/IPR/CISCO-mobileip-nat-traversal.txt
+  http://www.ietf.org/ietf/IPR/MICROSOFT-NAT-Traversal.txt
+  http://www.ietf.org/ietf/IPR/SSH-HUTTUNEN-IPSEC-ESP-IN-UDP
+  http://www.ietf.org/ietf/IPR/SSH-NAT
+
+Implementation status in KAME:
+  not yet
+
+Concern:
+  We need NAT-T and UDP-ENCAP technologies to use IPsec over NAT.
+  These technologies are de-facto standard now.  However, three
+  companies (Microsoft, Cisco, SSH) claims they have patents for these
+  technologies.  With which company should we make a contract?
+
+Importance: not urgent
+  Not all users use this technologies.  There is no urgency.
