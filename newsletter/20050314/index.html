@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>KAME will stop supporting freebsd4+kame</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link rel=stylesheet href="kame-newsletter.css" type="text/css">
+</head>
+<body>
+<h1>KAME will stop supporting freebsd4+kame</h1>
+<pre>
+$Id: index.html,v 1.1 2005/03/15 02:23:54 suz Exp $
+</pre>
+<br>
+KAME will stop supporting freebsd4+kame by March 31, 2005,
+
+<ul>
+<li><a href="#background">1. background</a>
+<li><a href="#changes">2. what will happen after March 31 2005?</a>
+<li><a href="#actions">3. what should the freebsd4 users have to do?</a>
+</ul>
+
+
+<hr>
+<h2><a name="background">1. background</a></h2>
+Here's the list of reasons why we would like to terminate freebsd4+kame support.
+<ul>	
+<li>KAME's development resource is limited and KAME would like to concentrate
+the precious resource to protocols, rather than the OS diversities
+<li>freebsd4+kame based on FreeBSD-4.11 has been released in Jan 2005, and FreeBSD Project has no plan to release FreeBSD-4.12
+<li>freebsd5+kame is stable enough at least for hacking purpose.  Please note that KAME-SNAP is originally for hackers/researchers who want to develop a new features. (see <a href="http://www.kame.net/project-overview.html#release">the project overview</a>)
+<li>Those who want to use a stable IPv6 implementation can use the original releases of *BSD, which includes the stable portion of KAME-SNAP implementations.
+</ul>
+
+<h2><a name="changes">2. what will happen after March 31 2005</a></h2>
+we will conduct the following changes after March 31 2005.
+<ul>
+<li> the removal of FreeBSD4-specific ifdefs from KAME-SNAP
+<li> the termination of generating KAME-SNAP tarball for freebsd4
+</ul>
+
+Even after Mar 31 2005, however, we still keeps the following two
+regarding freebsd4.
+<ul>
+<li> the CVS repository of kame/freebsd4 (just for reference)
+<li> the old freebsd4+kame tarballs in our FTP site
+</ul>
+
+<h2><a name="actions">3. what should the freebsd4 users have to do?</a></h2>
+
+Those who are now using kame+freebsd4 have to choose either of the
+following ways.
+<dl>
+<dt> upgrade your kame+freebsd4 to kame+freebsd5
+<dd> <p>If you find something unstable, please confirm it on pure freebsd5 to check if it's a generic freebsd5 problem or a KAME-specific problem.</p>
+ <ul>
+ <li> If it's a generic freebsd5 problem, please report it to freebsd-stable@freebsd.org or freebsd-net@freebsd.org, to improve the quality of freebsd.  
+ <li> If it's KAME-specific problem, please enjoy hacking it!
+ </ul>
+
+<dt>keep using kame+freebsd4 and merge necessary fixes as you wish.
+<dd>
+<p>We keep old KAME-snap tarball in our FTP site and you can still access the CVS repository of kame/freebsd4.</p>
+<p>So using these resources, you can still install kame+freebsd4 from scratch.  (we will remove freebsd4-specific ifdef's from the code in kame/kame/... from this April, so it will be difficult to sync with the current KAME CVS on freebsd4)
+</p>
+</dl>
+
+<!--#include virtual="../index.inc" -->
+
+</body>
+</html>
