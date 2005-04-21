@@ -66,7 +66,10 @@ base of advanced internetworking technologies.
 The KAME project was started as a 2-year project (April 1998 - March 2000).
 It has got extension for 2 years several times,
 so will be until March 2006 at this moment.
-Core researchers are from the following companies (in alphabetical order):
+</p>
+
+<p>
+The core researchers are (in alphabetical order):
 </p>
 
 <ul>
@@ -98,9 +101,9 @@ Corporation</a>)
 </ul>
 
 <p>
-Core researchers have committed to working on the project as the
-primary assignment at their organization (it is not a hobby for us).
-Our most important task is to implement the best networking code
+The core researchers have committed to working on the project as the
+primary assignment at their organization (i.e., it is not a hobby for us).
+The most important task is to implement the best networking code
 possible, under the BSD copyright.
 Also note that we provide the achievement as Free software,
 since we are much interested in usage of this stack in many ways. 
@@ -194,8 +197,13 @@ implementing and improving the software.
 
 <h1 id="roadmap">Roadmaps</h1>
 
-Past roadmaps
 <ul>
+<li> Roadmap of year 2005/4-2006/3
+<dd>
+We will mainly focus on merging our recent development results into
+*BSDs in this period, since those are quite stable and matured but
+still have been available in KAME snapshots only.
+</dd>
 <li><a href="roadmap-2004.html">Roadmap of year 2004/4-2005/3</a>
 <li><a href="roadmap-2003.html">Roadmap of year 2003/4-2004/3</a>
 <li><a href="roadmap-2002.html">Roadmap of 2002/4-2003/3 (and plan for 2003/4-2004/3)</a>
@@ -204,76 +212,39 @@ Past roadmaps
 
 <hr />
 
-<h1 id="release">Releasing Plan</h1>
+<h1 id="release">Releases</h1>
 
 <p>
-We plan to release KAME kit in two ways:
-</p>
-
-REVISE
-
-<dl>
-<dt><a href="/snap-users/">SNAP</a> is for hackers/researchers.
-</dt>
-<dd>	Will be released once a week (every Monday).
-	It will include whole bunch of experimental items.
-	It may not be stable (sometimes doesn't even compile).
-
-	We develop KAME code on top of 3 BSD variants and 3 different versions:
-	<ul>
-	<li>FreeBSD 5.3</li>
-	<li>NetBSD 2.0</li>
-	<li>OpenBSD 3.6</li>
-	</ul>
-
-	We share most of IPv6/IPsec code among *BSD platforms,
-	so they are in-sync in most cases.
-</dd>
-<dt>Integrated *BSD source code tree
-</dt>
-<dd>	For normal users.
-	You just need to install official releases from *BSD projects.
-
-	The following official releases integrates KAME kit:
-	<ul>
-	<li><a href="http://www.freebsd.org/">FreeBSD"</a> 4.0 and beyond</li>
-	<li><a href="http://www.netbsd.org/">NetBSD"</a> 1.5 and beyond</li>
-	<li><a href="http://www.openbsd.org/">OpenBSD"</a> 2.7 and beyond</li>
-	<li>BSD/OS 4.2 and beyond</li>
-	</ul>
-</dd>
-</dl>
-
-<p>
-The difference between KAME SNAP kit and *BSD releses would be like below:
+There are two major sets of KAME-derived releases.
 </p>
 
 <ol>
-
-REVISE IT!!!
-
-<li>KAME SNAP kit comes with more experimental protocols/APIs support and
-	userland programs.
-	This would attract researchers more, as not everything in
-	KAME tree will be merged into *BSD tree (due to discussions, spec
-	maturity, and other reasons).
+<li> <a href="/snap-users/">KAME SNAP</a> for hackers/researchers.
+     <dd>
+     KAME SNAPs (snapshots) include whole bunch of experimental items, and 
+     may not be stable (sometimes do not even compile).
+     Snapshots are automatically generated every Monday without
+     an explicit announcement.
+     If a particular snapshot includes very important changes such as
+     a security fix, or when a (subjectively) certain amount of changes
+     are accumulated in snapshots, we will make an explicit notice at
+     the snap-users mailing list.
+     </dd>
 </li>
-<li>KAME kit will always be based on public release version of *BSD, so you
-	can enjoy latest IPv6 tree on top of stable *BSD platforms.
-	This would be nice feature to have when your goal is to do IPv6
-	experiment, not to chase *BSD-current.
-</li>
-<li>The merged *BSD releases will give tightly integrated IPv6-ready operating
-	system.
-	KAME kit is supplied as diffs to *BSD release versions,
-	so it has less integrated feeling (we are trying our best, though).
+<li> Integrated *BSD source code tree for normal users.
+     <dd>
+	You just need to install official releases from *BSD projects.
+
+	The following official releases integrate the KAME kit:
+	<ul>
+	<li><a href="http://www.freebsd.org/">FreeBSD</a> 4.0 and beyond</li>
+	<li><a href="http://www.netbsd.org/">NetBSD</a> 1.5 and beyond</li>
+	<li><a href="http://www.openbsd.org/">OpenBSD</a> 2.7 and beyond</li>
+	<li>BSD/OS 4.2 and beyond (BSD/OS was discontinued, unfortunately)</li>
+	</ul>
+     </dd>
 </li>
 </ol>
-
-<p>
-In other words, even if *BSD group ships KAME-integrated official releases,
-we will continue our work and ship KAME kit for them.
-</p>
 
 <p>
 A document named
@@ -309,7 +280,7 @@ If you need to contact us, use the following routes:
 </li>
 </ul>
 
-<pre>$Id: project-overview.html,v 1.49 2005/04/21 08:57:27 jinmei Exp $</pre>
+<pre>$Id: project-overview.html,v 1.50 2005/04/21 09:30:05 jinmei Exp $</pre>
 
 </body>
 </html>
