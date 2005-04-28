@@ -1,177 +1,60 @@
 <html>
 <head>
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Refresh" content="60;URL=http://ipsec-tools.sourceforge.net/">
 <title>Racoon</title>
 </head>
 <body>
 
-<h1>Racoon, a key management daemon</h1>
+Racoon was transferred to the "<a href="ipsec-tools.sourceforge.net/">ipsec-tools</a>".<br>
+It will jump to the page after 60 seconds automatically.
 
-<ul>
-<li><a href="#what_is_racoon">What is Racoon ?</a>
-<li><a href="#where_can_i_get">Where can I get ?</a>
-<li><a href="#how_to_install">How to install ?</a>
-<li><a href="#how_can_i_play">How can I play Racoon ?</a>
-<li><a href="#who_can_talk_to">Who can talk to Racoon ?</a>
-<li><a href="#what_is_planning">What is planning ?</a>
-<li><a href="#where_can_i_ask">Where can I ask ?</a>
-<li><a href="#acknowledgements">Acknowledgements</a>
-</ul>
+<tt><pre>
+Racoon users,
 
-<hr>
-<a name="what_is_racoon">
-<h3>What is Racoon ?</h3>
-Racoon is the daemon which negotiates and configures a set of parameters of IPsec.<br>
-It is conformed with the following specifications at this moment:
-<ul>
-<li><a href="ftp://ftp.isi.edu/in-notes/rfc2409.txt">RFC2407</a>: The Internet IP Security Domain of Interpretation for ISAKMP.
-<li><a href="ftp://ftp.isi.edu/in-notes/rfc2409.txt">RFC2408</a>: Internet Security Association and Key Management Protocol (ISAKMP).
-<li><a href="ftp://ftp.isi.edu/in-notes/rfc2409.txt">RFC2409</a>: The Internet Key Exchange (IKE).
-<li><a href="ftp://ftp.isi.edu/in-notes/rfc2409.txt">RFC2367</a>: PF_KEY Key Management API, Version 2.
-<li><a href="ftp://ftp.isi.edu/in-notes/rfc2459.txt">RFC2459</a>: Internet X.509 Public Key Infrastructure Certificate and CRL Profile
-<li><a href="ftp://ftp.isi.edu/in-notes/rfc2535.txt">RFC2535</a>: Domain Name System Security Extensions
-<li><a href="ftp://ftp.isi.edu/in-notes/rfc2538.txt">RFC2538</a>: Storing Certificates in the Domain Name System (DNS)
-<li><a href="ftp://ftp.isi.edu/in-notes/rfc2104.txt">RFC2104</a>: HMAC: Keyed-Hashing for Message Authentication
-<li><a href="">draft-ietf-ipsec-ike-01.txt</a>: The Internet Key Exchange (IKE)
-<li><a href="">draft-ietf-ipsec-ike-base-mode-02.txt</a>: IKE Base Mode.
-<li><a href="">draft-ietf-ipsec-ike-modp-groups-04.txt</a>: More MODP Diffie-Hellman groups for IKE.
-<li><a href="">draft-jenkins-ipsec-rekeying-06.txt</a>: IPsec Re-keying Issues.
-<li><a href="">draft-ietf-ipsec-ike-lifetime-00.txt</a>: Responder Lifetime Notify Message for IKE.
-<li><a href="">draft-ietf-ipsec-isakmp-gss-auth-06.txt</a>: A GSS-API Authentication Method for IKE
-<li><a href="">draft-ietf-ipsec-pki-req-05.txt</a>: A PKIX Profile for IKE
-</ul>
+This is the announcement that the kame project will quit providing
+a key management daemon, the racoon, and that "ipsec-tools" will become
+the formal team to release the racoon.
+The final release of the racoon in the kame project will be on 4/25.
 
-<a name="where_can_i_get">
-<h3>Where can I get ?</h3>
-You can get the latest version from the <a href="http://cvs.kame.net/dev/cvsweb.cgi/kame/kame/kame/racoon/">CVS repository</a> in the <a href="http://www.kame.net/">KAME</a> stack which is a IPv6/IPsec stack.
+Because there were some problem for users currently,
+        - I did not add new feature.
+        - I intent to fix security holes and apply patches.
+          however, it could not be enough done.
+        - I could not reply your questions, bug reports and
+          useful suggestions.
+I was sorry that it was not enough support for users.  I was thinking
+that I would not want to make trouble for users anymore.
 
-<a name="how_to_install">
-<h3>How to install ?</h3>
-You must confirm if <u><b>OpenSSL 0.9.5a</b></u>or later has been installed in the system because Racoon fully depends on it for all cryptographical processing.
-You can get OpenSSL from the <a href="http://www.openssl.org">www.openssl.org</a> if you need it.
+There is another racoon as known as "ipsec-tools" in the sourceforge.
+It is being developed very actively, is stable than racoon and
+implemented radical feature.  But it is sometime trouble for users
+that double racoons are released.  It is also wasteful that development
+resource is devided.  I was thinking that two racoon could be merged.
 
-<a name="how_can_i_play">
-<h3>How can I play ?</h3>
-<ul>
-<li>A simple configuration is explained by
-the <a href="http://www.kame.net/newsletter/20001119/">newsletter</a>
-in the web site of KAME project.
-<li>A basic usage of using Racoon with the certificate is explained by
-the <a href="http://www.kame.net/newsletter/20000912/">newsletter</a>
-in the web site of KAME project.
-<li>mini-HOWTO with Windows XP using certificates is <a href="http://www.fatcanary.com.au/docs/xp_freebsd_cert_ipsec.txt">here</a>".  thanks, Dan Makovec &lt;dan@fatcanary.com.au&gt;.
-<li>there is a <a href="http://www.ipv6.iabg.de/download/Interop_Report_6Wind_BSD_FS_v0_2.pdf">report</a> of the interoperability with each FreeBSD/racoon, FreeS/WAN and 6WIND by <a href="http://www.ipv6.iabg.de/">IABG</a>.
-<li>There are some sample files at kame/kame/kame/racoon/samples of KAME kit.
-<li>There are two man pages for Racoon, <a href="racoon.8">racoon(8)</a> and <a href="racoon.conf.5">racoon.conf(5)</a>.
-<li>See also "<a href="http://www.kame.net/newsletter/19991007/">Manual Configuration</a>" for reference.
-<li><a href="http://www.sigsegv.cx/FreeBSD-WIN2K-IPSEC-HOWTO.html">FreeBSD as a RAS for WIN2K and others IPSEC road warriors</a>, thanks to Anton. R. Ivanov.
-</ul>
+There was an oppotunity having a meeting with some of "ipsec-tools"
+developers at the IETF 62th in Minneapolis.  I told my thought to
+the developers.  They willingly agreed with my proposal.
 
-<p>
-There are some experiences and documents about KAME IPsec stack in the Internet.
-They should be verified which is useful and is obsoleted.  Sigh...
-<ul>
-<li><a href="http://www.onlamp.com/pub/a/bsd/2002/04/04/ipsec.html">IPSec Certificate Basics</a>
-<li><a href="http://www.securityportal.com/articles/cpbsd20010525.html">Integration of Checkpoint VPN-1/FW-1 with FreeBSD's IPSEC</a>
-<li><a href="http://rr.sans.org/firewall/IPSec_VPN.php">http://rr.sans.org/firewall/IPSec_VPN.php</a>
-<li><a href="http://www.onlamp.com/pub/a/bsd/2001/12/10/ipsec.html">http://www.onlamp.com/pub/a/bsd/2001/12/10/ipsec.html</a>
-<li><a href="http://archives.neohapsis.com/archives/freebsd/2000-12/0009.html">http://archives.neohapsis.com/archives/freebsd/2000-12/0009.html</a>
-<li><a href="http://www.daemonnews.org/200101/ipsec-howto.html">http://www.daemonnews.org/200101/ipsec-howto.html</a>
-<li><a href="http://www.x-itec.de/projects/tuts/ipsec-howto.txt">http://www.x-itec.de/projects/tuts/ipsec-howto.txt</a>
-<li><a href="http://www.freebsddiary.org/ipsec-tunnel.php">http://www.freebsddiary.org/ipsec-tunnel.php</a>
-<li><a href="http://www.r4k.net/ipsec/">http://www.r4k.net/ipsec/</a>
-<li><a href="http://www.netbsd.org/Documentation/network/ipsec/">http://www.netbsd.org/Documentation/network/ipsec/</a>
-<li><a href="http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/ipsec.html">http://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/ipsec.html</a>
-<li><a href="http://www.onlamp.com/pub/a/bsd/2001/12/10/ipsec.html">http://www.onlamp.com/pub/a/bsd/2001/12/10/ipsec.html</a>
-<li><a href="http://www.eldemonio.org/docs/freebsd/FreeBSD-IPsec.html">http://www.eldemonio.org/docs/freebsd/FreeBSD-IPsec.html</a>
-<li><a href="http://www.toxiclinux.org/vpn.html">http://www.toxiclinux.org/vpn.html</a>
-<li><a href="http://jamus.xpert.com/~roman/doc/cpbsd.html">http://jamus.xpert.com/~roman/doc/cpbsd.html</a>
-<li><a href="http://www.freebsddiary.org/ipsec-tunnel.php">http://www.freebsddiary.org/ipsec-tunnel.php</a>
-</ul>
+They told me that they could become the formal support team.  So the kame
+project decided to quit providing, and supporting racoon.
 
-<a name="who_can_talk_to">
-<h3>Who can talk to Racoon ?</h3>
-Racoon can talk to lots of implementation.
-Here is the list, no particular order.
-<pre>
-        6WIND, ACC, Allied-telesis, Altiga, Ashley-laurent (vpcom.com),
-        BlueSteel, CISCO IOS, Checkpoint FW-1, Compaq Tru54 UNIX
-        X5.1B-BL4, Cryptek, Data Fellows (F-Secure), Ericsson,
-        F-Secure VPN+ 5.40, Fitec, Fitel, FreeS/WAN, HITACHI, HiFn,
-        IBM AIX 5.1, III, IIJ (fujie stack), Intel Canada, Intel
-        Packet Protect, MEW NetCocoon, MGCS, Microsoft WinNT/2000/XP,
-        NAI PGPnet, NEC IX5000, NIST (linux IPsec + plutoplus),
-        NetLock, Netoctave, Netopia, Netscreen, Nokia EPOC, Nortel
-        GatewayController/CallServer 2000 (not released yet),
-        NxNetworks, OpenBSD isakmpd on OpenBSD, Oullim information
-        technologies SECUREWORKS VPN gateway 3.0, Pivotal, RSA,
-        Radguard, RapidStream, RedCreek, Routerware, Samusung, SSH, SecGo
-        CryptoIP v3, Secure Computing, Soliton, Sun Solaris 8,
-        TIS/NAI Gauntret, Toshiba, Trilogy AdmitOne 2.6, Trustworks
-        TrustedClient v3.2, USAGI linux, VPNet, Yamaha RT series,
-        ZyXEL
-</pre>
+If you are interesting in the "ipsec-tools", please visit thier web page,
+        http://ipsec-tools.sourceforge.net/
+and subscribe to the mailing list by yourself.
+        http://lists.sourceforge.net/lists/listinfo/ipsec-tools-devel
 
-<a name="what_is_planning">
-<h3>What is planning ?</h3>
-<a href="http://www.ietf.org/html.charters/ipsec-charter.html">ipsec WG</a>
-is working out the new version of the key management protocol
-because IKE has security issues.
-There are some candidates as Son-of-IKE(SOI)
-for example, JFK(Just Fast Keying) or IKE v2.
-We are following them and we are going to implement one of them.
-some vendors have implemented XAUTH and ike-mode-cfg.
-we don't have any plan to implement both of them
-because they are not the internet standard.
+Thank you up to now, and best regards,
 
-<a name="where_can_i_ask">
-<h3>Where can I ask ?</h3>
-The Racoon users mailing list is a separate ML to
-discuss racoon-specific matters in general.
-If you have a trouble, first you should make sure that your network
-configuration like interface addresses or a routing, your kernel configuration,
-your database configuration like SPD and SAD by using administration tools
-such like tcpdump or setkey, and your racoon configuration.
-furthermore the peer's configuration too.
-<br>
-all of them are complete, then you can ask your question to the mailing list.
-at that time, attaching with the log file of racoon with <tt>-d</tt> debug
-option, it is helpful to answer your question.
+P.S.
+Some people interested in "racoon2".  It is still pre-alpha version,
+not satisfied with users.  I will concentrate developping "racoon2"
+to be stable.  It needs more than one year at least.
 
-<p>
-To subscribe to the list, send email with content
-<STRONG>subscribe</STRONG> to <A HREF=mailto:racoon-request@kame.net>
-racoon-request@kame.net</A>.
-<BR>
-Past discussions can be found at
-<!--
-<A HREF=http://www.kame.net/racoon/mail-list.cgi><TT>
-http://www.kame.net/snap-users/mail-list.cgi</TT></A> or
--->
-<A HREF=http://www.kame.net/racoon/racoon-ml/><TT>
-http://www.kame.net/racoon/racoon-ml/</TT></A> or
-<A HREF=ftp://ftp.kame.net/pub/mail-list/racoon/><TT>
-ftp://ftp.kame.net/pub/mail-list/racoon/</TT></A>.
-<P>
-Primary language for the mailing list is ENGLISH.
-If there's high demand we'll be able to maintain another list for
-Japanese language, so please do not hesitate to ask.
-
-<a name="acknowledgements">
-<h3>Acknowledgements</h3>
-In particuler, Francis Dupont &lt;Francis.Dupont@enst-bretagne.fr&gt;,
-he gave us lots of ideas, strategies and codes to implement the IKE daemon
-on IPv6 stack.
-Eric Lemiere &lt;elemiere@matra-ms2i.fr&gt; contributed an early code
-of RSA signature method for phase 1.
-Jason Thorpe &lt;thorpej@netbsd.org&gt; added the GSS-API Authentication Method.
-Ichiyoshi Shuzo &lt;ichiyosi@ntes.nec.co.jp&gt; contributed SCEP libraries
-though we haven't merged it yet.
-We would also like to thank the member of
-WIDE <a href="http://www.wide.ad.jp/wg/ipv6/index.html">IPv6 working group</a>,
-WIDE <a href="http://www.wide.ad.jp/wg/moca/index.html">Moca working group</a>
-and all users of Racoon.
+//Shoichi Sakane
+</pre></tt>
 
 <hr>
-$Id: index.html,v 1.9 2005/03/26 03:20:07 suz Exp $
+$Id: index.html,v 1.10 2005/04/28 07:49:47 sakane Exp $
 </body>
 </html>
