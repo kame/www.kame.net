@@ -1,0 +1,491 @@
+<html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="newsletter.css" type="text/css" />
+<title>KAME/SHISA How To</title>
+</head>
+
+<body>
+
+<h1>SHISA How To</h1>
+<p>
+Written by
+<a href="mailto:keiichi@iij.ad.jp">Keiichi SHIMA</a> @ {
+<a href="http://www.kame.net/">KAME Project</a> |
+<a href="http://www.iij.ad.jp/index-e.html">Internet Initiative Japan</a>}
+</p>
+<p>
+$Id: index.html,v 1.1 2005/07/07 11:41:51 keiichi Exp $
+</p>
+
+<h1>Before reading</h1>
+<p>
+This document is written based on the KAME snap kit on 11th July 2005.
+The contents may not applicable for any other KAME snap kits versions.
+</p>
+
+<h1>Overview</h1>
+<p>
+The SHISA is a Mobile IPv6/NEMO protocol stack.  The stack consists of
+a small extension in a kernel space and several small programs which
+runs in a user space.  In this document, we discuss how to configure
+the kernel and the startup scripts (aka, rc scripts) to use the SHISA
+stack.
+</p>
+
+
+<h1>Kernel configuration</h1>
+
+<h2>Correspondent node</h2>
+<p>
+The following kernel option is required to enable correspondent node
+features.
+</p>
+
+<pre>
+options MIP6
+</pre>
+
+<p>
+This option is the most basic option and is necessary for all other
+node types discussed bellow.
+</p>
+
+
+<h2>Mobile node</h2>
+<p>
+The following kernel options are required to enable mobile node
+features.
+</p>
+
+<pre>
+options MIP6
+pseudo-device mip 1
+</pre>
+
+<p>
+The pseudo device <samp>mip</samp> represents a home network of a
+mobile node.  Home addresses of the mobile node will be assigned to
+the pseudo interface when the node is away from home.
+</p>
+
+
+<h2>Home agent</h2>
+<p>
+The following kernel options are required to enable home agent
+features.
+</p>
+
+<pre style="color:black;background-color:silver;">
+options MIP6
+</pre>
+
+<p>
+If you need a NEMO support, you need to define some pseudo device
+for NEMO tunneling in addition to the <samp>MIP6</samp> option.
+</p>
+
+<pre>
+options MIP6
+pseudo-device nemo 2
+</pre>
+
+<p>
+You can support multiple mobile routers up to the number of pseudo
+device you have defined in the kernel configuration file.
+</p>
+
+<h2>Mobile router</h2>
+
+<p>
+In addition to the mobile node configuration, you need a pseudo device
+configuration to use mobile router features.
+</p>
+
+<pre>
+options MIP6
+pseudo-device nemo 1
+</pre>
+
+
+<h2>Building and installing a kernel</h2>
+<p>
+You need to follow the instruction of the KAME snap kit installation
+procedure with the above options.
+</p>
+
+
+<h1>User space programs</h1>
+<p>
+The user space programs which are related to mobility functions are
+shown bellow.
+</p>
+
+<table border="1">
+<tr>
+  <td colspan="2">SHISA daemons</td>
+</tr>
+<tr>
+  <td><samp>cnd</samp></td>
+  <td>The correspondent node daemon.</td>
+</tr>
+<tr>
+  <td><samp>had</samp></td>
+  <td>The home agent daemon.</td>
+</tr>
+<tr>
+  <td><samp>mnd</samp></td>
+  <td>The mobile node daemon.</td>
+</tr>
+<tr>
+  <td><samp>mrd</sapm></td>
+  <td>The mobile router daemon.</td>
+</tr>
+<tr>
+  <td><samp>babymdd</samp></td>
+  <td>The movement detection daemon.</td>
+</tr>
+<tr>
+  <td><samp>nemonetd</samp></td>
+  <td>The NEMO tunnel management daemon.</td>
+</tr>
+<tr>
+  <td colspan="2">Other programs</td>
+</tr>
+<tr>
+  <td><samp>rtadvd</samp></td>
+  <td>The router advertisement daemon.</td>
+</tr>
+</table>
+
+
+<h2>SHISA daemons</h2>
+<p>
+SHISA daemons are build and installed during the installation
+procedure of the KAME snap kit.  
+</p>
+<p>
+The <samp>had</samp> daemon is compiled without NEMO support by
+default.  To enable NEMO support, you need to modify the Makefile of
+the <samp>had</samp> daemon.  The Makefile is located in
+<samp>${KAME}/${YOUROS}/usr.sbin/shisad/had/Makefile</samp>.  Add
+<samp>-DMIP_NEMO</samp> compiler macro definition to
+<samp>CFLAGS</samp>.
+</p>
+
+<pre>
+CFLAGS+=-DMIP_NEMO
+</pre>
+
+<h2><samp>rtadvd</samp> daemon</h2>
+<p>
+<samp>rtadvd</samp> daemon provides a supplemental home agent
+function.  To enable the function, you need to compile the daemon with
+<samp>-DMIP6</samp> option.  Add the option to the Makefile which is
+located in <samp>${KAME}/${YOUROS}/usr.sbin/rtadvd/Makefile</samp>
+</p>
+
+<pre>
+CFLAGS+=-DMIP6
+</pre>
+
+
+<h2>Building and installing daemons</h2>
+<p>
+You need to follow the instruction of the KAME snap kit installation
+procedure to build and install mobility daemons.
+</p>
+
+
+<h1>Configuration files</h1>
+<p>
+The parameters of SHISA daemons are passed by their configuration
+files.  There are four configuration files.
+</p>
+
+<table border="1">
+<tr>
+  <td><samp>cnd.conf</samp></td>
+  <td>A configuration file for <samp>cnd</samp> daemon.</td>
+</tr>
+<tr>
+  <td><samp>had.conf</samp></td>
+  <td>A configuration file for <samp>had</samp> and <samp>nemonetd</samp>
+  daemon launched on a home agent.</td>
+</tr>
+<tr>
+  <td><samp>mnd.conf</samp></td>
+  <td>A configuration file for <samp>mnd</samp> daemon.</td>
+</tr>
+<tr>
+  <td><samp>mrd.conf</samp></td>
+  <td>A configuration file for <samp>mrd</samp> and <samp>nemonetd</samp>
+  daemon launched on a mobile router.</td>
+</tr>
+</table>
+
+<p>
+These configuration files must be located at
+<samp>/usr/local/v6/etc/</samp> directory.  You can find sample
+configuration files in
+<samp>${KAME}/kame/kame/shisad/sampleconf/</samp> directory.
+</p>
+
+
+<h2><samp>cnd.conf</samp></h2>
+<p>
+The following is a sample of <samp>cnd.conf</samp>.
+</p>
+
+<pre>
+debug 1;
+command-port 7777;
+</pre>
+
+<p>
+<samp>debug</samp> increases the logging level.
+<samp>command-port</samp> specifies the port number of the telnet
+interface of <samp>cnd</samp> daemon.
+</p>
+
+
+<h2><samp>had.conf</samp></h2>
+<p>
+The following is a sample of <samp>had.conf</samp>.
+</p>
+
+<pre>
+debug 1;
+
+interface fxp0 {
+	command-port 7778;
+	preference 10;
+
+	prefixtable {
+#		homeaddress          mobilenetworkpfx  pl mode     bid
+		2001:200:0:8c08::328 2001:200:0:8c0a:: 64 explicit 111
+		2001:200:0:8c08::328 2001:200:0:8c0a:: 64 explicit 800
+	};
+
+	static-tunnel {
+#		if    homeaddress          bid
+		nemo3 2001:200:0:8c08::328 111;
+		nemo6 2001:200:0:8c08::328 800;
+	};
+};
+</pre>
+
+<p>
+<samp>interface</samp> specifies the interface name of a home network.
+<samp>prefixtable</samp> and <samp>static-tunnel</samp> are valid only
+when <samp>had</samp> supports NEMO functions.
+<samp>prefixtable</samp> specifies the mapping between home addresses
+and mobile network prefixes.  <samp>static-tunnel</samp> specifies
+binding between the nemo pseudo interfaces and binding IDs.  You do
+not need to declare <samp>static-tunnel</samp>, if dynamic interface
+assignment is acceptable.  The binding ID field can be omitted if you
+do not use multiple care-of address registration.
+</p>
+
+
+<h2><samp>mnd.conf</samp></h2>
+<p>
+The following is a sample of <samp>mnd.conf</samp>.
+</p>
+
+<pre>
+debug 1;
+
+interface mip0 {
+	command-port 7778;
+	home-registration-lifetime 10;
+};
+</pre>
+
+<p>
+<samp>home-registration-lifetime</samp> specified the lifetime value
+when sending a binding update message to other nodes.
+</p>
+
+
+<h2><samp>mrd.conf</samp></h2>
+<p>
+The following is a sample of <samp>mrd.conf</samp>.
+</p>
+
+<pre>
+debug 1;
+
+interface mip0 {
+	command-port 7778;
+	home-registration-lifetime 10;
+
+	prefixtable {
+#		homeaddress          mobilenetworkpfx  pl mode     bid
+		2001:200:0:8c08::328 2001:200:0:8c0a:: 64 explicit 111;
+	};
+
+	static-tunnel {
+#		if    homeaddress          bid
+		nemo0 2001:200:0:8c08::328 111;
+	};
+};
+</pre>
+
+
+<h1>The rc script</h1>
+<p>
+SHISA provides an additional startup script which adds some
+configuration parameters in your <samp>/etc/rc.conf</samp> file.  You
+can find the startup script in
+<samp>${KAME}/${YOUR_OS}/etc/rc.d/</samp> directory.  Copy the file
+(<samp>network_ipv6_mobile</samp> for FreeBSD5 or
+<samp>mobileip6</samp> for NetBSD) to your <samp>/etc/rc.d/</samp>
+directory.
+</p>
+
+
+<h2><samp>rc.conf</samp> parameters</h2>
+<p>
+The following parameters can be specified in your <samp>rc.conf</samp>
+files.
+</p>
+
+<table border="1">
+<tr>
+  <th>Name</th>
+  <th>Value</th>
+  <th>Description</th>
+</tr>
+<tr>
+  <td><samp>ipv6_mobile_enable</samp></td>
+  <td><samp>YES</samp>|<samp>NO</samp> (default: <samp>NO</samp>).</td>
+  <td>Enable mobility features when set to YES.</td>
+</tr>
+<tr>
+  <td><samp>ipv6_mobile_nodetype</samp></td>
+  <td><samp>mobile_node</samp>|<samp>mobile_router</samp>|
+  <samp>home_agent</samp> (default: undefined).</td>
+  <td>Specify the node type.  The correspondent node is chosen when
+  no node type is specified.</td>
+</tr>
+<tr>
+  <td><samp>ipv6_mobile_home_agent_mode</samp></td>
+  <td><samp>nemo</samp></td>
+  <td>Specify when a home agent need to support mobile routers.
+  If no value is specified, a home agent only support mobile nodes.
+  This parameter is valid only for home agents.</td>
+</tr>
+<tr>
+  <td><samp>ipv6_mobile_home_interface</samp></td>
+  <td><em>interface_name_of_home_agent</em></td>
+  <td>Specify the interface name of your home agent.
+  This parameter is valid only for home agents.</td>
+</tr>
+</table>
+
+
+<h2>Sample configuration</h2>
+<p>
+In the following sections, we show some sample configuration files for
+<samp>/etc/rc.conf</samp> for FreeBSD5 system.
+</p>
+
+<h3>Correspondent node</h2>
+<p>
+A correspondent node can be configured as follows.
+</p>
+
+<pre>
+ipv6_enable="YES"
+ipv6_mobile_enable="YES"
+</pre>
+
+
+<h3>Mobile node</h2>
+<p>
+A mobile node can be configured as follows.  In the following sample
+configuration, the home address is
+<samp>2001:db8:100:200::1234</samp>.
+</p>
+
+<pre>
+ipv6_enable="YES"
+ipv6_ifconfig_mip0="2001:db8:100:200::1234 home"
+ipv6_ifconfig_em0="up"
+ipv6_mobile_enable="YES"
+ipv6_mobile_nodetype="mobile_node"
+</pre>
+
+<p>
+Do not forget to specify <samp>home</samp> parameter when configuring
+the home address of the node.  The last line is required to activate
+the network interface, since all interface stay down if we specify an
+IPv6 address statically.  Replace <samp>em0</samp> with the physical
+interface name of the node.
+</p>
+
+<h3>Home agent</h2>
+<p>
+A home agent can be configured as follows.  In the following sample
+configuration, the address of a home agent is
+<samp>2001:db8:100:200::1000/64</samp> and the name of a network
+interface of a home network is <samp>fxp0</samp>.
+</p>
+
+<pre>
+ipv6_enable="YES"
+ipv6_gateway_enable="YES"
+ipv6_ifconfig_fxp0_alias0="2001:db8:100:200::1000"
+ipv6_ifconfig_fxp0_alias1="2001:db8:100:200:: anycast"
+ipv6_mobile_enable="YES"
+ipv6_mobile_nodetype="home_agent"
+ipv6_mobile_home_interface="fxp0"
+</pre>
+
+<p>
+When enabling the NEMO support, the following example can be used.
+</p>
+
+<pre>
+ipv6_enable="YES"
+ipv6_gateway_enable="YES"
+ipv6_ifconfig_fxp0_alias0="2001:db8:100:200::1000"
+ipv6_ifconfig_fxp0_alias1="2001:db8:100:200:: anycast"
+ipv6_mobile_enable="YES"
+ipv6_mobile_nodetype="home_agent"
+ipv6_mobile_home_agent_mode="nemo"
+ipv6_mobile_home_interface="fxp0"
+</pre>
+
+<h3>Mobile router</h3>
+<p>
+A mobile node can be configured as follows.  The home address in the
+following example is <samp>2001:db8:100:200::9876</samp> and the
+mobile network prefix of the mobile router is
+<samp>2001:db8:100:300::/64</samp>.  The interface name for the mobile
+network is <samp>em1</samp>.
+</p>
+
+<pre>
+ipv6_enable="YES"
+ipv6_gateway_enable="YES"
+ipv6_ifconfig_mip0="2001:db8:100:200::9876 home"
+ipv6_ifconfig_em0="up"
+ipv6_ifconfig_em1_alias0="2001:db8:100:300::1"
+rtadvd_enable="YES"
+rtadvd_interfaces="em1"
+ipv6_mobile_enable="YES"
+ipv6_mobile_nodetype="mobile_router"
+</pre>
+
+
+<h1>IP security</h1>
+
+To be described.
+
+
+</body>
+
+</html>

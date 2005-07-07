@@ -1,0 +1,35 @@
+h1 {
+	border-top:solid;
+	border-top-width:1pt;
+	border-left:solid;
+	border-left-width:0.5em;
+	padding-left:0.5em;
+}
+
+h2 {
+	border-top:solid;
+	border-top-width:1pt;
+	border-left:solid;
+	border-left-width:0.5em;
+	padding-left:0.5em;
+}
+
+h3 {
+	border-top:solid;
+	border-top-width:1pt;
+	border-left:solid;
+	border-left-width:0.5em;
+	padding-left:0.5em;
+}
+
+pre {
+	color:black;
+	background-color:silver;"
+	border:none;
+	padding: 0.5em;
+	margin-left:2em;
+}
+
+table {
+	margin-left:2em;
+}
