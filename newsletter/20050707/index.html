@@ -16,7 +16,7 @@ Written by
 <a href="http://www.iij.ad.jp/index-e.html">Internet Initiative Japan</a>}
 </p>
 <p>
-$Id: index.html,v 1.1 2005/07/07 11:41:51 keiichi Exp $
+$Id: index.html,v 1.2 2005/07/07 11:48:08 keiichi Exp $
 </p>
 
 <h1>Before reading</h1>
@@ -383,6 +383,12 @@ files.
   <td>Specify the interface name of your home agent.
   This parameter is valid only for home agents.</td>
 </tr>
+<tr>
+  <td><samp>ipv6_mobile_ingress_interfaces</samp></td>
+  <td><em>ingress_interface_name_of_mobile_router</em></td>
+  <td>Specify the ingress interface name of your mobile router.
+  This parameter is valid only for mobile routers.</td>
+</tr>
 </table>
 
 
@@ -478,6 +484,7 @@ rtadvd_enable="YES"
 rtadvd_interfaces="em1"
 ipv6_mobile_enable="YES"
 ipv6_mobile_nodetype="mobile_router"
+ipv6_mobile_ingress_interfaces="em1"
 </pre>
 
 
@@ -485,6 +492,12 @@ ipv6_mobile_nodetype="mobile_router"
 
 To be described.
 
+
+<hr />
+<p>
+If you have any questions or find any problems, please contact to
+<a href="mailto:snap-users@kame.net">snap-users@kame.net</a>.
+</p>
 
 </body>
 
