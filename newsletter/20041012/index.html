@@ -8,7 +8,7 @@
 <h1>IPv6 Multicast Trouble Shooting Guide</h1>
 <a href="http://www.kame.net/~suz/">SUZUKI, Shinsuke</a>
 at <a href="http://www.kame.net/">KAME Project</a>
-<pre>$Id: index.html,v 1.1 2004/10/12 09:26:16 suz Exp $</pre>
+<pre>$Id: index.html,v 1.2 2005/07/18 04:55:37 suz Exp $</pre>
 
 <hr>
 
@@ -56,13 +56,55 @@ before going into the analysis of the complex behavior of the PIM protocol.
 </a>
 <dl>
 <dt>(a) RP-related issues
-<dd> To be written
+<dd> 
+<p>In case of pim6sd, you can check the mapping using "pim6stat" command.</p>
+ <pre>
+ # pim6stat
+ ....
+ ---------------------------RP-Set----------------------------
+ Current BSR address: 2001:200:0:8000::2000:1 Prio: 10 Timeout: 160
+ RP-address(Upstream)/Group prefix             Prio Hold Age
+ YOUR:RP:ROUTER::ADDR(fe80::UPST:REAM:RTR%IFNAME)
+      ffxx:x:xxxx::/96             0    150  150
+ </pre>
+<quote>c.f.) the equivalent command on other implementations. (Other vendor info is welcome!)<br>
+<ul>
+<li> AlaxalA AX-series: show ipv6 pim rendezvous-point mapping
+<li> Allied Telesys SB-series: show ipv6 pim rendezvous-point mapping
+<li> Cisco IOS-series: show ipv6 pim group-map
+<li> Cisco IOS XR-series: show pim ipv6 group-map
+<li> Foundry: show ipv6 pim group(?)
+<li> Hitachi GR/GS-series: show ipv6 pim rendezvous-point mapping
+<li> Juniper JunOS: show pim rps inet6
+<li> NEC IP8800-series: show ipv6 pim rp-mapping
+</ul>
+</quote>
+<p>
+ If you cannot find out the right Group-RP mapping, you should check the following things:
+ <ul>
+  <li>In case of static configuration,
+  <ul>
+   <li>whether the configuration is really right?
+   <li>how is the RP configuration at the RP router (please see (c)pim6sd-specific issues)
+  </ul>
+  <li>In case of BSR-based configuration,
+  <ul>
+   <li>BSR messages are really received?
+   <li>BSR messages are advertised from the upstream router for the BSR router?
+   <li>the router has a PIM-adjacency for the upstream router of the RP router?
+  </ul>
+ </ul>
+</p>
+</dl>
 
 <dt>(b) RPF-related issues
 <dd> To be written
-
-<dt>(c) Pim6sd-specific issues
-<dd> To be written
+<dt>(c) pim6sd-specific issues
+<dd>
+ <dl>
+ <dt>static-RP
+ <dd>pim6sd does not support static-RP at RP router itself.  So at RP, you have to configure cand_bsr and cand_rp option as well.
+ </dl>
 </dl>
 
 <!--#include virtual="../index.inc" -->
