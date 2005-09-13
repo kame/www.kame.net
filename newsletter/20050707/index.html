@@ -16,7 +16,7 @@ Written by
 <a href="http://www.iij.ad.jp/index-e.html">Internet Initiative Japan</a>}
 </p>
 <p>
-$Id: index.html,v 1.9 2005/09/13 11:52:12 mitsuya Exp $
+$Id: index.html,v 1.10 2005/09/13 12:14:41 mitsuya Exp $
 </p>
 
 <h1>Before reading</h1>
@@ -507,8 +507,13 @@ To be described.
 <h1>FAQs and tips</h1>
 
 <p>
-Q: The had doesn't not start with a error "syntax error".
+Q: The had doesn't not start with a error "syntax error". <br />
 A: Don't you forget ";" at the end of line in the configuration file?
+</p>
+
+<p>
+Q: In NEMO situation, it seems that I could exchange DHADD request/reply, I can see the increase of those counters in SHISA statistics (show stats).  But I could not have an entry for HA on the BUL (show bul). Why? <br />
+A: We are afraid that you compiled the had daemon without MIP_NEMO definition.
 </p>
 
 
