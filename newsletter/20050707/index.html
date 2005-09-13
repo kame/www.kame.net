@@ -16,7 +16,7 @@ Written by
 <a href="http://www.iij.ad.jp/index-e.html">Internet Initiative Japan</a>}
 </p>
 <p>
-$Id: index.html,v 1.7 2005/09/13 11:37:55 mitsuya Exp $
+$Id: index.html,v 1.8 2005/09/13 11:47:41 mitsuya Exp $
 </p>
 
 <h1>Before reading</h1>
@@ -166,8 +166,8 @@ SHISA daemons are build and installed during the installation
 procedure of the KAME snap kit.  
 </p>
 <p>
-The <samp>had</samp> daemon is compiled without NEMO support by
-default.  To enable NEMO support, you need to modify the Makefile of
+<span class=red>The <samp>had</samp> daemon is compiled without NEMO support by
+default.</span>  To enable NEMO support, you need to modify the Makefile of
 the <samp>had</samp> daemon.  The Makefile is located in
 <samp>${KAME}/${YOUROS}/usr.sbin/shisad/had/Makefile</samp>.  Add
 <samp>-DMIP_NEMO</samp> compiler macro definition to
@@ -196,7 +196,6 @@ CFLAGS+=-DMIP6
 You need to follow the instruction of the KAME snap kit installation
 procedure to build and install mobility daemons.
 </p>
-
 
 <h1>Configuration files</h1>
 <p>
@@ -404,7 +403,7 @@ A correspondent node can be configured as follows.
 </p>
 
 <pre>
-PATH=/usr/local/v6/sbin:/usr/local/v6/sbin:${PATH}
+PATH=/usr/local/v6/sbin:/usr/local/v6/bin:${PATH}
 
 ipv6_enable="YES"
 ipv6_mobile_enable="YES"
@@ -419,7 +418,7 @@ configuration, the home address is
 </p>
 
 <pre>
-PATH=/usr/local/v6/sbin:/usr/local/v6/sbin:${PATH}
+PATH=/usr/local/v6/sbin:/usr/local/v6/bin:${PATH}
 
 ipv6_enable="YES"
 ipv6_ifconfig_mip0="2001:db8:100:200::1234 home"
@@ -445,7 +444,7 @@ interface of a home network is <samp>fxp0</samp>.
 </p>
 
 <pre>
-PATH=/usr/local/v6/sbin:/usr/local/v6/sbin:${PATH}
+PATH=/usr/local/v6/sbin:/usr/local/v6/bin:${PATH}
 
 ipv6_enable="YES"
 ipv6_gateway_enable="YES"
@@ -461,7 +460,7 @@ When enabling the NEMO support, the following example can be used.
 </p>
 
 <pre>
-PATH=/usr/local/v6/sbin:/usr/local/v6/sbin:${PATH}
+PATH=/usr/local/v6/sbin:/usr/local/v6/bin:${PATH}
 
 ipv6_enable="YES"
 ipv6_gateway_enable="YES"
@@ -483,7 +482,7 @@ network is <samp>em1</samp>.
 </p>
 
 <pre>
-PATH=/usr/local/v6/sbin:/usr/local/v6/sbin:${PATH}
+PATH=/usr/local/v6/sbin:/usr/local/v6/bin:${PATH}
 
 ipv6_enable="YES"
 ipv6_gateway_enable="YES"

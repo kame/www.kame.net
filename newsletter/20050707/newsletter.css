@@ -33,3 +33,7 @@ pre {
 table {
 	margin-left:2em;
 }
+
+span.red {
+        color: red;
+} 
