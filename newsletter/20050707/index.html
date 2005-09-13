@@ -16,7 +16,7 @@ Written by
 <a href="http://www.iij.ad.jp/index-e.html">Internet Initiative Japan</a>}
 </p>
 <p>
-$Id: index.html,v 1.10 2005/09/13 12:14:41 mitsuya Exp $
+$Id: index.html,v 1.11 2005/09/13 12:42:20 mitsuya Exp $
 </p>
 
 <h1>Before reading</h1>
@@ -457,6 +457,9 @@ ipv6_mobile_home_interface="fxp0"
 
 <p>
 When enabling the NEMO support, the following example can be used.
+Note that the <samp>had</samp> daemon is compiled without NEMO
+support by default.  Don't forget to comple the <samp>had</samp>
+with -DMIP_NEMO CFLAGS.
 </p>
 
 <pre>
