@@ -16,7 +16,7 @@ Written by
 <a href="http://www.iij.ad.jp/index-e.html">Internet Initiative Japan</a>}
 </p>
 <p>
-$Id: index.html,v 1.14 2005/10/11 09:14:52 mitsuya Exp $
+$Id: index.html,v 1.15 2005/10/11 11:07:07 mitsuya Exp $
 </p>
 
 <h1>Before reading</h1>
@@ -533,7 +533,7 @@ To be described.
 <div class=answer>A1: The algorithms to detect movement are different.
 The <samp>babymdd</samp> monitors the status of network interfaces.  When the interface goes down, <samp>babymdd</samp> deletes its Care-of Address so that <samp>mnd(or mrd)</samp> can know the detachment.  When the interface become up, <samp>babymdd</samp> sends RS so that the mobile host may get a new Care-of Address without delay.
 
-In the meantime, the <samp>mdd</samp> monitors the changes of IP address.  When an IP address has been deleted or newly added, the <samp>mdd</samp> lists all available global IPv6 address and chose one as the primary Care of Address.  Because the <samp>mdd</samp> do nothing related to L2 trigger, it normally used with a tool which monitors L2 status and plays some roles on L3 configuration like <a href="http://software.nautilus6.org/casanova/index.php"><samp>Casanova</samp></a>.</div>
+On the other hand, the <samp>mdd</samp> monitors the changes of IP address.  When an IP address has been deleted or newly added, the <samp>mdd</samp> lists all available global IPv6 address and chose one as the primary Care of Address.  Because the <samp>mdd</samp> do nothing related to L2 trigger, it normally used with a tool which monitors L2 status and plays some roles on L3 configuration like <a href="http://software.nautilus6.org/casanova/index.php"><samp>Casanova</samp></a>.</div>
 </p>
 
 
