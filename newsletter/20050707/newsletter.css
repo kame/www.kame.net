@@ -24,7 +24,7 @@ h3 {
 
 pre {
 	color:black;
-	background-color:silver;"
+	background-color:silver;
 	border:none;
 	padding: 0.5em;
 	margin-left:2em;
@@ -37,3 +37,12 @@ table {
 span.red {
         color: red;
 } 
+
+div.question {
+	margin-left: 2em;
+	font-weight: bold;
+}
+
+div.answer {
+	margin-left: 2em;
+}
