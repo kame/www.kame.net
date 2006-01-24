@@ -16,7 +16,7 @@ Written by
 <a href="http://www.iij.ad.jp/index-e.html">Internet Initiative Japan</a>}
 </p>
 <p>
-$Id: index.html,v 1.16 2005/10/13 10:24:52 keiichi Exp $
+$Id: index.html,v 1.17 2006/01/24 06:57:46 mitsuya Exp $
 </p>
 
 <h1>Before reading</h1>
@@ -396,10 +396,10 @@ files.
 </table>
 
 
-<h2>Sample configuration</h2>
+<h2>Sample configuration for FreeBSD 5</h2>
 <p>
 In the following sections, we show some sample configuration files for
-<samp>/etc/rc.conf</samp> for FreeBSD5 system.
+<samp>/etc/rc.conf</samp> <span class=red>for FreeBSD5 system</span>.
 </p>
 
 <h3>Correspondent node</h3>
@@ -497,6 +497,120 @@ ipv6_gateway_enable="YES"
 ipv6_ifconfig_mip0="2001:db8:100:200::9876 home"
 ipv6_ifconfig_em0="up"
 ipv6_ifconfig_em1_alias0="2001:db8:100:300::1"
+rtadvd_enable="YES"
+rtadvd_interfaces="em1"
+ipv6_mobile_enable="YES"
+ipv6_mobile_nodetype="mobile_router"
+ipv6_mobile_ingress_interfaces="em1"
+</pre>
+
+<h2>Sample configuration for NetBSD 2</h2>
+<p>
+In the following sections, we show some sample configuration files for
+<samp>/etc/rc.conf</samp> <span class=red>for NetBSD2 system</span>.
+</p>
+
+<h3>Correspondent node</h3>
+<p>
+A correspondent node can be configured as follows.  Add the followings as local overrides on /etc/rc.conf .
+</p>
+
+<pre>
+critical_filesystems_local="/usr"
+PATH=/usr/local/v6/sbin:/usr/local/v6/bin:${PATH}
+
+ip6mode="autohost"
+ipv6_mobile_enable="YES"
+</pre>
+
+<p>
+The path, /usr/local/v6/*, should be mounted before the configuration because /usr/local/v6/sbin/ifconfig has additional function than /sbin/ifconfig.  So that it is required to configure the right vaule of $critical_filesystems_local .
+</p>
+
+
+<h3>Mobile node</h3>
+<p>
+A mobile node can be configured as follows.  In the following sample
+configuration, the home address is
+<samp>2001:db8:100:200::1234</samp>.
+</p>
+
+<pre>
+critical_filesystems_local="/usr"
+PATH=/usr/local/v6/sbin:/usr/local/v6/bin:${PATH}
+
+ip6mode="autohost"
+ifconfig_mip0="inet6 2001:db8:100:200::1234 home"
+ifconfig_em0="up"
+ipv6_mobile_enable="YES"
+ipv6_mobile_nodetype="mobile_node"
+</pre>
+
+<p>
+Do not forget to specify <samp>home</samp> parameter when configuring
+the home address of the node.  The last line is required to activate
+the network interface, since all interface stay down if we specify an
+IPv6 address statically.  Replace <samp>em0</samp> with the physical
+interface name of the node.
+</p>
+
+<h3>Home agent</h3>
+<p>
+A home agent can be configured as follows.  In the following sample
+configuration, the address of a home agent is
+<samp>2001:db8:100:200::1000/64</samp> and the name of a network
+interface of a home network is <samp>fxp0</samp>.
+</p>
+
+<pre>
+critical_filesystems_local="/usr"
+PATH=/usr/local/v6/sbin:/usr/local/v6/bin:${PATH}
+
+ip6mode="router"
+ifconfig_fxp0="inet6 2001:db8:100:200::1000"
+ifconfig_fxp0="inet6 2001:db8:100:200:: anycast"
+ipv6_mobile_enable="YES"
+ipv6_mobile_nodetype="home_agent"
+ipv6_mobile_home_interface="fxp0"
+</pre>
+
+<p>
+When enabling the NEMO support, the following example can be used.
+Note that the <samp>had</samp> daemon is compiled without NEMO
+support by default.  Don't forget to comple the <samp>had</samp>
+with -DMIP_NEMO CFLAGS.
+</p>
+
+<pre>
+critical_filesystems_local="/usr"
+PATH=/usr/local/v6/sbin:/usr/local/v6/bin:${PATH}
+
+ip6mode="router"
+ifconfig_fxp0="inet6 2001:db8:100:200::1000"
+ifconfig_fxp0="inet6 2001:db8:100:200:: anycast"
+ipv6_mobile_enable="YES"
+ipv6_mobile_nodetype="home_agent"
+ipv6_mobile_home_agent_mode="nemo"
+ipv6_mobile_home_interface="fxp0"
+</pre>
+
+<h3>Mobile router</h3>
+<p>
+A mobile router can be configured as follows.  The home address in the
+following example is <samp>2001:db8:100:200::9876</samp> and the
+mobile network prefix of the mobile router is
+<samp>2001:db8:100:300::/64</samp>.  The interface name for the mobile
+network is <samp>em1</samp>.
+</p>
+
+<pre>
+critical_filesystems_local="/usr"
+PATH=/usr/local/v6/sbin:/usr/local/v6/bin:${PATH}
+
+ip6mode="router"
+ifconfig_mip0="inet6 2001:db8:100:200::9876 home"
+ifconfig_em0="up"
+ifconfig_em1="inet6 2001:db8:100:300::1"
 rtadvd_enable="YES"
 rtadvd_interfaces="em1"
 ipv6_mobile_enable="YES"
