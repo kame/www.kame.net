@@ -1,4 +1,4 @@
-#!/usr/bin/perl perl -s
+#!/usr/bin/perl -s
 #
 # cvsweb - a CGI interface to the CVS tree.
 #
@@ -37,6 +37,7 @@ require 'cgi-style.pl';
 	'/cvsroot/kame-bsdi', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/unified-ipv6/bsdos-4.0', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/doc/huitema', '/kame-confidential/cvsweb.cgi',
+        '/cvsroot/doc', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/doc/mobile-nd', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/doc/inet99-kame', '/kame-confidential/cvsweb.cgi',
 	'/cvsroot/doc/inet2000-kame', '/kame-confidential/cvsweb.cgi',
