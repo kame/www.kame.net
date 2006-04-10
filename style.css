@@ -1,0 +1,173 @@
+body {
+	font-family: sans-serif;
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+div.body {
+	font-family: sans-serif;
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+/* anchor */
+a { background-color: #fcc;}
+a:link { color: #448;}
+a:visited { color: #000;}
+a:hover { color: #f00;}
+a:active { color: #880;}
+
+/* header */
+h1 {
+  font-size: 120%;
+  padding-left: .5em;
+  word-spacing: .5em;
+}
+
+h2 {
+  font-size: 110%;
+  padding-left: .5em;
+  word-spacing: .5em;
+}
+
+h3 {
+  font-size: 100%;
+  padding-left: .5em;
+  word-spacing: .5em;
+}
+
+h4 {
+  font-size: 110%;
+  padding-left: .5em;
+  word-spacing: .5em;
+}
+
+/* group */
+div {
+  padding-left: 1em;
+  padding-right: 1em;
+  //text-align: justify;
+}
+
+/* paragraph */
+p {
+  margin-left: 1.5em;
+  word-spacing: .2em;
+}
+
+/* list */
+ul {
+  word-spacing: .2em;
+  width: 90%;
+  font-size: 100%;
+}
+li{
+  margin-left: 0.5em;
+  margin-bottom: 1ex;
+}
+
+dl {
+  margin-left: 3em;
+  width: 90%;
+  font-size: 90%;
+  word-spacing: .2em;
+}
+dt {
+  font-size: 120%;
+  font-weight: bold;
+}
+dd {
+  margin-bottom: 1ex;
+}
+
+/* horizonal separator */
+hr {
+  margin: 0;
+  padding: 0;
+  border: #000000 1pt solid;
+}
+
+div.center {
+  text-align: center;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+div.center {
+  text-align: center;
+  text-size: large;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+div.auth {
+  text-align: right;
+  margin-bottom: 0.5em;
+}
+
+div.pict {
+  text-align: center;
+}
+
+/* contact info */
+address {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+address a {
+  text-decoration: none;
+  background-color: inherit;
+}
+
+pre {
+  margin-top: -1em;
+  margin-left: 3em;
+}
+
+img {
+	border: 1px outset black;
+}
+
+div.tit {
+  text-align: center;
+  font-size: 200%;
+  font-family: sans-serif;
+  font-weight: bold;
+  margin-top: 0.5em;
+  margin-bottom: 0.3em;
+}
+
+div.tit2 {
+  text-align: center;
+  font-size: 100%;
+  font-family: sans-serif;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+div.right {
+  text-align: right;
+  margin-bottom: 0.5em;
+}
+
+div.bsd {
+  margin-left: 4em;
+  margin-bottom: 0em;
+}
+
+div.bsd2 {
+  margin-top: -0.5em;
+  margin-left: 4em;
+}
+
+div.menu {
+  text-align: center;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
