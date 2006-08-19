@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# $Id: query-pr-summary.cgi,v 1.2 2003/05/19 10:22:35 jinmei Exp $
+# $Id: query-pr-summary.cgi,v 1.3 2006/08/19 14:11:12 suz Exp $
 
 $html_mode     = 1 if $ENV{'DOCUMENT_ROOT'};
 $self_ref      = $ENV{'SCRIPT_NAME'};
@@ -345,14 +345,14 @@ sub read_gnats {
 	} elsif (/Arrival-Date:/) {
 	    $date = &getline($_);
 	    # strip timezone if any (between HH:MM:SS and YYYY at end of line):
-	    $date =~ s/(\d\d:\d\d:\d\d)\D+(\d{4})$/\1 \2/;
+	    $date =~ s/(\d\d:\d\d:\d\d)\s(\D+|\+\d{4})\s(\d{4})$/\1 \3/;
 	    ($dow,$mon,$day,$time,$year,$xtra) = split(/[ \t]+/, $date);
 	    $day = "0$day" if $day =~ /^[0-9]$/;
 	    $date = "$year/$mons{$mon}/$day";
 
 	} elsif (/>Last-Modified:/) {
 	    $lastmod = &getline($_);
-	    $lastmod =~ s/(\d\d:\d\d:\d\d)\D+(\d{4})$/\1 \2/;
+	    $lastmod =~ s/(\d\d:\d\d:\d\d)\s(\D+|\+\d{4})\s(\d{4})$/\1 \3/;
 	    ($dow,$mon,$day,$time,$year,$xtra) = split(/[ \t]+/, $lastmod);
 	    $day = "0$day" if $day =~ /^[0-9]$/;
 	    $lastmod = "$year$mons{$mon}$day";
