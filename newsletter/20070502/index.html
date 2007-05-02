@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3c.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+  <title>KAME project action on Type 0 Routing Header issue</title>
+</head>
+
+<body>
+
+  <h1>KAME projet action on Type 0 Routing Header issue</h1>
+
+  <h2>Background</h2>
+
+  <p>At the CanSecWest2007, a report titled `Fun with IPv6 routing
+    headers' was presented indicating that the IPv6 Type 0 Routing
+    Header can be used as an attacking method same as the source
+    routing option of IPv4.
+  </p>
+
+  <h2>KAME project action</h2>
+
+  <p>The KAME project performed the following actions to fix the issue
+    and to prevent the issue from being used as a method of attack.
+  </p>
+
+  <ul>
+    <li>Fixed the KAME source code to disable the Type 0 Routing
+      Header.  The <samp>ip6_rthdr0()</samp> function is commented out
+      and the incoming Type 0 Routing Header is processed as an
+      unknown Routing Header.
+    </li>
+    <li>Announced the fix to the <samp>merge@kame.net</samp> in which
+      many IPv6 stack vendors who use the KAME stack (or a part of the
+      KAME stack) are subscribed, to notify the decision of the KAME
+      project.
+    </li>
+    <li>Advertised the issue to other stack vendors using various
+    communication metods.
+    </li>
+  </ul>
+
+  <h2>Related announcement</h2>
+
+  <ul>
+    <li>OpenBSD: <a href="ftp://ftp.openbsd.org/pub/OpenBSD/patches/4.1/common/005_route6.patch">005: SECURITY FIX: April 27, 2007 </a>.
+    </li>
+    <li>FreeBSD: <a
+    href="http://security.FreeBSD.org/advisories/FreeBSD-SA-07:03.ipv6.asc">FreeBSD-SA-07:03.ipv6</a>.
+    </li>
+    <li>NetBSD: The fix has been imported to the main tree.
+    </li>
+<!--
+    <li>Cisco: <a
+	href="http://tools.cisco.com/security/center/getDocument.x?id=262">IPv6
+	Routing Header Extension Spoofing and Denial of Service
+	Attacks</a>.
+    </li>
+-->
+  </ul>
+
+</body>
+
+</html>
+
