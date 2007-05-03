@@ -6,44 +6,59 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 
 <head>
-  <title>KAME project action on Type 0 Routing Header issue</title>
+  <title>KAME project's action on Type 0 Routing Header issue</title>
 </head>
 
 <body>
 
-  <h1>KAME projet action on Type 0 Routing Header issue</h1>
+  <h1>KAME project's action on Type 0 Routing Header issue</h1>
 
   <h2>Background</h2>
 
-  <p>At the CanSecWest2007, a report titled `Fun with IPv6 routing
+  <p>
+    At the CanSecWest2007, a report titled `Fun with IPv6 routing
     headers' was presented indicating that the IPv6 Type 0 Routing
-    Header can be used as an attacking method same as the source
-    routing option of IPv4.
+    Header can be used as an attacking method.
+    One of the described attacks can exploit any two IPv6 nodes that
+    handles the Type 0 Routing Header as described in RFC2460,
+    including the KAME/BSD based nodes, to consume the bandwidth
+    between those two nodes.
+    Although the presentation slides on this type of attack have some
+    technical errors, the main threat still seems to exist.
   </p>
 
-  <h2>KAME project action</h2>
+  <h2>KAME Project's Action</h2>
 
-  <p>The KAME project performed the following actions to fix the issue
-    and to prevent the issue from being used as a method of attack.
+  <p>
+    The KAME project performed the following actions to fix the issue
+    and to prevent the issue from being used as a method of attacks.
   </p>
 
   <ul>
     <li>Fixed the KAME source code to disable the Type 0 Routing
-      Header.  The <samp>ip6_rthdr0()</samp> function is commented out
-      and the incoming Type 0 Routing Header is processed as an
+      Header.  The <samp>ip6_rthdr0()</samp> function was commented out
+      and the incoming Type 0 Routing Header is now processed as an
       unknown Routing Header.
     </li>
-    <li>Announced the fix to the <samp>merge@kame.net</samp> in which
-      many IPv6 stack vendors who use the KAME stack (or a part of the
-      KAME stack) are subscribed, to notify the decision of the KAME
-      project.
+    <li>
+      Announced the fix to the maintainers of the BSD variants as
+      well as vendors that have incorporated the KAME/BSD IPv6 stack
+      into their products.
     </li>
-    <li>Advertised the issue to other stack vendors using various
-    communication metods.
+    <li>
+      Discussed how to deal with this issue spec-wise at the IETF (ongoing).
     </li>
   </ul>
 
-  <h2>Related announcement</h2>
+  <h2>Recommendation</h2>
+  <p>
+    There is no need to panic, but it is strongly recommended to apply
+    the above change (see also the security advisory from BSDs below)
+    and reboot the kernel, especially for those IPv6 nodes that are
+    widely known and attached to a high-bandwidth link.
+  </p>
+
+  <h2>Related Announcements</h2>
 
   <ul>
     <li>OpenBSD: <a href="ftp://ftp.openbsd.org/pub/OpenBSD/patches/4.1/common/005_route6.patch">005: SECURITY FIX: April 27, 2007 </a>.
@@ -61,6 +76,16 @@
     </li>
 -->
   </ul>
+
+  <h2>Contact Points</h2>
+  <p>
+    If you have any questions on this issue that can be publicly
+    discussed, please send them to <samp>snap-users at
+    kame.net</samp>, the users mailing list for the KAME products.
+    Please use <samp>core at kame.net</samp> (closed mailing list for
+    KAME developers only) should you want to keep the questions
+    confidential.
+  </p>
 
 </body>
 
