@@ -2,13 +2,13 @@ Index: ip6_input.c
 ===================================================================
 RCS file: /cvsroot/kame/kame/kame/sys/netinet6/ip6_input.c,v
 retrieving revision 1.370
-retrieving revision 1.371
-diff -u -r1.370 -r1.371
+retrieving revision 1.372
+diff -u -r1.370 -r1.372
 --- ip6_input.c	8 Apr 2007 17:04:31 -0000	1.370
-+++ ip6_input.c	3 May 2007 22:07:39 -0000	1.371
++++ ip6_input.c	6 May 2007 14:35:08 -0000	1.372
 @@ -1,4 +1,4 @@
 -/*	$KAME: ip6_input.c,v 1.370 2007/04/08 17:04:31 jinmei Exp $	*/
-+/*	$KAME: ip6_input.c,v 1.371 2007/05/03 22:07:39 itojun Exp $	*/
++/*	$KAME: ip6_input.c,v 1.372 2007/05/06 14:35:08 itojun Exp $	*/
  
  /*
   * Copyright (C) 1995, 1996, 1997, and 1998 WIDE Project.
@@ -33,10 +33,22 @@ diff -u -r1.370 -r1.371
  			goto bad;
  		}
  
-@@ -1088,6 +1090,15 @@
+@@ -1088,6 +1090,27 @@
  		}
  #endif
  
++		/*
++		 * here we try to reject packets with more than 1 routing
++		 * headers.  we do this here (instead of tagging mbuf route6.c) 
++		 * for the sake of computational costs, such as malloc().
++		 *
++		 * the code could be too restrictive - there could be
++		 * actual use of more than 1 routing headers on a packet,
++		 * which cannot be used to do bad things unlike
++		 * IPV6_RTHDR_TYPE_0.  we will revisit it later when update
++		 * to RFC2460 gets published.
++		 *	Sun May  6 23:34:20 JST 2007
++		 */
 +		if (nxt == IPPROTO_ROUTING) {
 +			if (rh_present++) {
 +				in6_ifstat_inc(m->m_pkthdr.rcvif,
@@ -53,13 +65,13 @@ Index: route6.c
 ===================================================================
 RCS file: /cvsroot/kame/kame/kame/sys/netinet6/route6.c,v
 retrieving revision 1.60
-retrieving revision 1.63
-diff -u -r1.60 -r1.63
+retrieving revision 1.64
+diff -u -r1.60 -r1.64
 --- route6.c	25 Jun 2006 02:21:47 -0000	1.60
-+++ route6.c	5 May 2007 10:11:49 -0000	1.63
++++ route6.c	5 May 2007 11:23:38 -0000	1.64
 @@ -1,4 +1,4 @@
 -/*	$KAME: route6.c,v 1.60 2006/06/25 02:21:47 jinmei Exp $	*/
-+/*	$KAME: route6.c,v 1.63 2007/05/05 10:11:49 itojun Exp $	*/
++/*	$KAME: route6.c,v 1.64 2007/05/05 11:23:38 itojun Exp $	*/
  
  /*
   * Copyright (C) 1995, 1996, 1997, and 1998 WIDE Project.
@@ -81,7 +93,7 @@ diff -u -r1.60 -r1.63
 +#if 0
 +	/*
 +	 * See http://www.secdev.org/conf/IPv6_RH_security-csw07.pdf
-+	 * for why IPV6_RTHDR_TYPE_0 is baned here.
++	 * for why IPV6_RTHDR_TYPE_0 is banned here.
 +	 *
 +	 * We return ICMPv6 parameter problem so that innocent people
 +	 * (not an attacker) would notice about the use of IPV6_RTHDR_TYPE_0.
