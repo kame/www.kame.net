@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-2022-JP"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3c.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+  <title>KAMEプロジェクトにおけるタイプ0経路制御ヘッダ問題の対応</title>
+</head>
+
+<body>
+
+  <h1>KAMEプロジェクトにおけるタイプ0経路制御ヘッダ問題の対応</h1>
+
+  <h2>背景</h2>
+
+  <p>
+    カナダで開催されたCanSecWest2007で、`Fun with IPv6 routing headers'と題された発表があり、IPv6のタイプ0経路制御ヘッダが攻撃手段の一つとして利用可能であることが報告された。
+    報告された問題の中には、タイプ0経路制御ヘッダをRFC2460に忠実に処理する二つのIPv6ノード間(これには、KAMEに由来するBSDのコードが含まれる)で、通信帯域を食いつぶしてしまうことができるという内容がある。
+    会議で発表された資料にはいくつかの技術的な間違いがあったものの、報告された問題は実存し、攻撃に利用可能であることがわかっている。
+  </p>
+
+  <h2>KAMEプロジェクトの対応</h2>
+
+  <p>
+    KAMEプロジェクトでは以下の対応を実施し、コードに含まれていた脆弱性を取り除き、今後攻撃手段として利用されないための対策を講じた。
+  </p>
+
+  <ul>
+    <li>タイプ0経路制御ヘッダを処理しないようにKAMEコードを修正した。
+      <samp>ip6_rthdr0()</samp>関数がコメントアウトされ、受信したタイプ0経路制御ヘッダは未知のタイプとしてエラー処理される。<br />
+      <a href="rthdr0.diff.txt">このリンクからパッチを入手可能。</a><br />
+      cvswebの変更履歴は次のリンクから参照できる:
+      <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/route6.c"><tt>route6.c</tt></a>および
+      <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/ip6_input.c"><tt>ip6_input.c</tt></a>.
+    </li>
+    <li>
+      上記修正を各種BSDの開発者およびKAME由来のBSD IPv6コードを利用しているネットワーク製品ベンダーに報告した。
+    </li>
+    <li>
+      仕様策定の視点から、この問題の解決方法についてIETFで議論を開始した (継続中)。
+    </li>
+  </ul>
+
+  <h2>推奨される対応</h2>
+  <p>
+    この問題を恐れる必要はないが、KAME(およびKAME由来のコードの)利用者は、上述の修正を適用し、カーネルを再起動することを強く推奨する (次節に示す各BSDからのセキュリティ勧告も参照)。
+    特に、広く知られており、かつ高速なネットワーク回線に接続されているIPv6ノードは、早急な対応が必要である。
+  </p>
+
+  <h2>関連する報告</h2>
+
+  <ul>
+    <li><a href="http://www.natisbad.org/">この問題に関連する情報、報道、セキュリティ勧告の一覧</a>。
+    <li>OpenBSD: <a href="ftp://ftp.openbsd.org/pub/OpenBSD/patches/4.1/common/005_route6.patch">005: SECURITY FIX: April 27, 2007 </a>。
+    </li>
+    <li>FreeBSD: <a
+    href="http://security.FreeBSD.org/advisories/FreeBSD-SA-07:03.ipv6.asc">FreeBSD-SA-07:03.ipv6</a>。
+    </li>
+    <li>NetBSD: 修正コード取り込み済み。
+    </li>
+<!--
+    <li>Cisco: <a
+	href="http://tools.cisco.com/security/center/getDocument.x?id=262">IPv6
+	Routing Header Extension Spoofing and Denial of Service
+	Attacks</a>.
+    </li>
+-->
+  </ul>
+
+  <h2>連絡先</h2>
+  <p>
+    本問題に関して、公の場で議論できる質問がある場合は、
+    KAMEユーザのメーリングリストである
+    <samp>snap-users at kame.net</samp>に質問を投げて欲しい。
+    公開できない類の質問は、<samp>core at kame.net</samp> (KAME開発者のみが登録されているメーリングリスト)を利用してもらうのがよいだろう。
+  </p>
+
+</body>
+
+</html>
