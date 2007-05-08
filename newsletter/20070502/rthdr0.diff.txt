@@ -6,12 +6,6 @@ retrieving revision 1.373
 diff -u -r1.370 -r1.373
 --- ip6_input.c	8 Apr 2007 17:04:31 -0000	1.370
 +++ ip6_input.c	8 May 2007 02:53:12 -0000	1.373
-@@ -1,4 +1,4 @@
--/*	$KAME: ip6_input.c,v 1.370 2007/04/08 17:04:31 jinmei Exp $	*/
-+/*	$KAME: ip6_input.c,v 1.373 2007/05/08 02:53:12 jinmei Exp $	*/
- 
- /*
-  * Copyright (C) 1995, 1996, 1997, and 1998 WIDE Project.
 @@ -375,7 +375,7 @@
  	int off = sizeof(struct ip6_hdr), nest;
  	u_int32_t plen;
@@ -72,12 +66,6 @@ retrieving revision 1.64
 diff -u -r1.60 -r1.64
 --- route6.c	25 Jun 2006 02:21:47 -0000	1.60
 +++ route6.c	5 May 2007 11:23:38 -0000	1.64
-@@ -1,4 +1,4 @@
--/*	$KAME: rthdr0.diff.txt,v 1.2 2007/05/07 19:26:12 itojun Exp $	*/
-+/*	$KAME: rthdr0.diff.txt,v 1.2 2007/05/07 19:26:12 itojun Exp $	*/
- 
- /*
-  * Copyright (C) 1995, 1996, 1997, and 1998 WIDE Project.
 @@ -62,8 +62,10 @@
  
  #include <netinet/icmp6.h>
