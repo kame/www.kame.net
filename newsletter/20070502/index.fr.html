@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3c.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+<head>
+  <title>KAME project's action on Type 0 Routing Header issue</title>
+</head>
+<body>
+<a href="index.html">English</a> / <a href="index.ja.html">Japanese</a> /
+<a href="index.fr.html">French</a>
+<hr>
+<h1>R&eacute;action du projet KAME sur le probl&egrave;me de
+l'ent&ecirc;te de routage de type 0</h1>
+<h2>Contexte</h2>
+<p> Durant la conf&eacute;rence CanSecWest2007, la pr&eacute;sentation
+`Fun with IPv6 routing headers' a d&eacute;montr&eacute; que
+l'ent&ecirc;te de routage de type 0 (IPv6 Type 0 Routing Header) peut
+&ecirc;tre utilis&eacute;e comme m&eacute;thode d'attaque. Un des
+m&eacute;thodes pr&eacute;sent&eacute;es peut utiliser n'importe quelle
+paire de noeuds IPv6 qui supporte l'ent&ecirc;te de routage de type 0
+tel que d&eacute;crit dans le RFC2460. Cette paire de noeuds, incluant
+ceux bas&eacute;s sur le code du projet KAME/BSD, peut utiliser toute
+la bande passante entre ces deux noeuds.&nbsp; M&ecirc;me si les
+ac&eacute;tates de la pr&eacute;sentation sur cette attaque contiennent
+des erreurs techniques, le risque principal est r&eacute;el. </p>
+<h2>R&eacute;action du projet KAME</h2>
+<p> Le projet KAME a mis en place les actions suivantes pour
+r&eacute;gler le probl&egrave;me et pour &eacute;viter que ce
+probl&egrave;me soit utilis&eacute; pour des attaques. </p>
+<ul>
+  <li>Modifier le code source de KAME pour d&eacute;sactiver
+l'ent&ecirc;te de routage de type 0 (Type 0 Routing Header). La
+fonction <samp>ip6_rthdr0()</samp> a &eacute;t&eacute; mise en
+commentaires et un ent&ecirc;te de routage de type 0 qui entre est
+maintenant trait&eacute; comme un ent&ecirc;te de routage inconnu. <a
+ href="rthdr0.diff.txt">Les changements dans le code peuvent &ecirc;tre
+inspect&eacute;s ici.</a><br>
+Vous pouvez aussi voir le journal de changement (changelog) sur le
+cvsweb ici: <a
+ href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/route6.c"><tt>route6.c</tt></a>,
+    <a
+ href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/in6_proto.c"><tt>in6_proto.c</tt></a>
+et <a
+ href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/ip6_input.c"><tt>ip6_input.c</tt></a>.
+  </li>
+  <li>Annoncer la solution du probl&egrave;me aux responsables des
+versions de BSD ainsi que les manufacturiers ayant incorpor&eacute;
+le code de la pile IPv6 KAME/BSD dans leurs produits.&nbsp; </li>
+  <li>Discuter &agrave; l'IETF comment r&eacute;gler le probl&egrave;me
+au point de vue des sp&eacute;cifications techniques (en cours). </li>
+</ul>
+<h2>Recommendation</h2>
+<p> Il n'y a pas lieu de paniquer, mais il est fortement
+recommand&eacute; d'appliquer les changements ci-dessus (et voir aussi
+les annonces de s&eacute;curit&eacute; venant des versions BSD
+ci-dessous) et red&eacute;marrer le noyau, particuli&egrave;rement pour
+les noeuds IPv6 qui sont bien connus et qui sont connect&eacute;s
+&agrave; un
+lien &agrave; haute bande passante. </p>
+<h2>Annonces reli&eacute;es</h2>
+<ul>
+  <li><a href="http://www.natisbad.org/">Liste des informations,
+couverture de la presse et conseils sur ce sujet</a>. </li>
+  <li>OpenBSD: <a
+ href="ftp://ftp.openbsd.org/pub/OpenBSD/patches/4.1/common/005_route6.patch">005:
+SECURITY FIX: April 27, 2007 </a>. </li>
+  <li>FreeBSD: <a
+ href="http://security.FreeBSD.org/advisories/FreeBSD-SA-07:03.ipv6.asc">FreeBSD-SA-07:03.ipv6</a>.
+<!-- THE FIX IS INCOMPLETE so do not try to copy it.   --> </li>
+  <li>NetBSD: La solution a &eacute;t&eacute; import&eacute;e dans la
+branche principale du code source. </li>
+  <li>DragonflyBSD: La solution a &eacute;t&eacute; import&eacute;e
+dans la branche principale du code source ainsi que les anciennes
+branches.&nbsp; </li>
+<!--
+    <li>Cisco: <a
+	href="http://tools.cisco.com/security/center/getDocument.x?id=262">IPv6
+	Routing Header Extension Spoofing and Denial of Service
+	Attacks</a>.
+    </li>
+-->
+</ul>
+<h2>Point de contact</h2>
+<p> Si vous avez des questions sur ce probl&egrave;me qui peuvent
+&ecirc;tre discut&eacute;es publiquement, veuillez les envoyer&nbsp;
+&agrave;&nbsp; <samp>snap-users &agrave; kame.net</samp>, la
+liste de courriel pour les usagers des produits KAME. Utilisez <samp>core
+&agrave; kame.net</samp> (liste de courriel priv&eacute;e pour les
+d&eacute;veloppeurs KAME seulement) si vous d&eacute;sirez garder
+les questions confidentielles. </p>
+</body>
+</html>
