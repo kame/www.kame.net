@@ -3,76 +3,74 @@
   "http://www.w3c.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="kr">
 
 <head>
-  <title>KAME project's action on Type 0 Routing Header issue</title>
+  <title>Type 0 Routing Header 이슈와 관련한 KAME Project의 활동</title>
 </head>
 
 <body>
 
   <a href=index.html>English</a> /
   <a href=index.ja.html>Japanese</a> /
-  <a href=index.fr.html>French</a>
+  <a href=index.fr.html>French</a> /
+  <a href=index.kr.html>Korean</a>
   <hr>
 
-  <h1>KAME project's action on Type 0 Routing Header issue</h1>
+  <h1>Type 0 Routing Header 이슈와 관련한 KAME Project의 활동</h1>
 
-  <h2>Background</h2>
+  <h2>배경</h2>
 
   <p>
-    At the CanSecWest2007, a report titled `Fun with IPv6 routing
-    headers' was presented indicating that the IPv6 Type 0 Routing
-    Header can be used as an attacking method.
-    One of the described attacks can exploit any two IPv6 nodes that
-    handles the Type 0 Routing Header as described in RFC2460,
-    including the KAME/BSD based nodes, to consume the bandwidth
-    between those two nodes.
-    Although the presentation slides on this type of attack have some
-    technical errors, the main threat still seems to exist.
+	CanSecWest2007에서 IPv6 Type 0 Routing Header가 공격수단으로 사용될 수
+	있다는 것을 지적한 'Fun with IPv6 Routing Headers'가 발제 되었다.
+	기술된 내용 중에는 IPv6 Type 0 Routing Header를 운용하는 어떤 두개의
+	IPv6노드(KAME/BSD기반 노드 포함, RFC2460 내용참조)를 공격하여 두 노드
+	사이의 Bandwidth를 차지하는 공격이 있다. 그러나 'attack'에 대한
+	프레젠테이션 내용은 몇 가지 기술적 결함이 있어 주된 위협은 여전히
+	존재하는듯 하다.
   </p>
 
-  <h2>KAME Project's Action</h2>
+  <h2>KAME Projcet 활동</h2>
 
   <p>
-    The KAME project performed the following actions to fix the issue
-    and to prevent the issue from being used as a method of attacks.
+	KAME Project에서는 위와 같은 이슈를 해결하고 공격의 수단으로 사용되는
+	것을 방지하기 위하여 아래와 같은 활동을 수행했다.
   </p>
 
   <ul>
-    <li>Fixed the KAME source code to disable the Type 0 Routing
-      Header.  The <samp>ip6_rthdr0()</samp> function was commented out
-      and the incoming Type 0 Routing Header is now processed as an
-      unknown Routing Header.
-      The default value for <tt>net.inet6.ip6.hdrnestlimit</tt> is reduced to 15. <br />
-      <a href="rthdr0.diff.txt">The proper diff can be found here.</a><br />
-      You can also browse the changelog on cvsweb at here:
+    <li>
+	Type 0 Routing header를 사용하지 못하게 KAME의 소스코드를 수정
+	ip6_rthdr0() 기능이 제거되어 Type 0 Routing Header는 unknwon Routing Header로 처리
+	net.inet6.ip6.hdrnestlimit 의 기본값은 15로 감소수정사항 확인
+      <br />
+      <a href="rthdr0.diff.txt">(The proper diff can be found here.)</a><br />
+      cvsweb 수정사항:
       <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/route6.c"><tt>route6.c</tt></a>,
       <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/in6_proto.c"><tt>in6_proto.c</tt></a> and
       <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/ip6_input.c"><tt>ip6_input.c</tt></a>.
     </li>
     <li>
-      Announced the fix to the maintainers of the BSD variants as
-      well as vendors that have incorporated the KAME/BSD IPv6 stack
-      into their products.
+	다양한 BSD의 사용자와 KAME/BSD IPv6 Stack을 포함한 제품의
+	벤더들에게 이와 같은 문제 고지
     </li>
     <li>
-      Discussed how to deal with this issue spec-wise at the IETF (ongoing).
+	IETF에서 이슈 해결을 위한 Spec 개선안 논의 (진행중)
     </li>
   </ul>
 
-  <h2>Recommendation</h2>
+  <h2>권장 사항</h2>
   <p>
-    There is no need to panic, but it is strongly recommended to apply
-    the above change (see also the security advisory from BSDs below)
-    and reboot the kernel, especially for those IPv6 nodes that are
-    widely known and attached to a high-bandwidth link.
+	이 문제와 관련하여 심각할 필요는 없다고 보고 있으나,
+	위와 같은 변경 사항을 적용하여 (하단에 있는 BSD의 보안관련 권고 내용
+	확인 요망) kernal을 reboot 할것을 권장한다.
+	특히 해당 IPv6 노드는 높은 bandwidth link에 잘 알려져 사용되고 있다.
   </p>
 
-  <h2>Related Announcements</h2>
+  <h2>관련 고지 사항</h2>
 
   <ul>
-    <li><a href="http://www.natisbad.org/">List of the info/press coverege/advisory on this matter</a>.</li>
+    <li><a href="http://www.natisbad.org/">상기 이슈관련 info/press coverege/advisory 목록</a>.</li>
     <li><a href="http://nvd.nist.gov/nvd.cfm?cvename=CVE-2007-2242">NIST bug ID: CVE-2007-2242</a>. </li>
     <li>OpenBSD: <a href="ftp://ftp.openbsd.org/pub/OpenBSD/patches/4.1/common/005_route6.patch">005: SECURITY FIX: April 27, 2007 </a>.
 	the advisory will be updated very soon.
@@ -81,8 +79,8 @@
     href="http://security.FreeBSD.org/advisories/FreeBSD-SA-07:03.ipv6.asc">FreeBSD-SA-07:03.ipv6</a>.
     <!-- THE FIX IS INCOMPLETE so do not try to copy it.   -->
     </li>
-    <li>NetBSD: A<!--n IMCOMPLETE--> fix has been imported to the main tree.
-    <li>DragonflyBSD: The fix has been imported to the main tree as well as old branches. 
+    <li>NetBSD: <!--n IMCOMPLETE--> 에 수정사항 반영
+    <li>DragonflyBSD: old branch와 main tree에 수정사항 반영 
     </li>
 <!--
     <li>Cisco: <a
@@ -95,14 +93,14 @@
 
   <h2>Contact Points</h2>
   <p>
-    If you have any questions on this issue that can be publicly
-    discussed, please send them to <samp>snap-users at
-    kame.net</samp>, the users mailing list for the KAME products.
-    Please use <samp>core at kame.net</samp> (closed mailing list for
-    KAME developers only) should you want to keep the questions
-    confidential.
+상기 관련, 추가적 논의는 아래의 메일링 리스트를 통해서 진행
+    <ul>
+      <li>공개 논의: snap-user at kame.net
+      <li>비공개 논의: core at kame.net
+    </ul>
   </p>
 
+(Translation by Ms Sabrina)
 </body>
 
 </html>
