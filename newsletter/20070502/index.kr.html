@@ -1,106 +1,65 @@
-<?xml version="1.0" encoding="KS_C_5601-1987"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-  "http://www.w3c.org/TR/xhtml11/DTD/xhtml11.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3c.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="kr">
 
-<head>
-  <title>Type 0 Routing Header �̽��� ������ KAME Project�� Ȱ��</title>
-</head>
+  <head>
+    <title>Type 0 Routing Header 문제에 관한 KAME Project의 조처</title>
+  </head>
+  <body>
 
-<body>
+    <a href=index.html>English</a> / <a href=index.ja.html>Japanese</a> / <a href=index.fr.html>French</a> / <a href=index.kr.html>Korean</a>
 
-  <a href=index.html>English</a> /
-  <a href=index.ja.html>Japanese</a> /
-  <a href=index.fr.html>French</a> /
-  <a href=index.kr.html>Korean</a>
-  <hr>
+    <hr />
 
-  <h1>Type 0 Routing Header �̽��� ������ KAME Project�� Ȱ��</h1>
+    <h1>Type 0 Routing Header 문제에 관한 KAME Project의 조처</h1>
 
-  <h2>���</h2>
+    <h2>배경</h2>
 
-  <p>
-	CanSecWest2007���� IPv6 Type 0 Routing Header�� ���ݼ������� ���� ��
-	�ִٴ� ���� ������ 'Fun with IPv6 Routing Headers'�� ���� �Ǿ���.
-	����� ���� �߿��� IPv6 Type 0 Routing Header�� ����ϴ� � �ΰ���
-	IPv6���(KAME/BSD��� ��� ����, RFC2460 ��������)�� �����Ͽ� �� ���
-	������ Bandwidth�� �����ϴ� ������ �ִ�. �׷��� 'attack'�� ����
-	���������̼� ������ �� ���� ����� ������ �־� �ֵ� ������ ������
-	�����ϴµ� �ϴ�.
-  </p>
+    <p>IPv6 Type 0 Routing Header를 공격 수단으로 이용할 수 있다는 내용의 &lsquo;Fun with IPv6 routing headers&rsquo;가 CanSecWest2007에서 발표되었습니다.&nbsp; 기술된 방법 중 한 가지를 이용하면, KAME/BSD 기반의 IPv6 노드 등 Type 0 Routing Header를 RFC 2460에 정해진 대로 처리하는 노드 두 개를 골라 그 둘 사이의 네트웍 대역폭을 소모하게 하는 식으로 공격할 수 있습니다.&nbsp; 비록 발표된 프레젠테이션 자료에는 이 방법에 관해 몇몇 기술적 오류가 있긴 하지만, 공격 방법 그 자체는 일반적으로 유효한 것으로 보입니다.</p>
 
-  <h2>KAME Projcet Ȱ��</h2>
+    <h2>KAME Project의 조처</h2>
 
-  <p>
-	KAME Project������ ���� ���� �̽��� �ذ��ϰ� ������ �������� ���Ǵ�
-	���� �����ϱ� ���Ͽ� �Ʒ��� ���� Ȱ���� �����ߴ�.
-  </p>
+    <p>KAME Project는 이 문제가 공격 수단으로 남용되지 않도록 다음과 같은 해결 조처를 취하였습니다.</p>
 
-  <ul>
-    <li>
-	Type 0 Routing header�� ������� ���ϰ� KAME�� �ҽ��ڵ带 ����
-	ip6_rthdr0() ����� ���ŵǾ� Type 0 Routing Header�� unknwon Routing Header�� ó��
-	net.inet6.ip6.hdrnestlimit �� �⺻���� 15�� ���Ҽ������� Ȯ��
-      <br />
-      <a href="rthdr0.diff.txt">(The proper diff can be found here.)</a><br />
-      cvsweb ��������:
-      <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/route6.c"><tt>route6.c</tt></a>,
-      <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/in6_proto.c"><tt>in6_proto.c</tt></a> and
-      <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/ip6_input.c"><tt>ip6_input.c</tt></a>.
-    </li>
-    <li>
-	�پ��� BSD�� ����ڿ� KAME/BSD IPv6 Stack�� ������ ��ǰ��
-	�����鿡�� �̿� ���� ���� ����
-    </li>
-    <li>
-	IETF���� �̽� �ذ��� ���� Spec ������ ���� (������)
-    </li>
-  </ul>
-
-  <h2>���� ����</h2>
-  <p>
-	�� ������ �����Ͽ� �ɰ��� �ʿ�� ���ٰ� ���� ������,
-	���� ���� ���� ������ �����Ͽ� (�ϴܿ� �ִ� BSD�� ���Ȱ��� �ǰ� ����
-	Ȯ�� ���) kernal�� reboot �Ұ��� �����Ѵ�.
-	Ư�� �ش� IPv6 ���� ���� bandwidth link�� �� �˷��� ���ǰ� �ִ�.
-  </p>
-
-  <h2>���� ���� ����</h2>
-
-  <ul>
-    <li><a href="http://www.natisbad.org/">��� �̽����� info/press coverege/advisory ���</a>.</li>
-    <li><a href="http://nvd.nist.gov/nvd.cfm?cvename=CVE-2007-2242">NIST bug ID: CVE-2007-2242</a>. </li>
-    <li>OpenBSD: <a href="ftp://ftp.openbsd.org/pub/OpenBSD/patches/4.1/common/005_route6.patch">005: SECURITY FIX: April 27, 2007 </a>.
-	the advisory will be updated very soon.
-    </li>
-    <li>FreeBSD: <a
-    href="http://security.FreeBSD.org/advisories/FreeBSD-SA-07:03.ipv6.asc">FreeBSD-SA-07:03.ipv6</a>.
-    <!-- THE FIX IS INCOMPLETE so do not try to copy it.   -->
-    </li>
-    <li>NetBSD: <!--n IMCOMPLETE--> �� �������� �ݿ�
-    <li>DragonflyBSD: old branch�� main tree�� �������� �ݿ� 
-    </li>
-<!--
-    <li>Cisco: <a
-	href="http://tools.cisco.com/security/center/getDocument.x?id=262">IPv6
-	Routing Header Extension Spoofing and Denial of Service
-	Attacks</a>.
-    </li>
--->
-  </ul>
-
-  <h2>Contact Points</h2>
-  <p>
-��� ����, �߰��� ���Ǵ� �Ʒ��� ���ϸ� ����Ʈ�� ���ؼ� ����
     <ul>
-      <li>���� ����: snap-user at kame.net
-      <li>����� ����: core at kame.net
+      <li>
+        <p>KAME 소스 코드를 고쳐 Type 0 Routing Header 처리를 제거하였습니다.&nbsp; ip6_rthdr0() 함수를 주석처리하여, Type 0 Routing Header는 이제 수신될 경우 타입 불명의 Routing Header로서 처리됩니다.&nbsp; net.inet6.ip6.hdrnestlimit의 기본값을 15로 줄였습니다.</p>
+        <p><a href="rthdr0.diff.txt">패치는 이 링크에 있습니다.</a>&nbsp; 또한, 수정사항을 cvsweb으로 확인하실 수 있습니다: <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/route6.c">route6.c</a> / <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/in6_proto.c">in6_proto.c</a> / <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/ip6_input.c">ip6_input.c</a></p>
+      </li>
+      <li>
+        <p>BSD계열 운영체제를 비롯, KAME/BSD IPv6 스택을 사용하는 제품의 메인테이너와 벤더에게 수정 및 해결 사항을 알렸습니다.</p>
+      </li>
+      <li>
+        <p>이 문제를 IPv6 표준에서 어떻게 다루어야 할 지에 대해 IETF에서 토의하고 있습니다.</p>
+      </li>
     </ul>
-  </p>
+    <h2>권장 사항</h2>
 
-(Translation by Ms Sabrina)
-</body>
+    <p>이 문제에 관해 필요 이상으로 긴장하지는 않으셔도 됩니다만, 상단에 제공된 패치를 커널에 적용한 후 재부팅하는 것을 (널리 알려지고 또한 고대역폭 링크에 연결된 IPv6노드에 대해 특별히) 강력히 권장합니다.&nbsp; 아래의 BSD 보안 권고도 참조하십시오.</p>
 
+    <h2>관련 공지</h2>
+
+    <ul>
+      <li><a href="http://www.natisbad.org/">이 문제에 관한 정보, 뉴스 및 권고 목록</a></li>
+      <li><a href="http://nvd.nist.gov/nvd.cfm?cvename=CVE-2007-2242">NIST 버그 ID: CVE-2007-2242</a></li>
+      <li>OpenBSD: <a href="ftp://ftp.openbsd.org/pub/OpenBSD/patches/4.1/common/005_route6.patch">005: SECURITY FIX: April 27, 2007</a> (이 보안 권고는 곧 다시 업데이트됩니다)</li>
+      <li>FreeBSD: <a
+    href="http://security.FreeBSD.org/advisories/FreeBSD-SA-07:03.ipv6.asc">FreeBSD-SA-07:03.ipv6</a><!-- THE FIX IS INCOMPLETE so do not try to copy it. --></li>
+      <li>NetBSD: 해결 패치가 메인 트리에 적용되었습니다.</li>
+      <li>DragonflyBSD: 해결 패치가 메인 트리 및 이전 브랜치들에 적용되었습니다.</li>
+    </ul>
+
+    <h2>연락처</h2>
+
+    <p>이 문제에 관련한 토의사항은 다음의 메일링 리스트로 보내 주십시오:</p>
+
+    <ul>
+      <li>KAME 사용자 (snap-users 골뱅이 kame.net) - 공개적으로 토의할 수 있는 내용일 경우</li>
+      <li>KAME 개발자 전용 (core 골뱅이 kame.net) - 토의 내용을 비공개로 하고자 하는 경우</li>
+    </ul>
+
+(Translated by Ms Sabrina Kim and Eugene Kim)
+  </body>
 </html>
