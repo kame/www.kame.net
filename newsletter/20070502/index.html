@@ -45,7 +45,8 @@
       Header.  The <samp>ip6_rthdr0()</samp> function was commented out
       and the incoming Type 0 Routing Header is now processed as an
       unknown Routing Header.
-      The default value for <tt>net.inet6.ip6.hdrnestlimit</tt> is reduced to 15. <br />
+      The default value for <tt>net.inet6.ip6.hdrnestlimit</tt> is reduced to 15.
+      Make sure to turn off 2^1 bit of <tt>net.inet6.icmp6.nodeinfo</tt> sysctl variable (There's no diff as KAME ships with 2^1 turned off by default).<br />
       <a href="rthdr0.diff.txt">The proper diff can be found here.</a><br />
       You can also browse the changelog on cvsweb at here:
       <a href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/route6.c"><tt>route6.c</tt></a>,

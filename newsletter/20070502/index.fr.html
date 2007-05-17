@@ -34,7 +34,8 @@ fonction <samp>ip6_rthdr0()</samp> a &eacute;t&eacute; mise en
 commentaires et un ent&ecirc;te de routage de type 0 qui entre est
 maintenant trait&eacute; comme un ent&ecirc;te de routage inconnu. <a
  href="rthdr0.diff.txt">Les changements dans le code peuvent &ecirc;tre
-inspect&eacute;s ici.</a><br>
+inspect&eacute;s ici.</a>
+Make sure to turn off 2^1 bit of <tt>net.inet6.icmp6.nodeinfo</tt> sysctl variable (There's no diff as KAME ships with 2^1 turned off by default).<br>
 Vous pouvez aussi voir le journal de changement (changelog) sur le
 cvsweb ici: <a
  href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/route6.c"><tt>route6.c</tt></a>,
