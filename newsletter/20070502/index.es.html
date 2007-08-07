@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3c.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+  <title>Acciones del Proyecto Kame que abordan el problema de la
+cabecera de encaminamiento de Tipo 0</title>
+</head>
+
+<body>
+
+  <a href=index.html>English</a> /
+  <a href=index.ja.html>Japanese</a> /
+  <a href=index.es.html>Spanish</a> /
+  <a href=index.fr.html>French</a> /
+  <a href="index.kr.html">Korean</a>
+  <hr>
+
+  <h1>Acciones del Proyecto Kame que abordan el problema de la cabecera
+de encaminamiento de Tipo 0</h1>
+
+  <h2>Antecedentes</h2>
+
+  <p>
+    En el CanSecWest 2007, se present&oacute; un reporte titulado
+"Diversi&oacute;n con las cabeceras de encaminamiento IPv6" ("Fun with
+IPv6 routing headers"), en el que se indicaba que la cabecera de
+encaminamiento IPv6 de Tipo 0 puede ser usada como un m&eacute;todo de
+ataque. Uno de los ataques descritos podr&iacute;a explotar cualquiera
+de los dos nodos que manejaran dicha cabecera tal como se describe en el
+RFC 2460, incluyendo los nodos basados en KAME/BSD; de modo que se
+consumiera el ancho de banda entre los dos nodos. Aunque las
+diapositivas que se mostraron para explicar este tipo de ataque
+contienen algunos errores t&eacute;cnicos, la principal amenaza parece
+existir.
+  </p>
+
+  <h2>La iniciativa del Proyecto KAME
+
+</h2>
+
+  <p>
+    El Proyecto KAME realiz&oacute; las siguientes acciones para
+arreglar el tema y minimizar la posibilidad de que sea utilizado como
+m&eacute;todo de ataque.
+  </p>
+
+  <ul>
+    <li>
+Se arregl&oacute; el c&oacute;digo fuente de KAME para deshabilitar la
+Cabecera de Encaminamiento IPv6 de Tipo 0. La funci&oacute;n
+<samp>ip6_rthdr0()</samp> fue descomentada y las cabeceras de
+encaminamiento de Tipo 0 entrantes son procesadas ahora como cabeceras
+de encaminamiento desconocidas. El valor por defecto de
+<tt>net.inet6.ip6.hdrnestlimit</tt> se ha reducido a 15. Se debe
+asegurar de deshabilitar el bit 2^1 de la variable sysctl
+<tt>net.inet6.icmp6.nodeinfo</tt> (Aunque no hay diferencia porque KAME
+la trae deshabilitada por defecto).<br />
+      <a href="rthdr0.diff.txt">El diff se puede encontrar
+aqu&iacute;</a><br />
+      Tambi&eacute;n puede revisar el changelog en el cvsweb en:
+      <a
+href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/route6.c"><tt>route6.c</tt></a>,
+      <a
+href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/in6_proto.c"><tt>in6_proto.c</tt></a> and
+      <a
+href="http://www.kame.net/dev/cvsweb2.cgi/kame/kame/sys/netinet6/ip6_input.c"><tt>ip6_input.c</tt></a>.
+    </li>
+    <li>
+      Se anunci&oacute; el arreglo (fix) a las personas que mantienen
+las variantes de BSD as&iacute; como a los vendedores que han
+incorporado el stack IPv6 de KAME/BSD en sus productos.
+    </li>
+    <li>
+      Se discuti&oacute; acerca de c&oacute;mo manejar este problema,
+desde el punto de vista de las especificaciones, en la IETF (en proceso)
+    </li>
+  </ul>
+
+  <h2>Recomendaci&oacute;n</h2>
+  <p>
+    No hay necesidad de entrar en p&aacute;nico, pero es altamente
+recomendable aplicar los cambios mencionados l&iacute;neas arriba (ver
+tambi&eacute;n las alertas de seguridad de BSD que se muestran
+m&aacute;s abajo) y reiniciar el kernel, especialmente hay que tener
+esto en cuenta en aquellos nodos IPv6 que son altamente conocidos y que
+est&aacute;n conectados a enlaces de alto ancho de banda.
+  </p>
+
+  <h2>Anuncios Relacionados</h2>
+
+  <ul>
+    <li><a href="http://www.natisbad.org/">Lista de
+informaci&oacute;n/cobertura de prensa/alertas en este tema.</a>.</li>
+    <li><a href="http://nvd.nist.gov/nvd.cfm?cvename=CVE-2007-2242">NIST
+bug ID: CVE-2007-2242</a>. </li>
+    <li>OpenBSD: <a
+href="ftp://ftp.openbsd.org/pub/OpenBSD/patches/4.1/common/005_route6.patch">005: ARREGLO DE SEGURIDAD: 27 de Abril del 2007 </a>.
+ las alertas ser&aacute;n actualizadas muy pronto.
+    </li>
+    <li>FreeBSD: <a
+
+href="http://security.FreeBSD.org/advisories/FreeBSD-SA-07:03.ipv6.asc">FreeBSD-SA-07:03.ipv6</a>.
+    <!-- THE FIX IS INCOMPLETE so do not try to copy it.   -->
+    </li>
+    <li>NetBSD: A<!--n IMCOMPLETE--> Un arreglo (fix) ha sido importado
+al &aacute;rbol principal..
+    <li>DragonflyBSD: El arreglo ha sido importado al &aacute;rbol
+principal y a sus ramas m&aacute;s antiguas. 
+    <li>Apple MacOS X: Se encuentra disponible un <A
+HREF=http://lists.apple.com/archives/Security-announce/2007/Jun/msg00002.html>arreglo de seguridad</A>.
+    <li>Alaxala routers: Se encuentra disponible un <A
+HREF=http://www.alaxala.com/jp/support/security/ICMP-20070628.html>arreglo de seguridad</A>.
+    </li>
+<!--
+    <li>Cisco: <a
+	href="http://tools.cisco.com/security/center/getDocument.x?id=262">IPv6
+	Routing Header Extension Spoofing and Denial of Service
+	Attacks</a>.
+    </li>
+-->
+    <li><a href="http://www.kb.cert.org/vuls/id/267289">CERT
+VU267289</a>. </li>
+  </ul>
+
+  <h2>Puntos de Contacto</h2>
+  <p>   
+Si tiene algunas preguntas en este tema que puedan ser discutidas
+p&uacute;blicamente, por favor, env&iacute;elas a la lista
+<samp>snap-users</samp> de usuarios de productos KAME en
+<samp>kame.net</samp>. Si de otro modo, quisiera mantener la pregunta en
+modo confidencial, env&iacute;ela a <samp>core</samp> en
+<samp>kame.net</samp>, que es la lista privada, s&oacute;lo para los
+desarrolladores de KAME.
+  </p>
+(Translation by Claudia C&oacute;rdova)
+</body>
+
+</html>
