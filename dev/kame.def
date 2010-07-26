@@ -1,11 +1,11 @@
-#	$Id: kame.def,v 1.1 2001/04/17 03:42:56 itojun Exp $
+#	$Id: kame.def,v 1.2 2010/07/26 07:18:51 sumikawa Exp $
 #
 # Perl definitions!
 #
 $gnhow='mail';
 $gnemail='kame-bugs@kame.net';
 $gnsubmitter='net';
-@gncategory=("sys", "kit", "bsdi", "fbsd2", "fbsd3", "netbsd", "openbsd");
+@gncategory=("sys", "kit", "bsdi", "fbsd2", "fbsd3", "fbsd4", "netbsd", "openbsd");
 $gnrelease="www-send-pr: 1.0";
 #  when $gnhow != 'mail'
 $gnroot="/usr/local/libexec/gnats";

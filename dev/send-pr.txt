@@ -7,7 +7,7 @@ webmaster@kame.net
 
 
 List of meaningful categories available:
-	bsdi    fbsd2   fbsd3   kit     netbsd  openbsd	sys
+	bsdi	fbsd2	fbsd3	fbsd4	kit	netbsd	openbsd	sys
 
 ---
 To: bugs@kame.net

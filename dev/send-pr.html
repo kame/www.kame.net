@@ -23,6 +23,10 @@ the output from the machine on which problem occurred.</P>
 <LI>KAME kit release date (19991231)</LI>
 <LI>If you are reporting for userland application on non-KAME IPv6 stack,
 	the detailed version/platform/whatever info about the stack.
+<LI>Complete information to reproduce the problem.
+	For example, exact command line, generated results (captured
+	by script(1)), routing setups (<tt>netstat -rn</tt>),
+	whatever necessary.
 </UL>
 <STRONG>NO JAPANESE TEXT IN BUG REPORT PLEASE!</STRONG>
 The text will be get archived, and will be sent to English-only Mailing list.
@@ -31,7 +35,7 @@ The text will be get archived, and will be sent to English-only Mailing list.
 <P>If you have trouble using this form, please use <A HREF=send-pr.txt>
 this plaintext template</A> as a last resort.</P>
 
-<FORM ACTION="http://www.kame.net/dev/dosendpr.cgi" METHOD="POST">
+<FORM ACTION="/dev/dosendpr.cgi" METHOD="POST">
 <INPUT TYPE="HIDDEN" NAME="gndb" VALUE="kame">
 <INPUT TYPE="HIDDEN" NAME="submitterid" VALUE="net">
 <INPUT TYPE="HIDDEN" NAME="confidential" VALUE="no">
@@ -45,6 +49,7 @@ this plaintext template</A> as a last resort.</P>
 <OPTION> bsdi</OPTION>
 <OPTION> fbsd2</OPTION>
 <OPTION> fbsd3</OPTION>
+<OPTION> fbsd4</OPTION>
 <OPTION> netbsd</OPTION>
 <OPTION> openbsd</OPTION>
 <OPTION> doc</OPTION>
@@ -71,5 +76,5 @@ this plaintext template</A> as a last resort.</P>
 
 <ADDRESS><A HREF="mailto:www@kame.net">www@kame.net</A><BR>
   This gnats pr-submission mechanism Copyright © 1996
- The NetBSD Foundation, Inc.  ALL RIGHTS RESERVED.<BR>$Date: 2001/04/17 03:42:56 $</ADDRESS></BODY>
+ The NetBSD Foundation, Inc.  ALL RIGHTS RESERVED.<BR>$Date: 2010/07/26 07:16:29 $</ADDRESS></BODY>
 </HTML>
