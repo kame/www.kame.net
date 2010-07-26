@@ -1,2 +1,0 @@
-#Redirect /racoon/	http://ipsec-tools.sourceforge.net/
-#Redirect /racoon/*	http://ipsec-tools.sourceforge.net/
