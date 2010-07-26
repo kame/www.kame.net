@@ -1,6 +1,6 @@
 #! /usr/bin/perl
 
-if ($ENV{'REMOTE_ADDR'} =~ /:/) {
+if ($ENV{'REMOTE_ADDR'} !~ /2001:200:d00:100::/) {
 	$v6p = 'yes';
 }
 
