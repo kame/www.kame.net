@@ -1,2 +1,3 @@
 User-Agent: *
 Disallow: /dev/cvsweb.cgi
+Disallow: /kame-confidential
