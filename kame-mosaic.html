@@ -12,10 +12,44 @@
 <body>
 
 <div class="center">
-<img src="/img/kame-mosaic-small.gif"><br />
+<canvas id="anime" width="124" height="100"></canvas>
+<img id="gif" src="/img/kame-mosaic-small.gif"><br />
 This is a MOSAIC version.<br />
 If you migrate to IPv6 HTTP, you'll be able to view the NON-MOSAIC DANCING KAME!
 </div>
+
+<script type="text/JavaScript">
+<!--
+$(document).ready(function() {
+  var canvas = document.getElementById('anime');
+  if (! canvas || ! canvas.getContext) {
+    // xxx: fallback to load animated GIF.
+    return false;
+  }
+  $('img#gif').remove();
+  var ctx;
+  var img = new Array();
+  var count = 0;
+  var max = 17;
+  ctx = canvas.getContext('2d');
+  for (i = 0; i <= max; i++) {
+    img[i] = new Image();
+    img[i].src = "/img/anime/kame-mosaic-small-" + i + ".png";
+  }
+  // xxx: img[max] should not be the last session. other sessions may be delayed
+  img[max].onload = function() {
+    setInterval(function() {
+      ctx.clearRect(0, 0, 124, 100)
+      ctx.drawImage(img[count], 0, 0);
+      count++;
+      if (count > max) {
+        count = 0;
+      }
+    }, 100);
+  }
+});
+// -->
+</script>
 
 </body>
 </html>
