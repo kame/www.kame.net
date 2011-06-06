@@ -14,7 +14,7 @@ sorry www.kame.net is IPv4 only due to trouble, and dancing kame service is susp
 EOF
 } elsif ($v6p) {
 	print <<EOF;
-<canvas id="anime" width="124" height="100"></canvas>
+<div id="canvas" style="display: none;"><canvas id="anime" width="124" height="100"></canvas></div>
 <img id="gif" src="/img/kame-anime-small.gif" alt="Dancing kame" /><br />
 Dancing kame by <a href="http://www.momonga.org/">atelier momonga</a>
 
@@ -26,6 +26,7 @@ Dancing kame by <a href="http://www.momonga.org/">atelier momonga</a>
     return false;
   }
   \$('img#gif').remove();
+  \$('div#canvas').show();
   var ctx;
   var img = new Array();
   var count = 0;

@@ -12,7 +12,7 @@
 <body>
 
 <div class="center">
-<canvas id="anime" width="124" height="100"></canvas>
+<div id="canvas" style="display: none;"><canvas id="anime" width="124" height="100"></canvas></div>
 <img id="gif" src="/img/kame-mosaic-small.gif"><br />
 This is a MOSAIC version.<br />
 If you migrate to IPv6 HTTP, you'll be able to view the NON-MOSAIC DANCING KAME!
@@ -26,6 +26,7 @@ $(document).ready(function() {
     return false;
   }
   $('img#gif').remove();
+  $('div#canvas').show();
   var ctx;
   var img = new Array();
   var count = 0;
