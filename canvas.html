@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dancing KAME test</title>
+<script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script></head>
+</head>
+<body>
+
+<canvas id="anime" width="124" height="100"></canvas>
+
+<script type="text/JavaScript">
+<!--
+$(document).ready(function() {
+  var canvas = document.getElementById('anime');
+  if (! canvas || ! canvas.getContext) {
+    // xxx: fallback to load animated GIF.
+    return false;
+  }
+  var ctx;
+  var img = new Array();
+  var count = 0;
+  var max = 17;
+  ctx = canvas.getContext('2d');
+  for (i = 0; i <= max; i++) {
+    img[i] = new Image();
+    img[i].src = "/img/anime/kame-anime-small-" + i + ".png";
+  }
+  // xxx: img[max] should not be the last session. other sessions may be delayed
+  img[max].onload = function() {
+    setInterval(function() {
+      ctx.clearRect(0, 0, 124, 100)
+      ctx.drawImage(img[count], 0, 0);
+      count++;
+      if (count > max) {
+        count = 0;
+      }
+    }, 100);
+  }
+});
+// -->
+</script>
+
+</body>
+</html>
