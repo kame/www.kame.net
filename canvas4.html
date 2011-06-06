@@ -36,6 +36,11 @@ $(document).ready(function() {
     img[i] = new Image();
     img[i].src = "/img/anime/kame-mosaic-small-" + i + ".png";
   }
+  if ( /Android\s2\.[0|1]/.test(navigator.userAgent)) {
+    // ugly hack for Android2.0/2.1
+    var rate = Math.sqrt(320 / screen.width);
+    ctx.scale(rate, rate);
+  }
   // xxx: img[max] should not be the last session. other sessions may be delayed
   img[max].onload = function() {
     setInterval(function() {
