@@ -23,7 +23,6 @@ If you migrate to IPv6 HTTP, you'll be able to view the NON-MOSAIC DANCING KAME!
 $(document).ready(function() {
   var canvas = document.getElementById('anime');
   if (! canvas || ! canvas.getContext) {
-    // xxx: fallback to load animated GIF.
     return false;
   }
   $('img#gif').remove();
