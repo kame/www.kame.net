@@ -6,13 +6,13 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=us-ascii" />
 <link rel="stylesheet" href="style.css" type="text/css" media="all" />
-<script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script></head>
+<script type="text/JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
 <title>The KAME project</title>
 </head>
 <body>
 
 <div class="center">
-<canvas id="anime" width="124" height="100"></canvas>
+<div id="canvas" style="display: none;"><canvas id="anime" width="124" height="100"></canvas></div>
 <img id="gif" src="/img/kame-mosaic-small.gif"><br />
 This is a MOSAIC version.<br />
 If you migrate to IPv6 HTTP, you'll be able to view the NON-MOSAIC DANCING KAME!
@@ -23,10 +23,10 @@ If you migrate to IPv6 HTTP, you'll be able to view the NON-MOSAIC DANCING KAME!
 $(document).ready(function() {
   var canvas = document.getElementById('anime');
   if (! canvas || ! canvas.getContext) {
-    // xxx: fallback to load animated GIF.
     return false;
   }
   $('img#gif').remove();
+  $('div#canvas').show();
   var ctx;
   var img = new Array();
   var count = 0;
@@ -35,6 +35,11 @@ $(document).ready(function() {
   for (i = 0; i <= max; i++) {
     img[i] = new Image();
     img[i].src = "/img/anime/kame-mosaic-small-" + i + ".png";
+  }
+  if ( /Android\s2\.[0|1]/.test(navigator.userAgent)) {
+    // ugly hack for Android2.0/2.1
+    var rate = Math.sqrt(320 / screen.width);
+    ctx.scale(rate, rate);
   }
   // xxx: img[max] should not be the last session. other sessions may be delayed
   img[max].onload = function() {
