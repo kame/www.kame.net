@@ -17,14 +17,14 @@ Message-ID: <346.904265958@turmeric.itojun.org>
 Sender: itojun@itojun.org
 X-UIDL: 0b61e37dbb4aa95a7cd9f98b475e97d8
 
->>  2) $BF1MM$K!"(Bn$B$rMQ$$$F0lHL2r$r5a$a$J$5$$(B
->	2*n-3 (n >= 2 $B$N>l9g(B)
->	$BA40w$N5-21$r=8$a$k$N$K:GDc(B (n-1) $B2sI,MW(B
->	$B$3$N;~E@$GA4ItJ];}$7$F$$$k?M$O(B 2$B?M(B
->	$B;D$j(B (n-2) $B?M$O5-21$,7gMn$7$F$$$k$N$G!"=<Ev$9$k$N$K(B (n-2) $B2sI,MW(B
->	$B9g7W(B (n-1) + (n-2) = 2*n-3
+>>  2) 同様に、nを用いて一般解を求めなさい
+>	2*n-3 (n >= 2 の場合)
+>	全員の記憶を集めるのに最低 (n-1) 回必要
+>	この時点で全部保持している人は 2人
+>	残り (n-2) 人は記憶が欠落しているので、充当するのに (n-2) 回必要
+>	合計 (n-1) + (n-2) = 2*n-3
 
-	6$B?M$N>l9g!"0J2<$N$h$&$K$9$k$H(B8$B2s(B(2 * n - 4)$B$G$$$1$^$9!#(B
+	6人の場合、以下のようにすると8回(2 * n - 4)でいけます。
 
 0: a b c d e f
 1: (a,b) ab ab c d e f
@@ -36,7 +36,7 @@ X-UIDL: 0b61e37dbb4aa95a7cd9f98b475e97d8
 7: (*,b) abcdef abcdef abcdef abcdef de abcdef
 8: (*,e) abcdef abcdef abcdef abcdef abcdef abcdef
 
-	5$B?M$N>l9g$O(B6$B2s(B(2 * n - 4)$B!#(B
+	5人の場合は6回(2 * n - 4)。
 
 0: a b c d e
 1: (a,b) ab ab c d e
@@ -46,7 +46,7 @@ X-UIDL: 0b61e37dbb4aa95a7cd9f98b475e97d8
 5: (b,e) abcde abcde abcde cd abcde
 6: (*,d) abcde abcde abcde abcde abcde
 
-	7$B?M$N>l9g$O(B10$B2s(B(2 * n - 4)$B!#(B
+	7人の場合は10回(2 * n - 4)。
 
 0: a b c d e f g
 1: ab ab c d e f g
@@ -60,7 +60,7 @@ X-UIDL: 0b61e37dbb4aa95a7cd9f98b475e97d8
 9: abcdefg abcdefg abcdefg abcdefg abcdefg def abcdefg
 10: abcdefg abcdefg abcdefg abcdefg abcdefg abcdefg abcdefg
 
-	$B$3$l$,:G>.$+$H$$$o$l$k$H<+?.$J$$$G$9$,!"8eH>@o$NL5BL$rKI$0$N$,%+%.$+$J!#(B
+	これが最小かといわれると自信ないですが、後半戦の無駄を防ぐのがカギかな。
 
 itojun
 

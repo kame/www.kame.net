@@ -1,19 +1,19 @@
 
-$B:G6a$N%H%T%C%/(B(2)
+最近のトピック(2)
 
 NetBSD-current merge (-> 1.5)
-6$B7nKv(B: IPv6 + IPsec$B%^!<%840N;(B
-12$B7nF,(B: IPv6$BItJ,$@$1:G6aHG$K%P!<%8%g%s%"%C%W(B
+6月末: IPv6 + IPsecマージ完了
+12月頭: IPv6部分だけ最近版にバージョンアップ
 
 OpenBSD-current merge (-> 2.7/3.0)
-12$B7nF,(B: IPv6$B%^!<%8$[$\40N;(B
-$B%H%s%M%k4X78@0M}Cf!"(BIPv6 IPsec$B:n6HCf(B(OpenBSD IPsec)
+12月頭: IPv6マージほぼ完了
+トンネル関係整理中、IPv6 IPsec作業中(OpenBSD IPsec)
 
 FreeBSD-current merge (-> 4.0)
-11$B7n!A(B: IPv6 + IPsec$B%^!<%8:n6HCf(B
+11月〜: IPv6 + IPsecマージ作業中
 
 BSD/OS merge
-$B$^$@(B
+まだ
 
 committers
 freebsd x 3, netbsd x 1, openbsd x 1

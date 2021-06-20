@@ -2,7 +2,7 @@ Return-Path: itojun@itojun.org
 Received: from orange.kame.net by galilei.v6.hitachi.co.jp (8.8.5/3.4W-EBINA) id IAA09630 for <sumikawa@v6.hitachi.co.jp>; Fri, 28 Aug 1998 08:15:23 +0900 (JST)
 Received: from turmeric.itojun.org (mach74.xnet.com [207.227.19.74])	by orange.kame.net (8.8.8+3.0Wbeta13/3.6W/smtpfeed 0.63) with ESMTP id IAA01170	for <core@kame.net>; Fri, 28 Aug 1998 08:15:22 +0900 (JST)
 Received: from localhost (localhost [127.0.0.1]) by turmeric.itojun.org (8.8.5/3.3W3) with ESMTP id IAA08978; Fri, 28 Aug 1998 08:14:47 +0900 (JST)
-To: SUMIKAWA Munechika ($B3Q@n=!6a(B) <sumikawa@ebina.hitachi.co.jp>
+To: SUMIKAWA Munechika (角川宗近) <sumikawa@ebina.hitachi.co.jp>
 cc: core@kame.net
 In-reply-to: sumikawa's message of Fri, 28 Aug 98 07:07:27 JST.      <19980828070727X.sumikawa@ebina.hitachi.co.jp> 
 X-Template-Reply-To: itojun@itojun.org
@@ -17,11 +17,11 @@ Sender: itojun@itojun.org
 X-UIDL: 5bd5cf4227f49b0ae5b39f2de9bb08ed
 
 
->itojun$B$N%3%T!<%m%\%C%H$,(Bn-1$B?M$$$k$H$7$^$9!#K\?M$r4^$a$F!"(Bn$B?M$N(Bitojun$B$O(B
->$B$*$G$3$r$/$C$D$1$k$3$H$K$h$C$F!"5-21$r6&M-$7$^$9!#$5$F!"$3$3$GA40w$,A4(B
->$B0w$N5-21$r6&M-$7$?$$$H$$$^$9!#(B
+>itojunのコピーロボットがn-1人いるとします。本人を含めて、n人のitojunは
+>おでこをくっつけることによって、記憶を共有します。さて、ここで全員が全
+>員の記憶を共有したいといます。
 
-	$B5?Ld(B: itojun$BK\?M$b$*$G$3$/$C$D$1$k$H5-21$r6&M-$G$-$k$N$G$7$g$&$+(B...
+	疑問: itojun本人もおでこくっつけると記憶を共有できるのでしょうか...
 
 itojun
 

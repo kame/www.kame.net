@@ -9,53 +9,53 @@ X-Mailer: Mew version 1.93pre1 on Emacs 19.28 / Mule 2.3 (SUETSUMUHANA)
 Mime-Version: 1.0
 Message-Id: <19980828070727X.sumikawa@ebina.hitachi.co.jp>
 Date: Fri, 28 Aug 1998 07:07:27 +0900 (JST)
-From: SUMIKAWA Munechika ($B3Q@n=!6a(B) <sumikawa@ebina.hitachi.co.jp>
+From: SUMIKAWA Munechika (角川宗近) <sumikawa@ebina.hitachi.co.jp>
 X-Dispatcher: imput version 980824
 Lines: 42
 X-UIDL: 8e1981efab2ff86717f03a1622d71d4d
 Content-Type: Text/Plain; charset=iso-2022-jp
 Content-Transfer-Encoding: 7bit
 
-$B$+$j$4$a%/%$%:6f3ZIt(B $BBh0lLd!#(Bitojun$B$*$G$3LdBj!#(B
+かりごめクイズ倶楽部 第一問。itojunおでこ問題。
 
-itojun$B$N%3%T!<%m%\%C%H$,(Bn-1$B?M$$$k$H$7$^$9!#K\?M$r4^$a$F!"(Bn$B?M$N(Bitojun$B$O(B
-$B$*$G$3$r$/$C$D$1$k$3$H$K$h$C$F!"5-21$r6&M-$7$^$9!#$5$F!"$3$3$GA40w$,A4(B
-$B0w$N5-21$r6&M-$7$?$$$H$$$^$9!#(B
+itojunのコピーロボットがn-1人いるとします。本人を含めて、n人のitojunは
+おでこをくっつけることによって、記憶を共有します。さて、ここで全員が全
+員の記憶を共有したいといます。
 
- 1) n=5 $B$N$H$-!":GDc2?2s$*$G$3$r$/$C$D$J$$$H$$$1$J$$$G$7$g$&$+!)(B
+ 1) n=5 のとき、最低何回おでこをくっつないといけないでしょうか？
 
- 2) $BF1MM$K!"(Bn$B$rMQ$$$F0lHL2r$r5a$a$J$5$$(B
+ 2) 同様に、nを用いて一般解を求めなさい
 
 
-Appendix:  $B$?$H$($P!"(Bn=3$B$N$H$-!"(B
+Appendix:  たとえば、n=3のとき、
 
-0$B2sL\!'(B A$B!A(BC$B$N(Bitojun$B$O<+J,$N5-21$7$+;}$C$F$$$J$$(B
+0回目： A〜Cのitojunは自分の記憶しか持っていない
 		A B C
 		a 
 	          b
 	            c
 
-1$B2sL\!'(B A$B$H(BB$B$,$*$G$3$r$/$C$D$1$k(B
+1回目： AとBがおでこをくっつける
 		A B C
 		a a
 	        b b
 	            c
 
-2$B2sL\!'(B B$B$H(BC$B$,$*$G$3$r$/$C$D$1$k(B(B$B$O$9$G$K(Bab$B$N5-21$r;}$C$F$$$k$N$G!"(BC
-        $B$OA4It$3$l$G;}$D(B)
+2回目： BとCがおでこをくっつける(Bはすでにabの記憶を持っているので、C
+        は全部これで持つ)
 		A B C
 		a a a
 	        b b b
 	          c c
 
-3$B2sL\!'(B A$B$H(BB$B$,$*$G$3$r$/$C$D$1$k(B
+3回目： AとBがおでこをくっつける
 		A B C
 		a a a
 	        b b b
 	        c c c
 
-$B7W(B3$B2s!#(B
+計3回。
 
 ---
-$B$9$_$C$A!wItD9(B
+すみっち＠部長
 

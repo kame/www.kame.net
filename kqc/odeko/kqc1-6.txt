@@ -18,12 +18,12 @@ Status: U
 Content-Type: Text/Plain; charset=iso-2022-jp
 Content-Transfer-Encoding: 7bit
 
-> >>  2) $BF1MM$K!"(Bn$B$rMQ$$$F0lHL2r$r5a$a$J$5$$(B
-> >	2*n-3 (n >= 2 $B$N>l9g(B)
-> 	6$B?M$N>l9g!"0J2<$N$h$&$K$9$k$H(B8$B2s(B(2 * n - 4)$B$G$$$1$^$9!#(B
+> >>  2) 同様に、nを用いて一般解を求めなさい
+> >	2*n-3 (n >= 2 の場合)
+> 	6人の場合、以下のようにすると8回(2 * n - 4)でいけます。
 
-$B$5$9$,7W;;5!9)3X2J(B!
-$B$3$l$C$F<B$O:G0->r7o$G$N(B sort $BLdBj$@$C$?$j$9$k(B?
+さすが計算機工学科!
+これって実は最悪条件での sort 問題だったりする?
 
-$BHx>e(B@$BEE5$9)3X2J(B
+尾上@電気工学科
 

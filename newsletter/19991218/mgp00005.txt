@@ -1,18 +1,18 @@
 
-$B%3%s%?%/%H(B
+コンタクト
 
 snap-users@kame.net
-($B1Q8l(B)
+(英語)
 http://www.kame.net/
-send-pr interface($B1Q8l(B)
+send-pr interface(英語)
 core@kame.net
-*$BFb=o$N>l9g$N$_(B* $B3+H/<T(B($BF|K\8l(B/$B1Q8l(B)
+*内緒の場合のみ* 開発者(日本語/英語)
 secretary@kame.net
-license questions$B!"(Bpress($BF|K\8l(B/$B1Q8l(B)
+license questions、press(日本語/英語)
 
-$B$=$l$C$]$$$R$H$N5o$k$H$3$m(B(no guarantee!)
-6bone-jp@wide.ad.jp ($BF|K\8l(B/$B1Q8l(B)
-ipv6-jp@jp.freebsd.org ($BF|K\8l(B/$B1Q8l(B)
-tech-net@netbsd.org ($B1Q8l(B)
-tech@openbsd.org ($B1Q8l(B)
+それっぽいひとの居るところ(no guarantee!)
+6bone-jp@wide.ad.jp (日本語/英語)
+ipv6-jp@jp.freebsd.org (日本語/英語)
+tech-net@netbsd.org (英語)
+tech@openbsd.org (英語)
 

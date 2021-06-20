@@ -24,8 +24,7 @@ Received: from localhost (shuttle.sixyards.wide.toshiba.co.jp [3ffe:501:100f:0:2
 	for <core@kame.net>; Sun, 16 Jul 2000 20:31:00 +0900 (JST)
 Date: Sun, 16 Jul 2000 20:41:56 +0900
 Message-ID: <y7vn1ji8fp7.wl@condor.isl.rdc.toshiba.co.jp>
-From: JINMEI Tatuya / =?ISO-2022-JP?B?GyRCP0BMQEMjOkgbKEI=?=
- <jinmei@isl.rdc.toshiba.co.jp>
+From: JINMEI Tatuya / 神明達哉 <jinmei@isl.rdc.toshiba.co.jp>
 To: core@kame.net
 Subject: [KQC]
 User-Agent: Wanderlust/2.3.0 (Roam) Emacs/20.6 Mule/4.0 (HANANOEN)
@@ -36,15 +35,15 @@ X-Dispatcher: imput version 980905(IM100)
 Lines: 11
 X-UIDL: :ab!!OY#"!a-V!!jld"!
 
-$B%*%j%8%J%k$8$c$J$/$F$4$a$s$J$5$$$G$9$,!"@NJ9$$$F$=$N9*L/$5$K46F0$7$?Ld(B
-$BBj(B:
+オリジナルじゃなくてごめんなさいですが、昔聞いてその巧妙さに感動した問
+題:
 
-  $BL5M}?t$NL5M}?t>h$GM-M}?t$K$J$k$b$N$,$"$k$3$H$r>ZL@$7$J$5$$!#(B
-  $B$D$^$j!"L5M}?t(Bx, y$B$G(Bx^y$B$,M-M}?t$K$J$k$h$&$J$b$N$,$"$k$3$H$r<($;!"$H(B
-  $B$$$&$3$H$G$9!#(B
+  無理数の無理数乗で有理数になるものがあることを証明しなさい。
+  つまり、無理数x, yでx^yが有理数になるようなものがあることを示せ、と
+  いうことです。
 
-$B=PE8$,$J$s$@$C$?$+K:$l$F$7$^$$$^$7$?$,!"$=$NJU$GBgNL$K=PHG$5$l$F$kK\$G(B
-$B$O$J$+$C$?$O$:$J$N$G!"$=$s$J$K%a%8%c!<$JLdBj$G$O$J$$$H;W$$$^$9!#(B
+出展がなんだったか忘れてしまいましたが、その辺で大量に出版されてる本で
+はなかったはずなので、そんなにメジャーな問題ではないと思います。
 
-							$B?@L@(B $BC#:H(B
+							神明 達哉
 

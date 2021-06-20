@@ -1,13 +1,13 @@
 
-$B$=$N$[$+$*CN$i$;(B
+そのほかお知らせ
 
-$B8E$$(BSNAP/STABLE users$B$N$_$J$5$s$X(B
-$B$?$/$5$sCn$H$C$F$^$9(B(incl. API/security)
-$B$J$k$Y$/:G?7$NJ}$,9,$;(B
+古いSNAP/STABLE usersのみなさんへ
+たくさん虫とってます(incl. API/security)
+なるべく最新の方が幸せ
 
-IPv6/v4$BBP1~%"%W%j%1!<%7%g%s=q$-J}(B/$B2~B$$7$+$?9V:B(B
-jus$B<g:E!"(Bwww.jus.or.jp
-2/17($BLZ(B)
+IPv6/v4対応アプリケーション書き方/改造しかた講座
+jus主催、www.jus.or.jp
+2/17(木)
 
 Portable IPv6 computing championship
 http://www.netbsd.org/Ports/hpcmips/

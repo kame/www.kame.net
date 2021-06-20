@@ -24,8 +24,7 @@ Received: from localhost (shuttle.sixyards.wide.toshiba.co.jp [3ffe:501:100f:0:2
 	for <core@kame.net>; Mon, 17 Jul 2000 11:34:26 +0900 (JST)
 Date: Mon, 17 Jul 2000 11:45:05 +0900
 Message-ID: <y7vem4t8oge.wl@condor.isl.rdc.toshiba.co.jp>
-From: JINMEI Tatuya / =?ISO-2022-JP?B?GyRCP0BMQEMjOkgbKEI=?=
- <jinmei@isl.rdc.toshiba.co.jp>
+From: JINMEI Tatuya / 神明達哉 <jinmei@isl.rdc.toshiba.co.jp>
 To: core@kame.net
 Subject: Re: [KQC]
 In-Reply-To: In your message of "Mon, 17 Jul 2000 11:38:18 +0900 (JST)"
@@ -43,17 +42,17 @@ Lines: 14
 X-UIDL: ]>,"!:7H!!3"k!!+'$#!
 
 >>>>> On Mon, 17 Jul 2000 11:38:18 +0900 (JST), 
->>>>> Kazu Yamamoto ($B;3K\OBI'(B) <kazu@iijlab.net> said:
+>>>>> Kazu Yamamoto (山本和彦) <kazu@iijlab.net> said:
 
->> No. $B<B?t(Bonly$B$G$9!#(B
+>> No. 実数onlyです。
 
-> $B$&!<$`!#%*%$%i!<$8$c$@$a$+!#(B
+> うーむ。オイラーじゃだめか。
 
-> $B$9$k$H!"%Q%$>h$9$k$HCf?H$,$G$k:,$H$+Dj5A$7$F$$$$$N!)(B
+> すると、パイ乗すると中身がでる根とか定義していいの？
 
-$B!V%Q%$>h$9$k$HCf?H$,$G$k:,!W$C$F2?$@$+$h$/$o$+$j$^$;$s$,!"$=$&$$$&Fq$7(B
-$B$$$3$H(B(?)$B$r9M$($J$/$F$b2r$1$^$9!#$?$V$s9b9;@8$NCN<1$G==J,$G$9$7!"!VL5(B
-$BM}?t>h!W$H$$$&35G0$r5v$;$k$J$iCf3X@8$G$b$$$1$k$+$b!#(B
+「パイ乗すると中身がでる根」って何だかよくわかりませんが、そういう難し
+いこと(?)を考えなくても解けます。たぶん高校生の知識で十分ですし、「無
+理数乗」という概念を許せるなら中学生でもいけるかも。
 
-							$B?@L@(B $BC#:H(B
+							神明 達哉
 

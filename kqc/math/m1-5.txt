@@ -42,12 +42,12 @@ X-Dispatcher: imput version 20000228(IM140)
 Lines: 8
 X-UIDL: bjj!!m!$#!Yja!!_Q(!!
 
-kazu> $B$9$k$H!"%Q%$>h$9$k$HCf?H$,$G$k:,$H$+Dj5A$7$F$$$$$N!)(B
-kazu> $B$=$s$J$8$c$J$/$F!"$b$C$He:No$J2r!)(B
+kazu> すると、パイ乗すると中身がでる根とか定義していいの？
+kazu> そんなじゃなくて、もっと綺麗な解？
 
-$B$*$=$i$/!"Ez$($=$N$b$N$r=P$9$s$8$c$J$/$F!"GXM}K!$8$c$J$$$+$H8+$F$k$s$@(B
-$B$1$I!#(B
+おそらく、答えそのものを出すんじゃなくて、背理法じゃないかと見てるんだ
+けど。
 
 ---
-$B$9$_$C$A!w$R$?$C$A(B
+すみっち＠ひたっち
 

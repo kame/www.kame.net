@@ -28,7 +28,7 @@ Date: Sun, 16 Jul 2000 23:45:46 +0900 (JST)
 Message-Id: <20000716.234546.74718191.kazu@Mew.org>
 To: core@kame.net
 Subject: Re: [KQC]
-From: Kazu Yamamoto (=?iso-2022-jp?B?GyRCOzNLXE9CSScbKEI=?=)
+From: Kazu Yamamoto (山本和彦)
  <kazu@iijlab.net>
 In-Reply-To: <y7vn1ji8fp7.wl@condor.isl.rdc.toshiba.co.jp>
 References: <y7vn1ji8fp7.wl@condor.isl.rdc.toshiba.co.jp>
@@ -38,16 +38,16 @@ Content-Type: Text/Plain; charset=iso-2022-jp
 Content-Transfer-Encoding: 7bit
 X-UIDL: hY)"!~eS!!&%6"!0M3!!
 
-From: JINMEI Tatuya / $B?@L@C#:H(B <jinmei@isl.rdc.toshiba.co.jp>
+From: JINMEI Tatuya / 神明達哉 <jinmei@isl.rdc.toshiba.co.jp>
 Subject: [KQC]
 
->   $BL5M}?t$NL5M}?t>h$GM-M}?t$K$J$k$b$N$,$"$k$3$H$r>ZL@$7$J$5$$!#(B
->   $B$D$^$j!"L5M}?t(Bx, y$B$G(Bx^y$B$,M-M}?t$K$J$k$h$&$J$b$N$,$"$k$3$H$r<($;!"$H(B
->   $B$$$&$3$H$G$9!#(B
+>   無理数の無理数乗で有理数になるものがあることを証明しなさい。
+>   つまり、無理数x, yでx^yが有理数になるようなものがあることを示せ、と
+>   いうことです。
 
-$B5u?t$r;H$C$F$b$$$$$N!)(B
+虚数を使ってもいいの？
 
-$B$$$$$J$i!"9M$($k$^$G$b$J$$$1$I!#(B
+いいなら、考えるまでもないけど。
 
---$B$+$:(B
+--かず
 

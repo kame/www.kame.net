@@ -28,7 +28,7 @@ Date: Mon, 17 Jul 2000 11:38:18 +0900 (JST)
 Message-Id: <20000717.113818.85379605.kazu@Mew.org>
 To: core@kame.net
 Subject: Re: [KQC]
-From: Kazu Yamamoto (=?iso-2022-jp?B?GyRCOzNLXE9CSScbKEI=?=)
+From: Kazu Yamamoto (山本和彦)
  <kazu@iijlab.net>
 In-Reply-To: <y7vg0pa85yb.wl@condor.isl.rdc.toshiba.co.jp>
 References: <y7vn1ji8fp7.wl@condor.isl.rdc.toshiba.co.jp>
@@ -40,16 +40,16 @@ Content-Type: Text/Plain; charset=iso-2022-jp
 Content-Transfer-Encoding: 7bit
 X-UIDL: m(a!!8@m!!Vfl"!G13"!
 
-From: JINMEI Tatuya / $B?@L@C#:H(B <jinmei@isl.rdc.toshiba.co.jp>
+From: JINMEI Tatuya / 神明達哉 <jinmei@isl.rdc.toshiba.co.jp>
 Subject: Re: [KQC]
 
-> No. $B<B?t(Bonly$B$G$9!#(B
+> No. 実数onlyです。
 
-$B$&!<$`!#%*%$%i!<$8$c$@$a$+!#(B
+うーむ。オイラーじゃだめか。
 
-$B$9$k$H!"%Q%$>h$9$k$HCf?H$,$G$k:,$H$+Dj5A$7$F$$$$$N!)(B
+すると、パイ乗すると中身がでる根とか定義していいの？
 
-$B$=$s$J$8$c$J$/$F!"$b$C$He:No$J2r!)(B
+そんなじゃなくて、もっと綺麗な解？
 
---$B$+$:(B
+--かず
 

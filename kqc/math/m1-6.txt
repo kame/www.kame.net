@@ -24,8 +24,7 @@ Received: from localhost (shuttle.sixyards.wide.toshiba.co.jp [3ffe:501:100f:0:2
 	for <core@kame.net>; Mon, 17 Jul 2000 11:40:19 +0900 (JST)
 Date: Mon, 17 Jul 2000 11:51:10 +0900
 Message-ID: <y7vd7kd8o69.wl@condor.isl.rdc.toshiba.co.jp>
-From: JINMEI Tatuya / =?ISO-2022-JP?B?GyRCP0BMQEMjOkgbKEI=?=
- <jinmei@isl.rdc.toshiba.co.jp>
+From: JINMEI Tatuya / 神明達哉 <jinmei@isl.rdc.toshiba.co.jp>
 To: core@kame.net
 Subject: Re: [KQC]
 In-Reply-To: In your message of "Mon, 17 Jul 2000 11:46:33 +0900 (JST)"
@@ -45,19 +44,19 @@ X-UIDL: *j~!!XEN"!U4J"!9e_!!
 >>>>> On Mon, 17 Jul 2000 11:46:33 +0900 (JST), 
 >>>>> sumikawa@ebina.hitachi.co.jp said:
 
-kazu> $B$9$k$H!"%Q%$>h$9$k$HCf?H$,$G$k:,$H$+Dj5A$7$F$$$$$N!)(B
-kazu> $B$=$s$J$8$c$J$/$F!"$b$C$He:No$J2r!)(B
+kazu> すると、パイ乗すると中身がでる根とか定義していいの？
+kazu> そんなじゃなくて、もっと綺麗な解？
 
-> $B$*$=$i$/!"Ez$($=$N$b$N$r=P$9$s$8$c$J$/$F!"GXM}K!$8$c$J$$$+$H8+$F$k$s$@(B
-> $B$1$I!#(B
+> おそらく、答えそのものを出すんじゃなくて、背理法じゃないかと見てるんだ
+> けど。
 
-$B%R%s%H$H$7$F(B:
+ヒントとして:
 
-$B!VEz$((B($B<BNc(B)$B$=$N$b$N$r=P$9$s$8$c$J$$!W$C$F$$$&$N$O$"$?$j!#$G$bC1=c$JGX(B
-$BM}K!$H$$$&$o$1$G$b$"$j$^$;$s!#(B
+「答え(実例)そのものを出すんじゃない」っていうのはあたり。でも単純な背
+理法というわけでもありません。
 
-$B$G$9$,!"LdBj$,%7%s%W%k$J$@$1$K!"KM$,CN$C$F$k$b$N0J30$N2r$b$"$jF@$k$H;W(B
-$B$$$^$9!#<B$O4JC1$K<BNc$,:n$l$k$C$F$$$&$N$J$i$b$A$m$s$=$l$b$"$j$G$7$g$&!#(B
+ですが、問題がシンプルなだけに、僕が知ってるもの以外の解もあり得ると思
+います。実は簡単に実例が作れるっていうのならもちろんそれもありでしょう。
 
-							$B?@L@(B $BC#:H(B
+							神明 達哉
 

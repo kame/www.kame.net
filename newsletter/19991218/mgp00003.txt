@@ -1,19 +1,19 @@
 
-$B:G6a$N%H%T%C%/(B(1)
+最近のトピック(1)
 
-$B%W%m%8%'%/%H1dD9(B
-$B$b$&(B2$BG/$*$+$o$j(B! (- 2002$BG/(B3$B7n(B)
-$B;EMM(Bcoverage$BA}6/!"?7<BAu!"1~MQ!"%a%s%F(B
-IPv6 deployment$BE*$K$3$N(B2$BG/$,80(B
-$B4pK\9g0U!"HyD4@0Cf(B
+プロジェクト延長
+もう2年おかわり! (- 2002年3月)
+仕様coverage増強、新実装、応用、メンテ
+IPv6 deployment的にこの2年が鍵
+基本合意、微調整中
 
 *BSD merge
-INRIA$B!"(BNRL$B!"(BKAME -> $B%a%s%FLdBj$J$I$+$i(BKAME$B$G(Bgo
+INRIA、NRL、KAME -> メンテ問題などからKAMEでgo
 
-KAME$BF~$j(BPC from $B$W$i$C$H%[!<%`(B
-$B$J$s$+!"7k9=Gd$l$F$k$i$7$$!#(B http://www.plathome.co.jp/
+KAME入りPC from ぷらっとホーム
+なんか、結構売れてるらしい。 http://www.plathome.co.jp/
 
-WIDE$B$N7c$7$$(BIPv6$B<B83(B
-DV$BCf7Q(B(30Mbps x N over IPv6 multicast)
-$B%^%k%A%-%c%9%H$N$`$7$H$j(B
+WIDEの激しいIPv6実験
+DV中継(30Mbps x N over IPv6 multicast)
+マルチキャストのむしとり
 

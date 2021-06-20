@@ -79,11 +79,11 @@ for ($i = 0; $i < 4; $i++) {
 		$value = eval "$var\{\"$i$sw\"\}";
 		print "$title[$i] ";
 		if ($sw eq 'W') {
-			print " ø∆¸\n";
+			print "Âπ≥Êó•\n";
 		} elsif  ($sw eq 'S') {
-			print "≈⁄ÕÀ\n";
+			print "ÂúüÊõú\n";
 		} elsif ($sw eq 'H') {
-			print "µŸ∆¸\n";
+			print "‰ºëÊó•\n";
 		} else {
 			print "\n";
 		}
@@ -92,8 +92,8 @@ for ($i = 0; $i < 4; $i++) {
 			printf("%02d ", $t);
 			print "$value\n";
 		}
-		if ($title[$i] =~ /æ≈∆Ó¬Ê/) {
-			print "# •µ: ∫˚µ◊ ›∑–Õ≥\n";
+		if ($title[$i] =~ /ÊπòÂçóÂè∞/) {
+			print "# „Çµ: Á¨π‰πÖ‰øùÁµåÁî±\n";
 		}
 		print "\n\n\n";
 	}
@@ -118,11 +118,11 @@ sub rewrite {
 	local($flag) = ('');
 
 	while (length $in) {
-		if ($in =~ /^(∑ÓÕÀ°¡∂‚ÕÀ|≈⁄ÕÀ∆¸|µŸ∆¸)/) {
+		if ($in =~ /^(ÊúàÊõú„ÄúÈáëÊõú|ÂúüÊõúÊó•|‰ºëÊó•)/) {
 			$in = $';
 			next;
 		}
-		if ($in =~ /^(\s+|<br>|° øºÃÎ•–•π°À)/i) {
+		if ($in =~ /^(\s+|<br>|ÔºàÊ∑±Â§ú„Éê„ÇπÔºâ)/i) {
 			$in = $';
 			next;
 		}
@@ -132,7 +132,7 @@ sub rewrite {
 			next;
 		}
 		if ($in =~ /^<span[^>]*>/i) {
-			$flag = "•µ";
+			$flag = "„Çµ";
 			$in = $';
 			next;
 		}

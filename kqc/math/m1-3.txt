@@ -24,8 +24,7 @@ Received: from localhost (shuttle.sixyards.wide.toshiba.co.jp [3ffe:501:100f:0:2
 	for <core@kame.net>; Mon, 17 Jul 2000 00:01:34 +0900 (JST)
 Date: Mon, 17 Jul 2000 00:12:28 +0900
 Message-ID: <y7vg0pa85yb.wl@condor.isl.rdc.toshiba.co.jp>
-From: JINMEI Tatuya / =?ISO-2022-JP?B?GyRCP0BMQEMjOkgbKEI=?=
- <jinmei@isl.rdc.toshiba.co.jp>
+From: JINMEI Tatuya / 神明達哉 <jinmei@isl.rdc.toshiba.co.jp>
 To: core@kame.net
 Subject: Re: [KQC]
 In-Reply-To: In your message of "Sun, 16 Jul 2000 23:45:46 +0900 (JST)"
@@ -41,19 +40,19 @@ Lines: 16
 X-UIDL: C4)#!"`R"!9,f!!~>d!!
 
 >>>>> On Sun, 16 Jul 2000 23:45:46 +0900 (JST), 
->>>>> Kazu Yamamoto ($B;3K\OBI'(B) <kazu@iijlab.net> said:
+>>>>> Kazu Yamamoto (山本和彦) <kazu@iijlab.net> said:
 
->> $BL5M}?t$NL5M}?t>h$GM-M}?t$K$J$k$b$N$,$"$k$3$H$r>ZL@$7$J$5$$!#(B
->> $B$D$^$j!"L5M}?t(Bx, y$B$G(Bx^y$B$,M-M}?t$K$J$k$h$&$J$b$N$,$"$k$3$H$r<($;!"$H(B
->> $B$$$&$3$H$G$9!#(B
+>> 無理数の無理数乗で有理数になるものがあることを証明しなさい。
+>> つまり、無理数x, yでx^yが有理数になるようなものがあることを示せ、と
+>> いうことです。
 
-> $B5u?t$r;H$C$F$b$$$$$N!)(B
+> 虚数を使ってもいいの？
 
-No. $B<B?t(Bonly$B$G$9!#(B
+No. 実数onlyです。
 
-> $B$$$$$J$i!"9M$($k$^$G$b$J$$$1$I!#(B
+> いいなら、考えるまでもないけど。
 
-e^(i$B%Q%$(B)$B$H$+$"$j$^$9$+$i$M!#86J8$,$A$g$C$HITL@3N$@$C$?$+$b!#(B
+e^(iパイ)とかありますからね。原文がちょっと不明確だったかも。
 
-							$B?@L@(B $BC#:H(B
+							神明 達哉
 

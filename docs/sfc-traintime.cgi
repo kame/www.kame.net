@@ -72,8 +72,8 @@ foreach $i (keys %holiday) {
 
 for ($i = 0; $i < 4; $i++) {
 	print ";$title[$i]\n";
-	if ($title[$i] =~ /æ≈∆Ó¬Ê/) {
-		print "s: *∫˚µ◊ ›∑–Õ≥\n";
+	if ($title[$i] =~ /ÊπòÂçóÂè∞/) {
+		print "s: *Á¨π‰πÖ‰øùÁµåÁî±\n";
 	}
 	foreach $var ('$weekday', '$saturday', '$holiday') {
 		$sw = substr($var, 1, 1);
@@ -81,11 +81,11 @@ for ($i = 0; $i < 4; $i++) {
 
 		$value = eval "$var\{\"$i$sw\"\}";
 		if ($sw eq 'W') {
-			print "#$title[$i]  ø∆¸\n";
+			print "#$title[$i] Âπ≥Êó•\n";
 		} elsif  ($sw eq 'S') {
-			print "[SAT]\n#$title[$i] ≈⁄ÕÀ\n";
+			print "[SAT]\n#$title[$i] ÂúüÊõú\n";
 		} elsif ($sw eq 'H') {
-			print "[SUN][HOL]\n$title[$i] µŸ∆¸\n";
+			print "[SUN][HOL]\n$title[$i] ‰ºëÊó•\n";
 		} else {
 			print "\n";
 		}
@@ -118,11 +118,11 @@ sub rewrite {
 	local($flag) = ('');
 
 	while (length $in) {
-		if ($in =~ /^(∑ÓÕÀ°¡∂‚ÕÀ|≈⁄ÕÀ∆¸|µŸ∆¸)/) {
+		if ($in =~ /^(ÊúàÊõú„ÄúÈáëÊõú|ÂúüÊõúÊó•|‰ºëÊó•)/) {
 			$in = $';
 			next;
 		}
-		if ($in =~ /^(\s+|<br>|° øºÃÎ•–•π°À)/i) {
+		if ($in =~ /^(\s+|<br>|ÔºàÊ∑±Â§ú„Éê„ÇπÔºâ)/i) {
 			$in = $';
 			next;
 		}

@@ -18,28 +18,28 @@ if ($ENV{'QUERY_STRING'}) {
 
 @lines = ('tsuji34', 'tsuji33');
 #%linecolors = ('tsuji34', '000000', 'tsuji33', 'ff0000');
-%linecolors = ('tsuji34', '', 'tsuji33', '¥¢');
+%linecolors = ('tsuji34', '', 'tsuji33', 'ã‚¢');
 @modes = ('Weekday', 'Saturday', 'Sunday');
 
-%jname = ('tsujido', 'ÄÔÆ²', 'karigome', '´¢¹ş',
-	'Weekday', 'Ê¿Æü', 'Saturday', 'ÅÚÍË', 'Sunday', 'ÆüÍË'
+%jname = ('tsujido', 'è¾»å ‚', 'karigome', 'åˆˆè¾¼',
+	'Weekday', 'å¹³æ—¥', 'Saturday', 'åœŸæ›œ', 'Sunday', 'æ—¥æ›œ'
 );
 
 print <<EOF;
 <UL>
-<LI>sjis¤ÇÊİÂ¸¤·¤Æ¡¢
-<LI>¹ÔÆ¬¤Ë<TT>---</TT>¤Î¤¢¤ë¤È¤³¤í¤Ç¶èÀÚ¤Ã¤Æ¡¢
-<LI>memo pad¤Î¥«¥Æ¥´¥êTimetable¤Ë<TT>install-memo</TT>¤ÇÅ¾Á÷¤¹¤ë¡£
-¤ª¤¹¤¹¤á¥³¥Ş¥ó¥É¥é¥¤¥ó¥ª¥×¥·¥ç¥ó¤Ï:
+<LI>sjisã§ä¿å­˜ã—ã¦ã€
+<LI>è¡Œé ­ã«<TT>---</TT>ã®ã‚ã‚‹ã¨ã“ã‚ã§åŒºåˆ‡ã£ã¦ã€
+<LI>memo padã®ã‚«ãƒ†ã‚´ãƒªTimetableã«<TT>install-memo</TT>ã§è»¢é€ã™ã‚‹ã€‚
+ãŠã™ã™ã‚ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯:
 % install-memo -c Timetable /dev/pilot hoge fuga monya
-<LI><A HREF=http://direct.sgs.co.jp/visavis/software/timetable.html>RightNow!</A>¤Ç¤¹¤°»È¤¨¤Ş¤¹¡£
+<LI><A HREF=http://direct.sgs.co.jp/visavis/software/timetable.html>RightNow!</A>ã§ã™ãä½¿ãˆã¾ã™ã€‚
 </UL>
 <HR>
 EOF
 if (1 < scalar(@stations)) {
 	foreach $i (@stations) {
 		print <<EOF;
-<A HREF=http://$ENV{'HTTP_HOST'}$ENV{'SCRIPT_NAME'}?$i>$jname{$i}¤À¤±É½¼¨</A>
+<A HREF=http://$ENV{'HTTP_HOST'}$ENV{'SCRIPT_NAME'}?$i>$jname{$i}ã ã‘è¡¨ç¤º</A>
 EOF
 	}
 	print "<HR>\n";
@@ -61,8 +61,8 @@ foreach $j (@lines) {
 	}
 }
 ##$comment2 .= <<EOF;
-##<FONT COLOR=#FF0000>²ÆµÙ¤ß¥À¥¤¥ä¤ËÃí°Õ!</FONT>
-##²ÆµÙ¤ß´ü´ÖÃæ(9/10¤Ş¤Ç¤Ï¥Ğ¥¹¤ÎËÜ¿ô¤¬ÂçÉı¤Ë¾¯¤Ê¤¯¤Ê¤Ã¤Æ¤Ş¤¹¡£ÆÃ¤Ë¸á¸å¡£
+##<FONT COLOR=#FF0000>å¤ä¼‘ã¿ãƒ€ã‚¤ãƒ¤ã«æ³¨æ„!</FONT>
+##å¤ä¼‘ã¿æœŸé–“ä¸­(9/10ã¾ã§ã¯ãƒã‚¹ã®æœ¬æ•°ãŒå¤§å¹…ã«å°‘ãªããªã£ã¦ã¾ã™ã€‚ç‰¹ã«åˆå¾Œã€‚
 ##EOF
 
 foreach $i (sort @stations) {
