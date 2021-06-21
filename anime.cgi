@@ -1,6 +1,8 @@
 #! /usr/bin/env perl
 
-if ($ENV{'REMOTE_ADDR'} !~ /2001:200:d00:100::/) {
+if ($ENV{'REMOTE_ADDR'} =~ /^[0-9a-f:]+$/i
+    && $ENV{'REMOTE_ADDR'} !~ /2001:200:d00:100::/ # 2001:200:d00:100:: is IPv4 mapping prefix on WIDE cloud
+    ) {
 	$v6p = 'yes';
 }
 
