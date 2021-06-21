@@ -86,7 +86,7 @@ IPR overview:
       terms"
   Nokia:
     - NEMO implementors who are using technologies covered by the
-      Nokia patents (US10/295014、WO03/043226) must use
+      Nokia patents (US10/295014, WO03/043226) must use
       GPL(http://www.fsf.org/copyleft/gpl.html) or an open source
       license (http://www.opensource.org/osd.html).
 
